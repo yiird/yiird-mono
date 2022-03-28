@@ -12,7 +12,7 @@
     "lt": "lerna version",
     "lpre": "lerna version --conventional-prerelease --exact",
     "lr": "lerna version --conventional-graduate --exact",
-    "lp": "lerna publish"
+    "lp": "lerna publish from-git"
   },
   "dependencies": {
     "lodash-es": "^4.17.21"
