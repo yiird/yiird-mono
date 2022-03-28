@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7-alpha.4](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@1.0.7-alpha.3...@yiird/vue3-ts-api-extractor@1.0.7-alpha.4) (2022-03-28)
+
+
+### Bug Fixes
+
+* **license:** add ISC License ([32697a5](https://github.com/yiird/yiird-mono/commit/32697a52b3e9b070a19b8ef42886617ddb5bb596))
+
+
+
+
+
 ## [1.0.7-alpha.3](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@1.0.7-alpha.2...@yiird/vue3-ts-api-extractor@1.0.7-alpha.3) (2022-03-28)
 
 
