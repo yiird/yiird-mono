@@ -9,7 +9,7 @@
     "test": "lerna run test",
     "build": "lerna run build",
     "commit": "git add . && cz && git push",
-    "lpre": "lerna version --conventional-prerelease --create-release github && lerna publish from-git",
+    "lpre": "lerna version --conventional-prerelease --create-release github --yes && lerna publish from-git",
     "lr": "lerna version --conventional-graduate --create-release github && lerna publish from-git"
   },
   "dependencies": {
