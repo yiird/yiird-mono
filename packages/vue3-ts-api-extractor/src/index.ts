@@ -12,6 +12,12 @@ export const extract = (options: ExtractOptions) => {
 	handleMarkdown(handleParse(loader.getSfcs(), loader), options.markdown);
 };
 
+/**
+ *
+ * @param sfcPaths
+ * @param loader
+ * @returns
+ */
 const handleParse = (sfcPaths: string[], loader: Loader) => {
 	const result: Sfc[] = [];
 	sfcPaths.forEach((filePath) => {

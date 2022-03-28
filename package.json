@@ -9,9 +9,8 @@
     "test": "lerna run test",
     "build": "lerna run build",
     "commit": "git add . && cz",
-    "lpre": "lerna version --conventional-prerelease",
-    "lr": "lerna version --conventional-graduate --create-release github",
-    "lp": "lerna publish from-git"
+    "lpre": "lerna version --conventional-prerelease --create-release github && lerna publish from-git",
+    "lr": "lerna version --conventional-graduate --create-release github && lerna publish from-git"
   },
   "dependencies": {
     "lodash-es": "^4.17.21"
