@@ -3,7 +3,6 @@ import { Loader } from './parser/loader';
 import { SfcHandle } from './parser/sfc-handle';
 import { ExtractOptions, MarkdownOptions, Sfc } from './types';
 export * from './types';
-//
 export const extract = (options: ExtractOptions) => {
 	const loader = new Loader(options.loader);
 	loader.on('reload-sfc', (sfcPaths) => {
