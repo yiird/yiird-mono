@@ -1,0 +1,54 @@
+{
+  "name": "@yiird/vue3-ts-api-extractor",
+  "version": "1.0.0",
+  "description": "Vue + ts 生成markdownApi文档",
+  "keywords": [
+    "vue3",
+    "ts",
+    "doc"
+  ],
+  "author": "louruixiao <775674502@qq.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    }
+  },
+  "directories": {
+    "lib": "dist",
+    "doc": "doc",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.json --outDir dist",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@phenomnomnominal/tsquery": "^4.2.0",
+    "@vue/compiler-core": "^3.2.31",
+    "@vue/compiler-sfc": "^3.2.31",
+    "comment-json": "^4.2.2",
+    "glob": "^7.2.0",
+    "json2md": "^1.12.0"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/json2md": "^1.5.1",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.6.0",
+    "typescript": "^4.6.2",
+    "vite": "^2.8.6"
+  }
+}

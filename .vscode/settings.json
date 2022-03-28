@@ -1,0 +1,8 @@
+{
+	"files.autoSave": "onWindowChange",
+	"editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint", "source.formatDocument"],
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"search.exclude": {
+		"node_modules": false
+	}
+}
