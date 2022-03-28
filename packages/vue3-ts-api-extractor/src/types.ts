@@ -81,6 +81,9 @@ export type ExtractOptions = {
 	json?: JsonOptions;
 };
 
+/**
+ *
+ */
 export type Sfc = {
 	name: string;
 	description?: string;
