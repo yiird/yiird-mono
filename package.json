@@ -10,7 +10,8 @@
     "build": "lerna run build",
     "lint": "eslint **/src/**/*.ts **/src/**/*.vue --fix",
     "commit": "git add . && cz",
-    "lp": "lerna publish  --create-release github"
+    "lr": "lerna version -m \"chore(release): publish %s\"  --create-release github",
+    "lp": "lerna publish  --from-git"
   },
   "dependencies": {
     "lodash-es": "^4.17.21"
