@@ -10,7 +10,7 @@
     "build": "lerna run build",
     "commit": "git add . && cz",
     "lpre": "lerna version --conventional-prerelease",
-    "lr": "lerna version --conventional-graduate",
+    "lr": "lerna version --conventional-graduate --create-release github",
     "lp": "lerna publish from-git"
   },
   "dependencies": {
