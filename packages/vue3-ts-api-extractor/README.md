@@ -6,7 +6,6 @@
 > 
 >  Note: Currently not supported TSX and `<script setup>` syntactic sugar.
 
-
 ## Comments Standard
 The following two styles are supported for export.
 ```js
