@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5-alpha.0](https://github.com/louruixiao/owl-mono/compare/@yiird/vue3-ts-api-extractor@1.0.4...@yiird/vue3-ts-api-extractor@1.0.5-alpha.0) (2022-03-28)
+
+
+### Bug Fixes
+
+* **scripts:** 修改package.json scripts ([3d84a73](https://github.com/louruixiao/owl-mono/commit/3d84a7344f9c616e084e5a6e73801e0ceddbe7cd))
+
+
+
+
+
 ## [1.0.4](https://github.com/louruixiao/owl-mono/compare/@yiird/vue3-ts-api-extractor@1.0.4-alpha.0...@yiird/vue3-ts-api-extractor@1.0.4) (2022-03-28)
 
 **Note:** Version bump only for package @yiird/vue3-ts-api-extractor
