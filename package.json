@@ -8,9 +8,11 @@
     "bootstrap": "bash scripts/bootstrap.sh",
     "test": "lerna run test",
     "build": "lerna run build",
-    "lint": "eslint **/src/**/*.ts **/src/**/*.vue --fix",
     "commit": "git add . && cz",
-    "lp": "lerna publish  --create-release github"
+    "lt": "lerna version",
+    "lpre": "lerna version --conventional-prerelease --exact",
+    "lr": "lerna version --conventional-graduate --exact",
+    "lp": "lerna publish"
   },
   "dependencies": {
     "lodash-es": "^4.17.21"
