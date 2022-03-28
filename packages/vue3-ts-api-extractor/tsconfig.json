@@ -4,7 +4,6 @@
     "baseUrl": ".",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outFile": "./dist/index.d.ts",
     "types": ["jest","node","@vue/compiler-core"],
     "typeRoots": ["./src"],
     "rootDir": "./src"

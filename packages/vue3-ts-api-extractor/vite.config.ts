@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import { vitePluginCommonjs } from 'vite-plugin-commonjs';
+import dts from 'vite-plugin-dts';
 function resolve(filePath: string) {
 	return path.join(__dirname, filePath);
 }
@@ -22,5 +23,5 @@ export default defineConfig({
 			external: ['comment-json', 'json2md', 'glob', 'lodash-es', 'typescript', '@phenomnomnominal/tsquery', '@vue/compiler-core', '@vue/compiler-sfc']
 		}
 	},
-	plugins: [vitePluginCommonjs()]
+	plugins: [vitePluginCommonjs(), dts()]
 });
