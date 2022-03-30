@@ -255,7 +255,12 @@ export class FileCache extends EventEmitter {
 	public getReferFiles(): Set<string> {
 		const result = new Set<string>();
 		this._importInitalizers.forEach((refer) => {
-			refer.from && result.add(refer.from);
+			if (ParseUtil.isExcuded(refer.from, this._getLoaderOptions()?.externals)) {
+				return;
+			} else {
+				const referPath = ParseUtil.getReferPath(this._filePath, refer.from, this._getLoaderOptions()?.extensions);
+				referPath && result.add(referPath);
+			}
 		});
 		return result;
 	}
@@ -313,11 +318,11 @@ export class Loader extends EventEmitter {
 		this._root = this._options.root;
 		this._preprocessing();
 		this.on('loaded', this._postprocessing);
-		this.on('reload-sfc', (reloadSfcs: string[]) => {
-			reloadSfcs.forEach((sfcPath) => {
-				this.getCache(sfcPath)?.emit('postprocessing');
-			});
-		});
+		// this.on('reload-sfc', (reloadSfcs: string[]) => {
+		// 	reloadSfcs.forEach((sfcPath) => {
+		// 		this.getCache(sfcPath)?.emit('postprocessing');
+		// 	});
+		// });
 	}
 
 	/**
@@ -343,6 +348,24 @@ export class Loader extends EventEmitter {
 		});
 	}
 
+	private _flatAllRefers(filePath: string) {
+		const result: string[] = [];
+		const fileCache = new FileCache(filePath, this);
+		this._CACHE_.set(filePath, fileCache);
+		!result.includes(filePath) && result.push(filePath);
+		fileCache.getReferFiles().forEach((referPath) => {
+			let refers = this._REFER_.get(referPath);
+			if (!refers) {
+				refers = new Set<string>();
+				this._REFER_.set(referPath, refers);
+			}
+			refers.add(filePath);
+			const _result = this._flatAllRefers(referPath);
+			result.push(..._result);
+		});
+		return result;
+	}
+
 	/**
 	 * 加载文件并创建 @see {@link FileCache} 到缓存中
 	 * @param filePath 指定文件路径可选
@@ -351,43 +374,15 @@ export class Loader extends EventEmitter {
 		let files = this._files;
 		filePath && (files = [filePath]);
 		//获取并缓存文件内容
+
+		const loadedFiles: string[] = [];
 		files.forEach((path) => {
-			const fileCache = new FileCache(path, this);
-			this._CACHE_.set(path, fileCache);
-			fileCache.getReferFiles().forEach((refer) => {
-				//记录文件被哪些文件引用，用于查找当文件本身发生变化时会影响哪些文件
-				let refers = this._REFER_.get(refer);
-				if (!refers) {
-					refers = new Set<string>();
-					this._REFER_.set(refer, refers);
-				}
-				refers.add(path);
-			});
+			loadedFiles.push(...this._flatAllRefers(path));
 		});
 
-		if (filePath) {
-			/**
-			 * 当加载指定文件，同时重新加载所有导入了当前文件的文件
-			 */
-			const refers = this._REFER_.get(filePath);
-			refers?.forEach((refer) => {
-				this.load(refer);
-			});
-			if (refers && refers.size > 0) {
-				const reloadSfcs: string[] = [];
-				refers.forEach((refer) => {
-					if (path.dirname(refer) === '.vue') reloadSfcs.push(refer);
-				});
-
-				if (reloadSfcs.length > 0) {
-					this.emit('reload-sfc', reloadSfcs);
-				}
-				this._postprocessing(refers);
-			}
-		} else {
-			this.emit('loaded', files);
-		}
+		this.emit('loaded', loadedFiles);
 	}
+
 	protected _postprocessing(filePaths: Set<string>) {
 		const temp: Array<{ path: string; size: number }> = [];
 		if (filePaths) {

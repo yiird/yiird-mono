@@ -28,7 +28,7 @@ export class ParseUtil {
 	}
 
 	static getAst(filePath: string) {
-		const ast = tsquery.ast(ParseUtil.getSource(filePath), filePath, ScriptKind.TS);
+		const ast = tsquery.ast(ParseUtil.getSource(filePath), filePath, ScriptKind.TSX);
 		return ast;
 	}
 

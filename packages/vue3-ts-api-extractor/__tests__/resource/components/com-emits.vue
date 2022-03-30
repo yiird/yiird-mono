@@ -13,7 +13,7 @@ import { ComDProps } from './assist/ComDProps';
  */
 export default defineComponent({
 	props: ComDProps,
-	emits: ['do-click'],
+	emits: ['do-click', 'do-click-2'],
 	setup(props, { emit }) {
 		const arg1 = 0;
 		const arg2 = 1;
@@ -29,6 +29,21 @@ export default defineComponent({
 		 * @param arg2 {Foo} arg2 description
 		 */
 		emit('do-click', arg1, arg2);
+
+		/**
+		 * @typedef Foo2
+		 * @property o {string} property o's description
+		 * @property b {string} property b's description
+		 */
+		/**
+		 * do-click2 事件
+		 * @param arg1 {Foo2} arg1 description
+		 */
+		emit('do-click-2', {
+			a: 0,
+			b: 1
+		});
+
 		return {};
 	}
 });
