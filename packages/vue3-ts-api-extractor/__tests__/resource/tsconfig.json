@@ -12,7 +12,7 @@
 		"allowJs": false,
 		"baseUrl":".",
 		"skipLibCheck":true,
-		"lib": ["esnext"],
+		"lib": ["esnext","DOM"],
   },
   "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx", "**/*.vue"],
   "exclude": ["/node_modules/"]

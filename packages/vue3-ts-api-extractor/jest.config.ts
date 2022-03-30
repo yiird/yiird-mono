@@ -1,17 +1,11 @@
 import type { InitialOptionsTsJest } from 'ts-jest';
 const config: InitialOptionsTsJest = {
 	preset: 'ts-jest',
-	globals: {
-		'ts-jest': {
-			tsconfig: './tsconfig.json'
-		}
-	},
-	testMatch: ['**/__tests__/**/*.test.ts'],
+	verbose: true,
+	testMatch: ['**/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}'],
 	moduleNameMapper: {
 		'^lodash-es$': 'lodash'
 	},
-	collectCoverage: true,
-	collectCoverageFrom: ['**/__tests__/**/!(*.d).{ts}']
+	collectCoverage: true
 };
-
 export default config;

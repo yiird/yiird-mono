@@ -10,6 +10,7 @@ export class SfcEventComment implements EmitComment {
 	description?: string;
 	isPrivate?: boolean;
 	callbackArgs?: CallbackArgComment[];
+
 	constructor(node: ExpressionStatement) {
 		this._node = node;
 		this._callback = node.expression;
@@ -20,6 +21,7 @@ export class SfcEventComment implements EmitComment {
 		this.description = !this._mainDoc ? '' : SfcUtil.getDescription(this._mainDoc);
 		this.callbackArgs = this._getCallbackArgs();
 	}
+
 	private _getCallbackArgs(): CallbackArgComment[] {
 		const args: CallbackArgComment[] = [];
 		if (this._mainDoc) {
@@ -27,7 +29,7 @@ export class SfcEventComment implements EmitComment {
 			argComments?.forEach((argComment, index) => {
 				if (isJSDocParameterTag(argComment)) {
 					const _argComment: CallbackArgComment = {
-						name: `arg${index}`,
+						name: `arg${index + 1}`,
 						description: SfcUtil.getDescription(argComment)
 					};
 					const type = argComment.typeExpression?.type.getText();

@@ -10,7 +10,7 @@ import {
 	MethodDeclaration,
 	PropertyAssignment
 } from 'typescript';
-import { MethodComment, ParamComment } from '../types';
+import { MethodComment, ParamComment, PropertyComment } from '../types';
 import { SfcUtil } from '../utils/sfc-utils';
 
 export class SfcMethodComment implements MethodComment {
@@ -104,7 +104,8 @@ export class SfcMethodComment implements MethodComment {
 
 					if (parameter) {
 						if (type) {
-							parameter.type = type;
+							const properties: PropertyComment[] = SfcUtil.getTypeDef(type, this._docs);
+							parameter.type = properties.length > 0 ? properties : type;
 						}
 						parameter.description = getTextOfJSDocComment(tag.comment);
 					}
