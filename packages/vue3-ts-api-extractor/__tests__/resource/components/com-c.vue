@@ -49,19 +49,19 @@ export default defineComponent({
 		},
 		/**
 		 * @typedef NestFoo
-		 * @property b_1 {string} property b_1's description
-		 * @property b_2 {number} property b_2's description
+		 * @property {String} b_1 property b_1's description
+		 * @property {Number} b_2 property b_2's description
 		 */
 		/**
 		 * @typedef Foo
-		 * @property o {string} property o's description
-		 * @property b {NestFoo} property b's description
+		 * @property {String} o property o's description
+		 * @property {NestFoo} b property b's description
 		 */
 		/**
 		 * Fn2 description
 		 *
-		 * @param arg1 {string} arg1 description
-		 * @param arg2 {Foo} arg2 description
+		 * @param {string} arg1 arg1 description
+		 * @param {Foo} arg2 arg2 description
 		 */
 		fn2(arg1: string, arg2: Foo): string {
 			console.log(arg1, arg2);

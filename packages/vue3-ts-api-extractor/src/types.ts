@@ -103,11 +103,11 @@ export interface ParamComment extends NormalComment {
 }
 
 export interface PropertyComment extends NormalComment {
-	type?: string | PropertyComment[];
+	type: string | PropertyComment[];
 }
 
 export interface CallbackArgComment extends NormalComment {
-	type?: string | PropertyComment[];
+	type: string | PropertyComment[];
 }
 
 export interface EmitComment extends NormalComment {

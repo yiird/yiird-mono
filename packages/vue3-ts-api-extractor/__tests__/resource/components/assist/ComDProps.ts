@@ -1,6 +1,8 @@
 import { PropType } from 'vue';
 import { BaseProps } from './BaseProps';
-export const aa = {};
+export interface Some {
+	a: string;
+}
 export const ComDProps = {
 	...BaseProps,
 	/**
@@ -18,7 +20,9 @@ export const ComDProps = {
 	color: {
 		type: String as PropType<string>,
 		required: true,
-		default: 'red',
-		...aa
+		default: 'red'
+	},
+	other: {
+		type: Object as PropType<Some>
 	}
 } as const;

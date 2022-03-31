@@ -1,5 +1,5 @@
 import { transform } from './markdown';
-import { Loader } from './parser/loader';
+import { FileCache, Loader } from './parser/loader';
 import { SfcHandle } from './parser/sfc-handle';
 import { ExtractOptions, MarkdownOptions, Sfc } from './types';
 export * from './types';
@@ -12,22 +12,24 @@ export const extract = (options: ExtractOptions) => {
 	handleMarkdown(handleParse(loader.getSfcs(), loader), options.markdown);
 };
 
+export const toSfc = (cache: FileCache): Sfc => {
+	const handle = new SfcHandle(cache);
+	const bean: Sfc = {
+		name: handle.name,
+		description: handle.description,
+		props: handle.props(),
+		slots: handle.slots(),
+		methods: handle.methods(),
+		emits: handle.emits()
+	};
+	return bean;
+};
+
 const handleParse = (sfcPaths: string[], loader: Loader) => {
 	const result: Sfc[] = [];
 	sfcPaths.forEach((filePath) => {
 		const cache = loader.getCache(filePath);
-		if (cache) {
-			const handle = new SfcHandle(cache);
-			const bean: Sfc = {
-				name: handle.name,
-				description: handle.description,
-				props: handle.props(),
-				slots: handle.slots(),
-				methods: handle.methods(),
-				emits: handle.emits()
-			};
-			result.push(bean);
-		}
+		if (cache) result.push(toSfc(cache));
 	});
 	return result;
 };

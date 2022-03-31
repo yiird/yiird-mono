@@ -1,5 +1,5 @@
 <template>
-	<button>按钮D</button>
+	<button>按钮Emits</button>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -13,10 +13,13 @@ import { ComDProps } from './assist/ComDProps';
  */
 export default defineComponent({
 	props: ComDProps,
-	emits: ['do-click', 'do-click-2'],
+	emits: ['do-click', 'do-click-2', 'do-click-3'],
 	setup(props, { emit }) {
 		const arg1 = 0;
-		const arg2 = 1;
+		const arg2 = {
+			o: 'o',
+			b: 'b'
+		};
 
 		/**
 		 * @typedef Foo
@@ -40,11 +43,28 @@ export default defineComponent({
 		 * @param arg1 {Foo2} arg1 description
 		 */
 		emit('do-click-2', {
-			a: 0,
-			b: 1
+			a: '0',
+			b: '1'
 		});
 
 		return {};
+	},
+	methods: {
+		emitFn() {
+			/**
+			 * @typedef Foo3
+			 * @property o {string} property o's description
+			 * @property b {string} property b's description
+			 */
+			/**
+			 * do-click3 事件
+			 * @param arg1 {Foo3} arg1 description
+			 */
+			this.$emit('do-click-3', {
+				a: '2',
+				b: '3'
+			});
+		}
 	}
 });
 </script>

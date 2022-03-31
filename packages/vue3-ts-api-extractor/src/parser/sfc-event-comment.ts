@@ -30,6 +30,7 @@ export class SfcEventComment implements EmitComment {
 				if (isJSDocParameterTag(argComment)) {
 					const _argComment: CallbackArgComment = {
 						name: `arg${index + 1}`,
+						type: '',
 						description: SfcUtil.getDescription(argComment)
 					};
 					const type = argComment.typeExpression?.type.getText();

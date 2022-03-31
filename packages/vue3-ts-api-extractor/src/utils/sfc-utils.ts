@@ -1,4 +1,4 @@
-import { AttributeNode, CommentNode, DirectiveNode, Node as TemplateNode, NodeTypes } from '@vue/compiler-core';
+import { AttributeNode, CommentNode, DirectiveNode, Node as TemplateNode, NodeTypes, SimpleExpressionNode } from '@vue/compiler-core';
 import { getJSDocPrivateTag, getTextOfJSDocComment, isJSDoc, isJSDocPropertyTag, isJSDocTypedefTag, isJSDocTypeLiteral, JSDoc, JSDocTag, JSDocTypedefTag, Node } from 'typescript';
 import { PropertyComment } from '../types';
 
@@ -46,6 +46,7 @@ export class SfcUtil {
 					if (isJSDocPropertyTag(propertyTag)) {
 						const property: PropertyComment = {
 							name: propertyTag.name.getText(),
+							type: '',
 							description: SfcUtil.getDescription(propertyTag)
 						};
 						const type = propertyTag.typeExpression?.type.getText();
@@ -67,6 +68,10 @@ export class SfcUtil {
 
 	static isDirectiveNode(node: TemplateNode): node is DirectiveNode {
 		return node.type === NodeTypes.DIRECTIVE;
+	}
+
+	static isSimpleExpression(node: TemplateNode): node is SimpleExpressionNode {
+		return node.type === NodeTypes.SIMPLE_EXPRESSION;
 	}
 
 	static isCommentNode(node: TemplateNode): node is CommentNode {

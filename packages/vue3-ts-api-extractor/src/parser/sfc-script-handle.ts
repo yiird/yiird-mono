@@ -126,13 +126,14 @@ export class SfcScriptHandle implements NormalComment {
 		const filterEmits = (nodes: Node[]) => {
 			const result: Node[] = [];
 			nodes.forEach((_node) => {
-				const _nodes = tsquery(_node, 'ExpressionStatement:has(CallExpression[expression.name=emit])', {
+				const _nodes = tsquery(_node, 'ExpressionStatement:has(CallExpression[expression.name=emit]),ExpressionStatement:has(CallExpression[expression.name.name=$emit])', {
 					visitAllChildren: true
 				});
 				result.push(..._nodes);
 			});
 			return result;
 		};
+
 		const emitEvents = filterEmits([this._fileCache.getAst()]);
 
 		emitEvents.forEach((emitEvent) => {

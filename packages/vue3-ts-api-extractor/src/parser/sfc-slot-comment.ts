@@ -1,5 +1,7 @@
-import { SlotOutletNode } from '@vue/compiler-core';
-import { CallbackArgComment, SlotComment } from '../types';
+import { tsquery } from '@phenomnomnominal/tsquery';
+import { CommentNode, SlotOutletNode } from '@vue/compiler-core';
+import { isJSDocParameterTag, JSDoc, JSDocParameterTag } from 'typescript';
+import { CallbackArgComment, PropertyComment, SlotComment } from '../types';
 import { SfcUtil } from '../utils/sfc-utils';
 
 export class SfcSlotComment implements SlotComment {
@@ -10,33 +12,66 @@ export class SfcSlotComment implements SlotComment {
 
 	constructor(node: SlotOutletNode) {
 		this._node = node;
+		this._init();
+	}
+
+	private _init() {
 		this._node.props.forEach((prop) => {
 			if (SfcUtil.isAttributeNode(prop)) {
 				if (prop.name === 'name' && prop.value) {
 					this.name = prop.value?.content;
-				} else {
+				}
+			} else if (SfcUtil.isDirectiveNode(prop)) {
+				if (prop.arg && SfcUtil.isSimpleExpression(prop.arg)) {
 					this.callbackArgs?.push({
-						name: prop.name,
+						name: prop.arg.content,
 						type: ''
 					});
 				}
 			}
 		});
-		const comments = node.children.filter(SfcUtil.isCommentNode);
+		const comments = this._node.children.filter(SfcUtil.isCommentNode);
 		if (comments.length > 0) {
 			this.description = comments[0].content;
 			if (comments.length > 1) {
-				for (let i = 1; i < comments.length; i++) {
-					const commentContent = comments[i].content.trim();
-					const index = commentContent.indexOf(' ');
-					const propName = commentContent.substring(0, index).trim();
-					const propComment = commentContent.substring(index).trim();
-					const callbackArg = this.callbackArgs?.find((_callbackArg) => _callbackArg.name === propName);
-					if (callbackArg) {
-						callbackArg.type = propComment;
+				const jsDocs = this._packgeTypeDef(comments);
+				const params = new Map<string, JSDocParameterTag>();
+				jsDocs.forEach((jsDoc) => {
+					jsDoc.tags?.forEach((tag) => {
+						if (isJSDocParameterTag(tag)) {
+							params.set(tag.name.getText(), tag);
+						}
+					});
+				});
+				this.callbackArgs?.forEach((_argComment) => {
+					const tag = params.get(_argComment.name);
+					if (tag) {
+						const type = tag.typeExpression?.type.getText();
+						if (type) {
+							const properties: PropertyComment[] = SfcUtil.getTypeDef(type, jsDocs);
+							_argComment.type = properties.length > 0 ? properties : type;
+						}
+						_argComment.description = SfcUtil.getDescription(tag);
 					}
-				}
+				});
 			}
 		}
+	}
+
+	private _packgeTypeDef(comments: CommentNode[]): JSDoc[] {
+		const typedefs = [];
+		for (let i = 1; i < comments.length; i++) {
+			const commentContent = comments[i].content.trim();
+			if (commentContent.startsWith('@typedef')) {
+				typedefs.push('/\n/**');
+				typedefs.push(' ' + commentContent);
+			} else {
+				typedefs.push(' ' + commentContent);
+			}
+		}
+		const jsDocStr = '/**\n *' + typedefs.join('\n *') + '\n */';
+		return tsquery.query(jsDocStr, 'JSDocComment', {
+			visitAllChildren: true
+		});
 	}
 }
