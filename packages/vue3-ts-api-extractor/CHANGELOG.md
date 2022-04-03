@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@1.0.7-alpha.4...@yiird/vue3-ts-api-extractor@1.1.0-alpha.0) (2022-04-03)
+
+
+### Bug Fixes
+
+* extract slot callbackArgs ([cdd3b4f](https://github.com/yiird/yiird-mono/commit/cdd3b4f655ac2e65f86608f067ac06406a0b548c))
+* **loader:** 修改loader单个文件BUG ([a485791](https://github.com/yiird/yiird-mono/commit/a485791eea28841250ffd09d9ce31d3345f3adca))
+
+
+### Features
+
+* **markdown:** render vue slots to markdown file ([cdfb65b](https://github.com/yiird/yiird-mono/commit/cdfb65b85afb370f2fee97ec76d002c464b2d213))
+
+
+
+
+
 ## [1.0.7-alpha.4](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@1.0.7-alpha.3...@yiird/vue3-ts-api-extractor@1.0.7-alpha.4) (2022-03-28)
 
 
