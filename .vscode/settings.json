@@ -2,6 +2,7 @@
 	"files.autoSave": "onWindowChange",
 	"editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint", "source.formatDocument"],
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.fontSize": 13,
 	"search.exclude": {
 		"node_modules": false
 	}

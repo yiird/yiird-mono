@@ -10,7 +10,7 @@ import {
 	MethodDeclaration,
 	PropertyAssignment
 } from 'typescript';
-import { MethodComment, ParamComment, PropertyComment } from '../types';
+import { MethodComment, ParamComment } from '../types';
 import { SfcUtil } from '../utils/sfc-utils';
 
 export class SfcMethodComment implements MethodComment {
@@ -99,13 +99,11 @@ export class SfcMethodComment implements MethodComment {
 			tags?.forEach((tag) => {
 				if (isJSDocParameterTag(tag)) {
 					const name = tag.name.getText();
-					const type = tag.typeExpression?.type.getText();
 					const parameter = result.get(name);
-
 					if (parameter) {
-						if (type) {
-							const properties: PropertyComment[] = SfcUtil.getTypeDef(type, this._docs);
-							parameter.type = properties.length > 0 ? properties : type;
+						const typeExpression = tag.typeExpression;
+						if (typeExpression) {
+							parameter.type = SfcUtil.getParamTypeComment(typeExpression, this._docs);
 						}
 						parameter.description = getTextOfJSDocComment(tag.comment);
 					}

@@ -1,7 +1,7 @@
 import { parse, stringify } from 'comment-json';
 import json2md from 'json2md';
 import { isBoolean, isNull, isNumber, isString, isUndefined } from 'lodash-es';
-import { CallbackArgComment, PropertyComment, Sfc } from '../types';
+import { CallbackArgComment, Sfc, TypeComment } from '../types';
 
 export const transform = (sfc: Sfc): string => {
 	const props = sfc.props.map((prop) => {
@@ -78,27 +78,45 @@ const _code = (str: string) => {
 	}
 };
 
-const _property = (properties: PropertyComment[]) => {
-	const obj: Record<string, string | unknown> = {};
-	for (const property of properties) {
-		if (isString(property.type)) {
-			obj[property.name] = _toJson(property.type);
-		} else {
-			obj[property.name] = _property(property.type);
+const _property = (propComment: TypeComment, deep: number) => {
+	const result: string[] = [];
+	result.push('<li style="list-style: none;">');
+	result.push(`<br>&nbsp;&nbsp;&nbsp;&nbsp;${propComment.type}: ${propComment.description}`);
+	result.push('<ul>');
+	for (let i = 0; i < propComment.children.length; i++) {
+		const property = propComment.children[i];
+		result.push('<li>');
+		result.push(`${_important(property.name)} { ${isString(property.type) ? property.type : 'Object'} } ${property.description}`);
+		result.push('</li>');
+		if (property.children.length > 0) {
+			const comments = _property(property, deep + 1);
+			result.push(comments.join(''));
 		}
 	}
-	return obj;
+	result.push('</ul>');
+	result.push('</li>');
+	return result;
 };
+
+const MARKS = ['&#x25CF;', '&#x25CE;', '&#x25CC;'];
 
 const _callbackArgs = (args: CallbackArgComment[]) => {
 	const result = [];
 	for (const arg of args) {
-		if (isString(arg.type)) {
-			result.push(`${_important(arg.name)} { ${arg.type} } ${arg.description}`);
-		} else {
-			// 处理 arg.type is array
+		const lines = [];
+		lines.push('<ul>');
+		lines.push('<li>');
+		lines.push(`${arg.name} { ${isString(arg.type) ? arg.type : arg.type?.type} }`);
+		lines.push('</li>');
+		lines.push('<li style="list-style: none;">');
+		lines.push(`${arg.description}`);
+		lines.push('</li>');
+		if (!isString(arg.type) && arg.type?.children && arg.type.children.length > 0) {
+			const comments = _property(arg.type, 1);
+			lines.push(comments.join(''));
 		}
+		lines.push('</ul>');
+		result.push(lines.join(''));
 	}
-
-	return '';
+	return result.join('<hr style="height:1px;">');
 };

@@ -99,15 +99,16 @@ export interface MethodComment extends NormalComment {
 
 export interface ParamComment extends NormalComment {
 	required: boolean;
-	type?: string | PropertyComment[];
-}
-
-export interface PropertyComment extends NormalComment {
-	type: string | PropertyComment[];
+	type?: string | TypeComment;
 }
 
 export interface CallbackArgComment extends NormalComment {
-	type: string | PropertyComment[];
+	type?: string | TypeComment;
+}
+
+export interface TypeComment extends NormalComment {
+	type?: string;
+	children: TypeComment[];
 }
 
 export interface EmitComment extends NormalComment {

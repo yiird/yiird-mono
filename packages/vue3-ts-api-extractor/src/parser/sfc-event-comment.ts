@@ -1,5 +1,5 @@
 import { Expression, ExpressionStatement, getJSDocPrivateTag, isCallExpression, isJSDocParameterTag, isStringLiteral, JSDoc } from 'typescript';
-import { CallbackArgComment, EmitComment, PropertyComment } from '../types';
+import { CallbackArgComment, EmitComment } from '../types';
 import { SfcUtil } from '../utils/sfc-utils';
 export class SfcEventComment implements EmitComment {
 	private _node: ExpressionStatement;
@@ -33,10 +33,9 @@ export class SfcEventComment implements EmitComment {
 						type: '',
 						description: SfcUtil.getDescription(argComment)
 					};
-					const type = argComment.typeExpression?.type.getText();
-					if (type) {
-						const properties: PropertyComment[] = SfcUtil.getTypeDef(type, this._docs);
-						_argComment.type = properties.length > 0 ? properties : type;
+					const typeExpression = argComment.typeExpression;
+					if (typeExpression) {
+						_argComment.type = SfcUtil.getParamTypeComment(typeExpression, this._docs);
 					}
 					args.push(_argComment);
 				}

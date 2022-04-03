@@ -1,6 +1,20 @@
 import { AttributeNode, CommentNode, DirectiveNode, Node as TemplateNode, NodeTypes, SimpleExpressionNode } from '@vue/compiler-core';
-import { getJSDocPrivateTag, getTextOfJSDocComment, isJSDoc, isJSDocPropertyTag, isJSDocTypedefTag, isJSDocTypeLiteral, JSDoc, JSDocTag, JSDocTypedefTag, Node } from 'typescript';
-import { PropertyComment } from '../types';
+import {
+	getJSDocPrivateTag,
+	getTextOfJSDocComment,
+	isJSDoc,
+	isJSDocPropertyTag,
+	isJSDocTypedefTag,
+	isJSDocTypeLiteral,
+	JSDoc,
+	JSDocParameterTag,
+	JSDocPropertyTag,
+	JSDocTag,
+	JSDocTypedefTag,
+	JSDocTypeExpression,
+	Node
+} from 'typescript';
+import { TypeComment } from '../types';
 
 export class SfcUtil {
 	static getJsDoc = (node: Node) => {
@@ -28,38 +42,61 @@ export class SfcUtil {
 		return doc.tags?.filter((tag) => tag.tagName.text === tagName);
 	};
 
-	static getTypeDef = (type: string, docs: JSDoc[]): PropertyComment[] => {
-		let defTypeTag: JSDocTypedefTag | undefined;
-		const properties: PropertyComment[] = [];
+	static getTypeDef = (typeName: string, docs: JSDoc[]): JSDocTypedefTag | undefined => {
+		let defType;
 		docs.forEach((doc) => {
 			doc.tags?.forEach((tag) => {
-				if (isJSDocTypedefTag(tag) && tag.name?.text === type) {
-					defTypeTag = tag;
+				if (isJSDocTypedefTag(tag) && tag.name?.text === typeName) {
+					defType = tag;
 				}
 			});
 		});
+		return defType;
+	};
 
-		if (defTypeTag) {
-			const typeExpression = defTypeTag.typeExpression;
-			if (typeExpression && isJSDocTypeLiteral(typeExpression)) {
-				typeExpression.jsDocPropertyTags?.forEach((propertyTag) => {
-					if (isJSDocPropertyTag(propertyTag)) {
-						const property: PropertyComment = {
-							name: propertyTag.name.getText(),
-							type: '',
-							description: SfcUtil.getDescription(propertyTag)
-						};
-						const type = propertyTag.typeExpression?.type.getText();
-						if (type) {
-							const nestProperties = SfcUtil.getTypeDef(type, docs);
-							property.type = nestProperties.length > 0 ? nestProperties : type;
-						}
-						properties.push(property);
+	static getPropertyComment(properTypeTag: JSDocPropertyTag, docs: JSDoc[]): TypeComment {
+		const type = properTypeTag.typeExpression?.type.getText();
+		const paramComment: TypeComment = {
+			name: properTypeTag.name.getText(),
+			type,
+			description: SfcUtil.getDescription(properTypeTag),
+			children: []
+		};
+
+		if (type) {
+			const defType = SfcUtil.getTypeDef(type, docs);
+			if (defType?.typeExpression && isJSDocTypeLiteral(defType.typeExpression)) {
+				paramComment.description = SfcUtil.getDescription(defType);
+				defType.typeExpression.jsDocPropertyTags?.forEach((propertyTag) => {
+					if (isJSDocPropertyTag(propertyTag) && propertyTag.typeExpression) {
+						paramComment.children.push(SfcUtil.getPropertyComment(propertyTag, docs));
 					}
 				});
 			}
 		}
-		return properties;
+		return paramComment;
+	}
+
+	static getParamTypeComment = (typeExpression: JSDocTypeExpression, docs: JSDoc[]): TypeComment | string => {
+		const type = typeExpression.type.getText();
+		const defType = SfcUtil.getTypeDef(type, docs);
+		if (defType && defType.name) {
+			const typeComment: TypeComment = {
+				name: (<JSDocParameterTag>typeExpression.parent).name.getText(),
+				type: defType.name.text,
+				description: SfcUtil.getDescription(defType),
+				children: []
+			};
+			if (defType.typeExpression && isJSDocTypeLiteral(defType.typeExpression)) {
+				defType.typeExpression.jsDocPropertyTags?.forEach((propertyTag) => {
+					if (isJSDocPropertyTag(propertyTag)) {
+						typeComment.children.push(SfcUtil.getPropertyComment(propertyTag, docs));
+					}
+				});
+			}
+			return typeComment;
+		}
+		return type;
 	};
 
 	static isAttributeNode(node: TemplateNode): node is AttributeNode {

@@ -4,12 +4,16 @@
 		<li v-for="(item, index) in items" :key="index">
 			<slot name="item" :data="item" :index="index">
 				<!--选项插槽-->
-				<!-- @param {Data} data data说明 -->
+				<!-- @param {Data} data 说明说明说明说明说明说明说明说明说明说明 -->
 				<!-- @param {Number} index 序号 -->
 
 				<!-- @typedef Data data数据类型 -->
-				<!-- @property {String} Data.title  标题 -->
-				<!-- @property {String} Data.content 标题 -->
+				<!-- @property {String} title  d骄傲就是大家都送傲娇的风景都是电视剧发哦大家佛啊三等奖 -->
+				<!-- @property {Foo} content 就啊时间的发酵时都if骄傲大数据佛啊就是对发生的风 -->
+
+				<!-- @typedef Foo foo数据类型 -->
+				<!-- @property {String} arg1  第一个参数-->
+				<!-- @property {Number} arg2 第二个参数 -->
 			</slot>
 		</li>
 	</ul>

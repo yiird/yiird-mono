@@ -1,7 +1,7 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { CommentNode, SlotOutletNode } from '@vue/compiler-core';
 import { isJSDocParameterTag, JSDoc, JSDocParameterTag } from 'typescript';
-import { CallbackArgComment, PropertyComment, SlotComment } from '../types';
+import { CallbackArgComment, SlotComment } from '../types';
 import { SfcUtil } from '../utils/sfc-utils';
 
 export class SfcSlotComment implements SlotComment {
@@ -46,10 +46,9 @@ export class SfcSlotComment implements SlotComment {
 				this.callbackArgs?.forEach((_argComment) => {
 					const tag = params.get(_argComment.name);
 					if (tag) {
-						const type = tag.typeExpression?.type.getText();
-						if (type) {
-							const properties: PropertyComment[] = SfcUtil.getTypeDef(type, jsDocs);
-							_argComment.type = properties.length > 0 ? properties : type;
+						const typeExpression = tag.typeExpression;
+						if (typeExpression) {
+							_argComment.type = SfcUtil.getParamTypeComment(typeExpression, jsDocs);
 						}
 						_argComment.description = SfcUtil.getDescription(tag);
 					}

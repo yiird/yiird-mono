@@ -1,7 +1,17 @@
 # `vue3-ts-api-extractor`
 
 [中文](./docs/zh-CN.md)
-  
+
+> ##  注意: 请先不要下载！！！
+> 很抱歉！现在文档还不健全，程序还在开发中。
+
+
+> ##  Notice: Don't download yet!!! 
+> I'm sorry that! The documentation is still incomplete for the time being, and the program is still under development.
+
+
+
+---
 > If your project or library is built with vue3 + typescript, the `vue3-ts-api-extractor` can extract the comments. you can get the json of comments or generate Markdown documents directly。
 > 
 >  Note: Currently not supported TSX and `<script setup>` syntactic sugar.
@@ -143,5 +153,3 @@ extract(options);
     * `name` { Function } return the `md` file name
   
   * transform { Function } callback every time a `md` is generated, before write into file
-
-
