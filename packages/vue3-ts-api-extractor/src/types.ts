@@ -12,7 +12,7 @@ export type LoaderOptions = {
 	/**
 	 * 参与扫描的文件后缀
 	 */
-	extensions?: Array<'.vue' | '.ts'>;
+	extensions?: Array<string | '.vue' | '.ts'>;
 	/**
 	 * 排除指定目录不参与扫描
 	 */
@@ -107,15 +107,16 @@ export interface CallbackArgComment extends NormalComment {
 }
 
 export interface TypeComment extends NormalComment {
-	type?: string;
-	children: TypeComment[];
+	children: ParamComment[];
 }
 
 export interface EmitComment extends NormalComment {
 	callbackArgs?: CallbackArgComment[];
 }
 
-export type SlotComment = EmitComment;
+export interface SlotComment extends NormalComment {
+	props?: CallbackArgComment[];
+}
 
 export type OutputOptions = {
 	dir: string;
@@ -123,23 +124,32 @@ export type OutputOptions = {
 	name?: (name: string) => string;
 };
 export type MarkdownOptions = {
+	i18n?: I18nOptions;
+	renderLangKeys?: string[];
 	output?: OutputOptions;
-	transform?: (md: string) => string;
 };
 export type JsonOptions = {
 	output: OutputOptions;
 };
 export type ExtractOptions = {
+	watch?: boolean;
 	loader: LoaderOptions;
 	markdown?: MarkdownOptions;
 	json?: JsonOptions;
 };
+export type LangKey = string | 'en' | 'zh';
+
+export interface I18nOptions {
+	addMessages?: Record<LangKey, Record<string, unknown>>;
+}
 
 /**
  *
  */
 export type Sfc = {
 	name: string;
+	date?: string;
+	author?: string;
 	description?: string;
 	props: PropComment[];
 	slots: SlotComment[];

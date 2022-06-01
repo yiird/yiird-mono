@@ -100,13 +100,7 @@ export class SfcMethodComment implements MethodComment {
 				if (isJSDocParameterTag(tag)) {
 					const name = tag.name.getText();
 					const parameter = result.get(name);
-					if (parameter) {
-						const typeExpression = tag.typeExpression;
-						if (typeExpression) {
-							parameter.type = SfcUtil.getParamTypeComment(typeExpression, this._docs);
-						}
-						parameter.description = getTextOfJSDocComment(tag.comment);
-					}
+					Object.assign(parameter, SfcUtil.getParamComment(tag, this._docs));
 				}
 			});
 		}

@@ -4,9 +4,12 @@
     "baseUrl": ".",
     "declaration": true,
     "emitDeclarationOnly": true,
+    "allowJs": true,
+    "lib": ["DOM","ESNext"],
     "types": ["jest","node","@vue/compiler-core"],
-    "typeRoots": ["./src"],
-    "rootDir": "./src"
+    "paths":{
+      "@src/*":["./src/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts","../__tests__/**/*.test.ts"],
+  "include": ["**/*.ts", "**/*.d.ts"]
 }

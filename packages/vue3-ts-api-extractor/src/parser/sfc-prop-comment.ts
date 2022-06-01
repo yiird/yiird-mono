@@ -2,7 +2,6 @@ import { tsquery } from '@phenomnomnominal/tsquery';
 import {
 	getJSDocPrivateTag,
 	getTextOfJSDocComment,
-	isAsExpression,
 	isFunctionDeclaration,
 	isLiteralExpression,
 	isMethodDeclaration,
@@ -11,15 +10,15 @@ import {
 	isReturnStatement,
 	isStringLiteral,
 	JSDoc,
-	PropertyAssignment,
-	StringLiteral,
+	Node,
 	SyntaxKind
 } from 'typescript';
 import { PropComment } from '../types';
 import { SfcUtil } from '../utils/sfc-utils';
+import { AbstractComment } from './abstract-comment';
+import { FileCache } from './loader';
 
-export class SfcPropComment implements PropComment {
-	private _node: StringLiteral | PropertyAssignment;
+export class SfcPropComment extends AbstractComment implements PropComment {
 	private _docs?: JSDoc[];
 	private _mainDoc?: JSDoc;
 	name: string;
@@ -29,7 +28,8 @@ export class SfcPropComment implements PropComment {
 	type?: string;
 	required?: boolean = false;
 	values?: string;
-	constructor(node: StringLiteral | PropertyAssignment) {
+	constructor(node: Node, fileCache: FileCache) {
+		super(node, fileCache);
 		this.name = '';
 		this._node = node;
 		if (isStringLiteral(this._node)) {
@@ -49,11 +49,7 @@ export class SfcPropComment implements PropComment {
 	private _getType() {
 		const property = this._getDefineProperty('type') || this._node;
 		if (property && isPropertyAssignment(property)) {
-			if (isAsExpression(property.initializer)) {
-				return property.initializer.expression.getText();
-			} else {
-				return property.initializer.getText();
-			}
+			return super.getTsType(property.initializer);
 		}
 	}
 

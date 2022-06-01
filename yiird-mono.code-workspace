@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": ".",
+		},
+		{
+			"path": "packages/vue3-ts-api-extractor"
+		}
+	],
+	"settings": {
+		"editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint", "source.formatDocument"],
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.fontSize": 13,
+		"search.exclude": {
+			"node_modules": false
+		},
+		//"jest.jestCommandLine": "lerna run test --no-bail -- --passWithNoTests --runInBand",
+		"jest.jestCommandLine": "node_modules/.bin/jest --passWithNoTests --runInBand",
+		"jest.disabledWorkspaceFolders": ["yiird-mono"],
+		"jest.autoRun": {
+			"watch":false,
+			"onSave": "test-file"
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			"nicholashsiang.vscode-vue3-snippets",
+			"NicholasHsiang.vscode-vue3-snippets"
+		]
+	}
+}

@@ -8,7 +8,7 @@ export class SfcSlotComment implements SlotComment {
 	private _node: SlotOutletNode;
 	name = 'default';
 	description?: string;
-	callbackArgs?: CallbackArgComment[] = [];
+	props?: CallbackArgComment[] = [];
 
 	constructor(node: SlotOutletNode) {
 		this._node = node;
@@ -23,7 +23,7 @@ export class SfcSlotComment implements SlotComment {
 				}
 			} else if (SfcUtil.isDirectiveNode(prop)) {
 				if (prop.arg && SfcUtil.isSimpleExpression(prop.arg)) {
-					this.callbackArgs?.push({
+					this.props?.push({
 						name: prop.arg.content,
 						type: ''
 					});
@@ -43,14 +43,10 @@ export class SfcSlotComment implements SlotComment {
 						}
 					});
 				});
-				this.callbackArgs?.forEach((_argComment) => {
+				this.props?.forEach((_argComment) => {
 					const tag = params.get(_argComment.name);
 					if (tag) {
-						const typeExpression = tag.typeExpression;
-						if (typeExpression) {
-							_argComment.type = SfcUtil.getParamTypeComment(typeExpression, jsDocs);
-						}
-						_argComment.description = SfcUtil.getDescription(tag);
+						Object.assign(_argComment, SfcUtil.getParamComment(tag, jsDocs));
 					}
 				});
 			}

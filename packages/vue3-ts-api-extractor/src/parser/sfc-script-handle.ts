@@ -42,6 +42,8 @@ export class SfcScriptHandle implements NormalComment {
 		this._node = defaultExport.projection;
 		this.isPrivate = false;
 		this.name = this._getName();
+		const jsDocs = SfcUtil.getJsDoc(defaultExport.root);
+		this.description = jsDocs.length > 0 ? SfcUtil.getDescription(jsDocs[0]) : undefined;
 		this.author = this._getTagComment('author');
 		this.date = this._getTagComment('date');
 	}
@@ -86,9 +88,9 @@ export class SfcScriptHandle implements NormalComment {
 			const properties = this._handlePropsExpression(propsExpression);
 			properties?.forEach((property) => {
 				if (isPropertyAssignment(property)) {
-					result.push(new SfcPropComment(property));
+					result.push(new SfcPropComment(property, this._fileCache));
 				} else if (isStringLiteral(property)) {
-					result.push(new SfcPropComment(property));
+					result.push(new SfcPropComment(property, this._fileCache));
 				}
 			});
 		}

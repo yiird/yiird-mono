@@ -246,6 +246,7 @@ export class FileCache extends EventEmitter {
 		this._handleDeclarations();
 		this._handleExports();
 		this._loadTimes++;
+		this.emit('loaded', this);
 	}
 
 	/**
@@ -299,6 +300,14 @@ export class FileCache extends EventEmitter {
 	public getTemplateAst() {
 		return this._templateAst;
 	}
+
+	public getFilePath() {
+		return this._filePath;
+	}
+
+	public reset() {
+		this._loadTimes = 0;
+	}
 }
 
 export class Loader extends EventEmitter {
@@ -317,7 +326,6 @@ export class Loader extends EventEmitter {
 		this._options = Object.assign({}, defaultLoaderOptions, options);
 		this._root = this._options.root;
 		this._preprocessing();
-		this.on('loaded', this._postprocessing);
 		// this.on('reload-sfc', (reloadSfcs: string[]) => {
 		// 	reloadSfcs.forEach((sfcPath) => {
 		// 		this.getCache(sfcPath)?.emit('postprocessing');
@@ -351,6 +359,9 @@ export class Loader extends EventEmitter {
 	private _flatAllRefers(filePath: string) {
 		const result: string[] = [];
 		const fileCache = new FileCache(filePath, this);
+		fileCache.on('loaded', (cache) => {
+			this.emit('loaded', cache);
+		});
 		this._CACHE_.set(filePath, fileCache);
 		!result.includes(filePath) && result.push(filePath);
 		fileCache.getReferFiles().forEach((referPath) => {
@@ -377,10 +388,31 @@ export class Loader extends EventEmitter {
 
 		const loadedFiles: string[] = [];
 		files.forEach((path) => {
-			loadedFiles.push(...this._flatAllRefers(path));
+			const refers = this._flatAllRefers(path);
+			loadedFiles.push(...refers);
 		});
+		this._postprocessing(new Set(loadedFiles));
+	}
 
-		this.emit('loaded', loadedFiles);
+	private _affectedFiles(filePath: string) {
+		const result = [];
+		result.push(filePath);
+		this._REFER_.get(filePath)?.forEach((_filePath) => {
+			result.push(...this._affectedFiles(_filePath));
+		});
+		return result;
+	}
+
+	public reload(filePath: string) {
+		const files = this._affectedFiles(filePath);
+		files.forEach((file) => {
+			const fileCache = new FileCache(file, this);
+			fileCache.on('loaded', (cache) => {
+				this.emit('loaded', cache);
+			});
+			this._CACHE_.set(file, fileCache);
+			fileCache.emit('postprocessing');
+		});
 	}
 
 	protected _postprocessing(filePaths: Set<string>) {

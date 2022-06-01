@@ -23,6 +23,32 @@ import {
 import { DeclarationInitalizer, ExportFromInitalizer, ExportInitalizer, ImportInitalizer, InitalizerType } from '../types';
 
 export class ParseUtil {
+	static getScriptKind(lang: string) {
+		let kind: ScriptKind = ScriptKind.TS;
+		switch (lang) {
+			case 'ts': {
+				kind = ScriptKind.TS;
+				break;
+			}
+			case 'tsx': {
+				kind = ScriptKind.TSX;
+				break;
+			}
+			case 'js': {
+				kind = ScriptKind.JS;
+				break;
+			}
+			case 'jsx': {
+				kind = ScriptKind.JSX;
+				break;
+			}
+			default: {
+				throw new Error(`lang(${lang}) not support`);
+			}
+		}
+		return kind;
+	}
+
 	static getSource(filePath: string) {
 		return fs.readFileSync(filePath).toString();
 	}
