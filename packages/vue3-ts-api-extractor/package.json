@@ -41,11 +41,13 @@
     "build": "vite build",
     "test": "jest"
   },
+  "peerDependencies": {
+    "glob": "^7.2.0"
+  },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^4.2.0",
     "@vue/compiler-core": "^3.2.31",
     "@vue/compiler-sfc": "^3.2.31",
-    "glob": "^7.2.0",
     "markdown-table": "^3.0.2",
     "string-width": "^5.1.2"
   },
