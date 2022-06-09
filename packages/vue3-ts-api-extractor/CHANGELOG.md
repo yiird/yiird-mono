@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@1.1.0-alpha.0...@yiird/vue3-ts-api-extractor@2.0.0-alpha.0) (2022-06-09)
+
+
+### Code Refactoring
+
+* **重构:** 重构 ([c33291d](https://github.com/yiird/yiird-mono/commit/c33291d4dce6edd5df2dfb9510067692b3aeaaaa))
+* **project:** 重构 ([8271678](https://github.com/yiird/yiird-mono/commit/8271678df74705bf15d3d32a7c43421ab5bfe43a))
+
+
+### BREAKING CHANGES
+
+* **project:** 稳定代码架构
+* **重构:** 1）代码架构修改，2）增强应用型注解
+
+
+
+
+
 # [1.1.0-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@1.0.7-alpha.4...@yiird/vue3-ts-api-extractor@1.1.0-alpha.0) (2022-04-03)
 
 
