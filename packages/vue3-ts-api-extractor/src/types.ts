@@ -1,6 +1,6 @@
-import { Node } from 'typescript';
+import { MdOptions } from './transform/md/AbstractMdPart';
 
-export type LoaderOptions = {
+export interface ScannerOptions {
 	/**
 	 * 项目根目录的绝对路径
 	 */
@@ -21,138 +21,25 @@ export type LoaderOptions = {
 	 * 外部依赖，此选项可排除外部依赖，不参与检索，比如设置为['lodash']，文件中有 import {isArray} from 'lodash',isArray的注解不会被检索和提取
 	 */
 	externals?: Array<'vue' | '@vue/*' | string>;
-};
-
-export enum InitalizerType {
-	DECLARATION,
-	IMPORT,
-	EXPORT,
-	EXPORT_FROM
 }
 
-export interface Initalizer {
-	kind: InitalizerType;
-	name: string;
-	root: Node;
-	projection?: Node;
-}
-
-export interface FromInitalizer {
-	from: string;
-	importedName: string;
-}
-
-export interface RealNode {
-	node: Node;
-}
-
-export interface DeclarationInitalizer extends Initalizer, RealNode {
-	kind: InitalizerType.DECLARATION;
-}
-
-export interface ImportInitalizer extends Initalizer, FromInitalizer {
-	kind: InitalizerType.IMPORT;
-}
-
-export interface ExportInitalizer extends Initalizer, RealNode {
-	kind: InitalizerType.EXPORT;
-}
-
-export interface ExportFromInitalizer extends Initalizer, FromInitalizer {
-	kind: InitalizerType.EXPORT_FROM;
-}
-
-export function isDeclarationInitalizer(initalizer: Initalizer): initalizer is DeclarationInitalizer {
-	return initalizer.kind === InitalizerType.DECLARATION;
-}
-
-export function isImportInitalizer(initalizer: Initalizer): initalizer is ImportInitalizer {
-	return initalizer.kind === InitalizerType.IMPORT;
-}
-
-export function isExportInitalizer(initalizer: Initalizer): initalizer is ExportInitalizer {
-	return initalizer.kind === InitalizerType.EXPORT;
-}
-
-export function isExportFromInitalizer(initalizer: Initalizer): initalizer is ExportFromInitalizer {
-	return initalizer.kind === InitalizerType.EXPORT_FROM;
-}
-
-export interface NormalComment {
-	name: string;
-	description?: string;
-	isPrivate?: boolean;
-}
-
-export interface PropComment extends NormalComment {
-	default?: unknown;
-	type?: string;
-	required?: boolean;
-	values?: string;
-}
-
-export interface MethodComment extends NormalComment {
-	syntax?: string[];
-	parameters?: ParamComment[];
-	returnType?: string;
-}
-
-export interface ParamComment extends NormalComment {
-	required: boolean;
-	type?: string | TypeComment;
-}
-
-export interface CallbackArgComment extends NormalComment {
-	type?: string | TypeComment;
-}
-
-export interface TypeComment extends NormalComment {
-	children: ParamComment[];
-}
-
-export interface EmitComment extends NormalComment {
-	callbackArgs?: CallbackArgComment[];
-}
-
-export interface SlotComment extends NormalComment {
-	props?: CallbackArgComment[];
-}
-
-export type OutputOptions = {
+export interface OutputOptions {
 	dir: string;
-	singleFile?: boolean;
-	name?: (name: string) => string;
-};
-export type MarkdownOptions = {
-	i18n?: I18nOptions;
-	renderLangKeys?: string[];
-	output?: OutputOptions;
-};
-export type JsonOptions = {
-	output: OutputOptions;
-};
-export type ExtractOptions = {
-	watch?: boolean;
-	loader: LoaderOptions;
-	markdown?: MarkdownOptions;
-	json?: JsonOptions;
-};
-export type LangKey = string | 'en' | 'zh';
-
-export interface I18nOptions {
-	addMessages?: Record<LangKey, Record<string, unknown>>;
+	single: boolean;
+	type: 'markdown' | 'json';
+	filename: (filename: string) => string;
 }
 
-/**
- *
- */
-export type Sfc = {
-	name: string;
-	date?: string;
-	author?: string;
-	description?: string;
-	props: PropComment[];
-	slots: SlotComment[];
-	methods: MethodComment[];
-	emits: EmitComment[];
-};
+export interface ExtractorOptions {
+	scanner: ScannerOptions;
+	output: OutputOptions;
+	markdown?: MdOptions;
+}
+
+export type SFC = 'SFC';
+export type PROP = 'PROP';
+export type METHOD = 'METHOD';
+export type SLOT = 'SLOT';
+export type EVENT = 'EVENT';
+
+export type ParserType = SFC | PROP | METHOD | SLOT | EVENT;
