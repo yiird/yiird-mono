@@ -20,7 +20,7 @@ export default defineConfig({
 			fileName: (format) => `index.${format}.js`
 		},
 		rollupOptions: {
-			external: ['fs', 'glob', 'lodash-es', 'typescript', '@phenomnomnominal/tsquery', '@vue/compiler-core', '@vue/compiler-sfc']
+			external: ['fs', 'typescript', '@vue/compiler-core', '@vue/compiler-sfc']
 		}
 	},
 	plugins: [vitePluginCommonjs(), dts()]
