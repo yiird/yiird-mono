@@ -12,6 +12,7 @@ yarn add -D @yiird/vue3-ts-api-extractor
 npm i -D @yiird/vue3-ts-api-extractor
 ```
 
+
 ## 使用
 
 ```js
