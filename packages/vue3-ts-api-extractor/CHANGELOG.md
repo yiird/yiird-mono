@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.2](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.1...@yiird/vue3-ts-api-extractor@2.0.0-alpha.2) (2022-06-09)
+
+
+### Bug Fixes
+
+* **vite.config:** 打包错误 ([1db16b7](https://github.com/yiird/yiird-mono/commit/1db16b7980aaa4d8ec652ef22f5bee0a419c12c7))
+
+
+
+
+
 # [2.0.0-alpha.1](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.0...@yiird/vue3-ts-api-extractor@2.0.0-alpha.1) (2022-06-09)
 
 
