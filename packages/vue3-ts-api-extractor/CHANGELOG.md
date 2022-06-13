@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.4...@yiird/vue3-ts-api-extractor@2.0.0-alpha.5) (2022-06-13)
+
+
+### Bug Fixes
+
+* **loadash:** 添加lodash-es ([408b377](https://github.com/yiird/yiird-mono/commit/408b37736b220c1b58ddd798ebe15f2492f14d21))
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.4...@yiird/vue3-ts-api-extractor@2.0.0-alpha.4) (2022-06-13)
 
 
