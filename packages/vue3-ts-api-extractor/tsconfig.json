@@ -6,11 +6,10 @@
     "emitDeclarationOnly": true,
     "allowJs": true,
     "lib": ["DOM","ESNext"],
-    "types": ["jest","node","@vue/compiler-core"],
-    "typeRoots": ["node_modules/@types"],
+    "types": ["jest","node","rollup"],
     "paths":{
       "@src/*":["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.d.ts"]
+  "include": ["**/*.ts", "**/*.d.ts","rollup.config.ts"]
 }

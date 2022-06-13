@@ -1,14 +1,18 @@
 import { isArray, isObject } from 'lodash-es';
+import notJSON from 'not-json';
 import { DefaultValue } from '../../parser/comment/basic/PropComment';
 import { SfcComment } from '../../parser/comment/basic/SfcComment';
 import { TypeComment } from '../../parser/comment/node/TypeComment';
-import { AbstractMdPart } from './AbstractMdPart';
+import { AbstractMdPart, MdOptions } from './AbstractMdPart';
 import { EventHeaders, PropHeaders, SlotHeaders } from './constanst';
-import { MdPartFactory } from './MdPartFactory';
 import { Data } from './Style';
 
 export class MdSfcPart extends AbstractMdPart<SfcComment> {
-	private _typePart = MdPartFactory.createTypePart(this.options);
+	private _typePart;
+	constructor(typePart: AbstractMdPart<TypeComment>, options: MdOptions) {
+		super(options);
+		this._typePart = typePart;
+	}
 
 	toMd(comment: SfcComment, level: number): string {
 		const slots = comment.slots;
@@ -265,7 +269,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 
 	private _code(str: string) {
 		try {
-			const jsonStr = eval('(' + str.trim() + ')');
+			const jsonStr = notJSON.parse(str.trim());
 			const json = JSON.stringify(jsonStr, null, 2);
 			return `<pre>${json.replace(/[\n|\r]+/g, '<br>')}</pre>`;
 		} catch (e) {

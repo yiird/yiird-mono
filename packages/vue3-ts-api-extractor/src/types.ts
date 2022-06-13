@@ -35,11 +35,3 @@ export interface ExtractorOptions {
 	output: OutputOptions;
 	markdown?: MdOptions;
 }
-
-export type SFC = 'SFC';
-export type PROP = 'PROP';
-export type METHOD = 'METHOD';
-export type SLOT = 'SLOT';
-export type EVENT = 'EVENT';
-
-export type ParserType = SFC | PROP | METHOD | SLOT | EVENT;

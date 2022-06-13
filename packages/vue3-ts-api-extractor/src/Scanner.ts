@@ -1,5 +1,5 @@
 import { glob, IOptions } from 'glob';
-import path from 'path';
+import { isAbsolute, join } from 'path';
 import { Context } from './common/Context';
 import { ScriptFile } from './common/ScriptFile';
 import { SfcFile } from './common/SfcFile';
@@ -73,12 +73,12 @@ export class Scanner {
 				ignore: this._options.ignore,
 				absolute: true
 			};
-			if (path.isAbsolute(scanDir)) {
+			if (isAbsolute(scanDir)) {
 				globOptions.cwd = scanDir;
 				const _files = glob.sync('**/*+(' + this._options.extensions?.join('|') + ')');
 				files.push(..._files);
 			} else {
-				globOptions.cwd = path.join(this._options.root, scanDir);
+				globOptions.cwd = join(this._options.root, scanDir);
 				const _files = glob.sync('**/*+(' + this._options.extensions?.join('|') + ')', globOptions);
 				files.push(..._files);
 			}

@@ -1,11 +1,18 @@
 import ts, { Node } from 'typescript';
+import { Context } from '../../../common/Context';
 import { JsdocUtils } from '../../../common/JsdocUtils';
+import { ScriptStructure } from '../../node/ScriptStructure';
 import { AbstractCommentParser } from '../AbstractCommentParser';
-import { CommentParserFactory } from '../CommentParserFactory';
 import { ParamComment } from '../node/ParamComment';
+import { TypeComment } from '../node/TypeComment';
 
 export class ParamCommentParser extends AbstractCommentParser<ParamComment> {
-	private _typeParser = CommentParserFactory.createTypeParser(this.structure, this.context);
+	private _typeParser;
+	constructor(typeParser: AbstractCommentParser<TypeComment>, structure: ScriptStructure, context: Context) {
+		super(structure, context);
+		this._typeParser = typeParser;
+	}
+	//private _typeParser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 
 	parse(node: Node): ParamComment {
 		const jsdocs = JsdocUtils.getJsDoc(node);

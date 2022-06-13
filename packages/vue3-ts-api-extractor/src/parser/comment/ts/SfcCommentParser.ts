@@ -14,6 +14,7 @@ import { SfcComment } from '../basic/SfcComment';
 import { SlotComment } from '../basic/SlotComment';
 import { CommentParserFactory } from '../CommentParserFactory';
 import { PropertyComment } from '../node/PropertyComment';
+import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 
 const SpecialAttr = ['is', 'ref', 'key', 'name'];
 
@@ -21,7 +22,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 	private _propPaser = CommentParserFactory.createPropParser(this.structure, this.context);
 	private _methodPaser = CommentParserFactory.createMethodParser(this.structure, this.context);
 	private _eventPaser = CommentParserFactory.createEventParser(this.structure, this.context);
-	private _typePaser = CommentParserFactory.createTypeParser(this.structure, this.context);
+	private _typePaser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 
 	private _searchNodes: Node[] = [];
 	parse(node: ExportNode) {

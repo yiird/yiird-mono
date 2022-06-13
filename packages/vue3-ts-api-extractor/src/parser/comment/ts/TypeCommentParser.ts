@@ -1,14 +1,12 @@
-import ts, { Node } from 'typescript';
+import ts, { Node, PropertySignature } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
 import { Utils } from '../../../common/Utils';
 import { AbstractCommentParser } from '../AbstractCommentParser';
-import { CommentParserFactory } from '../CommentParserFactory';
 import { PropertyComment } from '../node/PropertyComment';
 import { AssociationType, TypeComment } from '../node/TypeComment';
 
 export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
-	private _propertyParser = CommentParserFactory.createPropertyParser(this.structure, this.context);
 	parse(node: Node): TypeComment {
 		const jsdocs = JsdocUtils.getJsDoc(node);
 		const jsdoc = jsdocs[0];
@@ -42,7 +40,9 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
 			comment.name = node.name?.text;
 			const properties: PropertyComment[] = [];
 			node.members.forEach((member) => {
-				properties.push(this._propertyParser.parse(member));
+				if (ts.isPropertySignature(member)) {
+					properties.push(this.parseProperty(member));
+				}
 			});
 			comment.properties = properties;
 			comment.text = comment.name;
@@ -63,6 +63,21 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
 		} else {
 			comment.name = NodeUtils.getText(node);
 			comment.text = comment.name;
+		}
+
+		if (jsdoc) {
+			comment.description = JsdocUtils.getDescription(jsdoc);
+		}
+		return comment;
+	}
+
+	parseProperty(node: PropertySignature): PropertyComment {
+		const jsdocs = JsdocUtils.getJsDoc(node);
+		const jsdoc = jsdocs[0];
+		const comment = new PropertyComment();
+		comment.name = node.name.getText();
+		if (node.type) {
+			comment.type = this.parse(node.type);
 		}
 
 		if (jsdoc) {

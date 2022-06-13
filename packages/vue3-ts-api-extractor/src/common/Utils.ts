@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'fs';
-import path from 'path';
+import path, { extname } from 'path';
 import { ScriptKind } from 'typescript';
 
 export enum FileKind {
@@ -54,7 +54,7 @@ export class Utils {
 
 	static getFileKind(filename: string) {
 		let ext = FileKind.TS;
-		switch (path.extname(filename).toLowerCase()) {
+		switch (extname(filename).toLowerCase()) {
 			case '.js':
 				ext = FileKind.JS;
 				break;

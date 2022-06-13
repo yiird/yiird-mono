@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs';
-import path from 'path';
+import { basename, extname, join } from 'path';
 import { Scanner } from './Scanner';
 import { Transform } from './Transform';
 import { MdProvider } from './transform/MdProvider';
@@ -22,7 +22,7 @@ export const extractor = (options: ExtractorOptions) => {
 			if (options.output.single) {
 				allValue.push(value + '');
 			} else {
-				let outfilename = path.join(options.output.dir, path.basename(sfc.filename, path.extname(sfc.filename)) + '.md');
+				let outfilename = join(options.output.dir, basename(sfc.filename, extname(sfc.filename)) + '.md');
 				outfilename = options.output.filename(outfilename);
 				writeFileSync(outfilename, value + '', {
 					encoding: 'utf-8',
@@ -32,7 +32,7 @@ export const extractor = (options: ExtractorOptions) => {
 		});
 
 		if (allValue.length > 0 && options.output.filename) {
-			let outfilename = path.join(options.output.dir, 'README.md');
+			let outfilename = join(options.output.dir, 'README.md');
 			outfilename = options.output.filename(outfilename);
 
 			writeFileSync(outfilename, allValue.join('\n\n'));

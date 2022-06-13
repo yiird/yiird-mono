@@ -4,12 +4,12 @@ import { NodeUtils } from '../../../common/NodeUtils';
 import { Utils } from '../../../common/Utils';
 import { AbstractCommentParser } from '../AbstractCommentParser';
 import { MethodComment } from '../basic/MethodComment';
-import { CommentParserFactory } from '../CommentParserFactory';
 import { ParamComment } from '../node/ParamComment';
+import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 
 export class MethodCommentParser extends AbstractCommentParser<MethodComment | undefined> {
-	private _paramParser = CommentParserFactory.createParamParser(this.structure, this.context);
-	private _typeParser = CommentParserFactory.createTypeParser(this.structure, this.context);
+	private _paramParser = NodeCommentParserFactory.createParamParser(this.structure, this.context);
+	private _typeParser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 	parse(node: Node, scope: Node): MethodComment | undefined {
 		const comment = new MethodComment();
 		const structure = this.getStructureByNode(node);
