@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.8](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.7...@yiird/vue3-ts-api-extractor@2.0.0-alpha.8) (2022-06-14)
+
+
+### Bug Fixes
+
+* **rollup.config:** 修改rollup配置文件 ([cd0353b](https://github.com/yiird/yiird-mono/commit/cd0353bf45d60a2ca2b1fb525764209f7d70cdf1))
+
+
+
+
+
 # [2.0.0-alpha.7](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.6...@yiird/vue3-ts-api-extractor@2.0.0-alpha.7) (2022-06-14)
 
 
