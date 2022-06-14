@@ -1,6 +1,6 @@
 {
   "name": "@yiird/vue3-ts-api-extractor",
-  "version": "2.0.0-alpha.9",
+  "version": "2.0.0-alpha.10",
   "private": false,
   "description": "Vue + ts 生成markdownApi文档",
   "keywords": [
