@@ -3,8 +3,8 @@ import { JsxElement } from 'typescript';
 import { AbstractNode } from '../../common/AbstractNode';
 
 export abstract class SlotNode extends AbstractNode {
-	private _root: SlotOutletNode | JsxElement;
-	private _comments: string[];
+	protected _root: SlotOutletNode | JsxElement;
+	protected _comments: string[];
 	constructor(root: SlotOutletNode | JsxElement, comments: string[]) {
 		super();
 		this._root = root;

@@ -7,6 +7,6 @@ export class TemplateSlotNode extends SlotNode {
 	}
 
 	public get root(): SlotOutletNode {
-		return this.root as SlotOutletNode;
+		return this._root as SlotOutletNode;
 	}
 }
