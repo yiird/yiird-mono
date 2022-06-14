@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.7](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.6...@yiird/vue3-ts-api-extractor@2.0.0-alpha.7) (2022-06-14)
+
+
+### Bug Fixes
+
+* **bug:** templateSlotNode get root ([966fc5a](https://github.com/yiird/yiird-mono/commit/966fc5af347ee6fae7328d4c42c9b7cff3d4d74b))
+
+
+
+
+
 # [2.0.0-alpha.6](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.5...@yiird/vue3-ts-api-extractor@2.0.0-alpha.6) (2022-06-14)
 
 
