@@ -1,13 +1,7 @@
 import { BasicComment } from '../../parser/comment/basic/BasicComment';
 import { NodeComment } from '../../parser/comment/node/NodeComment';
+import { MdOptions } from '../../types';
 import { MdStyles } from './Style';
-
-export interface MdOptions {
-	styles: typeof MdStyles;
-	// before: (comment: UnionBasicComment, nodeComment: UnionNodeComment) => string;
-	// transform: (basicComment: UnionBasicComment, nodeComment: UnionNodeComment) => BasicComment;
-	// after: (comment: UnionBasicComment, nodeComment: UnionNodeComment) => string;
-}
 
 export abstract class AbstractMdPart<C extends BasicComment | NodeComment> {
 	private _options: MdOptions;

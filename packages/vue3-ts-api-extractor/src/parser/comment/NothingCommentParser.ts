@@ -1,4 +1,4 @@
-import { AbstractNode } from '@src/common/AbstractNode';
+import { AbstractNode } from '../../common/AbstractNode';
 import { AbstractCommentParser } from './AbstractCommentParser';
 import { BasicComment } from './basic/BasicComment';
 

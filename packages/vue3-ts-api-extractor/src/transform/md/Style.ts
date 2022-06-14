@@ -1,4 +1,4 @@
-import { isString } from 'lodash-es';
+import isString from 'lodash-es/isString';
 import { markdownTable } from 'markdown-table';
 import stringWidth from 'string-width';
 

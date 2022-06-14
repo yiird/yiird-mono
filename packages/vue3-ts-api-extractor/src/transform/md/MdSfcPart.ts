@@ -1,9 +1,11 @@
-import { isArray, isObject } from 'lodash-es';
+import isArray from 'lodash-es/isArray';
+import isObject from 'lodash-es/isObject';
 import notJSON from 'not-json';
 import { DefaultValue } from '../../parser/comment/basic/PropComment';
 import { SfcComment } from '../../parser/comment/basic/SfcComment';
 import { TypeComment } from '../../parser/comment/node/TypeComment';
-import { AbstractMdPart, MdOptions } from './AbstractMdPart';
+import { MdOptions } from '../../types';
+import { AbstractMdPart } from './AbstractMdPart';
 import { EventHeaders, PropHeaders, SlotHeaders } from './constanst';
 import { Data } from './Style';
 

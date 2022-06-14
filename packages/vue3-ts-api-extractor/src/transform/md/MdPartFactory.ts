@@ -1,4 +1,4 @@
-import { MdOptions } from './AbstractMdPart';
+import { MdOptions } from '../../types';
 import { MdSfcPart } from './MdSfcPart';
 import { MdTypePart } from './MdTypePart';
 

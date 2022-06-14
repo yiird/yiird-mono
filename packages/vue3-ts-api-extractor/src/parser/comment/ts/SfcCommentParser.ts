@@ -1,5 +1,5 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { AttributeNode, DirectiveNode, NodeTypes, SimpleExpressionNode } from '@vue/compiler-core';
+import { AttributeNode, DirectiveNode, SimpleExpressionNode } from '@vue/compiler-core';
 import ts, { Identifier, MethodDeclaration, Node, ReturnStatement } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
@@ -160,10 +160,10 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 				comment.description = slotNode.comments[0]?.trim();
 				const properties: PropertyComment[] = [];
 				if (slotNode instanceof TemplateSlotNode) {
-					const nameAttr = slotNode.root.props.find((p) => NodeTypes.ATTRIBUTE === p.type && p.name === 'name');
+					const nameAttr = slotNode.root.props.find((p) => 6 === p.type && p.name === 'name');
 					comment.name = (<AttributeNode>nameAttr).value?.content;
 					slotNode.root.props
-						.filter((p) => NodeTypes.DIRECTIVE === p.type && p.name === 'bind' && NodeTypes.SIMPLE_EXPRESSION === p.arg?.type && !SpecialAttr.includes(p.arg.content))
+						.filter((p) => 7 === p.type && p.name === 'bind' && 4 === p.arg?.type && !SpecialAttr.includes(p.arg.content))
 						.forEach((_arg) => {
 							const arg = <DirectiveNode>_arg;
 							const name = (<SimpleExpressionNode>arg.arg).content;

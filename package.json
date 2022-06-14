@@ -23,10 +23,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
-    "prettier": "^2.5.1",
-    "vite-plugin-commonjs": "^0.2.6",
-    "vite-plugin-dts": "^1.0.3",
-    "vue": "^3.2.31"
+    "prettier": "^2.5.1"
   },
   "config": {
     "commitizen": {

@@ -4,6 +4,7 @@ import { Scanner } from './Scanner';
 import { Transform } from './Transform';
 import { MdProvider } from './transform/MdProvider';
 import { ExtractorOptions } from './types';
+export * from './types';
 
 export const extractor = (options: ExtractorOptions) => {
 	const scanner = new Scanner(options.scanner);

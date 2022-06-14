@@ -1,5 +1,6 @@
 import { SfcComment } from '../parser/comment/basic/SfcComment';
-import { AbstractMdPart, MdOptions } from './md/AbstractMdPart';
+import { MdOptions } from '../types';
+import { AbstractMdPart } from './md/AbstractMdPart';
 import { MdPartFactory } from './md/MdPartFactory';
 import { MdStyles } from './md/Style';
 import { Provider } from './Provider';

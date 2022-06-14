@@ -1,5 +1,5 @@
-import { MdOptions } from './transform/md/AbstractMdPart';
-
+import { MdStyles } from './transform/md/Style';
+export * from './transform/md/Style';
 export interface ScannerOptions {
 	/**
 	 * 项目根目录的绝对路径
@@ -18,7 +18,7 @@ export interface ScannerOptions {
 	 */
 	ignore?: string[];
 	/**
-	 * 外部依赖，此选项可排除外部依赖，不参与检索，比如设置为['lodash']，文件中有 import {isArray} from 'lodash',isArray的注解不会被检索和提取
+	 * 外部依赖，此选项可排除外部依赖，不参与检索，比如设置为['lodash']，文件中有 import \{isArray\} from 'lodash',isArray的注解不会被检索和提取
 	 */
 	externals?: Array<'vue' | '@vue/*' | string>;
 }
@@ -34,4 +34,11 @@ export interface ExtractorOptions {
 	scanner: ScannerOptions;
 	output: OutputOptions;
 	markdown?: MdOptions;
+}
+
+export interface MdOptions {
+	styles: typeof MdStyles;
+	// before: (comment: UnionBasicComment, nodeComment: UnionNodeComment) => string;
+	// transform: (basicComment: UnionBasicComment, nodeComment: UnionNodeComment) => BasicComment;
+	// after: (comment: UnionBasicComment, nodeComment: UnionNodeComment) => string;
 }
