@@ -4,9 +4,13 @@ module.exports = {
 		browser: true,
 		node: true
 	},
+	//eslintIgnore: ['/dist/', '/node_modules/'],
 	parser: 'vue-eslint-parser',
 	parserOptions: {
 		parser: '@typescript-eslint/parser',
+		ecmaFeatures: {
+			jsx: true
+		},
 		ecmaVersion: 2020,
 		sourceType: 'module'
 	},

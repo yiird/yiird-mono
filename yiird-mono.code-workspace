@@ -4,6 +4,9 @@
 			"path": ".",
 		},
 		{
+			"path": "packages/owl"
+		},
+		{
 			"path": "packages/vue3-ts-api-extractor"
 		}
 	],
@@ -14,7 +17,7 @@
 		"search.exclude": {
 			"node_modules": false
 		},
-		"jest.jestCommandLine": "node_modules/.bin/jest --passWithNoTests --runInBand",
+		"jest.jestCommandLine": "./node_modules/.bin/jest --passWithNoTests --runInBand",
 		"jest.disabledWorkspaceFolders": ["yiird-mono"],
 		"jest.autoRun": {
 			"watch":false,

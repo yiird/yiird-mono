@@ -1,15 +1,21 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "target": "esnext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"strict": true,
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck":true,
     "baseUrl": ".",
     "declaration": true,
     "emitDeclarationOnly": true,
     "allowJs": true,
     "lib": ["DOM","ESNext"],
-    "types": ["jest","node","rollup"],
-    "paths":{
-      "@src/*":["./src/*"]
-    }
+    "types": ["jest","node","rollup"]
   },
   "include": ["**/*.ts", "**/*.d.ts","rollup.config.ts"]
 }

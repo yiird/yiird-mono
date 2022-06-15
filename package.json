@@ -9,6 +9,7 @@
     "test": "lerna run test",
     "build": "lerna run build",
     "commit": "git add . && cz",
+    "lint": "lerna run lint -- --fix",
     "lpre": "lerna version --conventional-prerelease --create-release github && lerna publish from-git",
     "lr": "lerna version --conventional-graduate --create-release github && lerna publish from-git"
   },
@@ -23,7 +24,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "typescript": "^4.6.2",
+    "ts-node": "^10.6.0",
+    "ts-jest": "^28.0.5"
   },
   "config": {
     "commitizen": {
