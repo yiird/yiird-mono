@@ -1,10 +1,13 @@
 {
 	"folders": [
 		{
-			"path": ".",
+			"path": "."
 		},
 		{
 			"path": "packages/owl"
+		},
+		{
+			"path": "packages/owl-test"
 		},
 		{
 			"path": "packages/vue3-ts-api-extractor"
@@ -13,18 +16,18 @@
 	"settings": {
 		"editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint", "source.formatDocument"],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.fontSize": 13,
+		"editor.fontSize": 14,
 		"search.exclude": {
 			"node_modules": false
 		},
 		"jest.jestCommandLine": "./node_modules/.bin/jest --passWithNoTests --runInBand",
-		"jest.disabledWorkspaceFolders": ["yiird-mono"],
+		"jest.disabledWorkspaceFolders": ["yiird-mono", "owl", "owl-test"],
 		"jest.autoRun": {
-			"watch":false,
+			"watch": false,
 			"onSave": "test-file"
 		},
 		"files.associations": {
-			"*.json":"jsonc"
+			"*.json": "jsonc"
 		}
 	}
 }

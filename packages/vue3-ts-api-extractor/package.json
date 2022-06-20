@@ -38,6 +38,7 @@
     "access": "public"
   },
   "scripts": {
+    "commit": "git add . && cz",
     "build": "rollup -c rollup.config.ts",
     "test": "jest"
   },
@@ -62,6 +63,8 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.3",
     "@types/glob": "^7.2.0",
+    "@types/jest": "^27.4.1",
+    "ts-jest": "^28.0.5",
     "jest": "^28.1.1",
     "rollup": "^2.75.6",
     "rollup-plugin-delete": "^2.0.0",

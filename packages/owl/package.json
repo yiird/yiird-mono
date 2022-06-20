@@ -1,0 +1,50 @@
+{
+	"name": "@yiird/owl",
+	"private": true,
+	"version": "0.0.0",
+	"files": [
+		"dist",
+		"types",
+		"client.d.ts"
+	],
+	"main": "dist/owl.umd.js",
+	"module": "dist/owl.es.js",
+	"types": "types/main.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/owl.es.js",
+			"require": "./dist/owl.umd.js"
+		},
+		"./style": "./dist/style.css",
+		"./client.d.ts": "./client.d.ts"
+	},
+	"scripts": {
+		"commit": "git add . && cz",
+		"dev": "vite",
+		"build": "vue-tsc --noEmit && vite build",
+		"preview": "vite preview",
+		"test": "vitest",
+		"coverage": "vitest run --coverage"
+	},
+	"dependencies": {
+		"lodash-es": "^4.17.21",
+		"vue": "^3.2.25"
+	},
+	"devDependencies": {
+		"@types/lodash-es": "^4.17.6",
+		"@vitejs/plugin-vue": "^2.3.3",
+		"@vitejs/plugin-vue-jsx": "^1.3.10",
+		"@vue/test-utils": "^2.0.1",
+		"autoprefixer": "^10.4.7",
+		"c8": "^7.11.3",
+		"happy-dom": "^5.3.1",
+		"postcss-nested": "^5.0.6",
+		"postcss-rem": "^2.0.2",
+		"sass": "^1.52.3",
+		"unplugin-vue-components": "^0.19.6",
+		"vite": "^2.9.9",
+		"vite-plugin-dts": "^1.2.0",
+		"vitest": "^0.15.1",
+		"vue-tsc": "^0.37.9"
+	}
+}
