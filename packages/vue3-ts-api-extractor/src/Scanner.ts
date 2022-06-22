@@ -1,5 +1,7 @@
+import { watch } from 'chokidar';
+import EventEmitter from 'events';
 import { glob, IOptions } from 'glob';
-import { isAbsolute, join } from 'path';
+import { isAbsolute, join, resolve } from 'path';
 import { Context } from './common/Context';
 import { ScriptFile } from './common/ScriptFile';
 import { SfcFile } from './common/SfcFile';
@@ -8,16 +10,36 @@ import { ScriptParserFactory } from './parser/node/ScriptParserFactory';
 import { SfcParserFactory } from './parser/node/SfcParserFactory';
 import { ScannerOptions } from './types';
 
-export class Scanner {
+export class Scanner extends EventEmitter {
 	private _options: ScannerOptions;
 	private _context: Context;
 	//阻止重复加载次数
 	private _prevent_duplicate_loads_times = 0;
 
 	constructor(options: ScannerOptions) {
+		super();
 		this._options = options;
 		this._context = new Context();
 		this._context.scannerOptions = options;
+		if (options.watch === true) {
+			const watchglobfiles: string[] = [];
+			if (options.scanDirs.length > 0) {
+				options.scanDirs.forEach((scanDir) => {
+					watchglobfiles.push(join(scanDir, '**/*+(' + options.extensions?.join('|') + ')'));
+				});
+			} else {
+				watchglobfiles.push('**/*+(' + options.extensions?.join('|') + ')');
+			}
+			const watcher = watch(watchglobfiles, {
+				cwd: options.root,
+				alwaysStat: true
+			});
+			watcher.on('all', (eventName, path, states) => {
+				if (states?.isFile()) {
+					this.emit('filechange', resolve(options.root, path), eventName);
+				}
+			});
+		}
 	}
 
 	private _loadSfc(filename: string, source: string) {
@@ -55,6 +77,14 @@ export class Scanner {
 		}
 		if (from) {
 			this._context.updateFrom(filename, from);
+		}
+		if (forceUpdate) {
+			if (cached?.froms) {
+				const loadedOne = this._context.getScriptFile(filename);
+				if (loadedOne) {
+					loadedOne.froms = cached.froms;
+				}
+			}
 		}
 		this._context.getRefers(filename).forEach((_referFilename) => {
 			if (!this.isExcuded(_referFilename, this._options.externals)) {

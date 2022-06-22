@@ -53,16 +53,11 @@ export const useCommon = <V extends Record<string, string>, E extends ReadonlyAr
 		return (props.display as boolean) ?? true;
 	});
 
-	let theme__;
 	const globalTheme = inject(ThemeKey);
 
-	if (globalTheme) {
-		theme__ = new Theme<V>(globalTheme.prefix, cType__, cssVars);
-	} else {
-		throw Error('未设置全局皮肤');
-	}
+	const theme__ = new Theme<V>(globalTheme?.prefix || 'o', cType__, cssVars);
 
-	const bem__ = new BemClasses(globalTheme.prefix, cType__, elements);
+	const bem__ = new BemClasses(globalTheme?.prefix || 'o', cType__, elements);
 
 	//刷新状态
 	const refresh__ = ref(true);

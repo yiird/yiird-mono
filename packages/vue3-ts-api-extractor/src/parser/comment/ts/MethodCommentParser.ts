@@ -1,4 +1,4 @@
-import ts, { JSDocParameterTag, Node, NodeArray, ParameterDeclaration } from 'typescript';
+import ts, { JSDoc, JSDocParameterTag, Node, NodeArray, ParameterDeclaration } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
 import { Utils } from '../../../common/Utils';
@@ -40,7 +40,7 @@ export class MethodCommentParser extends AbstractCommentParser<MethodComment | u
 		} else if (ts.isShorthandPropertyAssignment(node)) {
 			comment.name = node.name.text;
 			if (scope) {
-				const scriptNode = NodeUtils.getScopeDeclarations(node.name.text, scope);
+				const scriptNode = NodeUtils.getScopeDeclarations(node.name.text, scope, this.context);
 				if (scriptNode) {
 					const targetNode = scriptNode.projection || scriptNode.root;
 					if (targetNode) {
@@ -64,7 +64,7 @@ export class MethodCommentParser extends AbstractCommentParser<MethodComment | u
 					}
 				}
 			}
-		} else if (ts.isFunctionExpression(node) || ts.isMethodDeclaration(node) || ts.isArrowFunction(node)) {
+		} else if (ts.isFunctionExpression(node) || ts.isArrowFunction(node) || ts.isMethodDeclaration(node) || ts.isFunctionDeclaration(node)) {
 			comment.name = node.name?.getText();
 			comment.parameterNodes = node.parameters;
 			this._handleJsdoc(comment, node);
@@ -91,9 +91,22 @@ export class MethodCommentParser extends AbstractCommentParser<MethodComment | u
 		return params;
 	}
 
-	private _handleJsdoc(comment: MethodComment, root: Node) {
-		const jsdocs = JsdocUtils.getJsDoc(root);
+	private _getJsdoc(node: Node): JSDoc | undefined {
+		const jsdocs = JsdocUtils.getJsDoc(node);
 		const jsdoc = jsdocs[0];
+		if (jsdocs.length === 0) {
+			if (node.parent === node.getSourceFile()) {
+				return undefined;
+			} else {
+				return this._getJsdoc(node.parent);
+			}
+		} else {
+			return jsdoc;
+		}
+	}
+
+	private _handleJsdoc(comment: MethodComment, root: Node) {
+		const jsdoc = this._getJsdoc(root);
 
 		if (jsdoc) {
 			if (comment.parameterNodes) {

@@ -1,3 +1,4 @@
+import { extname } from 'path';
 import { Context } from './common/Context';
 import { SfcCommentParser } from './parser/comment/ts/SfcCommentParser';
 import { SfcStructure } from './parser/node/SfcStructure';
@@ -17,8 +18,21 @@ export class Transform {
 		this._provider = provider;
 	}
 
-	execute(): TransResult[] {
-		const sfcs = this._context.getAllSfc();
+	execute(filename?: string): TransResult[] {
+		const sfcs: SfcStructure[] = [];
+		if (filename) {
+			if (extname(filename) === '.vue') {
+				sfcs.push(...this._context.getSfc(filename));
+			} else {
+				this._context.getAffectedFiles(filename).forEach((_filename) => {
+					if (extname(_filename) === '.vue') {
+						sfcs.push(...this._context.getSfc(_filename));
+					}
+				});
+			}
+		} else {
+			sfcs.push(...this._context.getAllSfc());
+		}
 		const rs: TransResult[] = [];
 		sfcs.forEach((sfc) => {
 			const parser = new SfcCommentParser(sfc, this._context);

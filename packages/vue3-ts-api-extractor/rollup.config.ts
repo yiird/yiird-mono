@@ -19,6 +19,7 @@ export default defineConfig([
 		plugins: [
 			del({ targets: 'dist/*' }),
 			externals({
+				include: ['chokidar', 'events'],
 				exclude: ['lodash-es', 'markdown-table', 'string-width']
 			}),
 			nodeResolve({ extensions }),
@@ -39,6 +40,11 @@ export default defineConfig([
 			file: pkg.types,
 			format: 'es'
 		},
-		plugins: [dts()]
+		plugins: [
+			externals({
+				include: ['chokidar', 'events']
+			}),
+			dts()
+		]
 	}
 ]);

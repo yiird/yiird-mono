@@ -96,7 +96,7 @@ export class TsxParser extends ScriptParser {
 
 			let innerNodesMap = new Map();
 			if (projectionInnerNodes && projectionInnerNodes.length > 0) {
-				innerNodesMap = NodeUtils.recursiveSearchDeclarations(projectionInnerNodes);
+				innerNodesMap = NodeUtils.recursiveSearchDeclarations(projectionInnerNodes, this.context);
 			}
 
 			const exportNode = new ExportNode(_name, _item.origin, innerNodesMap, projection);
@@ -111,6 +111,6 @@ export class TsxParser extends ScriptParser {
 		const not = ':not([modifiers.0.kind=' + SyntaxKind.ExportKeyword + '])';
 		const selector = `VariableStatement${not},FunctionDeclaration${not},ClassDeclaration${not},InterfaceDeclaration${not}`;
 		const results = NodeUtils.searchChildTsNodes(this._scriptFile.script, selector);
-		return NodeUtils.recursiveSearchDeclarations(results);
+		return NodeUtils.recursiveSearchDeclarations(results, this.context);
 	}
 }

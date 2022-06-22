@@ -13,7 +13,8 @@ export class MdProvider extends Provider<string> {
 		super();
 		this._options = Object.assign(
 			{
-				styles: MdStyles
+				styles: MdStyles,
+				hLevelFrom: 1
 			},
 			options || {}
 		);
@@ -21,6 +22,6 @@ export class MdProvider extends Provider<string> {
 	}
 
 	to(comment: SfcComment): string {
-		return this._handle.toMd(comment, 3);
+		return this._handle.toMd(comment, this._options.hLevelFrom);
 	}
 }

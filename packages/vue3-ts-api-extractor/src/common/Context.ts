@@ -75,6 +75,10 @@ export class Context {
 		return Array.from(this._structures.values()).filter((structure) => structure instanceof SfcStructure) as Array<SfcStructure>;
 	}
 
+	getSfc(filename: string): SfcStructure[] {
+		return Array.from(this._structures.values()).filter((structure) => structure instanceof SfcStructure && structure.filename === filename) as Array<SfcStructure>;
+	}
+
 	/**
 	 * 从当前引入的脚本中查找定义
 	 * @param name 定义名称

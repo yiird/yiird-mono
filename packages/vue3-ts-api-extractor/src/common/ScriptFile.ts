@@ -77,6 +77,10 @@ export class ScriptFile {
 		return this._froms;
 	}
 
+	public set froms(froms: Array<string>) {
+		this._froms = froms;
+	}
+
 	/**
 	 * Getter filename
 	 * @return {string}

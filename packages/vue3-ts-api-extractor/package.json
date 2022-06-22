@@ -38,7 +38,6 @@
     "access": "public"
   },
   "scripts": {
-    "commit": "git add . && cz",
     "build": "rollup -c rollup.config.ts",
     "test": "jest"
   },
@@ -47,6 +46,7 @@
     "@phenomnomnominal/tsquery": "^4.2.0",
     "@vue/compiler-core": "^3.2.31",
     "@vue/compiler-sfc": "^3.2.31",
+    "chokidar": "^3.5.3",
     "glob": "^7.2.0",
     "lodash-es": "^4.17.21",
     "markdown-table": "^3.0.2",
@@ -64,11 +64,11 @@
     "@rollup/plugin-typescript": "^8.3.3",
     "@types/glob": "^7.2.0",
     "@types/jest": "^27.4.1",
-    "ts-jest": "^28.0.5",
     "jest": "^28.1.1",
     "rollup": "^2.75.6",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^4.2.2",
-    "rollup-plugin-node-externals": "^4.0.0"
+    "rollup-plugin-node-externals": "^4.0.0",
+    "ts-jest": "^28.0.5"
   }
 }

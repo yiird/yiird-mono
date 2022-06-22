@@ -27,6 +27,10 @@ export abstract class ScriptParser {
 		return new ScriptStructure(this._scriptFile.filename, this._entries, this._declarations);
 	}
 
+	get context() {
+		return this._context;
+	}
+
 	getStructureFromContext(filename: string): AbstractStructure {
 		const structure = this._context.getStructure(filename);
 		if (!structure) {

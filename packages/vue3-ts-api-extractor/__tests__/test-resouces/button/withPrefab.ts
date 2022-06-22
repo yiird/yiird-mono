@@ -1,4 +1,4 @@
-import { forEach } from 'lodash-es';
+import forEach from 'lodash-es/forEach';
 import { computed, getCurrentInstance, nextTick, ref, useCssVars } from 'vue';
 import { OBasePropsDefine, OComponentInstance, OPrefabDefine, OPrefabOptionsDefine } from './base-define';
 import { addClass, cssVar } from './dom';

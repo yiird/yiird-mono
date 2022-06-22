@@ -1,3 +1,4 @@
+import escape from 'lodash-es/escape';
 import { AssociationType, TypeComment } from '../../parser/comment/node/TypeComment';
 import { AbstractMdPart } from './AbstractMdPart';
 
@@ -12,7 +13,7 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
 			if (comment.associationType === AssociationType.union) {
 				doc += '[联合类型]';
 			} else if (comment.associationType === AssociationType.intersection) {
-				doc += '[交叉裂隙]';
+				doc += '[交叉类型]';
 			}
 			doc += styles.line();
 		}
@@ -61,6 +62,6 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
 			});
 		}
 
-		return doc;
+		return escape(doc);
 	}
 }

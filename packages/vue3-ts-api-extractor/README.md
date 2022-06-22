@@ -16,7 +16,7 @@ npm i -D @yiird/vue3-ts-api-extractor
 ## 使用
 
 ```js
-import {extractor} from '@yiird/vue3-ts-api-extractor'
+import { extractor } from '@yiird/vue3-ts-api-extractor'
 
 const options = {
 	scanner: {
@@ -37,7 +37,14 @@ const options = {
 	}
 };
 
-extractor(options);
+const extractorobj = extractor(options);// 返回 Extractor 对象
+/* ---------- */
+
+//可继续处理单个文件，比如：可以监听文vue件变化，单独处理，此处理会强制重新扫描指定vue文件和其依赖文件。
+//filename是vue文件，会重新生成注释文档
+//filename不是vue文件,是其他的ts文件，则会对此文件直接、间接影响的所有vue文件进行处理，重新生成注释文档。
+extractorobj.extractor(filename);
+
 ```
 
 ## 配置 `options`
@@ -65,6 +72,17 @@ extractor(options);
     ```
   * `extensions` { String[] } 参与扫描的文件后缀 默认:`['.vue','.ts']`，目前也就支持这两种类型的文件。
   * `externals` { Strign[] } 由于工具扫描文件时，会关联引入的文件，这里可以剔除第三方库。例如：`externals:['vue', '@vue/*', 'lodash-es', '@fortawesome/*']`, `*`指以什么开头的三方库
+  * `watch` { Boolean | undefined } 设置监听，监听`options.scanner.root`下的，后缀名包含在 `extensions` 中的所有文件。会在extractor对象上触发 `filechange` 事件。事件回调参数：
+    * `filename` { String } 为变动文件的绝对路径
+    * `states` { [fs.Stats](https://nodejs.org/api/fs.html#fs_class_fs_stats) }
+  ```js
+  const extractorobj = extractor(options);
+  extractorobj.on('filechange',(filename,states)=>{
+    //重新提取指定文件的注释
+    extractorobj.extractor(filename)
+  })
+  ```
+
 
 * ### `options.output` { Object }
   * output { Object }
@@ -102,6 +120,23 @@ export default defineComponent({
     }
 })
 ```
+### Slots 注释
+```html
+<!-- 这是一个slot -->
+<!-- @param {String} arg0 参数描述 -->
+<!-- @param {Arg1} arg1 参数描述 -->
+<slot name="slot-name" arg0="arg-0" :arg1="{ a: 1, b: 2 }"></slot>
+```
+##### 生成的 markdown:
+
+| 名称    | 参数                                                                                   | 描述         |
+| :------ | :------------------------------------------------------------------------------------- | :----------- |
+| default | `arg0` { String } ：参数描述<br>`arg1` { Arg1 } ：参数描述<br>关联类型：[Arg1](#arg1)  | 这是一个slot |
+
+---
+
+
+
 
 ### Props 注释
 

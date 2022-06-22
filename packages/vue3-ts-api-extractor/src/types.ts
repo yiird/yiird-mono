@@ -21,6 +21,10 @@ export interface ScannerOptions {
 	 * 外部依赖，此选项可排除外部依赖，不参与检索，比如设置为['lodash']，文件中有 import \{isArray\} from 'lodash',isArray的注解不会被检索和提取
 	 */
 	externals?: Array<'vue' | '@vue/*' | string>;
+	/**
+	 * 监听root下的，后缀名包含在 `extensions` 中的所有文件
+	 */
+	watch?: boolean;
 }
 
 export interface OutputOptions {
@@ -38,6 +42,7 @@ export interface ExtractorOptions {
 
 export interface MdOptions {
 	styles: typeof MdStyles;
+	hLevelFrom: number;
 	// before: (comment: UnionBasicComment, nodeComment: UnionNodeComment) => string;
 	// transform: (basicComment: UnionBasicComment, nodeComment: UnionNodeComment) => BasicComment;
 	// after: (comment: UnionBasicComment, nodeComment: UnionNodeComment) => string;

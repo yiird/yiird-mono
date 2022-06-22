@@ -86,12 +86,16 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 	private _handleSetupMethod(componentOptionItem: MethodDeclaration): MethodComment[] {
 		const body = componentOptionItem.body;
 		const methods: MethodComment[] = [];
-		if (body && ts.isReturnStatement(body.statements[0])) {
-			const returnStatement = body.statements[0];
-			if (returnStatement.expression) {
-				methods.push(...this._findEndReturn(returnStatement.expression, componentOptionItem));
+		if (body) {
+			const bodyStatements = body.statements;
+			const returnStatement = bodyStatements[bodyStatements.length - 1];
+			if (body && ts.isReturnStatement(returnStatement)) {
+				if (returnStatement.expression) {
+					methods.push(...this._findEndReturn(returnStatement.expression, componentOptionItem));
+				}
 			}
 		}
+
 		return methods;
 	}
 
@@ -124,7 +128,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 		} else if (ts.isObjectLiteralExpression(inputNode)) {
 			inputNode.properties.forEach((property) => {
 				if (ts.isSpreadAssignment(property)) {
-					const targetNode = NodeUtils.getScopeDeclarations(property.expression.getText(), scope);
+					const targetNode = NodeUtils.getScopeDeclarations(property.expression.getText(), scope, this.context);
 					if (targetNode) {
 						comments.push(...this._findEndReturn(targetNode.projection || targetNode.root, scope));
 					} else {
@@ -161,15 +165,20 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 				const properties: PropertyComment[] = [];
 				if (slotNode instanceof TemplateSlotNode) {
 					const nameAttr = slotNode.root.props.find((p) => 6 === p.type && p.name === 'name');
-					comment.name = (<AttributeNode>nameAttr).value?.content;
+					comment.name = nameAttr ? (<AttributeNode>nameAttr).value?.content : 'default';
 					slotNode.root.props
-						.filter((p) => 7 === p.type && p.name === 'bind' && 4 === p.arg?.type && !SpecialAttr.includes(p.arg.content))
+						.filter((p) => (7 === p.type && p.name === 'bind' && 4 === p.arg?.type && !SpecialAttr.includes(p.arg.content)) || (6 === p.type && p.name !== 'name'))
 						.forEach((_arg) => {
-							const arg = <DirectiveNode>_arg;
-							const name = (<SimpleExpressionNode>arg.arg).content;
+							const arg = _arg;
+							let name;
+							if (arg.type === 6) {
+								name = (<AttributeNode>_arg).name;
+							} else if (arg.type === 7) {
+								name = (<SimpleExpressionNode>(<DirectiveNode>_arg).arg).content;
+							}
 							const argComment = new PropertyComment();
 							argComment.name = name;
-							const paramTag = paramTags.get(name);
+							const paramTag = name ? paramTags.get(name) : undefined;
 							if (paramTag) {
 								if (paramTag.typeExpression) {
 									argComment.type = this._typePaser.parse(paramTag.typeExpression.type);

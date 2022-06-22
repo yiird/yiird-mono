@@ -24,12 +24,14 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		const styles = this.options.styles;
 		let doc = '';
 
-		doc += `${comment.author} ${comment.date}`;
-		doc += styles.line();
-		doc += styles.line();
 		doc += styles.h(level, comment.name || '');
 		doc += styles.line();
 		doc += styles.line();
+		if (comment.author || comment.date) {
+			doc += `${comment.author || ''} ${comment.date || ''}`;
+			doc += styles.line();
+			doc += styles.line();
+		}
 		doc += comment.description || '';
 
 		const specialTypes: Set<TypeComment> = new Set();
@@ -37,7 +39,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		if (slots && slots.length > 0) {
 			doc += styles.line();
 			doc += styles.line();
-			doc += styles.h(level, 'Slots');
+			doc += styles.h(level + 1, 'Slots');
 			doc += styles.line();
 			doc += styles.line();
 			const headers = SlotHeaders;
@@ -69,6 +71,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 								argsStr += '<br>';
 								argsStr += `关联类型：`;
 								_specialTypes.forEach((specilType) => {
+									specialTypes.add(specilType);
 									argsStr += `[${specilType.name}](#${specilType.name?.toLocaleLowerCase()}) `;
 								});
 							}
@@ -86,7 +89,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		if (props && props.length > 0) {
 			doc += styles.line();
 			doc += styles.line();
-			doc += styles.h(level, 'Props');
+			doc += styles.h(level + 1, 'Props');
 			doc += styles.line();
 			doc += styles.line();
 			const headers = PropHeaders;
@@ -159,7 +162,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		if (events && events.length > 0) {
 			doc += styles.line();
 			doc += styles.line();
-			doc += styles.h(level, 'Events');
+			doc += styles.h(level + 1, 'Events');
 			doc += styles.line();
 			doc += styles.line();
 			const headers = EventHeaders;
@@ -208,14 +211,14 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		if (methods && methods.length > 0) {
 			doc += styles.line();
 			doc += styles.line();
-			doc += styles.h(level, 'Methods');
+			doc += styles.h(level + 1, 'Methods');
 			methods.forEach((method) => {
 				doc += styles.line();
 				doc += styles.line();
 				if (method.isPrivate) {
 					return;
 				}
-				doc += styles.h(level + 1, method.name || '');
+				doc += styles.h(level + 2, method.name || '');
 				const _parameters: string[] = [];
 				const _specialTypes: TypeComment[] = [];
 				method.parameters?.forEach((parameter) => {
@@ -257,12 +260,12 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		if (specialTypes.size > 0) {
 			doc += styles.line();
 			doc += styles.line();
-			doc += styles.h(level, '类型');
+			doc += styles.h(level + 1, '关联类型');
 			doc += styles.line();
 			doc += styles.line();
 			specialTypes.forEach((type) => {
 				doc += styles.line();
-				doc += this._typePart.toMd(type, level + 1);
+				doc += this._typePart.toMd(type, level + 2);
 			});
 		}
 

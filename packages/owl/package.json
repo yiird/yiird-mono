@@ -10,6 +10,11 @@
 	"main": "dist/owl.umd.js",
 	"module": "dist/owl.es.js",
 	"types": "types/main.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yiird/yiird-mono.git",
+		"directory": "packages/owl"
+	  },
 	"exports": {
 		".": {
 			"import": "./dist/owl.es.js",
@@ -24,7 +29,10 @@
 		"build": "vue-tsc --noEmit && vite build",
 		"preview": "vite preview",
 		"test": "vitest",
-		"coverage": "vitest run --coverage"
+		"coverage": "vitest run --coverage",
+		"docs:dev": "vitepress dev docs",
+		"docs:build": "vitepress build docs",
+		"docs:serve": "vitepress serve docs"
 	},
 	"dependencies": {
 		"lodash-es": "^4.17.21",
@@ -44,6 +52,7 @@
 		"unplugin-vue-components": "^0.19.6",
 		"vite": "^2.9.9",
 		"vite-plugin-dts": "^1.2.0",
+		"vitepress": "^1.0.0-alpha.2",
 		"vitest": "^0.15.1",
 		"vue-tsc": "^0.37.9"
 	}

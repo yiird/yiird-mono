@@ -4,9 +4,11 @@ import { DeclarationNode } from '../parser/node/DeclarationNode';
 import { ScriptNode } from '../parser/node/ScriptNode';
 import { SlotNode } from '../parser/node/SlotNode';
 import { AbstractNode } from './AbstractNode';
+import { Context } from './Context';
 
 export type BasketItem = {
 	origin: Node;
+	bindName?: string;
 	initializer: Node;
 };
 
@@ -57,14 +59,22 @@ export class NodeUtils {
 		});
 	}
 
-	static recursiveSearchDeclarations(nodes: Array<Node>): Map<string, DeclarationNode> {
+	static recursiveSearchDeclarations(nodes: Array<Node>, context: Context): Map<string, DeclarationNode> {
 		const basket = new Map<string, BasketItem>();
 		nodes.forEach((_result) => {
 			this.getDeclarationNodeInfo(_result).forEach((_declaration) => {
-				basket.set(_declaration.name, {
-					origin: _result,
-					initializer: _declaration.initializer
-				});
+				if (_declaration.bindName && _declaration.name) {
+					basket.set(_declaration.name, {
+						origin: _result,
+						bindName: _declaration.bindName,
+						initializer: _declaration.initializer
+					});
+				} else {
+					basket.set(_declaration.name, {
+						origin: _result,
+						initializer: _declaration.initializer
+					});
+				}
 			});
 		});
 
@@ -84,14 +94,26 @@ export class NodeUtils {
 			} else {
 				projection = _item.initializer;
 			}
+
 			let projectionInnerNodes;
 			if (projection) {
-				projectionInnerNodes = this.searchChildTsNodes(projection, selector);
+				// 处理结构方法返回参数
+				if (_item.bindName && ts.isCallExpression(projection)) {
+					const structure = context.getStructure(projection.getSourceFile().fileName);
+					if (structure) {
+						const scriptNode = context.getNodeByName(projection.expression.getText(), structure);
+						const targetNode = scriptNode?.localDeclarations.get(_item.bindName);
+						projection = targetNode?.projection || targetNode?.root;
+					}
+				}
+				if (projection) {
+					projectionInnerNodes = this.searchChildTsNodes(projection, selector);
+				}
 			}
 
 			let innerNodesMap = new Map();
 			if (projectionInnerNodes && projectionInnerNodes.length > 0) {
-				innerNodesMap = this.recursiveSearchDeclarations(projectionInnerNodes);
+				innerNodesMap = this.recursiveSearchDeclarations(projectionInnerNodes, context);
 			}
 
 			const declarationNode = new DeclarationNode(_name, _item.origin, innerNodesMap, projection);
@@ -101,22 +123,42 @@ export class NodeUtils {
 		return result;
 	}
 
-	static getDeclarationNodeInfo(node: Node): Array<{ name: string; initializer: Node }> {
-		const basket: Array<{ name: string; initializer: Node }> = [];
+	static getDeclarationNodeInfo(node: Node): Array<{ name: string; bindName?: string; initializer: Node }> {
+		const basket: Array<{ name: string; bindName?: string; initializer: Node }> = [];
 		if (ts.isVariableStatement(node)) {
 			node.declarationList.declarations.forEach((_declaration) => {
-				const name = _declaration.name.getText();
-				const initializer = _declaration.initializer;
-				if (initializer) {
-					basket.push({
-						name,
-						initializer
-					});
+				if (ts.isIdentifier(_declaration.name)) {
+					const name = _declaration.name.getText();
+					const initializer = _declaration.initializer;
+					if (initializer) {
+						basket.push({
+							name,
+							initializer
+						});
+					}
+				} else if (ts.isObjectBindingPattern(_declaration.name)) {
+					const initializer = _declaration.initializer;
+					if (initializer) {
+						_declaration.name.elements.forEach((element) => {
+							if (element.propertyName) {
+								basket.push({
+									name: element.name.getText(),
+									bindName: element.propertyName.getText(),
+									initializer
+								});
+							} else {
+								basket.push({
+									name: element.name.getText(),
+									bindName: element.name.getText(),
+									initializer
+								});
+							}
+						});
+					}
 				}
 			});
-		} else if (ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node) || ts.isInterfaceDeclaration(node)) {
+		} else if (ts.isFunctionDeclaration(node) || ts.isMethodDeclaration(node) || ts.isClassDeclaration(node) || ts.isInterfaceDeclaration(node)) {
 			const name = node.name?.getText();
-
 			if (name) {
 				basket.push({
 					name,
@@ -147,8 +189,8 @@ export class NodeUtils {
 		}
 	}
 
-	static getScopeDeclarations(name: string, scope: Node) {
-		const scopeDeclarations = NodeUtils.recursiveSearchDeclarations([scope]);
+	static getScopeDeclarations(name: string, scope: Node, context: Context) {
+		const scopeDeclarations = NodeUtils.recursiveSearchDeclarations([scope], context);
 		let targetNode: DeclarationNode | undefined;
 		scopeDeclarations.forEach((scopeDeclaration) => {
 			const _targetNode = scopeDeclaration.localDeclarations.get(name);
