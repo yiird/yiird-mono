@@ -1,14 +1,14 @@
 {
   "name": "@yiird/owl-test",
   "private": true,
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@yiird/owl": "^0.1.0-alpha.0",
+    "@yiird/owl": "^0.1.0-alpha.1",
     "vue": "^3.2.25"
   },
   "devDependencies": {
