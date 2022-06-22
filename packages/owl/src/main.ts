@@ -1,4 +1,6 @@
-import { camelCase, forEach, upperFirst } from 'lodash-es';
+import camelCase from 'lodash-es/camelCase';
+import forEach from 'lodash-es/forEach';
+import upperFirst from 'lodash-es/upperFirst';
 import { App, Plugin } from 'vue';
 import * as components from './components';
 import { Theme, ThemeKey } from './theme/theme';

@@ -1,6 +1,10 @@
 import type { Theme } from '../../theme';
 import type { BemClasses } from '../../common/bem';
 import type { DefineComponent, PropType, Ref, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
+/**
+ * Button使用dd
+ * @name OButton
+ */
 declare const _sfc_main: DefineComponent<{
     readonly size: {
         readonly type: PropType<"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl">;
@@ -34,7 +38,7 @@ declare const _sfc_main: DefineComponent<{
 }, {
     block: Ref<string[]>;
     el_text: Ref<string[]>;
-    domRefresh: () => void;
+    domRefresh2: () => void;
     id__: string;
     cType__: string;
     display__: Ref<boolean>;
@@ -44,6 +48,7 @@ declare const _sfc_main: DefineComponent<{
         readonly a: "1";
         readonly b: "b";
     }>;
+    domRefresh: () => void;
 }, unknown, {}, {
     doClick(): void;
 }, ComponentOptionsMixin, ComponentOptionsMixin, Record<string, any>, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{

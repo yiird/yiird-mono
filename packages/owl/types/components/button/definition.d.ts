@@ -2,6 +2,7 @@ import { PropType } from 'vue';
 export declare const props: {
     /**
      * 尺寸
+     * @values `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl`
      */
     readonly size: {
         readonly type: PropType<"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl">;

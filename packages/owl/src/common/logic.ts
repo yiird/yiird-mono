@@ -1,4 +1,4 @@
-import { kebabCase } from 'lodash-es';
+import kebabCase from 'lodash-es/kebabCase';
 import { computed, ExtractPropTypes, getCurrentInstance, inject, nextTick, ref, Ref, SetupContext } from 'vue';
 import { Theme, ThemeKey } from '../theme/theme';
 import { BemClasses } from './bem';

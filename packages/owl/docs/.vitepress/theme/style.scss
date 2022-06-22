@@ -1,0 +1,28 @@
+:root {
+    --vp-button-alt-border:white;
+    --vp-button-brand-border:white;
+	--vp-home-hero-name-color: transparent;
+	--vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe, #41d1ff);
+}
+
+
+.VPHero{
+    @media (min-width: 640px){
+        .name{
+            font-size: 6rem;
+            line-height: 6rem;
+        }
+        .name, .text,.tagline {
+            max-width: 100%;
+        }
+    }
+    .main{
+        text-align: center;
+    }
+    .actions{
+        justify-content: center;
+    }
+    .tagline{
+        text-align: center;
+    }
+}

@@ -1,4 +1,4 @@
-import { forEach } from 'lodash-es';
+import forEach from 'lodash-es/forEach';
 import { computed, ref, Ref } from 'vue';
 import { ArrayToTuple } from './type';
 

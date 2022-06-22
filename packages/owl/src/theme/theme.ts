@@ -1,4 +1,5 @@
-import { forEach, kebabCase } from 'lodash-es';
+import forEach from 'lodash-es/forEach';
+import kebabCase from 'lodash-es/kebabCase';
 import { InjectionKey, reactive, UnwrapNestedRefs, watchEffect } from 'vue';
 
 export type Variables = {

@@ -5,6 +5,7 @@ export const props = {
 	...BaseProps,
 	/**
 	 * 尺寸
+	 * @values `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl`
 	 */
 	size: {
 		type: String as PropType<`xxs` | `xs` | `sm` | `md` | `lg` | `xl` | `xxl`>,

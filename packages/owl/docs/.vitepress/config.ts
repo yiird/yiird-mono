@@ -1,17 +1,41 @@
+import { extractor, ExtractorOptions } from '@yiird/vue3-ts-api-extractor';
+import path from 'path';
 import { defineConfig } from 'vitepress';
 
+const options: ExtractorOptions = {
+	scanner: {
+		root: path.resolve(__dirname, '../../src/components/'),
+		scanDirs: ['button'],
+		extensions: ['.ts', '.vue'],
+		externals: ['vue'],
+		watch: true
+	},
+	output: {
+		single: false,
+		dir: path.resolve(__dirname, '../../docs/components'),
+		filename(filename) {
+			return filename;
+		},
+		type: 'markdown'
+	}
+};
+
 export default defineConfig({
-	title: 'Owl 文档',
-	description: 'Owl 文档',
+	title: 'Owl.js',
+	description: 'Owl.js 文档',
 	themeConfig: {
-		logo: '/images/logo.jpg',
+		logo: '/images/logomin.jpg',
 		nav: [{ text: '组件', link: '/components/' }],
 		socialLinks: [{ icon: 'github', link: 'https://github.com/yiird/yiird-mono/tree/main/packages/owl' }],
+		// editLink: {
+		// 	pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
+		// 	text: 'Edit this page on GitHub'
+		// },
 		sidebar: {
 			'/components/': [
 				{
 					text: '基础',
-					items: [{ text: 'button', link: '/components/button' }]
+					items: [{ text: 'button', link: '/components/o-button' }]
 				},
 				{
 					text: '布局',
@@ -23,5 +47,20 @@ export default defineConfig({
 				}
 			]
 		}
+	},
+	vite: {
+		plugins: [
+			{
+				name: 'extract-comments-plugin',
+				apply: 'serve',
+				buildStart() {
+					const extractorobj = extractor(options);
+					extractorobj.extractor();
+					extractorobj.on('filechange', (path) => {
+						extractorobj.extractor(path);
+					});
+				}
+			}
+		]
 	}
 });
