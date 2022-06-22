@@ -1,15 +1,17 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { ButtonInstance } from '@yiird/owl';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
 	setup() {
+		const button = ref<ButtonInstance>();
 		return {};
 	}
 });
 </script>
 
 <template>
-	<o-button name="aaa">3</o-button>
+	<o-button ref="button" name="aaa">3</o-button>
 	<o-button name="bbb">1</o-button>
 </template>
 

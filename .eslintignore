@@ -4,4 +4,3 @@
 dist-ssr
 *.local
 shims-vue.d.ts
-!.vitepress
