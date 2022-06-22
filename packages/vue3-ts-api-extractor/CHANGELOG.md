@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0...@yiird/vue3-ts-api-extractor@2.1.0-alpha.0) (2022-06-22)
+
+
+### Features
+
+* **common:** 组件通用能力封装 ([f103b7b](https://github.com/yiird/yiird-mono/commit/f103b7ba396de6338f9d00a28bb23e0663a6c2d9))
+* **watch:** 增加监听功能 ([c1a1453](https://github.com/yiird/yiird-mono/commit/c1a14530f54251d48aa04aff081af9a9a33e0758))
+
+
+
+
+
 # [2.0.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.0.0-alpha.10...@yiird/vue3-ts-api-extractor@2.0.0) (2022-06-14)
 
 **Note:** Version bump only for package @yiird/vue3-ts-api-extractor
