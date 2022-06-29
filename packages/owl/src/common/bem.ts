@@ -1,106 +1,99 @@
-import forEach from 'lodash-es/forEach';
-import { computed, ref, Ref } from 'vue';
+import { forEach, isString } from 'lodash-es';
+import { isRef, reactive, ref, Ref, UnwrapNestedRefs, watchEffect } from 'vue';
 import { ArrayToTuple } from './type';
 
-export class Block {
-	_name: string;
-	_modifier: Set<string>;
-	constructor(name: string) {
-		this._name = name;
-		this._modifier = new Set();
-	}
-
-	get name() {
-		return this._name;
-	}
-
-	get modifier() {
-		return this._modifier;
-	}
+export interface BemKeys {
+	modifiers: ReadonlyArray<string>;
+	elements: Readonly<Record<string, ReadonlyArray<string>>>;
 }
 
-export class Element {
-	_name: string;
-	_modifier: Set<string>;
-	constructor(name: string) {
-		this._name = name;
-		this._modifier = new Set();
-	}
+// export type BemStyles<M = []> = M extends ReadonlyArray<string>
+// 	? {
+// 			styles?: string | CSSProperties | { [key in keyof CSSProperties]: string | ((props: unknown) => string | CSSProperties[key]) };
+// 			modifiers?: Record<ArrayToTuple<M>, string | CSSProperties | { [key in keyof CSSProperties]: string | ((props: unknown) => string | CSSProperties[key]) }>;
+// 	  }
+// 	: never;
 
-	get name() {
-		return this._name;
-	}
+// export type BemBlock<B> = B extends Readonly<{ modifiers: infer BM; elements: Record<infer Keys, infer Modifiers> }>
+// 	? BemStyles<BM> & {
+// 			block: string | ((props: unknown) => string);
+// 			elements?: {
+// 				[key in Keys]: BemStyles<Modifiers>;
+// 			};
+// 	  }
+// 	: never;
 
-	get modifier() {
-		return this._modifier;
-	}
-}
+type ElementNames<B> = B extends Readonly<Record<infer K, unknown>> ? K : never;
 
-export class BemClasses<E extends ReadonlyArray<string>> {
-	private __block: Ref<Block>;
-	private __elements: Record<string, Ref<Element>> = {};
+type Modifiers<Em extends Readonly<Record<string, ReadonlyArray<string>>>, E, V = string> = keyof {
+	[K in Em extends Readonly<Record<infer N, ReadonlyArray<infer U>>> ? (N extends E ? U : never) : never]: V;
+};
+
+export class BemClasses<B extends BemKeys> {
+	private __block: B;
+	private __modifiers: Ref<Set<string | Ref<string>>> = ref(new Set());
+	private __elements: UnwrapNestedRefs<Record<string, Set<string>>> = reactive({});
+
+	private _block: Ref<string[]> = ref([]);
+	private _elements: UnwrapNestedRefs<Record<string, string[]>> = reactive({});
 
 	private _prefix: string;
-	private _block: Ref<string[]>;
-	private _elements: Record<string, Ref<string[]>> = {};
-
-	constructor(prefix: string, block: string, elements?: E) {
+	private _cType: string;
+	constructor(prefix: string, cType: string, block: B) {
+		this.__block = block;
 		this._prefix = prefix;
-
-		this.__block = ref(new Block(block));
-
-		if (elements) {
-			elements.forEach((element) => {
-				this.__elements[element] = ref(new Element(element));
-			});
-		}
-
-		this._block = computed(() => {
-			const blockName = this._prefix + '-' + this.__block.value.name;
-			return [blockName, ...Array.from(this.__block.value.modifier).map((m) => `${blockName}--${m}`)];
-		});
-
-		forEach(this.__elements, (element, name) => {
-			this._elements[name] = computed(() => {
-				const blockName = this.__block.value.name;
-				const elementName = `${this._prefix}-${blockName}__${element.value.name}`;
-				return [elementName, ...Array.from(element.value.modifier).map((m) => `${elementName}--${m}`)];
+		this._cType = cType;
+		watchEffect(() => {
+			this._block.value = [
+				`${this._prefix}-${this._cType}`,
+				...Array.from(this.__modifiers.value).map((modifier) => {
+					let _modifier = modifier;
+					if (isRef(modifier)) {
+						_modifier = modifier.value;
+					}
+					return `${this._prefix}-${this._cType}--${_modifier}`;
+				})
+			];
+			forEach(this.__elements, (modifiers, element) => {
+				const _modifiers = Array.from(modifiers).map((modifier) => `${this._prefix}-${this._cType}__${element}--${modifier}`);
+				this._elements[element] = [`${this._prefix}-${this._cType}__${element}`, ..._modifiers];
 			});
 		});
 	}
 
-	block() {
+	get block() {
 		return this._block;
 	}
 
-	element(name: ArrayToTuple<E>) {
-		return this._elements[name];
+	get elements(): Record<ElementNames<B['elements']>, string[]> {
+		return this._elements;
 	}
 
-	addModifiers(modifiers: string[], element?: ArrayToTuple<E>) {
-		let target: Set<string>;
-		if (element) {
-			target = this.__elements[element].value.modifier;
-		} else {
-			target = this.__block.value.modifier;
-		}
-		modifiers.forEach((modifier) => {
-			target.add(modifier);
+	addModifier(...modifiers: Array<ArrayToTuple<B['modifiers']>> | Ref<string>[]) {
+		forEach(modifiers, (modifier) => {
+			if (isRef(modifier) || isString(modifier)) {
+				this.__modifiers.value.add(modifier);
+			}
 		});
 	}
 
-	removeModifiers(modifiers: string[], element?: ArrayToTuple<E>) {
-		let target: Set<string>;
-		if (element) {
-			target = this.__elements[element].value.modifier;
-		} else {
-			target = this.__block.value.modifier;
-		}
+	removeModifier(modifier: ArrayToTuple<B['modifiers']>) {
+		this.__modifiers.value.delete(modifier);
+	}
 
-		modifiers.forEach((modifier) => {
-			target.delete(modifier);
-		});
+	addElementModifier(options: { element: ElementNames<B['elements']>; modifier: Modifiers<B['elements'], typeof options.element> }) {
+		if (!this.__elements[options.element]) {
+			this.__elements[options.element] = new Set();
+		}
+		const set = this.__elements[options.element];
+		set.add(options.modifier);
+	}
+
+	removeElementModifier(options: { element: ElementNames<B['elements']>; modifier: Modifiers<B['elements'], typeof options.element> }) {
+		if (!this.__elements[options.element]) {
+			this.__elements[options.element] = new Set();
+		}
+		const set = this.__elements[options.element];
+		set.delete(options.modifier);
 	}
 }
-
-//new Bem('aa', ['a1', 'a2'] as const).aa();

@@ -11,11 +11,13 @@
     "commit:owl": "lerna exec --scope @yiird/owl -- git add . && cz",
     "commit:extractor": "lerna exec --scope @yiird/vue3-ts-api-extractor -- git add . && cz",
     "commit:all": "git add . && cz",
-    "lpre:owl": "lerna version --conventional-prerelease=@yiird/owl --create-release github && lerna publish from-git",
-    "lr:owl": "lerna version --conventional-graduate=@yiird/owl --create-release github && lerna publish from-git",
-    "lpre:extractor": "lerna version --conventional-prerelease=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
-    "lr:extractor": "lerna version --conventional-graduate=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
-    "lint": "lerna run lint -- --fix"
+    "lpre:owl": "lerna version --no-private --conventional-prerelease=@yiird/owl --create-release github && lerna publish from-git",
+    "lr:owl": "lerna version --no-private --conventional-graduate=@yiird/owl --create-release github && lerna publish from-git",
+    "lpre:extractor": "lerna version --no-private --conventional-prerelease=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
+    "lr:extractor": "lerna version --no-private --conventional-graduate=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
+    "lint": "lerna run lint -- --fix",
+    "aaa":"echo $npm_package_name",
+    "bbb":"TEST_VAR=bbbb yarn aaa"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

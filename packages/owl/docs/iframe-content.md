@@ -1,0 +1,5 @@
+---
+layout: demo
+---
+
+<ChooseComponent></ChooseComponent>

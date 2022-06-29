@@ -1,6 +1,31 @@
 import { InjectionKey, UnwrapNestedRefs } from 'vue';
 export declare type Variables = {
-    color: string;
+    fontFamily: string;
+    fontRemBaseSize: string;
+    /** 文字颜色 */
+    colorTextPrimary: string;
+    colorTextSecondary: string;
+    colorTextLight: string;
+    colorTextLightest: string;
+    /** 主体色 */
+    colorPrimary: string;
+    /** 功能色 */
+    colorSuccess: string;
+    colorWarning: string;
+    colorDanger: string;
+    colorInfo: string;
+    /** 边框色 */
+    colorBorderPrimary: string;
+    colorBorderSecondary: string;
+    colorBorderLight: string;
+    colorBorderLightest: string;
+    /** 背景色 */
+    colorBgOpaque: string;
+    colorBgTransparent: string;
+    /** T-shirt尺寸 最小值 */
+    sizeXXS: string;
+    /** 每个尺寸级别跨度 */
+    sizeStep: string;
 };
 export declare class Theme<Var extends Record<string, string> = {}> {
     /**

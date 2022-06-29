@@ -1,12 +1,10 @@
-import camelCase from 'lodash-es/camelCase';
-import forEach from 'lodash-es/forEach';
-import upperFirst from 'lodash-es/upperFirst';
+import { camelCase, forEach, upperFirst } from 'lodash-es';
 import { App, Plugin } from 'vue';
 import * as components from './components';
 import { Theme, ThemeKey } from './theme/theme';
 import { ThemeNormal } from './theme/theme-normal';
 
-const createUI = (theme?: Theme): Plugin => {
+const createUI = (theme: Theme): Plugin => {
 	theme = theme || ThemeNormal;
 	return {
 		install(app: App) {

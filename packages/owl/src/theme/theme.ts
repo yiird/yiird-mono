@@ -1,9 +1,42 @@
-import forEach from 'lodash-es/forEach';
-import kebabCase from 'lodash-es/kebabCase';
+import { forEach, kebabCase } from 'lodash-es';
 import { InjectionKey, reactive, UnwrapNestedRefs, watchEffect } from 'vue';
 
 export type Variables = {
-	color: string;
+	// 字体
+	fontFamily: string;
+	// 基础字体大小
+	fontRemBaseSize: string;
+
+	/*----------颜色-----------*/
+	/** 文字颜色 */
+	colorTextPrimary: string;
+	colorTextSecondary: string;
+	colorTextLight: string;
+	colorTextLightest: string;
+
+	/** 主体色 */
+	colorPrimary: string;
+	/** 功能色 */
+	colorSuccess: string;
+	colorWarning: string;
+	colorDanger: string;
+	colorInfo: string;
+
+	/** 边框色 */
+	colorBorderPrimary: string;
+	colorBorderSecondary: string;
+	colorBorderLight: string;
+	colorBorderLightest: string;
+
+	/** 背景色 */
+	colorBgOpaque: string;
+	colorBgTransparent: string;
+
+	/*----------尺寸-----------*/
+	/** T-shirt尺寸 最小值 */
+	sizeXXS: string;
+	/** 每个尺寸级别跨度 */
+	sizeStep: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -80,5 +113,25 @@ export class Theme<Var extends Record<string, string> = {}> {
 		});
 	}
 }
+
+// export type BemStyles<M = []> = M extends ReadonlyArray<string>
+// 	? {
+// 			styles?: string | CSSProperties | { [key in keyof CSSProperties]: string | ((props: unknown) => string | CSSProperties[key]) };
+// 			modifiers?: Record<ArrayToTuple<M>, string | CSSProperties | { [key in keyof CSSProperties]: string | ((props: unknown) => string | CSSProperties[key]) }>;
+// 	  }
+// 	: never;
+
+// export type BemBlock<B> = B extends Readonly<{ modifiers: infer BM; elements: Record<infer Keys, infer Modifiers> }>
+// 	? BemStyles<BM> & {
+// 			block: string | ((props: unknown) => string);
+// 			elements?: {
+// 				[key in Keys]: BemStyles<Modifiers>;
+// 			};
+// 	  }
+// 	: never;
+
+// export const defineBem = <B extends BemBlock<Readonly<{ modifiers: ReadonlyArray<string>; elements: Record<string, ReadonlyArray<string>> }>>>(config: B): B => {
+// 	return config;
+// };
 
 export const ThemeKey = Symbol() as InjectionKey<Theme>;

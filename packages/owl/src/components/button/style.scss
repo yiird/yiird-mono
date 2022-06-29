@@ -1,6 +1,8 @@
+@import '../../theme/styles/main.scss';
+
 .o-button{
     transform: rotate(20deg);
-    width: rem(16px);
+    width: rem(16px);    
     color: var(--o-button-color,var(--color));
-    
+    font-size: 4rem;
 }

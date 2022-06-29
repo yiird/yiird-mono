@@ -1,27 +1,26 @@
 import { PropType } from 'vue';
+import { ButtonColor, ButtonMode, ButtonShape, ButtonSize } from './type';
 export declare const props: {
     /**
      * 尺寸
      * @values `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl`
      */
     readonly size: {
-        readonly type: PropType<"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl">;
+        readonly type: PropType<ButtonSize>;
         readonly default: "md";
-        readonly validator: (value: string) => boolean;
     };
     /**
      * 颜色
      */
     readonly color: {
-        readonly type: PropType<"default" | "primary" | "success" | "warning" | "danger">;
+        readonly type: PropType<ButtonColor>;
         readonly default: "default";
-        readonly validator: (value: string) => boolean;
     };
     /**
      * 形状可选
      */
     readonly shape: {
-        readonly type: PropType<"rectangle" | "circle" | "square" | "ellipse">;
+        readonly type: PropType<ButtonShape>;
         readonly default: "rectangle";
     };
     /**
@@ -35,8 +34,7 @@ export declare const props: {
      * 模式
      */
     readonly mode: {
-        readonly type: PropType<"link" | "light" | "empty">;
-        readonly validator: (value: string) => boolean;
+        readonly type: PropType<ButtonMode>;
     };
     readonly id: {
         type: StringConstructor;
@@ -50,4 +48,10 @@ export declare const cssVars: {
     readonly a: "1";
     readonly b: "b";
 };
-export declare const elements: readonly ["text"];
+export declare const bemKeys: {
+    readonly modifiers: readonly ["shape-rectangle", "shape-circle", "shape-square", "shape-ellipse", "state-hover", "state-active", "state-disabled"];
+    readonly elements: {
+        readonly text: readonly [];
+        readonly icon: readonly [];
+    };
+};

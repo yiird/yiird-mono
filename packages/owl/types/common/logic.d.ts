@@ -1,6 +1,6 @@
 import { ExtractPropTypes, Ref, SetupContext } from 'vue';
 import { Theme } from '../theme/theme';
-import { BemClasses } from './bem';
+import { BemClasses, BemKeys } from './bem';
 export declare const BaseProps: {
     id: {
         type: StringConstructor;
@@ -13,22 +13,22 @@ export declare const BaseProps: {
 /**
  * 组件setup预制方法参数定义
  */
-export declare type OCommonOptions<P, V extends Record<string, string>, E extends ReadonlyArray<string>> = {
+export declare type OCommonOptions<P, V extends Record<string, string>, B extends BemKeys> = {
     props: Readonly<ExtractPropTypes<P>>;
     ctx: SetupContext;
+    bemKeys: B;
     cssVars?: V;
-    elements?: E;
 };
-export declare type OCommonPrefab<V extends Record<string, string>, E extends ReadonlyArray<string>> = {
+export declare type OCommonPrefab<V extends Record<string, string>, B extends BemKeys> = {
     id__: string;
     cType__: string;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
-    bem__: BemClasses<E>;
+    bem__: BemClasses<B>;
     theme__: Theme<V>;
     domRefresh: () => void;
 };
-export declare const useCommon: <V extends Record<string, string>, E extends readonly string[]>(options: OCommonOptions<{
+export declare const useCommon: <V extends Record<string, string>, B extends BemKeys>(options: OCommonOptions<{
     id: {
         type: StringConstructor;
     };
@@ -36,5 +36,5 @@ export declare const useCommon: <V extends Record<string, string>, E extends rea
         type: BooleanConstructor;
         default: boolean;
     };
-}, V, E>) => OCommonPrefab<V, E>;
+}, V, B>) => OCommonPrefab<V, B>;
 export {};

@@ -8,7 +8,13 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-	name: 'OIcon',
+	name: 'Icon',
+	props: {
+		name: {
+			type: String,
+			default: '1'
+		}
+	},
 	setup() {
 		return {
 			icon: '22'
@@ -22,4 +28,6 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import './style.scss';
+</style>

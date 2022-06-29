@@ -1,11 +1,11 @@
-import { extractor, ExtractorOptions } from '@yiird/vue3-ts-api-extractor';
+import { extractor } from '@yiird/vue3-ts-api-extractor';
 import path from 'path';
 import { defineConfig } from 'vitepress';
 
-const options: ExtractorOptions = {
+const options = {
 	scanner: {
-		root: path.resolve(__dirname, '../../src/components/'),
-		scanDirs: ['button'],
+		root: path.resolve(__dirname, '../../src/'),
+		scanDirs: ['components'],
 		extensions: ['.ts', '.vue'],
 		externals: ['vue'],
 		watch: true
@@ -23,6 +23,9 @@ const options: ExtractorOptions = {
 export default defineConfig({
 	title: 'Owl.js',
 	description: 'Owl.js 文档',
+	markdown: {
+		theme: 'vitesse-light'
+	},
 	themeConfig: {
 		logo: '/images/logomin.jpg',
 		nav: [{ text: '组件', link: '/components/' }],
@@ -49,6 +52,13 @@ export default defineConfig({
 		}
 	},
 	vite: {
+		clearScreen: false,
+		esbuild: {
+			treeShaking: true
+		},
+		ssr: {
+			noExternal: ['lodash-es']
+		},
 		plugins: [
 			{
 				name: 'extract-comments-plugin',

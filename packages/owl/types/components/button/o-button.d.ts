@@ -1,23 +1,22 @@
 import type { Theme } from '../../theme';
 import type { BemClasses } from '../../common/bem';
+import type { ButtonSize, ButtonColor, ButtonShape, ButtonMode } from './type';
 import type { DefineComponent, PropType, Ref, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
 /**
- * Button使用dd
+ * Button使用
  * @name OButton
  */
 declare const _sfc_main: DefineComponent<{
     readonly size: {
-        readonly type: PropType<"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl">;
+        readonly type: PropType<ButtonSize>;
         readonly default: "md";
-        readonly validator: (value: string) => boolean;
     };
     readonly color: {
-        readonly type: PropType<"default" | "primary" | "success" | "warning" | "danger">;
+        readonly type: PropType<ButtonColor>;
         readonly default: "default";
-        readonly validator: (value: string) => boolean;
     };
     readonly shape: {
-        readonly type: PropType<"rectangle" | "circle" | "square" | "ellipse">;
+        readonly type: PropType<ButtonShape>;
         readonly default: "rectangle";
     };
     readonly disabled: {
@@ -25,8 +24,7 @@ declare const _sfc_main: DefineComponent<{
         readonly default: false;
     };
     readonly mode: {
-        readonly type: PropType<"link" | "light" | "empty">;
-        readonly validator: (value: string) => boolean;
+        readonly type: PropType<ButtonMode>;
     };
     readonly id: {
         type: StringConstructor;
@@ -37,13 +35,19 @@ declare const _sfc_main: DefineComponent<{
     };
 }, {
     block: Ref<string[]>;
-    el_text: Ref<string[]>;
+    elements: Record<"text" | "icon", string[]>;
     domRefresh2: () => void;
     id__: string;
     cType__: string;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
-    bem__: BemClasses<readonly ["text"]>;
+    bem__: BemClasses<{
+        readonly modifiers: readonly ["shape-rectangle", "shape-circle", "shape-square", "shape-ellipse", "state-hover", "state-active", "state-disabled"];
+        readonly elements: {
+            readonly text: readonly [];
+            readonly icon: readonly [];
+        };
+    }>;
     theme__: Theme<{
         readonly a: "1";
         readonly b: "b";
@@ -53,17 +57,15 @@ declare const _sfc_main: DefineComponent<{
     doClick(): void;
 }, ComponentOptionsMixin, ComponentOptionsMixin, Record<string, any>, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
     readonly size: {
-        readonly type: PropType<"xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl">;
+        readonly type: PropType<ButtonSize>;
         readonly default: "md";
-        readonly validator: (value: string) => boolean;
     };
     readonly color: {
-        readonly type: PropType<"default" | "primary" | "success" | "warning" | "danger">;
+        readonly type: PropType<ButtonColor>;
         readonly default: "default";
-        readonly validator: (value: string) => boolean;
     };
     readonly shape: {
-        readonly type: PropType<"rectangle" | "circle" | "square" | "ellipse">;
+        readonly type: PropType<ButtonShape>;
         readonly default: "rectangle";
     };
     readonly disabled: {
@@ -71,8 +73,7 @@ declare const _sfc_main: DefineComponent<{
         readonly default: false;
     };
     readonly mode: {
-        readonly type: PropType<"link" | "light" | "empty">;
-        readonly validator: (value: string) => boolean;
+        readonly type: PropType<ButtonMode>;
     };
     readonly id: {
         type: StringConstructor;
@@ -82,9 +83,9 @@ declare const _sfc_main: DefineComponent<{
         default: boolean;
     };
 }>>, {
-    readonly color: "default" | "primary" | "success" | "warning" | "danger";
-    readonly size: "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
-    readonly shape: "rectangle" | "circle" | "square" | "ellipse";
+    readonly size: ButtonSize;
+    readonly color: ButtonColor;
+    readonly shape: ButtonShape;
     readonly disabled: boolean;
     readonly display: boolean;
 }>;

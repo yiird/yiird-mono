@@ -27,6 +27,6 @@
 		"docs/.vitepress/**/*.d.ts", 
 		"docs/.vitepress/**/*.tsx", 
 		"docs/.vitepress/**/*.vue", 
-		"client.d.ts"],
+		"client.d.ts", "docs/.vitepress/config.js"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

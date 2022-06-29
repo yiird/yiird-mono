@@ -1,6 +1,6 @@
 import { Plugin } from 'vue';
 import { Theme } from './theme/theme';
-declare const createUI: (theme?: Theme<{}> | undefined) => Plugin;
+declare const createUI: (theme: Theme) => Plugin;
 export * from './components/';
 export * from './components/types';
 export * from './theme';

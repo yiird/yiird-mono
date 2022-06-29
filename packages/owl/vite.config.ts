@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-
 import vue from '@vitejs/plugin-vue';
 import jsx from '@vitejs/plugin-vue-jsx';
+
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
@@ -11,9 +11,6 @@ export default defineConfig({
 	plugins: [
 		vue(),
 		jsx(),
-		// Components({
-		// 	dts: './client.d.ts'
-		// }),
 		dts({
 			entryRoot: './src',
 			outputDir: 'types',
@@ -22,9 +19,13 @@ export default defineConfig({
 			exclude: ['**/env.d.ts', '**/client.d.ts']
 		})
 	],
+	esbuild: {
+		treeShaking: true
+	},
 	build: {
+		minify: 'terser',
 		watch: {
-			exclude: ['./types', '**/*.scss']
+			exclude: ['./types']
 		},
 		lib: {
 			entry: './src/main.ts',
