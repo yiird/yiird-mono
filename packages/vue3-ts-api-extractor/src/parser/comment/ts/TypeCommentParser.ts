@@ -61,6 +61,9 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
 			}
 			comment.text = node.text;
 		} else {
+			if (ts.isLiteralTypeNode(node)) {
+				comment.isLiteralType = true;
+			}
 			comment.name = NodeUtils.getText(node);
 			comment.text = comment.name;
 		}

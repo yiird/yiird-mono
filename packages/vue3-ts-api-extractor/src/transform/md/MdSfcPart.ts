@@ -116,11 +116,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 								if (type?.typeArguments) {
 									const _type = type?.typeArguments[0];
 									if (_type.associationType) {
-										_type.associations?.forEach((association) => {
-											association.getSpecialTypes().forEach((_stype) => {
-												specialTypes.add(_stype);
-											});
-										});
+										this._handleSpecialTypeWithAssociationType(_type, specialTypes);
 									} else {
 										type.getSpecialTypes().forEach((_stype) => {
 											specialTypes.add(_stype);
@@ -146,6 +142,18 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 								} else {
 									record[name] = `${propObject[name]}`;
 								}
+							} else {
+								record[name] = '';
+							}
+						} else if (name === 'values') {
+							if (prop.values && prop.values.length > 0) {
+								record[name] =
+									'`' +
+									prop.values
+										.join(',')
+										.replaceAll(/(\s*)('|"|`)(\s*)/g, '')
+										.replaceAll(',', '` , `') +
+									'`';
 							} else {
 								record[name] = '';
 							}
@@ -270,6 +278,13 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 		}
 
 		return doc;
+	}
+	private _handleSpecialTypeWithAssociationType(_type: TypeComment, specialTypes: Set<TypeComment>) {
+		_type.associations?.forEach((association) => {
+			association.getSpecialTypes().forEach((_stype) => {
+				specialTypes.add(_stype);
+			});
+		});
 	}
 
 	private _code(str: string) {

@@ -2,7 +2,7 @@ import ts, { Expression, ObjectLiteralElementLike, PropertyAssignment, SyntaxKin
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { AbstractCommentParser } from '../AbstractCommentParser';
 import { DefaultValue, PropComment } from '../basic/PropComment';
-import { AssociationType } from '../node/TypeComment';
+import { AssociationType, TypeComment } from '../node/TypeComment';
 import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 
 export class PropCommentParser extends AbstractCommentParser<PropComment> {
@@ -55,7 +55,7 @@ export class PropCommentParser extends AbstractCommentParser<PropComment> {
 		if (comment.type && comment.type.typeArguments) {
 			const _typeArg = comment.type.typeArguments[0];
 			if (_typeArg && _typeArg.associationType === AssociationType.union) {
-				comment.values = _typeArg.associations?.map((association) => association.name + '');
+				comment.values = this._handleUnionValues(_typeArg);
 			}
 		}
 
@@ -105,5 +105,17 @@ export class PropCommentParser extends AbstractCommentParser<PropComment> {
 			}
 		}
 		return comment;
+	}
+
+	private _handleUnionValues(typeArg: TypeComment) {
+		const values: string[] = [];
+		typeArg.associations?.forEach((association) => {
+			if (association.associationType === AssociationType.union) {
+				values.push(...this._handleUnionValues(association));
+			} else if (association.name) {
+				values.push(association.name);
+			}
+		});
+		return values;
 	}
 }

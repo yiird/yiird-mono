@@ -15,6 +15,7 @@ export class TypeComment extends NodeComment {
 	private _associationType?: AssociationType;
 
 	private _associations?: Array<TypeComment>;
+	private _isLiteralType?: boolean = false;
 
 	private _text?: string | undefined;
 	public get text(): string | undefined {
@@ -52,8 +53,16 @@ export class TypeComment extends NodeComment {
 		this._associations = value;
 	}
 
+	public get isLiteralType(): boolean {
+		return this._isLiteralType || false;
+	}
+
+	public set isLiteralType(value: boolean) {
+		this._isLiteralType = value;
+	}
+
 	public isBasic() {
-		if (!this.name) {
+		if (!this.name || this.isLiteralType) {
 			return true;
 		}
 		return Utils.isBasicType(this.name);
@@ -76,7 +85,7 @@ export class TypeComment extends NodeComment {
 		}
 		if (this.associations && this.associations.length > 0) {
 			this.associations.forEach((_type) => {
-				if (_type.name && !Utils.isBasicType(_type.name)) {
+				if (_type.name && !_type.isBasic()) {
 					specilTypes.push(_type);
 					specilTypes.push(..._type.getSpecialTypes());
 				}
