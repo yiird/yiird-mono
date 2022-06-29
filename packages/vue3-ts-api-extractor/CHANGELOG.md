@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.0...@yiird/vue3-ts-api-extractor@2.1.1) (2022-06-29)
+
+
+### Bug Fixes
+
+* **@yiird/vue3-ts-api-extractor:** 修复prop 可选值样式、prop 为联合类型时的提取 ([9992f1f](https://github.com/yiird/yiird-mono/commit/9992f1f76233e1b13231c18b0a4a590948da64e6))
+
+
+
+
+
 # [2.1.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.0-alpha.0...@yiird/vue3-ts-api-extractor@2.1.0) (2022-06-22)
 
 **Note:** Version bump only for package @yiird/vue3-ts-api-extractor
