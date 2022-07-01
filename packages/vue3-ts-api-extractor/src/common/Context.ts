@@ -87,7 +87,8 @@ export class Context {
 	 */
 	getNodeByName(name: string, structure: ScriptStructure): ScriptNode | undefined {
 		const node = structure.declarations.get(name);
-		if (node) return node;
+		const entryNode = structure.entries.get(name);
+		if (node || entryNode) return node || entryNode;
 		else {
 			const scriptFile = this.getScriptFile(structure.filename);
 			let target: ReferInfo | undefined;

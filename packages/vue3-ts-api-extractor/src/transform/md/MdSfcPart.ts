@@ -116,7 +116,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 									}
 								}
 								if (type?.typeArguments) {
-									const _type = type?.typeArguments[0];
+									const _type = type.typeArguments[0];
 									if (_type.associationType) {
 										this._handleSpecialTypeWithAssociationType(_type, specialTypes);
 									} else {
