@@ -32,7 +32,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 			doc += styles.line();
 			doc += styles.line();
 		}
-		doc += comment.description || '';
+		doc += styles.html(comment.description || '');
 
 		const specialTypes: Set<TypeComment> = new Set();
 
@@ -58,7 +58,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 							slot.args?.forEach((arg) => {
 								if (arg.type) {
 									if (arg.type.name) {
-										_args.push(`\`${arg.name}\` { ${arg.type.getFullname()} } ：${arg.description}`);
+										_args.push(`\`${arg.name}\` { ${arg.type.getFullname()} } ：${styles.html(arg.description || '')}`);
 										if (!arg.type.isBasic()) {
 											_specialTypes.push(arg.type);
 										}
@@ -77,6 +77,8 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 							}
 
 							record[name] = argsStr;
+						} else if (name === 'description') {
+							record[name] = styles.html(slot.description || '');
 						} else {
 							record[name] = propObject[name] ? '' + propObject[name] : '';
 						}
@@ -145,6 +147,8 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 							} else {
 								record[name] = '';
 							}
+						} else if (name === 'description') {
+							record[name] = styles.html(prop.description || '');
 						} else if (name === 'values') {
 							if (prop.values && prop.values.length > 0) {
 								record[name] =
@@ -189,7 +193,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 							event.args?.forEach((arg) => {
 								if (arg.type) {
 									if (arg.type.name) {
-										_args.push(`\`${arg.name}\` { ${arg.type.getFullname()} } ：${arg.description}`);
+										_args.push(`\`${arg.name}\` { ${arg.type.getFullname()} } ：${styles.html(arg.description || '')}`);
 										if (!arg.type.isBasic()) {
 											_specialTypes.push(arg.type);
 										}
@@ -242,14 +246,14 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 				});
 				doc += `(${_parameters.join(',')})`;
 				doc += styles.line();
-				doc += styles.t(0, `- 用法： ${method.description || ''}`);
+				doc += styles.t(0, `- 用法： ${styles.html(method.description || '')}`);
 
 				if (method.parameters && method.parameters.length > 0) {
 					doc += styles.line();
 					doc += styles.t(0, `- 参数：`);
 					method.parameters?.forEach((parameter) => {
 						doc += styles.line();
-						doc += styles.t(1, `- ${parameter.name}： ${parameter.description || ''}`);
+						doc += styles.t(1, `- ${parameter.name}： ${styles.html(parameter.description || '')}`);
 					});
 				}
 

@@ -1,3 +1,4 @@
+import { escape } from 'lodash-es';
 import isString from 'lodash-es/isString';
 import { markdownTable } from 'markdown-table';
 import stringWidth from 'string-width';
@@ -27,6 +28,7 @@ export const MdStyles = {
 	normal: (str: string) => str,
 	line: () => `\n`,
 	hr: () => `${MdStyles.line()}---${MdStyles.line()}`,
+	html: (str: string) => escape(str).replaceAll('\n', '<br/>'),
 	quote: (str: string) => `> ${str}`,
 	important: (str: string) => `\`${str}\``,
 	code: (str: string, lang: string) => `\`\`\`${lang}${MdStyles.line()}${str}${MdStyles.line()}\`\`\``,

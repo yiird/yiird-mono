@@ -20,7 +20,7 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
 
 		if (comment.description) {
 			doc += styles.line();
-			doc += styles.t(0, `- 描述： ${comment.description}`);
+			doc += styles.t(0, `- 描述： ${styles.html(comment.description)}`);
 		}
 
 		if (comment.associationType) {
@@ -46,7 +46,7 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
 					if (type) {
 						doc += styles.line();
 						const typeName = type.getFullname();
-						doc += styles.t(1, `- \`${property.name}\` { ${typeName || ''} } : ${property.description}`);
+						doc += styles.t(1, `- \`${property.name}\` { ${typeName || ''} } : ${styles.html(property.description || '')}`);
 					}
 				});
 			}
