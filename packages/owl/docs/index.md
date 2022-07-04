@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  logo: /images/logo.jpg
+  logo: /images/logo.png
   name: Owl.js
   text: Vue & vite & Typescript.
   tagline: 加油开发中...！💪💪💪

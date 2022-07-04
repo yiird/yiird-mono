@@ -9,6 +9,7 @@ import ChooseComponent from './code/ChooseComponent.vue';
 import Example from './code/Example.vue';
 import Layout from './layout/Layout.vue';
 import './style.scss';
+
 export default {
 	...DefaultTheme,
 	Layout,

@@ -2,6 +2,7 @@
 @import "./normalize";
 
 html,body{
-  font-family: var(--owl-font-family);
-  font-size: var(--owl-font-rem-base-size);
+  font-family: var(--o-font-family);
+  font-size: var(--o-font-rem-base-size);
+  color: red;
 }

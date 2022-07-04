@@ -1,20 +1,35 @@
 <template>
-	<div class="example" :style="{ width: width }">
-		<div class="example-render-wrap" :style="{ height: iframeHeight }">
-			<iframe ref="codeRender" :src="fullExampleSrc" scrolling="no"></iframe>
+	<div
+		class="example"
+		:style="{ width: width }">
+		<div
+			class="example-render-wrap"
+			:style="{ minHeight: obtainIframeHeight, height: '0px' }">
+			<component :is="name"></component>
+			<!-- <iframe
+				ref="codeRender"
+				:src="fullExampleSrc"
+				scrolling="no"
+				:style="{ height: '100%' }"></iframe> -->
 		</div>
-		<div v-if="slots.default" class="example-description-wrap">
+		<div
+			v-if="slots.default"
+			class="example-description-wrap">
 			<div class="example-description"><slot></slot></div>
 		</div>
 
-		<div v-show="ifShowCode" class="example-code-warp">
+		<div
+			v-show="ifShowCode"
+			class="example-code-warp">
 			<div class="language-vue">
 				<span class="copy"></span>
 				<pre ref="codeContainer"></pre>
 			</div>
 		</div>
 		<div class="example-footer-warp">
-			<font-awesome-icon :icon="faCode" fixed-width></font-awesome-icon>
+			<font-awesome-icon
+				:icon="faCode"
+				fixed-width></font-awesome-icon>
 			<span @click="ifShowCode = !ifShowCode"> 查看源码</span>
 		</div>
 	</div>
@@ -22,11 +37,12 @@
 
 <script lang="ts">
 import { faCode } from '@fortawesome/free-solid-svg-icons';
+import { computed } from '@vue/reactivity';
 
 import axios from 'axios';
 import { getHighlighter, setCDN } from 'shiki';
 import { withBase } from 'vitepress';
-import { defineComponent, onMounted, ref, watchEffect } from 'vue';
+import { defineComponent, PropType, ref, watchEffect } from 'vue';
 
 setCDN(withBase('/shiki/'));
 
@@ -39,10 +55,16 @@ export default defineComponent({
 		width: {
 			type: String,
 			default: '100%'
+		},
+		iframeHeight: {
+			type: [Number, String] as PropType<string | number>,
+			default: 'auto'
 		}
 	},
 	setup(props, { slots }) {
-		const iframeHeight = ref('auto');
+		const obtainIframeHeight = computed(() => {
+			return props.iframeHeight;
+		});
 		const ifShowCode = ref(false);
 		const codeText = ref<string>('');
 		const prettierCode = ref<string>();
@@ -50,36 +72,31 @@ export default defineComponent({
 		const codeRender = ref<HTMLIFrameElement>();
 		const isDark = ref(localStorage.getItem('vitepress-theme-appearance') === 'dark');
 
-		onMounted(() => {
-			window.addEventListener('click', (event) => {
-				if ((event.target as HTMLDivElement).classList.contains('VPSwitchAppearance')) {
-					const appearance = localStorage.getItem('vitepress-theme-appearance');
-					if (appearance === 'dark') {
-						isDark.value = true;
-					} else {
-						isDark.value = false;
-					}
-				}
-			});
-			window.addEventListener(
-				'message',
-				(event) => {
-					const iframe = codeRender.value;
-					const contentWindow = iframe?.contentWindow;
-					if (event.data === 'ready' && iframe) {
-						if (contentWindow) {
-							contentWindow.postMessage(props.name, '*');
-							const scrollHeight = contentWindow.document.body.scrollHeight;
-							if (scrollHeight && scrollHeight > 0) {
-								console.log('scrollHeight:', scrollHeight);
-								iframeHeight.value = scrollHeight + 'px';
-							}
-						}
-					}
-				},
-				false
-			);
-		});
+		// onMounted(() => {
+		// 	window.addEventListener('click', (event) => {
+		// 		if ((event.target as HTMLDivElement).classList.contains('VPSwitchAppearance')) {
+		// 			const appearance = localStorage.getItem('vitepress-theme-appearance');
+		// 			if (appearance === 'dark') {
+		// 				isDark.value = true;
+		// 			} else {
+		// 				isDark.value = false;
+		// 			}
+		// 		}
+		// 	});
+		// 	window.addEventListener(
+		// 		'message',
+		// 		(event) => {
+		// 			const iframe = codeRender.value;
+		// 			const contentWindow = iframe?.contentWindow;
+		// 			if (event.data === 'ready' && iframe) {
+		// 				if (contentWindow) {
+		// 					contentWindow.postMessage(props.name, '*');
+		// 				}
+		// 			}
+		// 		},
+		// 		false
+		// 	);
+		// });
 
 		watchEffect(() => {
 			const preRE = /^<pre.*?>/;
@@ -108,24 +125,26 @@ export default defineComponent({
 		// 	ifShowSeeSource.value = !ifShowSeeSource.value;
 		// }, 2000);
 
-		return { slots, ifShowCode, faCode, iframeHeight, codeContainer, codeRender, fullExampleSrc };
+		return { slots, ifShowCode, faCode, obtainIframeHeight, codeContainer, codeRender, fullExampleSrc };
 	}
 });
 </script>
 
-<style lang="scss" scoped>
+<style
+	lang="scss"
+	scoped>
 .example {
+	margin-top: 1rem;
 	border: 1px solid var(--vp-c-divider-light);
 	border-radius: 5px;
-	iframe {
+	/* iframe {
 		border: 0;
 		width: 100%;
 		height: 100%;
 		display: block;
-	}
+	} */
 	.example-render-wrap {
 		overflow: hidden;
-		padding: 5px;
 	}
 	.example-description-wrap {
 		font-size: 0.9rem;

@@ -1,8 +1,281 @@
 @import '../../theme/styles/main.scss';
 
-.o-button{
-    transform: rotate(20deg);
-    width: rem(16px);    
-    color: var(--o-button-color,var(--color));
-    font-size: 4rem;
+$--button-size: _var(line-height);
+
+$--button-color: var(--o-button-bg-color);
+
+$--button-normal-font-size: 1rem;
+$--button-normal-radus: 3px;
+
+$--button-size-map: (
+	xxs: (
+		0.5,
+		//height
+		0.7rem,
+		//font-size
+		0.05 //padding-left & padding-right
+	),
+	xs: (
+		0.7,
+		0.7rem,
+		0.1
+	),
+	sm: (
+		0.8,
+		0.8rem,
+		0.2
+	),
+	md: (
+		1,
+		1rem,
+		0.5
+	),
+	lg: (
+		1.5,
+		1.5rem,
+		0.5
+	),
+	xl: (
+		2,
+		2rem,
+		0.8
+	),
+	xxl: (
+		3,
+		3rem,
+		1
+	),
+	1x: (
+		1,
+		1rem,
+		0.5
+	),
+	2x: (
+		1.5,
+		1.5rem,
+		1
+	),
+	3x: (
+		2,
+		2rem,
+		1
+	),
+	4x: (
+		2.5,
+		2.5rem,
+		1.5
+	),
+	5x: (
+		3,
+		3rem,
+		2
+	),
+	6x: (
+		3.5,
+		3.5rem,
+		2.5
+	),
+	7x: (
+		4,
+		4rem,
+		3
+	),
+	8x: (
+		4.5,
+		4.5rem,
+		3.5
+	),
+	9x: (
+		5,
+		5rem,
+		4
+	),
+	10x: (
+		5.5,
+		5.5rem,
+		4.5
+	)
+);
+
+@mixin button-size($size-map) {
+	@each $modifier, $item in $size-map {
+		$-height-per: nth($item, 1);
+		$-font-size: nth($item, 2);
+		$-padding-per: nth($item, 3);
+		@include m('size-' + $modifier) {
+			height: calc($-height-per * $--button-size);
+			padding: 0 calc($-padding-per * $--button-size);
+			font-size: $-font-size;
+			@if $-font-size < 1.5rem {
+				zoom: 0.9;
+			}
+		}
+	}
+}
+
+@mixin button-shape($size-map) {
+	@include m('shape-circle') {
+		@each $modifier, $item in $size-map {
+			$-height-per: nth($item, 1);
+			$-font-size: nth($item, 2);
+			$-padding-per: nth($item, 3);
+			$r: calc($-padding-per * $--button-size + $-height-per * $--button-size);
+			&.#{$B} {
+				@include m(#{'size-' + $modifier}) {
+					width: $r;
+					height: $r;
+					border-radius: 50%;
+					padding: 0;
+				}
+			}
+		}
+	}
+
+	@include m('shape-square') {
+		@each $modifier, $item in $size-map {
+			$-height-per: nth($item, 1);
+			$-font-size: nth($item, 2);
+			$-padding-per: nth($item, 3);
+			$r: calc($-padding-per * $--button-size + $-height-per * $--button-size);
+			&.#{$B} {
+				@include m(#{'size-' + $modifier}) {
+					width: $r;
+					height: $r;
+					border-radius: 0.3rem;
+					padding: 0;
+				}
+			}
+		}
+	}
+
+	@include m('shape-ellipse') {
+		@each $modifier, $item in $size-map {
+			$-height-per: nth($item, 1);
+			$-font-size: nth($item, 2);
+			$-padding-per: nth($item, 3);
+			$r: calc(($-height-per * $--button-size) / 2);
+			&.#{$B} {
+				@include m(#{'size-' + $modifier}) {
+					border-radius: $r;
+				}
+			}
+		}
+	}
+
+	@include m('shape-rectangle') {
+		@each $modifier, $item in $size-map {
+			$-height-per: nth($item, 1);
+			$-font-size: nth($item, 2);
+			$-padding-per: nth($item, 3);
+			$r: calc(($-height-per * $--button-size) / 8);
+			&.#{$B} {
+				@include m(#{'size-' + $modifier}) {
+					border-radius: $r;
+				}
+			}
+		}
+	}
+}
+
+@include b(button) {
+	display: inline-block;
+	outline: none;
+	user-select: none;
+	touch-action: manipulation;
+	color: var(--o-button-text-color);
+	background-color: rgba($--button-color, 1);
+	border-color: #eee;
+	opacity: 0.9;
+	font-weight: normal;
+	font-size: 1rem;
+	text-decoration: none;
+	text-align: center;
+	margin: 0;
+	appearance: none;
+	cursor: pointer;
+	box-sizing: border-box;
+	transition-property: all;
+	transition-duration: 0.3s;
+	border: none;
+	white-space: nowrap;
+	vertical-align: middle;
+
+	&:visited {
+		color: #666;
+	}
+	&:hover,
+	&:focus {
+		outline: none;
+		opacity: 0.8;
+	}
+
+	&:active,
+	&.active,
+	&.is-active {
+		opacity: 1;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+		text-decoration: none;
+		transition-duration: 0s;
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+	}
+
+	@include button-size($--button-size-map);
+
+	@include button-shape($--button-size-map);
+
+	@include m(state-disabled) {
+		top: 0 !important;
+		background: #eee !important;
+		border: 1px solid #ddd !important;
+		text-shadow: 0 1px 1px white !important;
+		color: #ccc !important;
+		cursor: not-allowed !important;
+		appearance: none !important;
+		-webkit-box-shadow: none !important;
+		box-shadow: none !important;
+		opacity: 0.8 !important;
+	}
+
+	@include m(mode-light) {
+		background-color: rgba($--button-color, 0.2);
+		border: 1px solid rgba($--button-color, 1);
+		color: rgba($--button-color, 1);
+	}
+
+	@include m(mode-empty) {
+		background-color: transparent;
+		border: 2px solid rgba($--button-color, 1);
+		color: rgba($--button-color, 1);
+	}
+
+	@include m(mode-link) {
+		background-color: transparent;
+		color: rgba($--button-color, 1);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		box-shadow: none !important;
+	}
+	
+
+	// @include m(mode-apple) {
+	// 	letter-spacing: -0.022em;
+	// 	background-color: unset;
+	// 	background-image: linear-gradient(180deg,rgba($--button-color,.5), rgba($--button-color,1));
+	// 	border: 1px solid rgba($--button-color, 1);
+
+	// 	&:before {
+	// 		background-color: initial;
+	// 		background-image: linear-gradient(#fff 0, rgba($--button-color,0) 100%);
+	// 		content: "";
+	// 		height: 50%;
+	// 		opacity: .5;
+	// 	  }
+
+	// 	  &:hover {
+	// 		box-shadow: rgba($--button-color,0.2) 0 3px 15px inset, rgba($--button-color,0.1) 0 3px 5px, rgba($--button-color,0.1) 0 10px 13px;
+	// 		transform: scale(1.05);
+	// 	  }
+	// }
+
+
 }

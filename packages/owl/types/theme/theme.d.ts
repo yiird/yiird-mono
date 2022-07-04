@@ -1,5 +1,6 @@
 import { InjectionKey, UnwrapNestedRefs } from 'vue';
-export declare type Variables = {
+export declare type Variables = Record<string, string | undefined>;
+export declare type GlobalVariables = {
     fontFamily: string;
     fontRemBaseSize: string;
     /** 文字颜色 */
@@ -22,20 +23,15 @@ export declare type Variables = {
     /** 背景色 */
     colorBgOpaque: string;
     colorBgTransparent: string;
-    /** T-shirt尺寸 最小值 */
-    sizeXXS: string;
-    /** 每个尺寸级别跨度 */
-    sizeStep: string;
+    lineHeight: string;
 };
-export declare class Theme<Var extends Record<string, string> = {}> {
+export declare class Theme<V extends Variables> {
+    private __originVars;
     /**
      * css变量
      */
     private _vars;
-    /**
-     * css前缀
-     */
-    private _prefix;
+    private _varNames;
     /**
      * 模块类型
      */
@@ -48,17 +44,17 @@ export declare class Theme<Var extends Record<string, string> = {}> {
      *
      * @param prefix var前缀
      * @param vars 主题变量
-     * @param mountedDom 被挂在的dom节点
      */
-    constructor(prefix: string, componentType: string, vars?: Var);
-    get vars(): UnwrapNestedRefs<Var>;
-    get prefix(): string;
-    getVar(name: keyof Var): string;
-    setVar(name: keyof Var, value: string): void;
-    /**
-     * 挂在皮肤到节点
-     * @param mountedDom 目标节点
-     */
-    mountTheme(mountedDom: HTMLElement): void;
+    constructor(componentType: string, vars?: V);
+    get originVars(): UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined; }>;
+    get vars(): UnwrapNestedRefs<object>;
+    get namedVars(): Record<string, string>;
+    get varNames(): Record<string, string>;
+    mount(dom?: Document | HTMLElement): void;
 }
-export declare const ThemeKey: InjectionKey<Theme<{}>>;
+export declare const GlobalThemeKey: InjectionKey<Theme<GlobalVariables>>;
+export declare const useTheme: <V extends Variables>(componentType: string, vars?: V | undefined) => {
+    originVars: UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined; }>;
+    vars: UnwrapNestedRefs<Record<string, string | undefined>>;
+    varNames: Record<string, string>;
+};

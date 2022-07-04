@@ -1,9 +1,16 @@
 import { PropType } from 'vue';
-import { ButtonColor, ButtonMode, ButtonShape, ButtonSize } from './type';
-export declare const props: {
+import { NumberSize, TshirtSize } from '../../common/type';
+export declare type ButtonShape = `rectangle` | `circle` | `square` | `ellipse`;
+export declare type ButtonColor = `info` | `primary` | `success` | `warning` | `danger`;
+export declare type ButtonSize = TshirtSize | NumberSize;
+export declare type ButtonMode = 'normal' | 'light' | 'empty' | 'link' | 'apple';
+export declare type ButtonVariables = {
+    bgColor: string;
+    textColor: string;
+};
+export declare const ButtonProps: {
     /**
      * 尺寸
-     * @values `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl`
      */
     readonly size: {
         readonly type: PropType<ButtonSize>;
@@ -14,7 +21,13 @@ export declare const props: {
      */
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "default";
+        readonly default: "info";
+    };
+    /**
+     * 文本颜色
+     */
+    readonly textColor: {
+        readonly type: PropType<string>;
     };
     /**
      * 形状可选
@@ -35,6 +48,7 @@ export declare const props: {
      */
     readonly mode: {
         readonly type: PropType<ButtonMode>;
+        readonly default: "normal";
     };
     readonly id: {
         type: StringConstructor;
@@ -44,14 +58,10 @@ export declare const props: {
         default: boolean;
     };
 };
-export declare const cssVars: {
-    readonly a: "1";
-    readonly b: "b";
-};
-export declare const bemKeys: {
-    readonly modifiers: readonly ["shape-rectangle", "shape-circle", "shape-square", "shape-ellipse", "state-hover", "state-active", "state-disabled"];
-    readonly elements: {
-        readonly text: readonly [];
-        readonly icon: readonly [];
+export declare type ButtonBemKeys = {
+    modifiers: 'shape-rectangle' | 'shape-circle' | 'shape-square' | 'shape-ellipse' | 'mode-light' | 'mode-empty' | 'mode-link' | 'state-hover' | 'state-active' | 'state-disabled';
+    elements: {
+        text: string;
+        icon: string;
     };
 };

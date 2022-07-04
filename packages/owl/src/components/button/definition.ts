@@ -1,8 +1,19 @@
 import { PropType } from 'vue';
-import { BaseProps } from '../../common/logic';
-import { ButtonColor, ButtonMode, ButtonShape, ButtonSize } from './type';
+import { BaseProps } from '../../common/prefab';
 
-export const props = {
+import { NumberSize, TshirtSize } from '../../common/type';
+
+export type ButtonShape = `rectangle` | `circle` | `square` | `ellipse`;
+export type ButtonColor = `info` | `primary` | `success` | `warning` | `danger`;
+export type ButtonSize = TshirtSize | NumberSize;
+export type ButtonMode = 'normal' | 'light' | 'empty' | 'link' | 'apple';
+
+export type ButtonVariables = {
+	bgColor: string;
+	textColor: string;
+};
+
+export const ButtonProps = {
 	...BaseProps,
 	/**
 	 * 尺寸
@@ -16,7 +27,13 @@ export const props = {
 	 */
 	color: {
 		type: String as PropType<ButtonColor>,
-		default: 'default'
+		default: 'info'
+	},
+	/**
+	 * 文本颜色
+	 */
+	textColor: {
+		type: String as PropType<string>
 	},
 	/**
 	 * 形状可选
@@ -36,19 +53,25 @@ export const props = {
 	 * 模式
 	 */
 	mode: {
-		type: String as PropType<ButtonMode>
+		type: String as PropType<ButtonMode>,
+		default: 'normal'
 	}
 } as const;
 
-export const cssVars = {
-	a: '1',
-	b: 'b'
-} as const;
-
-export const bemKeys = {
-	modifiers: ['shape-rectangle', 'shape-circle', 'shape-square', 'shape-ellipse', 'state-hover', 'state-active', 'state-disabled'],
+export type ButtonBemKeys = {
+	modifiers:
+		| 'shape-rectangle'
+		| 'shape-circle'
+		| 'shape-square'
+		| 'shape-ellipse'
+		| 'mode-light'
+		| 'mode-empty'
+		| 'mode-link'
+		| 'state-hover'
+		| 'state-active'
+		| 'state-disabled';
 	elements: {
-		text: [],
-		icon: []
-	}
-} as const;
+		text: string;
+		icon: string;
+	};
+};

@@ -1,2 +1,2 @@
-import { Theme, Variables } from './theme';
-export declare const ThemeNormal: Theme<Variables>;
+import { GlobalVariables, Theme } from './theme';
+export declare const ThemeNormal: Theme<GlobalVariables>;

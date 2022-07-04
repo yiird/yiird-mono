@@ -1,7 +1,7 @@
 import { kebabCase } from 'lodash-es';
-import { computed, ExtractPropTypes, getCurrentInstance, inject, nextTick, ref, Ref, SetupContext } from 'vue';
-import { Theme, ThemeKey } from '../theme/theme';
-import { BemClasses, BemKeys } from './bem';
+import { computed, ExtractPropTypes, getCurrentInstance, nextTick, ref, Ref, SetupContext } from 'vue';
+import { Variables } from '../theme/theme';
+import { BemKeys } from './bem';
 
 export const BaseProps = {
 	id: {
@@ -16,29 +16,25 @@ export const BaseProps = {
 /**
  * 组件setup预制方法参数定义
  */
-export type OCommonOptions<P, V extends Record<string, string>, B extends BemKeys> = {
+export type OCommonOptions<P> = {
 	props: Readonly<ExtractPropTypes<P>>;
 	ctx: SetupContext;
-	bemKeys: B;
-	cssVars?: V;
 };
 
-export type OCommonPrefab<V extends Record<string, string>, B extends BemKeys> = {
+export type OCommonPrefab = {
 	id__: string;
 	cType__: string;
 	display__: Ref<boolean>;
 	refresh__: Ref<boolean>;
-	bem__: BemClasses<B>;
-	theme__: Theme<V>;
 	domRefresh: () => void;
 };
-export const useCommon = <V extends Record<string, string>, B extends BemKeys>(options: OCommonOptions<typeof BaseProps, V, B>): OCommonPrefab<V, B> => {
-	const { props, cssVars, bemKeys, ctx } = options;
+export const usePrefab = <V extends Variables, B extends BemKeys>(options: OCommonOptions<typeof BaseProps>): OCommonPrefab => {
+	const { props, ctx } = options;
 	//获取组件对象实例
 	const internalInstance = getCurrentInstance();
 
 	if (!internalInstance || !internalInstance.type.name) {
-		return {} as OCommonPrefab<V, B>;
+		return {} as OCommonPrefab;
 	}
 
 	//生成组件主要样式类名
@@ -51,12 +47,6 @@ export const useCommon = <V extends Record<string, string>, B extends BemKeys>(o
 	const display__ = computed(() => {
 		return (props.display as boolean) ?? true;
 	});
-
-	const globalTheme = inject(ThemeKey);
-
-	const theme__ = new Theme<V>(globalTheme?.prefix || 'o', cType__, cssVars);
-
-	const bem__ = new BemClasses(globalTheme?.prefix || 'o', cType__, bemKeys);
 
 	//刷新状态
 	const refresh__ = ref(true);
@@ -77,10 +67,8 @@ export const useCommon = <V extends Record<string, string>, B extends BemKeys>(o
 		id__,
 		cType__,
 		display__,
-		theme__,
 		refresh__,
-		domRefresh,
-		bem__
+		domRefresh
 	};
 };
 

@@ -8,6 +8,12 @@ declare module '@vue/runtime-core' {
 	export interface GlobalComponents {
 		OButton: typeof import('./types/components/button/o-button')['default'];
 		OIcon: typeof import('./types/components/icon/o-icon')['default'];
+		OLayout: typeof import('./types/components/layout/o-layout')['default'];
+		OHeader: typeof import('./types/components/layout/o-header')['default'];
+		OFooter: typeof import('./types/components/layout/o-footer')['default'];
+		OMain: typeof import('./types/components/layout/o-main')['default'];
+		OSiderRight: typeof import('./types/components/layout/o-sider-right')['default'];
+		OSiderLeft: typeof import('./types/components/layout/o-sider-left')['default'];
 	}
 }
 

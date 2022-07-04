@@ -1,4 +1,3 @@
-import { Theme, Variables } from './theme';
-
-export { Theme };
-export type { Variables };
+export * from './theme';
+export * from './theme-normal';
+export {};

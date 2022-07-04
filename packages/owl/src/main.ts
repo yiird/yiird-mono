@@ -1,24 +1,32 @@
-import { camelCase, forEach, upperFirst } from 'lodash-es';
+import { forEach } from 'lodash-es';
 import { App, Plugin } from 'vue';
-import * as components from './components';
-import { Theme, ThemeKey } from './theme/theme';
+import * as components from './components/addones';
+import { addIcons, IconDefinitionOrPack } from './components/icon';
+import { GlobalThemeKey, GlobalVariables, Theme } from './theme/theme';
 import { ThemeNormal } from './theme/theme-normal';
 
-const createUI = (theme: Theme): Plugin => {
+export type OwlOptions = {
+	icons?: Array<IconDefinitionOrPack>;
+};
+
+const createUI = (theme: Theme<GlobalVariables>): Plugin => {
 	theme = theme || ThemeNormal;
 	return {
-		install(app: App) {
-			forEach(components, (component, _name) => {
-				const name = upperFirst(camelCase(theme?.prefix + ' ' + component.name || _name));
-				app.component(name, component);
+		install(app: App, options?: OwlOptions) {
+			forEach(components, (component) => {
+				app.component(component.name, component);
 			});
-			app.provide(ThemeKey, theme);
+
+			if (options?.icons) {
+				addIcons(...options.icons);
+			}
+
+			app.provide(GlobalThemeKey, theme);
+			theme.mount();
 		}
 	};
 };
 
-export * from './components/';
-export * from './components/types';
+export * from './components';
 export * from './theme';
-export { ThemeNormal } from './theme/theme-normal';
 export { createUI };

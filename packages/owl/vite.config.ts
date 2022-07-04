@@ -16,7 +16,7 @@ export default defineConfig({
 			outputDir: 'types',
 			staticImport: true,
 			cleanVueFileName: true,
-			exclude: ['**/env.d.ts', '**/client.d.ts']
+			exclude: ['**/env.d.ts', '**/client.d.ts', 'docs/**']
 		})
 	],
 	esbuild: {
@@ -33,7 +33,7 @@ export default defineConfig({
 			fileName: (format) => `owl.${format}.js`
 		},
 		rollupOptions: {
-			external: ['vue'],
+			external: ['vue', '@yiird/owl'],
 			output: {
 				globals: {
 					vue: 'Vue'

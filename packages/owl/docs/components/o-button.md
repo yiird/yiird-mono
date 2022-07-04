@@ -10,23 +10,21 @@ Button使用
 
 ## Props
 
-| 名称     |   类型  | 必填 | 可选值                                                         | 默认值    | 描述         |
-| :------- | :-----: | :--: | :------------------------------------------------------------- | :-------- | :----------- |
-| id       |  String |      |                                                                |           |              |
-| display  | Boolean |      |                                                                | true      |              |
-| size     |  String |      | `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl` , `1x` , `2x` | md        | 尺寸         |
-| color    |  String |      | `default` , `primary` , `success` , `warning` , `danger`       | default   | 颜色         |
-| shape    |  String |      | `rectangle` , `circle` , `square` , `ellipse`                  | rectangle | 形状可选     |
-| disabled | Boolean |      |                                                                | false     | 是否禁用按钮 |
-| mode     |  String |      | `light` , `empty` , `link`                                     |           | 模式         |
+| 名称      |   类型  | 必填 | 可选值                                                                                                                  | 默认值    | 描述         |
+| :-------- | :-----: | :--: | :---------------------------------------------------------------------------------------------------------------------- | :-------- | :----------- |
+| id        |  String |      |                                                                                                                         |           |              |
+| display   | Boolean |      |                                                                                                                         | true      |              |
+| size      |  String |      | `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` | md        | 尺寸         |
+| color     |  String |      | `info` , `primary` , `success` , `warning` , `danger`                                                                   | info      | 颜色         |
+| textColor |  String |      |                                                                                                                         |           | 文本颜色     |
+| shape     |  String |      | `rectangle` , `circle` , `square` , `ellipse`                                                                           | rectangle | 形状可选     |
+| disabled  | Boolean |      |                                                                                                                         | false     | 是否禁用按钮 |
+| mode      |  String |      | `normal` , `light` , `empty` , `link` , `apple`                                                                         | normal    | 模式         |
 
 ## Methods
 
 ### domRefresh()
 - 用法： 刷新组件
-
-### domRefresh2()
-- 用法： Button使用
 
 ### doClick()
 - 用法： Button使用

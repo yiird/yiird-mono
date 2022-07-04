@@ -1,7 +1,10 @@
 import { forEach, kebabCase } from 'lodash-es';
-import { InjectionKey, reactive, UnwrapNestedRefs, watchEffect } from 'vue';
+import { InjectionKey, nextTick, reactive, UnwrapNestedRefs, watchEffect } from 'vue';
 
-export type Variables = {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export type Variables = Record<string, string | undefined>;
+
+export type GlobalVariables = {
 	// 字体
 	fontFamily: string;
 	// 基础字体大小
@@ -33,22 +36,20 @@ export type Variables = {
 	colorBgTransparent: string;
 
 	/*----------尺寸-----------*/
-	/** T-shirt尺寸 最小值 */
-	sizeXXS: string;
-	/** 每个尺寸级别跨度 */
-	sizeStep: string;
+
+	/*----------高度-----------*/
+	lineHeight: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export class Theme<Var extends Record<string, string> = {}> {
+export class Theme<V extends Variables> {
+	private __originVars: UnwrapNestedRefs<{
+		-readonly [key in keyof V]?: string;
+	}>;
 	/**
 	 * css变量
 	 */
-	private _vars: UnwrapNestedRefs<Var>;
-	/**
-	 * css前缀
-	 */
-	private _prefix: string;
+	private _vars: Record<string, string | undefined> = reactive({});
+	private _varNames: Record<string, string> = Object.create({});
 	/**
 	 * 模块类型
 	 */
@@ -62,54 +63,79 @@ export class Theme<Var extends Record<string, string> = {}> {
 	 *
 	 * @param prefix var前缀
 	 * @param vars 主题变量
-	 * @param mountedDom 被挂在的dom节点
 	 */
-	constructor(prefix: string, componentType: string, vars?: Var) {
-		this._prefix = prefix;
+	constructor(componentType: string, vars?: V) {
+		this.__originVars = vars ? reactive(vars) : reactive(Object.create({}));
 		this._componentType = componentType;
-		this._keyPrefix = `--${this._prefix}-${this._componentType}`;
-		const _vars: Var = {} as Var;
-		forEach(vars, (v, k) => {
-			Object.defineProperty(_vars, `${this._keyPrefix}-${kebabCase(k)}`, {
-				value: v,
-				writable: true,
-				enumerable: true,
-				configurable: true
-			});
-		});
-		this._vars = reactive(_vars as Var);
+		this._keyPrefix = `--${this._componentType}`;
+
+		watchEffect(
+			() => {
+				forEach(this.__originVars, (value, name) => {
+					const varName = `${this._keyPrefix}-${kebabCase(name.toString())}`;
+					this._vars[varName] = value;
+					this._varNames[name] = varName;
+				});
+			},
+			{
+				flush: 'sync'
+			}
+		);
 	}
 
-	get vars(): UnwrapNestedRefs<Var> {
+	public get originVars() {
+		return this.__originVars;
+	}
+
+	public get vars(): UnwrapNestedRefs<object> {
 		return this._vars;
 	}
 
-	get prefix() {
-		return this._prefix;
+	public get namedVars() {
+		return this._varNames;
 	}
 
-	getVar(name: keyof Var) {
-		return this._vars[`${this._keyPrefix}-${kebabCase(name.toString())}`];
+	public get varNames() {
+		return this._varNames;
 	}
 
-	setVar(name: keyof Var, value: string) {
-		Object.assign(this._vars, {
-			[`${this._keyPrefix}-${kebabCase(name.toString())}`]: value
-		});
-	}
+	mount(dom?: Document | HTMLElement) {
+		nextTick(() => {
+			watchEffect(
+				() => {
+					if (!dom) {
+						dom = globalThis.document;
+					}
+					if (dom) {
+						if (dom instanceof Document) {
+							const cssList = [];
+							cssList.push(':root{\n');
+							forEach(this.vars, (value, name) => {
+								cssList.push(`${name}:${value};\n`);
+							});
+							cssList.push('}\n');
+							const cssText = cssList.join('');
 
-	/**
-	 * 挂在皮肤到节点
-	 * @param mountedDom 目标节点
-	 */
-	mountTheme(mountedDom: HTMLElement) {
-		watchEffect(() => {
-			const vars = this._vars;
-			const varKeys = Object.keys(vars);
-			for (let i = 0; i < varKeys.length; i++) {
-				const varKey = varKeys[i];
-				mountedDom.style.setProperty(varKey, this._vars[varKey]);
-			}
+							const themeStyleElement = dom.querySelector<HTMLStyleElement>('style[role="owl-theme"]');
+							if (themeStyleElement) {
+								themeStyleElement.textContent = cssText;
+							} else {
+								const styleTag = dom.createElement('style');
+								styleTag.setAttribute('role', 'owl-theme');
+								styleTag.textContent = cssText;
+								dom.head.insertAdjacentElement('afterbegin', styleTag);
+							}
+						} else if (dom instanceof HTMLElement) {
+							forEach(this.vars, (value, name) => {
+								(dom as HTMLElement).style.setProperty(name, value);
+							});
+						}
+					}
+				},
+				{
+					flush: 'pre'
+				}
+			);
 		});
 	}
 }
@@ -134,4 +160,29 @@ export class Theme<Var extends Record<string, string> = {}> {
 // 	return config;
 // };
 
-export const ThemeKey = Symbol() as InjectionKey<Theme>;
+export const GlobalThemeKey = Symbol() as InjectionKey<Theme<GlobalVariables>>;
+
+export const useTheme = <V extends Variables>(componentType: string, vars?: V) => {
+	const theme: {
+		originVars: UnwrapNestedRefs<{
+			-readonly [key in keyof V]?: string;
+		}>;
+		vars: UnwrapNestedRefs<Record<string, string | undefined>>;
+		varNames: Record<string, string>;
+	} = {
+		originVars: vars ? reactive(vars) : reactive(Object.create({})),
+		vars: reactive({}),
+		varNames: {}
+	};
+
+	const keyPrefix = `--${componentType}`;
+
+	watchEffect(() => {
+		forEach(theme.originVars, (value, name) => {
+			const varName = `${keyPrefix}-${kebabCase(name.toString())}`;
+			theme.vars[varName] = value;
+			theme.varNames[name] = varName;
+		});
+	});
+	return theme;
+};

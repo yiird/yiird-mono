@@ -1,43 +1,83 @@
 <template>
-	<button v-show="display__" v-if="refresh__" :id="id__" :class="block" :style="{ ...theme__?.vars }">
+	<button
+		v-show="display__"
+		v-if="refresh__"
+		:id="id__"
+		:class="block"
+		:disabled="disabled"
+		:style="{ ...theme.vars }">
 		<!-- 默认插槽 -->
-		<slot>dd</slot>
-		<span :class="elements.text"></span>
+		<slot></slot>
 	</button>
 </template>
 
 <script lang="ts">
 import { computed } from '@vue/reactivity';
-import { defineComponent, watchEffect } from 'vue';
-import { useCommon } from '../../common/logic';
-import { bemKeys, cssVars, props } from './definition';
+import { capitalize } from 'lodash-es';
+import { defineComponent, inject, watchEffect } from 'vue';
+import { BemClasses } from '../../common/bem';
+import { usePrefab } from '../../common/prefab';
+import { GlobalThemeKey, Theme } from '../../theme';
+import { ButtonBemKeys, ButtonProps, ButtonVariables } from './definition';
 
 /**
  * Button使用
  * @name OButton
  */
 export default defineComponent({
-	name: 'Button',
-	props: props,
+	name: 'OButton',
+	props: ButtonProps,
 	setup(props, ctx) {
-		const prefab = useCommon({ props, ctx, bemKeys, cssVars });
-		const { bem__, theme__, domRefresh: domRefresh2 } = prefab;
-		const block = bem__.block;
-		const elements = bem__.elements;
+		const prefab = usePrefab({ props, ctx });
+		const { cType__ } = prefab;
 
-		const shapeRef = computed(() => {
+		const globalTheme = inject(GlobalThemeKey);
+
+		const theme = new Theme<ButtonVariables>(cType__);
+
+		const bem = new BemClasses<ButtonBemKeys>(cType__);
+
+		const obtainBgColor = computed(() => {
+			const color = props.color;
+			const key = `color${capitalize(color)}`;
+			return globalTheme?.varNames[key];
+		});
+
+		const obtainTextColor = computed(() => {
+			return props.textColor || 'white';
+		});
+
+		const block = bem.block;
+		const elements = bem.elements;
+
+		const obtainShape = computed(() => {
 			return 'shape-' + props.shape;
 		});
 
-		watchEffect(() => {
-			bem__.addModifier(shapeRef);
+		const obtainSize = computed(() => {
+			return 'size-' + props.size;
 		});
+
+		const obtainMode = computed(() => {
+			return 'mode-' + props.mode;
+		});
+
+		watchEffect(() => {
+			theme.originVars.bgColor = `var(${obtainBgColor.value})`;
+			theme.originVars.textColor = obtainTextColor.value;
+			if (props.disabled) {
+				bem.addModifier('state-disabled');
+			} else {
+				bem.removeModifier('state-disabled');
+			}
+		});
+		bem.addModifier(obtainShape, obtainSize, obtainMode);
 
 		return {
 			...prefab,
+			theme,
 			block,
-			elements,
-			domRefresh2
+			elements
 		};
 	},
 	methods: {
@@ -48,6 +88,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style
+	lang="scss"
+	scoped>
 @import './style.scss';
 </style>

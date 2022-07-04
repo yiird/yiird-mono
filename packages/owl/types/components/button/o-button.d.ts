@@ -1,7 +1,6 @@
-import type { Theme } from '../../theme';
-import type { BemClasses } from '../../common/bem';
-import type { ButtonSize, ButtonColor, ButtonShape, ButtonMode } from './type';
 import type { DefineComponent, PropType, Ref, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
+import { Theme } from '../../theme';
+import type { ButtonSize, ButtonColor, ButtonShape, ButtonMode, ButtonVariables } from './definition';
 /**
  * Button使用
  * @name OButton
@@ -13,7 +12,10 @@ declare const _sfc_main: DefineComponent<{
     };
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "default";
+        readonly default: "info";
+    };
+    readonly textColor: {
+        readonly type: PropType<string>;
     };
     readonly shape: {
         readonly type: PropType<ButtonShape>;
@@ -25,6 +27,7 @@ declare const _sfc_main: DefineComponent<{
     };
     readonly mode: {
         readonly type: PropType<ButtonMode>;
+        readonly default: "normal";
     };
     readonly id: {
         type: StringConstructor;
@@ -34,24 +37,13 @@ declare const _sfc_main: DefineComponent<{
         default: boolean;
     };
 }, {
+    theme: Theme<ButtonVariables>;
     block: Ref<string[]>;
     elements: Record<"text" | "icon", string[]>;
-    domRefresh2: () => void;
     id__: string;
     cType__: string;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
-    bem__: BemClasses<{
-        readonly modifiers: readonly ["shape-rectangle", "shape-circle", "shape-square", "shape-ellipse", "state-hover", "state-active", "state-disabled"];
-        readonly elements: {
-            readonly text: readonly [];
-            readonly icon: readonly [];
-        };
-    }>;
-    theme__: Theme<{
-        readonly a: "1";
-        readonly b: "b";
-    }>;
     domRefresh: () => void;
 }, unknown, {}, {
     doClick(): void;
@@ -62,7 +54,10 @@ declare const _sfc_main: DefineComponent<{
     };
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "default";
+        readonly default: "info";
+    };
+    readonly textColor: {
+        readonly type: PropType<string>;
     };
     readonly shape: {
         readonly type: PropType<ButtonShape>;
@@ -74,6 +69,7 @@ declare const _sfc_main: DefineComponent<{
     };
     readonly mode: {
         readonly type: PropType<ButtonMode>;
+        readonly default: "normal";
     };
     readonly id: {
         type: StringConstructor;
@@ -87,6 +83,7 @@ declare const _sfc_main: DefineComponent<{
     readonly color: ButtonColor;
     readonly shape: ButtonShape;
     readonly disabled: boolean;
+    readonly mode: ButtonMode;
     readonly display: boolean;
 }>;
 export default _sfc_main;

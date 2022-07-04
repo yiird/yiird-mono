@@ -23,30 +23,70 @@ const options = {
 export default defineConfig({
 	title: 'Owl.js',
 	description: 'Owl.js 文档',
+	head: [['link', { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' }]],
+	lang: 'zh-CN',
 	markdown: {
 		theme: 'vitesse-light'
 	},
 	themeConfig: {
-		logo: '/images/logomin.jpg',
-		nav: [{ text: '组件', link: '/components/' }],
+		logo: '/images/logomin.png',
+		//outlineTitle: '本页内容',
 		socialLinks: [{ icon: 'github', link: 'https://github.com/yiird/yiird-mono/tree/main/packages/owl' }],
-		// editLink: {
-		// 	pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
-		// 	text: 'Edit this page on GitHub'
-		// },
+		editLink: {
+			pattern: 'https://github.com/yiird/yiird-mono/tree/main/packages/owl/docs/:path',
+			text: 'Edit this page on GitHub'
+		},
+		nav: [
+			{
+				text: '组件',
+				items: [
+					{
+						text: '基础',
+						link: '/components/o-button'
+					},
+					{
+						text: '布局',
+						link: '/components/o-layout'
+					}
+				]
+			},
+			{ text: '样例', link: '/examples/button' }
+		],
 		sidebar: {
 			'/components/': [
 				{
 					text: '基础',
-					items: [{ text: 'button', link: '/components/o-button' }]
+					items: [
+						{ text: 'button', link: '/components/o-button' },
+						{ text: 'icon', link: '/components/o-icon' }
+					]
 				},
 				{
 					text: '布局',
-					items: []
+					items: [
+						{ text: 'layout', link: '/components/o-layout' },
+						{ text: 'header', link: '/components/o-header' },
+						{ text: 'footer', link: '/components/o-footer' },
+						{ text: 'main', link: '/components/o-main' },
+						{ text: 'sider', link: '/components/o-sider' }
+					]
 				},
 				{
 					text: '表单',
 					items: []
+				}
+			],
+			'/examples/': [
+				{
+					text: '基础',
+					items: [
+						{ text: 'button', link: '/examples/button' },
+						{ text: 'icon', link: '/examples/icon' }
+					]
+				},
+				{
+					text: '布局',
+					items: [{ text: 'layout', link: '/examples/layout' }]
 				}
 			]
 		}

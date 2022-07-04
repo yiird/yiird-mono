@@ -1,8 +1,10 @@
 import { Plugin } from 'vue';
-import { Theme } from './theme/theme';
-declare const createUI: (theme: Theme) => Plugin;
-export * from './components/';
-export * from './components/types';
+import { IconDefinitionOrPack } from './components/icon';
+import { GlobalVariables, Theme } from './theme/theme';
+export declare type OwlOptions = {
+    icons?: Array<IconDefinitionOrPack>;
+};
+declare const createUI: (theme: Theme<GlobalVariables>) => Plugin;
+export * from './components';
 export * from './theme';
-export { ThemeNormal } from './theme/theme-normal';
 export { createUI };

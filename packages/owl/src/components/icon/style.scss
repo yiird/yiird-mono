@@ -1,3 +1,3 @@
-.o-icon{
-    font-size: 2rem;
-}
+@import '../../theme/styles/main.scss';
+
+@include b(icon){}
