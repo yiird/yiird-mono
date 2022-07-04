@@ -253,7 +253,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 					doc += styles.t(0, `- 参数：`);
 					method.parameters?.forEach((parameter) => {
 						doc += styles.line();
-						doc += styles.t(1, `- ${parameter.name}： ${styles.html(parameter.description || '')}`);
+						doc += styles.t(1, `- ${parameter.name}： ${parameter.description}`);
 					});
 				}
 

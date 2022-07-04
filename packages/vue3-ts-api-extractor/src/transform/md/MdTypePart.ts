@@ -1,4 +1,3 @@
-import escape from 'lodash-es/escape';
 import { AssociationType, TypeComment } from '../../parser/comment/node/TypeComment';
 import { AbstractMdPart } from './AbstractMdPart';
 
@@ -62,6 +61,6 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
 			});
 		}
 
-		return escape(doc);
+		return doc;
 	}
 }
