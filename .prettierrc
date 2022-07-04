@@ -6,5 +6,6 @@
 	"endOfLine": "lf",
 	"bracketSameLine": true,
 	"jsxSingleQuote": true,
-	"trailingComma": "none"
+	"trailingComma": "none",
+	"singleAttributePerLine": true
 }
