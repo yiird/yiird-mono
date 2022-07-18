@@ -2,7 +2,9 @@
 @import "./normalize";
 
 html,body{
-  font-family: var(--o-font-family);
-  font-size: var(--o-font-rem-base-size);
-  color: red;
+  font-family: var(--global-font-family);
+  font-size: var(--global-font-rem-base-size);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
 }

@@ -4,8 +4,7 @@
 		v-if="refresh__"
 		:id="id__"
 		:class="[block, obtainFaClasses]"
-		:prefix="obtainPrefix"
-		:icon="obtainIcon"
+		:icon="[obtainPrefix, obtainIcon]"
 		:size="obtainSize"
 		:fixed-width="obtainFixedWidth"
 		:rotation="obtainRotation"
@@ -34,8 +33,8 @@ export default defineComponent({
 		FontAwesomeIcon
 	},
 	props: IconProps,
-	setup(props, ctx) {
-		const prefab = usePrefab({ props, ctx });
+	setup(props) {
+		const prefab = usePrefab<IconVariables>(props);
 		const { cType__ } = prefab;
 
 		const theme = new Theme<IconVariables>(cType__);

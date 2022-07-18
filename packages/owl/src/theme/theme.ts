@@ -38,7 +38,7 @@ export type GlobalVariables = {
 	/*----------尺寸-----------*/
 
 	/*----------高度-----------*/
-	lineHeight: string;
+	lineHeightBase: string;
 };
 
 export class Theme<V extends Variables> {
@@ -91,8 +91,8 @@ export class Theme<V extends Variables> {
 		return this._vars;
 	}
 
-	public get namedVars() {
-		return this._varNames;
+	public get namedVars(): Record<keyof V, string> {
+		return this._varNames as Record<keyof V, string>;
 	}
 
 	public get varNames() {
@@ -160,7 +160,7 @@ export class Theme<V extends Variables> {
 // 	return config;
 // };
 
-export const GlobalThemeKey = Symbol() as InjectionKey<Theme<GlobalVariables>>;
+export const GlobalThemeKey = Symbol('o-global-theme') as InjectionKey<Theme<GlobalVariables>>;
 
 export const useTheme = <V extends Variables>(componentType: string, vars?: V) => {
 	const theme: {

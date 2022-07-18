@@ -12,13 +12,15 @@
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"lib": ["esnext", "dom"],
+		"types": ["@popperjs/core/lib"],
 		"skipLibCheck": true
 	},
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
-		"src/**/*.vue"
-	],
+		"src/**/*.vue",
+		"./client.d.ts"
+, "src/locales/zh.js"	],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

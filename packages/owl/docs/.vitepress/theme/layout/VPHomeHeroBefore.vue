@@ -1,6 +1,8 @@
 <template>
 	<div class="logo">
-		<img :src="fm.hero.logo" alt="" />
+		<img
+			:src="fm.hero.logo"
+			alt="" />
 	</div>
 </template>
 
@@ -17,7 +19,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style
+	lang="scss"
+	scoped>
 .logo {
 	img {
 		display: flex;

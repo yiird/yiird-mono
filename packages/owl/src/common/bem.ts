@@ -1,4 +1,4 @@
-import { forEach, isString } from 'lodash-es';
+import { forEach, isString, isSymbol, kebabCase } from 'lodash-es';
 import { isRef, reactive, ref, Ref, UnwrapNestedRefs, watchEffect } from 'vue';
 
 export interface BemKeys {
@@ -8,20 +8,37 @@ export interface BemKeys {
 
 type ElementNames<B> = B extends Record<infer K, unknown> ? K : never;
 
-type Modifiers<Em extends Record<string, string>, E, V = string> = keyof {
-	[K in Em extends Record<infer N, infer U> ? (N extends E ? U : never) : never]: V;
-};
+// type Modifiers<Em extends Record<string, string>, E, V = string> = keyof {
+// 	[K in Em extends Record<infer N, infer U> ? (N extends E ? U : never) : never]: V;
+// };
+type Modifiers<Em extends Record<string, string>, E> = Em extends Record<infer N, infer U> ? (N extends E ? U : never) : never;
+
+class BemElements implements Record<string, string[]> {
+	[x: string]: string[];
+}
 
 export class BemClasses<B extends BemKeys> {
 	private __modifiers: Ref<Set<string | Ref<string>>> = ref(new Set());
 	private __elements: UnwrapNestedRefs<Record<string, Set<string>>> = reactive({});
 
 	private _block: Ref<string[]> = ref([]);
-	private _elements: UnwrapNestedRefs<Record<string, string[]>> = reactive({});
+	private _elements: Record<string, Ref<string>>;
 
 	private _cType: string;
+
 	constructor(cType: string) {
 		this._cType = cType;
+		const proxyElements = new Proxy({} as Record<string | symbol, Ref<string>>, {
+			get(target, property) {
+				if (!isSymbol(property) && !property.startsWith('__v') && !target[property]) {
+					target[property] = ref(`${cType}__${kebabCase(property)}`);
+					return target[property];
+				} else {
+					return target[property];
+				}
+			}
+		});
+		this._elements = proxyElements;
 		watchEffect(() => {
 			this._block.value = [
 				`${this._cType}`,
@@ -33,9 +50,10 @@ export class BemClasses<B extends BemKeys> {
 					return `${this._cType}--${_modifier}`;
 				})
 			];
+
 			forEach(this.__elements, (modifiers, element) => {
-				const _modifiers = Array.from(modifiers).map((modifier) => `${this._cType}__${element}--${modifier}`);
-				this._elements[element] = [`${this._cType}__${element}`, ..._modifiers];
+				const _modifiers = Array.from(modifiers).map((modifier) => `${this._cType}__${element}--${kebabCase(modifier)}`);
+				this._elements[element].value = [`${this._cType}__${kebabCase(element)}`, ..._modifiers].join(' ');
 			});
 		});
 	}
@@ -44,7 +62,7 @@ export class BemClasses<B extends BemKeys> {
 		return this._block;
 	}
 
-	get elements(): Record<ElementNames<B['elements']>, string[]> {
+	get elements(): Record<ElementNames<B['elements']>, Ref<string>> {
 		return this._elements;
 	}
 
@@ -65,7 +83,6 @@ export class BemClasses<B extends BemKeys> {
 			this.__elements[element] = new Set();
 		}
 		const set = this.__elements[element];
-
 		forEach(modifiers, (modifier) => {
 			set.add(modifier);
 		});

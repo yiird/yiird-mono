@@ -1,9 +1,12 @@
+import { IconName as _IconName } from '@fortawesome/fontawesome-svg-core';
 import { PropType } from 'vue';
 import { BaseProps } from '../../common/prefab';
 import { NumberSize } from '../../common/type';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type IconVariables = {};
+
+export type IconName = _IconName;
 
 /**
  * 图标前缀
@@ -156,7 +159,7 @@ export const IconProps = {
 	 * [查询图标](https://fontawesome.com/search?m=free)
 	 */
 	icon: {
-		type: String as PropType<string>,
+		type: String as PropType<IconName>,
 		required: true
 	},
 	/**
@@ -164,7 +167,7 @@ export const IconProps = {
 	 */
 	size: {
 		type: String as PropType<IconSize>,
-		default: 'md'
+		default: 'sm'
 	},
 	/**
 	 * 修复图标宽度

@@ -1,40 +1,40 @@
 import { kebabCase } from 'lodash-es';
-import { computed, ExtractPropTypes, getCurrentInstance, nextTick, ref, Ref, SetupContext } from 'vue';
-import { Variables } from '../theme/theme';
-import { BemKeys } from './bem';
+import { computed, ExtractPropTypes, getCurrentInstance, InjectionKey, nextTick, ref, Ref } from 'vue';
+import { Theme, Variables } from '../theme';
+import { BemClasses, BemKeys } from './bem';
 
 export const BaseProps = {
+	/**
+	 * 组件id，若不设置会自动生成
+	 */
 	id: {
 		type: String
 	},
+	/**
+	 * 显示隐藏
+	 */
 	display: {
 		type: Boolean,
 		default: true
 	}
 };
 
-/**
- * 组件setup预制方法参数定义
- */
-export type OCommonOptions<P> = {
-	props: Readonly<ExtractPropTypes<P>>;
-	ctx: SetupContext;
-};
-
-export type OCommonPrefab = {
+export type OCommonPrefab<V extends Variables, B extends BemKeys> = {
 	id__: string;
 	cType__: string;
 	display__: Ref<boolean>;
 	refresh__: Ref<boolean>;
+	theme: Theme<V>;
+	bem: BemClasses<B>;
+	block: Ref<string[]>;
 	domRefresh: () => void;
 };
-export const usePrefab = <V extends Variables, B extends BemKeys>(options: OCommonOptions<typeof BaseProps>): OCommonPrefab => {
-	const { props, ctx } = options;
+export const usePrefab = <V extends Variables, B extends BemKeys = BemKeys>(props: ExtractPropTypes<typeof BaseProps>): OCommonPrefab<V, B> => {
 	//获取组件对象实例
 	const internalInstance = getCurrentInstance();
 
 	if (!internalInstance || !internalInstance.type.name) {
-		return {} as OCommonPrefab;
+		return {} as OCommonPrefab<V, B>;
 	}
 
 	//生成组件主要样式类名
@@ -63,13 +63,21 @@ export const usePrefab = <V extends Variables, B extends BemKeys>(options: OComm
 		});
 	};
 
+	const theme = new Theme<V>(cType__);
+	const bem = new BemClasses<B>(cType__);
+
 	return {
 		id__,
 		cType__,
 		display__,
 		refresh__,
+		theme,
+		bem,
+		block: bem.block,
 		domRefresh
 	};
 };
+
+export const GlobalPopperWrapKey = Symbol('o-global-popper-wrap-key') as InjectionKey<string>;
 
 export {};

@@ -1,0 +1,60 @@
+@import '../../theme/styles/var';
+@include b('popper') {
+	font-weight: bold;
+	padding: 4px 8px;
+	border-radius: 4px;
+	background-color: black;
+	color: white;
+	display: none;
+
+	&[data-show] {
+		display: block;
+	}
+
+	&[data-popper-reference-hidden] {
+		visibility: hidden;
+		pointer-events: none;
+		.arrow {
+			display: none;
+		}
+	}
+
+	&[data-popper-placement^='top'] {
+		.arrow {
+			bottom: -4px;
+		}
+	}
+	&[data-popper-placement^='bottom'] {
+		.arrow {
+			top: -4px;
+		}
+	}
+	&[data-popper-placement^='left'] {
+		.arrow {
+			right: -4px;
+		}
+	}
+	&[data-popper-placement^='right'] {
+		.arrow {
+			left: -4px;
+		}
+	}
+
+	.arrow,
+	.arrow::before {
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		background: inherit;
+	}
+
+	.arrow {
+		visibility: hidden;
+	}
+
+	.arrow::before {
+		content: '';
+		visibility: visible;
+		transform: rotate(45deg);
+	}
+}

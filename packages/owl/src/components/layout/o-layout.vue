@@ -11,23 +11,18 @@
 
 <script lang="tsx">
 import { defineComponent, provide, reactive } from 'vue';
-import { BemClasses } from '../../common/bem';
 import { usePrefab } from '../../common/prefab';
-import { Theme } from '../../theme';
 import { LayoutProps, LayoutVariables, MainPosition, MainPositionKey } from './definition';
 
 export default defineComponent({
 	name: 'OLayout',
 	props: LayoutProps,
-	setup(props, ctx) {
-		const prefab = usePrefab({ props, ctx });
-		const { cType__ } = prefab;
-		const theme = new Theme<LayoutVariables>(cType__);
-		const bem = new BemClasses(cType__);
+	setup(props) {
+		const prefab = usePrefab<LayoutVariables>(props);
+		const { theme, bem } = prefab;
 
 		const block = bem.block;
 
-		bem.elements;
 		const mainPosition = reactive<MainPosition>({});
 		provide(MainPositionKey, mainPosition);
 

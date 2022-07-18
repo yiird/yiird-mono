@@ -11,20 +11,16 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, onScopeDispose, watchEffect } from 'vue';
-import { BemClasses } from '../../common/bem';
 import { usePrefab } from '../../common/prefab';
-import { Theme } from '../../theme';
 import { HeaderProps, HeaderVariables, MainPositionKey } from './definition';
 
 export default defineComponent({
 	name: 'OHeader',
 	props: HeaderProps,
-	setup(props, ctx) {
-		const prefab = usePrefab({ props, ctx });
-		const { cType__ } = prefab;
+	setup(props) {
+		const prefab = usePrefab<HeaderVariables>(props);
+		const { theme, bem } = prefab;
 
-		const theme = new Theme<HeaderVariables>(cType__);
-		const bem = new BemClasses(cType__);
 		const block = bem.block;
 
 		const mainPosition = inject(MainPositionKey);

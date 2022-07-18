@@ -11,33 +11,24 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, onScopeDispose, watchEffect } from 'vue';
-import { BemClasses } from '../../common/bem';
 import { usePrefab } from '../../common/prefab';
-import { Theme } from '../../theme';
 import { MainPositionKey, SiderProps, SiderVariables } from './definition';
 export default defineComponent({
 	name: 'OSiderLeft',
 	props: SiderProps,
-	setup(props, ctx) {
+	setup(props) {
+		const prefab = usePrefab<SiderVariables>(props);
+		const { cType__, theme, bem } = prefab;
+
 		const mainPosition = inject(MainPositionKey);
-
-		const prefab = usePrefab({ props, ctx });
-		const { cType__ } = prefab;
-
 		if (mainPosition && mainPosition.existSider === cType__) {
 			throw Error('不能在同一侧，放置两个Sider组件');
 		}
-
-		const theme = new Theme<SiderVariables>(cType__);
-		const bem = new BemClasses(cType__);
 		const block = bem.block;
 
 		const obtainWidth = computed(() => {
 			return props.width;
 		});
-
-		theme.originVars.left = '0';
-		theme.originVars.right = 'unset';
 
 		watchEffect(() => {
 			if (mainPosition) {

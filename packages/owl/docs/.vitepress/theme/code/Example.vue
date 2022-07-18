@@ -4,7 +4,7 @@
 		:style="{ width: width }">
 		<div
 			class="example-render-wrap"
-			:style="{ minHeight: obtainIframeHeight, height: '0px' }">
+			:style="{ minHeight: obtainIframeHeight }">
 			<component :is="name"></component>
 			<!-- <iframe
 				ref="codeRender"

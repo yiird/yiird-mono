@@ -147,3 +147,17 @@ $state-prefix: 'is-';
 		}
 	}
 }
+
+@function _var($name, $default: false) {
+    $_B:$B;
+    @if $B == null {
+        $_B:'global';
+    }
+    @if $default {
+        @return var(--#{$_B}-#{$name}, #{$default});
+    }
+    @if $default == false {
+        @return var(--#{$_B}-#{$name});
+    }
+	
+}

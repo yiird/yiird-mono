@@ -4,7 +4,7 @@ import { forEach } from 'lodash-es';
 import { EnhanceAppContext } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 import { defineAsyncComponent } from 'vue';
-import { createUI, ThemeNormal } from '../../../src/main';
+import { createUI, OwlOptions, ThemeNormal } from '../../../src/main';
 import ChooseComponent from './code/ChooseComponent.vue';
 import Example from './code/Example.vue';
 import Layout from './layout/Layout.vue';
@@ -23,6 +23,10 @@ export default {
 			const name = filename.toString().substring(filename.lastIndexOf('/') + 1, filename.lastIndexOf('.'));
 			app.component(name, defineAsyncComponent(component));
 		});
-		app.use(createUI(ThemeNormal));
+		const options: OwlOptions = {
+			debug: true,
+			debugLevel: 'info'
+		};
+		app.use(createUI(ThemeNormal), options);
 	}
 };

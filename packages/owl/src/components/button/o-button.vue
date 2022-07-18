@@ -15,9 +15,8 @@
 import { computed } from '@vue/reactivity';
 import { capitalize } from 'lodash-es';
 import { defineComponent, inject, watchEffect } from 'vue';
-import { BemClasses } from '../../common/bem';
 import { usePrefab } from '../../common/prefab';
-import { GlobalThemeKey, Theme } from '../../theme';
+import { GlobalThemeKey } from '../../theme';
 import { ButtonBemKeys, ButtonProps, ButtonVariables } from './definition';
 
 /**
@@ -27,15 +26,14 @@ import { ButtonBemKeys, ButtonProps, ButtonVariables } from './definition';
 export default defineComponent({
 	name: 'OButton',
 	props: ButtonProps,
-	setup(props, ctx) {
-		const prefab = usePrefab({ props, ctx });
-		const { cType__ } = prefab;
+	setup(props) {
+		const prefab = usePrefab<ButtonVariables, ButtonBemKeys>(props);
+		const { theme, bem } = prefab;
 
 		const globalTheme = inject(GlobalThemeKey);
 
-		const theme = new Theme<ButtonVariables>(cType__);
-
-		const bem = new BemClasses<ButtonBemKeys>(cType__);
+		const block = bem.block;
+		const elements = bem.elements;
 
 		const obtainBgColor = computed(() => {
 			const color = props.color;
@@ -46,9 +44,6 @@ export default defineComponent({
 		const obtainTextColor = computed(() => {
 			return props.textColor || 'white';
 		});
-
-		const block = bem.block;
-		const elements = bem.elements;
 
 		const obtainShape = computed(() => {
 			return 'shape-' + props.shape;
@@ -79,11 +74,6 @@ export default defineComponent({
 			block,
 			elements
 		};
-	},
-	methods: {
-		doClick() {
-			console.log(111);
-		}
 	}
 });
 </script>

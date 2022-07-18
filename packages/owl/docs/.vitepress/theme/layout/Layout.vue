@@ -1,5 +1,6 @@
 <template>
 	<component :is="layout"></component>
+	<o-popper-wrap></o-popper-wrap>
 </template>
 
 <script lang="ts">

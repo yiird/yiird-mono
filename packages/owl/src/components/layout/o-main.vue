@@ -11,19 +11,15 @@
 
 <script lang="ts">
 import { defineComponent, inject, watchEffect } from 'vue';
-import { BemClasses } from '../../common/bem';
 import { usePrefab } from '../../common/prefab';
-import { Theme } from '../../theme';
 import { MainPositionKey, MainProps, MainVariables } from './definition';
 export default defineComponent({
 	name: 'OMain',
 	props: MainProps,
-	setup(props, ctx) {
-		const prefab = usePrefab({ props, ctx });
-		const { cType__ } = prefab;
+	setup(props) {
+		const prefab = usePrefab<MainVariables>(props);
+		const { theme, bem } = prefab;
 
-		const theme = new Theme<MainVariables>(cType__);
-		const bem = new BemClasses(cType__);
 		const block = bem.block;
 
 		const mainPosition = inject(MainPositionKey);

@@ -1,6 +1,6 @@
-@import '../../theme/styles/main.scss';
+@import '../../theme/styles/bem';
 
-$--button-size: _var(line-height);
+$--button-size: _var('line-height-base');
 
 $--button-color: var(--o-button-bg-color);
 
@@ -9,11 +9,12 @@ $--button-normal-radus: 3px;
 
 $--button-size-map: (
 	xxs: (
-		0.5,
 		//height
-		0.7rem,
+		0.5,
 		//font-size
-		0.05 //padding-left & padding-right
+		0.7rem,
+		//padding-left & padding-right
+		0.05
 	),
 	xs: (
 		0.7,
@@ -106,9 +107,6 @@ $--button-size-map: (
 			height: calc($-height-per * $--button-size);
 			padding: 0 calc($-padding-per * $--button-size);
 			font-size: $-font-size;
-			@if $-font-size < 1.5rem {
-				zoom: 0.9;
-			}
 		}
 	}
 }
@@ -181,7 +179,6 @@ $--button-size-map: (
 	display: inline-block;
 	outline: none;
 	user-select: none;
-	touch-action: manipulation;
 	color: var(--o-button-text-color);
 	background-color: rgba($--button-color, 1);
 	border-color: #eee;

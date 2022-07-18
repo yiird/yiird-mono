@@ -1,51 +1,62 @@
-@import '../../theme/styles/main.scss';
+@import '../../theme/styles/bem';
 
-@include b('layout'){
-    width: 100%;
-    height: 100%;
-    position: relative;
-    
-    @include b('header'){
-        position: absolute;
-        width: 100%;
-        height: _var('height');
-    }
+@include b('layout') {
+	width: 100%;
+	height: 100%;
+	position: relative;
 
-    @include b('footer'){
-        position: absolute;
-        width: 100%;
-        height: _var('height');
-        bottom: 0;
-    }
+	@include b('header') {
+		$height: _var('height');
 
-    @include b('sider-left'){
-        position: absolute;
-        width: _var('width');
-        top:_var('top');
-        bottom:_var('bottom');
-        right:_var('right');
-        left:_var('left');
-    }
+		position: absolute;
+		width: 100%;
+		height: $height;
+        top:0;
+	}
 
-    @include b('sider-right'){
-        position: absolute;
-        width: _var('width');
-        top:_var('top');
-        bottom:_var('bottom');
-        right:_var('right');
-        left:_var('left');
-    }
+	@include b('footer') {
+		$height: _var('height');
 
-    @include b('main'){
-        position: absolute;
-        top:_var('top');
-        bottom:_var('bottom');
-        right:_var('right');
-        left:_var('left');
-    }
+		position: absolute;
+		width: 100%;
+		height: $height;
+		bottom: 0;
+	}
 
-    
+	@include b('sider-left') {
+        $width: _var('width');
+        $top: _var('top');
+        $bottom: _var('bottom');
+
+		position: absolute;
+		width: $width;
+		top: $top;
+		bottom: $bottom;
+		left: 0;
+	}
+
+	@include b('sider-right') {
+        $width: _var('width');
+        $top: _var('top');
+        $bottom: _var('bottom');
+
+		position: absolute;
+		width: $width;
+		top: $top;
+		bottom: $bottom;
+		right: 0;
+	}
+
+	@include b('main') {
+        $right: _var('right');
+        $left: _var('left');
+        $top: _var('top');
+        $bottom: _var('bottom');
+
+		position: absolute;
+		top: $top;
+		bottom: $bottom;
+		right: $right;
+		left: $left;
+	}
 }
-
-
-

@@ -1,6 +1,7 @@
+import type { BemClasses } from '../../common/bem';
+import type { Theme } from '../../theme';
 import type { DefineComponent, PropType, Ref, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
-import { Theme } from '../../theme';
-import type { ButtonSize, ButtonColor, ButtonShape, ButtonMode, ButtonVariables } from './definition';
+import type { ButtonSize, ButtonColor, ButtonShape, ButtonMode, ButtonBemKeys,  ButtonVariables } from './definition';
 /**
  * Button使用
  * @name OButton
@@ -39,15 +40,14 @@ declare const _sfc_main: DefineComponent<{
 }, {
     theme: Theme<ButtonVariables>;
     block: Ref<string[]>;
-    elements: Record<"text" | "icon", string[]>;
+    elements: Record<"text" | "icon", Ref<string>>;
     id__: string;
     cType__: string;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
+    bem: BemClasses<ButtonBemKeys>;
     domRefresh: () => void;
-}, unknown, {}, {
-    doClick(): void;
-}, ComponentOptionsMixin, ComponentOptionsMixin, Record<string, any>, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
+}, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, Record<string, any>, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
     readonly size: {
         readonly type: PropType<ButtonSize>;
         readonly default: "md";

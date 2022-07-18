@@ -1,13 +1,15 @@
 <template>
-	<o-layout>
-		<o-sider-left>left</o-sider-left>
-		<o-main>
-			<o-layout>
-				<o-header>header</o-header>
-				<o-sider-right>left</o-sider-right>
-			</o-layout>
-		</o-main>
-	</o-layout>
+	<div class="wrap">
+		<o-layout>
+			<o-sider-left>left</o-sider-left>
+			<o-main>
+				<o-layout>
+					<o-header>header</o-header>
+					<o-sider-right>left</o-sider-right>
+				</o-layout>
+			</o-main>
+		</o-layout>
+	</div>
 </template>
 
 <script lang="ts">
@@ -23,6 +25,9 @@ export default defineComponent({
 <style
 	lang="scss"
 	scoped>
+.wrap {
+	height: 350px;
+}
 .o-layout {
 	color: white;
 	text-align: center;

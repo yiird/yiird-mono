@@ -23,7 +23,7 @@ export declare type GlobalVariables = {
     /** 背景色 */
     colorBgOpaque: string;
     colorBgTransparent: string;
-    lineHeight: string;
+    lineHeightBase: string;
 };
 export declare class Theme<V extends Variables> {
     private __originVars;
@@ -48,7 +48,7 @@ export declare class Theme<V extends Variables> {
     constructor(componentType: string, vars?: V);
     get originVars(): UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined; }>;
     get vars(): UnwrapNestedRefs<object>;
-    get namedVars(): Record<string, string>;
+    get namedVars(): Record<keyof V, string>;
     get varNames(): Record<string, string>;
     mount(dom?: Document | HTMLElement): void;
 }

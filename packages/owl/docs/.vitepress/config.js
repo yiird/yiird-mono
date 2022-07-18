@@ -1,3 +1,4 @@
+import vueI18n from '@intlify/vite-plugin-vue-i18n';
 import { extractor } from '@yiird/vue3-ts-api-extractor';
 import path from 'path';
 import { defineConfig } from 'vitepress';
@@ -47,6 +48,10 @@ export default defineConfig({
 					{
 						text: '布局',
 						link: '/components/o-layout'
+					},
+					{
+						text: '表单',
+						link: '/components/o-input'
 					}
 				]
 			},
@@ -58,7 +63,8 @@ export default defineConfig({
 					text: '基础',
 					items: [
 						{ text: 'button', link: '/components/o-button' },
-						{ text: 'icon', link: '/components/o-icon' }
+						{ text: 'icon', link: '/components/o-icon' },
+						{ text: 'popper 冒泡⽓框', link: '/components/o-popper' }
 					]
 				},
 				{
@@ -73,7 +79,10 @@ export default defineConfig({
 				},
 				{
 					text: '表单',
-					items: []
+					items: [
+						{ text: 'input', link: '/components/o-input' },
+						{ text: 'calendar', link: '/components/o-calendar' }
+					]
 				}
 			],
 			'/examples/': [
@@ -81,12 +90,20 @@ export default defineConfig({
 					text: '基础',
 					items: [
 						{ text: 'button', link: '/examples/button' },
-						{ text: 'icon', link: '/examples/icon' }
+						{ text: 'icon', link: '/examples/icon' },
+						{ text: 'popper 冒泡⽓框', link: '/examples/popper' }
 					]
 				},
 				{
 					text: '布局',
 					items: [{ text: 'layout', link: '/examples/layout' }]
+				},
+				{
+					text: '表单',
+					items: [
+						{ text: 'input', link: '/examples/input' },
+						{ text: 'calendar', link: '/examples/calendar' }
+					]
 				}
 			]
 		}
@@ -99,6 +116,11 @@ export default defineConfig({
 		ssr: {
 			noExternal: ['lodash-es']
 		},
+		resolve: {
+			alias: {
+				'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+			}
+		},
 		plugins: [
 			{
 				name: 'extract-comments-plugin',
@@ -110,7 +132,10 @@ export default defineConfig({
 						extractorobj.extractor(path);
 					});
 				}
-			}
+			},
+			vueI18n({
+				include: path.resolve(__dirname, '../../src/locales/**')
+			})
 		]
 	}
 });

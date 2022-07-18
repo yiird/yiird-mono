@@ -1,0 +1,94 @@
+@import '../../theme/styles/var';
+
+@include b('input') {
+	$passwordeyeActiveColor: rgba($-global-color-primary);
+	$height: _var('line-height', $-global-line-height-base);
+	$borderColor: _var('border-color', rgba($-global-color-border-primary));
+	$color: _var('color', rgba($-global-color-text-light));
+	$radius: _var('radius', 0.25rem);
+	$prefixBgColor: _var('prefix-bg-color', rgba($-global-color-bg-transparent));
+	$suffixBgColor: _var('suffix-bg-color', rgba($-global-color-bg-transparent));
+    $placeholderColor:_var('placeholder-color',rgba($-global-color-text-lightest));
+
+	display: inline-flex;
+	color: $color;
+	line-height: $height;
+	height: $height;
+	width: 100%;
+	border: 1px solid $borderColor;
+	vertical-align: middle;
+
+	@include m('radius') {
+		border-radius: $radius;
+	}
+
+	@include e('prefix') {
+		flex-shrink: 0;
+		min-width: $height;
+		text-align: center;
+		padding: 0 0.5rem;
+		font-weight: bold;
+		background-color: $prefixBgColor;
+		border-right: 1px solid $borderColor;
+		opacity: 0.5;
+	}
+
+	@include e('suffix') {
+		flex-shrink: 0;
+		min-width: $height;
+		text-align: center;
+		padding: 0 0.5rem;
+		font-weight: bold;
+		background-color: $suffixBgColor;
+		border-left: 1px solid $borderColor;
+		opacity: 0.5;
+	}
+
+	@include e('password') {
+		flex-shrink: 0;
+		min-width: $height;
+		text-align: center;
+		padding: 0 0.5rem;
+		font-weight: bold;
+		opacity: 0.5;
+
+		@include m('show') {
+			opacity: unset;
+			color: $passwordeyeActiveColor;
+		}
+	}
+
+	@include e('remove') {
+		display: none;
+		flex-shrink: 0;
+		text-align: center;
+		font-weight: bold;
+		padding: 0 0.5rem;
+		opacity: 0.5;
+	}
+
+	&:hover {
+		@include e('remove') {
+			display: block;
+		}
+	}
+
+	@include e('loading') {
+		flex-shrink: 0;
+		text-align: center;
+		font-weight: bold;
+		padding: 0 0.5rem;
+		opacity: 0.5;
+	}
+
+	@include e('input') {
+		width: 0;
+		flex-grow: 1;
+		outline: none;
+		padding: 0 0.3rem;
+		&::placeholder {
+			color: $placeholderColor;
+			font-size: 0.9rem;
+		}
+	}
+}

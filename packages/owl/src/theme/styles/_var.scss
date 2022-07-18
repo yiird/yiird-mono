@@ -1,0 +1,24 @@
+@import '../../theme/styles/bem';
+
+$-global-font-family: _var('font-family');
+$-global-font-rem-base-size: _var('font-rem-base-size');
+$-global-color-text-primary: _var('color-text-primary');
+$-global-color-text-secondary: _var('color-text-secondary');
+$-global-color-text-light: _var('color-text-light');
+$-global-color-text-lightest: _var('color-text-lightest');
+
+$-global-color-border-primary: _var('color-border-primary');
+$-global-color-border-secondary: _var('color-border-secondary');
+$-global-color-border-light: _var('color-border-light');
+$-global-color-border-lightest: _var('color-border-lightest');
+
+$-global-color-primary: _var('color-primary');
+$-global-color-success: _var('color-success');
+$-global-color-warning: _var('color-warning');
+$-global-color-danger: _var('color-danger');
+$-global-color-info: _var('color-info');
+
+$-global-color-bg-opaque: _var('color-bg-opaque');
+$-global-color-bg-transparent: _var('color-bg-transparent');
+
+$-global-line-height-base: _var('line-height-base');

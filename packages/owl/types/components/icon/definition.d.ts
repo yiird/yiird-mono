@@ -1,6 +1,8 @@
+import { IconName as _IconName } from '@fortawesome/fontawesome-svg-core';
 import { PropType } from 'vue';
 import { NumberSize } from '../../common/type';
 export declare type IconVariables = {};
+export declare type IconName = _IconName;
 /**
  * 图标前缀
  */
@@ -149,7 +151,7 @@ export declare const IconProps: {
      * [查询图标](https://fontawesome.com/search?m=free)
      */
     readonly icon: {
-        readonly type: PropType<string>;
+        readonly type: PropType<_IconName>;
         readonly required: true;
     };
     /**
@@ -157,7 +159,7 @@ export declare const IconProps: {
      */
     readonly size: {
         readonly type: PropType<IconSize>;
-        readonly default: "md";
+        readonly default: "sm";
     };
     /**
      * 修复图标宽度

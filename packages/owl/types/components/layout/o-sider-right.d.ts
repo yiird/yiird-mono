@@ -1,5 +1,6 @@
+import type { BemClasses, BemKeys } from '../../common/bem';
+import type { Theme } from '../../theme';
 import type { DefineComponent, PropType, Ref, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
-import { Theme } from '../../theme';
 import { SiderVariables } from './definition';
 declare const _sfc_main: DefineComponent<{
     readonly width: {
@@ -20,6 +21,7 @@ declare const _sfc_main: DefineComponent<{
     cType__: string;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
+    bem: BemClasses<BemKeys>;
     domRefresh: () => void;
 }, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, Record<string, any>, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
     readonly width: {
