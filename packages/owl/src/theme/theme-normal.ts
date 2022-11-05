@@ -1,5 +1,7 @@
 import { GlobalVariables, Theme } from './theme';
 
+const sizeBase = 2;
+
 const variables: GlobalVariables = {
 	//fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
 	fontFamily: 'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif',
@@ -18,7 +20,37 @@ const variables: GlobalVariables = {
 	colorBorderLight: '235,238,245',
 	colorBorderLightest: '242,246,252',
 	colorBgOpaque: '255,255,255',
+	colorBgBlack: '0,0,0',
 	colorBgTransparent: '0,0,0,0',
-	lineHeightBase: '2rem'
+	sizeBase: sizeBase + 'rem',
+	sizeXxs: 0.5 * sizeBase + 'rem',
+	sizeXs: 0.7 * sizeBase + 'rem',
+	sizeSm: 0.8 * sizeBase + 'rem',
+	sizeMd: 1 * sizeBase + 'rem',
+	sizeLg: 1.5 * sizeBase + 'rem',
+	sizeXl: 2 * sizeBase + 'rem',
+	sizeXxl: 3 * sizeBase + 'rem',
+	size1x: 1 * sizeBase + 'rem',
+	size2x: 1.5 * sizeBase + 'rem',
+	size3x: 2 * sizeBase + 'rem',
+	size4x: 2.5 * sizeBase + 'rem',
+	size5x: 3 * sizeBase + 'rem',
+	size6x: 3.5 * sizeBase + 'rem',
+	size7x: 4 * sizeBase + 'rem',
+	size8x: 4.5 * sizeBase + 'rem',
+	size9x: 5 * sizeBase + 'rem',
+	size10x: 5.5 * sizeBase + 'rem',
+	boxShadowHighUp: '0px -6px 16px -8px rgba(0, 0, 0, 0.08),0px -9px 28px 0px rgba(0, 0, 0, 0.05),0px -12px 48px 16px rgba(0, 0, 0, 0.03)',
+	boxShadowHighDown: '0px 6px 16px -8px rgba(0, 0, 0, 0.08),0px 9px 28px 0px rgba(0, 0, 0, 0.05),0px 12px 48px 16px rgba(0, 0, 0, 0.03)',
+	boxShadowHighLeft: '-6px 0px 16px -8px rgba(0, 0, 0, 0.08),-9px 0px 28px 0px rgba(0, 0, 0, 0.05),-12px 0px 48px 16px rgba(0, 0, 0, 0.03)',
+	boxShadowHighRight: '6px 0px 16px -8px rgba(0, 0, 0, 0.08),9px 0px 28px 0px rgba(0, 0, 0, 0.05),12px 0px 48px 16px rgba(0, 0, 0, 0.03)',
+	boxShadowMiddleUp: '0px -3px 6px -4px rgba(0, 0, 0, 0.12),0px -6px 16px 0px rgba(0, 0, 0, 0.08),0px -9px 28px 8px rgba(0, 0, 0, 0.05)',
+	boxShadowMiddleDown: '0px 3px 6px -4px rgba(0, 0, 0, 0.12),0px 6px 16px 0px rgba(0, 0, 0, 0.08),0px 9px 28px 8px rgba(0, 0, 0, 0.05)',
+	boxShadowMiddleLeft: '-3px 0px 6px -4px rgba(0, 0, 0, 0.12),-6px 0px 16px 0px rgba(0, 0, 0, 0.08),-9px 0px 28px 8px rgba(0, 0, 0, 0.05)',
+	boxShadowMiddleRight: '3px 0px 6px -4px rgba(0, 0, 0, 0.12),6px 0px 16px 0px rgba(0, 0, 0, 0.08),9px 0px 28px 8px rgba(0, 0, 0, 0.05)',
+	boxShadowLowUp: '0px -1px 2px -2px rgb(0 0 0 / 16%), 0px -3px 6px 0px rgb(0 0 0 / 12%), 0px -5px 12px 4px rgb(0 0 0 / 9%)',
+	boxShadowLowDown: '0px 1px 2px -2px rgb(0 0 0 / 16%), 0px 3px 6px 0px rgb(0 0 0 / 12%), 0px 5px 12px 4px rgb(0 0 0 / 9%)',
+	boxShadowLowLeft: '-1px 0px 2px -2px rgb(0 0 0 / 16%),-3px 0px 6px 0px rgb(0 0 0 / 12%),-5px 0px 12px 4px rgb(0 0 0 / 9%)',
+	boxShadowLowRight: '1px 0px 2px -2px rgb(0 0 0 / 16%),3px 0px 6px 0px rgb(0 0 0 / 12%),5px 0px 12px 4px rgb(0 0 0 / 9%)'
 };
 export const ThemeNormal = new Theme<GlobalVariables>('global', variables);

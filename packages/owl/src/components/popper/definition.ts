@@ -1,7 +1,16 @@
-import { arrow as arrowModifier, flip as flipModifier, hide as hideModifier, offset as offsetModifier } from '@popperjs/core/lib/modifiers';
-import { createPopper, Instance } from '@popperjs/core/lib/popper-lite';
+import {
+	arrow as arrowMiddleware,
+	autoUpdate,
+	computePosition,
+	flip as flipMiddleware,
+	hide as hideMiddleware,
+	Middleware,
+	offset as offsetMiddleware,
+	Placement,
+	shift as shiftMiddleware
+} from '@floating-ui/dom';
 import { debounce, isElement, isObject, isString } from 'lodash-es';
-import { inject, isRef, onMounted, onUnmounted, PropType, Ref, watch } from 'vue';
+import { inject, isRef, onMounted, onUnmounted, PropType, Ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { error } from '../../common/logger';
 import { BaseProps, GlobalPopperWrapKey } from '../../common/prefab';
@@ -28,30 +37,26 @@ export interface PopperOffset {
 	/**
 	 * 参照物侧方向滑动偏移量
 	 */
-	skid?: number;
+	crossAxis?: number;
 	/**
 	 * 距离参照物距离偏移量
 	 */
-	distance?: number;
+	mainAxis?: number;
 }
 
 export type PopperPlacement =
-	| 'auto'
-	| 'auto-start'
-	| 'auto-end'
 	| 'top'
-	| 'bottom'
-	| 'left'
-	| 'right'
 	| 'top-start'
 	| 'top-end'
-	| 'bottom-start'
-	| 'bottom-end'
+	| 'right'
 	| 'right-start'
 	| 'right-end'
+	| 'bottom'
+	| 'bottom-start'
+	| 'bottom-end'
+	| 'left'
 	| 'left-start'
-	| 'left-end'
-	| undefined;
+	| 'left-end';
 
 export const PopperProps = {
 	...BaseProps,
@@ -74,18 +79,18 @@ export const PopperProps = {
 		default: 'hover'
 	},
 	/**
-	 * 当参照物在裁剪区域内显示，参照物移动出裁剪区域则隐藏
+	 * 鼠标在popper上时是否允许隐藏
 	 */
-	followReference: {
+	hideOnPopper: {
 		type: Boolean as PropType<boolean>,
 		default: false
 	},
 	/**
-	 * 鼠标在popper上时是否允许隐藏
+	 * 当参照物在裁剪区域内显示，参照物移动出裁剪区域则隐藏
 	 */
-	canHideOnPopper: {
+	hideOnOut: {
 		type: Boolean as PropType<boolean>,
-		default: true
+		default: false
 	},
 	/**
 	 * 设置相对参照物的偏移
@@ -94,7 +99,7 @@ export const PopperProps = {
 		type: Object as PropType<PopperOffset>,
 		default() {
 			return {
-				distance: 8
+				mainAxis: 8
 			};
 		}
 	},
@@ -104,7 +109,44 @@ export const PopperProps = {
 	placement: {
 		type: String as PropType<PopperPlacement>,
 		default: 'bottom'
+	},
+	/**
+	 * 箭头位置
+	 * @values `edge` `*-start|*-end`靠近参照物边缘开始或结束, `fit` 自适应
+	 */
+	arrowPlacement: {
+		type: String as PropType<'edge' | 'fit'>,
+		default: 'edge'
+	},
+	/**
+	 * 更新每一帧
+	 */
+	updateEveryFrame: {
+		type: Boolean as PropType<boolean>,
+		default: false
+	},
+	shadow: {
+		type: Boolean as PropType<boolean>,
+		default: true
+	},
+	bgColor: {
+		type: String as PropType<string>
+	},
+	borderColor: {
+		type: String as PropType<string>
 	}
+};
+
+export type PopperVariables = {
+	bgColor?: string;
+	borderColor?: string;
+};
+
+export type PopperBemKeys = {
+	modifiers: 'shadow';
+	elements: {
+		arrow: string;
+	};
 };
 
 export const extractDom = (propReference?: Element | VirtualElement | string) => {
@@ -131,67 +173,111 @@ export const extractDom = (propReference?: Element | VirtualElement | string) =>
 	return reference;
 };
 
-const resetOffset = (popperInstance: Instance, offset: number[]) => {
-	popperInstance.setOptions((options) => ({
-		...options,
-		modifiers: [
-			...(options.modifiers || []),
-			{
-				name: 'offset',
-				options: {
-					offset
-				}
-			}
-		]
-	}));
-	popperInstance.update();
-};
-
-const resetPlacement = (popperInstance: Instance, placement: PopperPlacement) => {
-	popperInstance.setOptions((options) => ({
-		...options,
-		placement
-	}));
-	popperInstance.update();
-};
-
-const _show = (popperInstance: Instance, popperDom: HTMLElement) => {
-	// Make the tooltip visible
-	if (popperDom.hasAttribute('data-show')) return;
-	popperDom.setAttribute('data-show', '');
-
-	// Enable the event listeners
-	popperInstance.setOptions((options) => ({
-		...options,
-		modifiers: [...(options.modifiers || []), { name: 'eventListeners', enabled: true }]
-	}));
-
-	// Update its position
-	popperInstance.update();
-};
-
-const _hide = (popperInstance: Instance, popperDom: HTMLElement) => {
-	// Hide the tooltip
-	if (!popperDom.hasAttribute('data-show')) return;
-	popperDom.removeAttribute('data-show');
-
-	// Disable the event listeners
-	popperInstance.setOptions((options) => ({
-		...options,
-		modifiers: [...(options.modifiers || []), { name: 'eventListeners', enabled: false }]
-	}));
-};
-
 export type PopperOptions = {
 	placement?: Ref<PopperPlacement> | PopperPlacement;
-	offset?: Ref<Array<number>> | Array<number>;
+	offset?: Ref<PopperOffset> | PopperOffset;
 	mode?: PopperMode;
-	display?: Ref<boolean>;
-	canHideOnPopper?: boolean;
+	display?: Ref<boolean> | boolean;
+	hideOnPopper?: Ref<boolean> | boolean;
+	hideOnOut?: Ref<boolean> | boolean;
+	arrowPlacement?: Ref<string> | string;
+	updateEveryFrame?: boolean;
+	onPopperOpen?: () => void;
+	onPopperClose?: () => void;
 };
 
-export const usePopper = (referenceDom: HTMLElement | VirtualElement, popperDom: Ref<HTMLElement | undefined>, options?: PopperOptions) => {
-	let instance: Instance;
+const createPopper = (
+	referenceEl: HTMLElement | VirtualElement,
+	popperEl: HTMLElement,
+	arrowEl: HTMLElement,
+	arrowPlacement = 'fit',
+	hideOnOut = false,
+	placement?: Placement,
+	offset?: PopperOffset,
+	updateEveryFrame = false
+) => {
+	const middleware: Middleware[] = [offsetMiddleware(offset), flipMiddleware(), arrowMiddleware({ element: arrowEl }), shiftMiddleware()];
+	if (hideOnOut) {
+		middleware.push(hideMiddleware());
+	}
+	return autoUpdate(
+		referenceEl,
+		popperEl,
+		() => {
+			computePosition(referenceEl, popperEl, {
+				placement,
+				strategy: 'absolute',
+				middleware
+			}).then(({ x, y, placement: computedPlacement, middlewareData }) => {
+				Object.assign(popperEl.style, {
+					left: `${x}px`,
+					top: `${y}px`
+				});
+
+				const { x: arrowX, y: arrowY } = middlewareData.arrow || {};
+
+				const staticSide = {
+					top: 'bottom',
+					right: 'left',
+					bottom: 'top',
+					left: 'right'
+				}[computedPlacement.split('-')[0]];
+
+				const position = {
+					top: arrowY != null ? `${arrowY}px` : '',
+					left: arrowX != null ? `${arrowX}px` : '',
+					right: '',
+					border: 'none',
+					[staticSide + '']: '-4px'
+				};
+
+				// 当带有 -start -end 时尽量靠近开始或者结束位置
+				if (arrowPlacement === 'edge') {
+					if ('bottom-start' === computedPlacement || 'top-start' === computedPlacement) {
+						position.left = '5px';
+						position.right = '';
+					}
+
+					if ('bottom-end' === computedPlacement || 'top-end' === computedPlacement) {
+						position.left = '';
+						position.right = '5px';
+					}
+
+					if ('right-start' === computedPlacement || 'left-start' === computedPlacement) {
+						position.top = '5px';
+						position.bottom = '';
+					}
+
+					if ('right-end' === computedPlacement || 'left-end' === computedPlacement) {
+						position.top = '';
+						position.bottom = '5px';
+					}
+				}
+				// 箭头边框颜色
+				if (computedPlacement.includes('bottom')) {
+					position.borderTop = 'inherit';
+					position.borderLeft = 'inherit';
+				} else if (computedPlacement.includes('top')) {
+					position.borderBottom = 'inherit';
+					position.borderRight = 'inherit';
+				} else if (computedPlacement.includes('right')) {
+					position.borderBottom = 'inherit';
+					position.borderLeft = 'inherit';
+				} else if (computedPlacement.includes('left')) {
+					position.borderTop = 'inherit';
+					position.borderRight = 'inherit';
+				}
+
+				Object.assign(arrowEl.style, position);
+			});
+		},
+		{
+			animationFrame: updateEveryFrame
+		}
+	);
+};
+
+export const usePopper = (referenceEl: HTMLElement | VirtualElement, popperDom: Ref<HTMLElement | undefined>, arrowDom: Ref<HTMLElement | undefined>, options?: PopperOptions) => {
 	const { t } = useI18n();
 
 	const popperWrapKey = inject(GlobalPopperWrapKey);
@@ -200,150 +286,120 @@ export const usePopper = (referenceDom: HTMLElement | VirtualElement, popperDom:
 	if (!popperWrapKey) {
 		throw error(t('message._lib_.errors.whereIsNoPopWapper'));
 	}
+	const { placement, offset, arrowPlacement, hideOnOut, mode, display, hideOnPopper, onPopperOpen, onPopperClose, updateEveryFrame } = options || {};
 
-	const { offset, placement, mode, display, canHideOnPopper } = options || {};
+	let popperEl: HTMLElement;
 
-	if (isRef(offset)) {
-		watch(offset, (newOffset) => {
-			resetOffset(instance, newOffset);
-		});
-	}
-
-	if (isRef(placement)) {
-		watch(placement, (newPlacement) => {
-			resetPlacement(instance, newPlacement);
-		});
-	}
-
-	const clickModeShow = () => {
-		if (popperDom.value && referenceDom) {
-			_show(instance, popperDom.value);
-		}
-	};
-
-	const clickModeHide = (event: Event) => {
-		const paths = event.composedPath();
-		if (popperDom.value && referenceDom) {
-			if (!(referenceDom instanceof Element && (paths.includes(referenceDom) || paths.includes(popperDom.value)))) {
-				_hide(instance, popperDom.value);
-			}
-		}
-	};
-
-	/**
-	 * 显示
-	 */
 	const show = () => {
-		if (popperDom.value && referenceDom) {
-			_show(instance, popperDom.value);
+		if (popperEl) {
+			if (popperEl.style.display === 'block') return;
+			popperEl.style.display = 'block';
+		}
+		if (onPopperOpen) {
+			onPopperOpen.apply(null);
 		}
 	};
 
 	const hide = () => {
-		if (popperDom.value && referenceDom) {
-			_hide(instance, popperDom.value);
+		if (popperEl) {
+			if (popperEl.style.display === 'none' || !popperEl.style.display) return;
+			popperEl.style.display = 'none';
+		}
+		if (onPopperClose) {
+			onPopperClose.apply(null);
+		}
+	};
+
+	const clickMode = (event: Event) => {
+		if (popperEl && referenceEl) {
+			const _hideOnPopper = isRef(hideOnPopper) ? hideOnPopper.value : hideOnPopper;
+			const paths = event.composedPath();
+			const clickOnReferrence = referenceEl instanceof Element && paths.includes(referenceEl);
+			const clickOnPopper = paths.includes(popperEl);
+			if (_hideOnPopper ? clickOnReferrence : clickOnReferrence || clickOnPopper) {
+				show();
+			} else {
+				hide();
+			}
 		}
 	};
 
 	const debounceHide = debounce((_event) => {
-		if (popperDom.value && referenceDom) {
-			if (_event) {
-				const paths = _event.path;
-				if (!(referenceDom instanceof Element && (paths.includes(referenceDom) || paths.includes(popperDom.value)))) {
-					_hide(instance, popperDom.value);
-				}
+		if (popperEl && referenceEl) {
+			const _hideOnPopper = isRef(hideOnPopper) ? hideOnPopper.value : hideOnPopper;
+			const paths = _event.path;
+			const clickOnReferrence = referenceEl instanceof Element && paths.includes(referenceEl);
+			const clickOnPopper = paths.includes(popperEl);
+			if (!(_hideOnPopper ? clickOnReferrence : clickOnReferrence || clickOnPopper)) {
+				hide();
 			}
 		}
 	}, 200);
 
-	onMounted(() => {
-		if (popperDom.value && referenceDom) {
-			instance = createPopper(referenceDom, popperDom.value, {
-				placement: isRef(placement) ? placement.value : placement,
-				modifiers: [
-					flipModifier,
-					{
-						...offsetModifier,
-						options: {
-							offset: isRef(offset) ? offset.value : offset ? offset : [0, 0]
-						}
-					},
-					arrowModifier,
-					hideModifier
-				]
-			});
-		}
+	let cleanup: () => void;
 
-		switch (mode) {
-			case 'manul': {
-				if (display) {
-					watch(display, (flag) => {
-						if (flag) {
-							show();
-						} else {
-							hide();
-						}
+	onMounted(() => {
+		const _popperEl = popperDom.value;
+		if (_popperEl) popperEl = _popperEl;
+		const arrowEl = arrowDom.value;
+		if (popperEl && arrowEl) {
+			watchEffect(() => {
+				if (cleanup) cleanup();
+				const _offset = isRef(offset) ? offset.value : offset;
+				const _placement = isRef(placement) ? placement.value : placement;
+				const _arrowPlacement = isRef(arrowPlacement) ? arrowPlacement.value : arrowPlacement;
+				const _hideOnOut = isRef(hideOnOut) ? hideOnOut.value : hideOnOut;
+				cleanup = createPopper(referenceEl, popperEl, arrowEl, _arrowPlacement, _hideOnOut, _placement, _offset, updateEveryFrame);
+			});
+
+			if ('manul' === mode) {
+				if (isRef(display)) {
+					watch(display, (flag) => (flag ? show() : hide()), {
+						immediate: true
 					});
 				}
-				break;
-			}
-			case 'click': {
-				if (referenceDom instanceof Element) {
-					referenceDom.addEventListener('click', clickModeShow, true);
-					document.addEventListener('click', clickModeHide, true);
+			} else if ('click' === mode) {
+				if (referenceEl instanceof Element) {
+					document.addEventListener('click', clickMode, true);
 				}
-				break;
-			}
-			case 'hover': {
-				if (referenceDom instanceof Element) {
-					referenceDom.addEventListener('mouseenter', show, true);
-					document.addEventListener('mouseover', canHideOnPopper ? hide : debounceHide, true);
+			} else if ('hover' === mode) {
+				if (referenceEl instanceof Element) {
+					referenceEl.addEventListener('mouseenter', show);
+					document.addEventListener('mouseover', debounceHide);
 				}
-				break;
-			}
-			case 'click-out': {
-				if (referenceDom instanceof Element) {
-					referenceDom.addEventListener('click', show, true);
-					document.addEventListener('mouseover', canHideOnPopper ? hide : debounceHide, true);
+			} else if ('click-out' === mode) {
+				if (referenceEl instanceof Element) {
+					referenceEl.addEventListener('click', clickMode, true);
+					document.addEventListener('mouseover', debounceHide, true);
 				}
-				break;
 			}
 		}
 	});
 
 	onUnmounted(() => {
-		if (instance) {
-			instance.destroy();
+		if ('click' === mode) {
+			if (referenceEl instanceof Element) {
+				document.removeEventListener('click', clickMode, true);
+			}
+		} else if ('hover' === mode) {
+			if (referenceEl instanceof Element) {
+				referenceEl.removeEventListener('mouseenter', show);
+				document.removeEventListener('mouseover', debounceHide);
+			}
+		} else if ('click-out' === mode) {
+			if (referenceEl instanceof Element) {
+				referenceEl.removeEventListener('click', clickMode, true);
+				document.removeEventListener('mouseover', debounceHide);
+			}
 		}
 
-		switch (mode) {
-			case 'click': {
-				if (referenceDom instanceof Element) {
-					referenceDom.removeEventListener('click', clickModeShow, true);
-					document.removeEventListener('click', clickModeHide, true);
-				}
-				break;
-			}
-			case 'hover': {
-				if (referenceDom instanceof Element) {
-					referenceDom.removeEventListener('mouseenter', show, true);
-					document.removeEventListener('mouseover', canHideOnPopper ? hide : debounceHide, true);
-				}
-				break;
-			}
-			case 'click-out': {
-				if (referenceDom instanceof Element) {
-					referenceDom.removeEventListener('click', show, true);
-					document.removeEventListener('mouseover', canHideOnPopper ? hide : debounceHide, true);
-				}
-			}
+		if (cleanup) {
+			cleanup();
 		}
 	});
 
 	return {
-		popperTo,
-		show,
-		hide
+		popperTo
 	};
 };
 

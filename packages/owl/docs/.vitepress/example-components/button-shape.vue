@@ -1,14 +1,28 @@
 <template>
-	<o-button shape="circle">circle</o-button>
-	<o-button shape="square">square</o-button>
-	<o-button shape="ellipse">ellipse</o-button>
-	<o-button shape="rectangle">rectangle</o-button>
-	<o-button :shape="shapeRef">rectangle</o-button>
+	<o-button shape="circle">
+		<o-icon icon="heart"></o-icon>
+	</o-button>
+	<o-button shape="square">
+		<o-icon icon="heart"></o-icon>
+	</o-button>
+	<o-button shape="ellipse">
+		<o-icon icon="heart"></o-icon>
+		&nbsp;椭圆形
+	</o-button>
+	<o-button shape="rectangle">
+		<o-icon icon="heart"></o-icon>
+		&nbsp;矩形
+	</o-button>
+	<o-button :shape="shapeRef">
+		<o-icon icon="heart"></o-icon>
+	</o-button>
 </template>
 
 <script lang="ts">
-import { ButtonShape } from '@yiird/owl';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { addIcons, ButtonShape } from '@yiird/owl';
 import { defineComponent, ref } from 'vue';
+addIcons(faHeart);
 export default defineComponent({
 	setup() {
 		const shapeRef = ref<ButtonShape>('rectangle');

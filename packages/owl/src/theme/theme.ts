@@ -32,13 +32,47 @@ export type GlobalVariables = {
 	colorBorderLightest: string;
 
 	/** 背景色 */
+	//不透明-白
 	colorBgOpaque: string;
+	colorBgBlack: string;
+	//透明
 	colorBgTransparent: string;
 
 	/*----------尺寸-----------*/
 
 	/*----------高度-----------*/
-	lineHeightBase: string;
+	sizeBase: string;
+	sizeXxs: string;
+	sizeXs: string;
+	sizeSm: string;
+	sizeMd: string;
+	sizeLg: string;
+	sizeXl: string;
+	sizeXxl: string;
+	size1x: string;
+	size2x: string;
+	size3x: string;
+	size4x: string;
+	size5x: string;
+	size6x: string;
+	size7x: string;
+	size8x: string;
+	size9x: string;
+	size10x: string;
+
+	/*----------shadow-----------*/
+	boxShadowHighUp: string;
+	boxShadowHighDown: string;
+	boxShadowHighLeft: string;
+	boxShadowHighRight: string;
+	boxShadowMiddleUp: string;
+	boxShadowMiddleDown: string;
+	boxShadowMiddleLeft: string;
+	boxShadowMiddleRight: string;
+	boxShadowLowUp: string;
+	boxShadowLowDown: string;
+	boxShadowLowLeft: string;
+	boxShadowLowRight: string;
 };
 
 export class Theme<V extends Variables> {

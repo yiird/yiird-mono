@@ -18,6 +18,8 @@ declare module '@vue/runtime-core' {
 		OCalendar: typeof import('./types/components/calendar/o-calendar')['default'];
 		OPopper: typeof import('./types/components/popper/o-popper')['default'];
 		OPopperWrap: typeof import('./types/components/wrap/o-popper-wrap')['default'];
+		OTime: typeof import('./types/components/time/o-time')['default'];
+		OVideo: typeof import('./types/components/video/o-video')['default'];
 	}
 }
 

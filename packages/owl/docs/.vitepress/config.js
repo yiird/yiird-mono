@@ -78,9 +78,14 @@ export default defineConfig({
 					]
 				},
 				{
+					text: '媒体',
+					items: [{ text: 'video', link: '/components/o-video' }]
+				},
+				{
 					text: '表单',
 					items: [
 						{ text: 'input', link: '/components/o-input' },
+						{ text: 'time', link: '/components/o-time' },
 						{ text: 'calendar', link: '/components/o-calendar' }
 					]
 				}
@@ -99,9 +104,14 @@ export default defineConfig({
 					items: [{ text: 'layout', link: '/examples/layout' }]
 				},
 				{
+					text: '媒体',
+					items: [{ text: 'video', link: '/examples/video' }]
+				},
+				{
 					text: '表单',
 					items: [
 						{ text: 'input', link: '/examples/input' },
+						{ text: 'time', link: '/examples/time' },
 						{ text: 'calendar', link: '/examples/calendar' }
 					]
 				}

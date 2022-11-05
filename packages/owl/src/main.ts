@@ -6,6 +6,7 @@ import { GlobalThemeKey, GlobalVariables, Theme } from './theme/theme';
 import { ThemeNormal } from './theme/theme-normal';
 
 import { configure, LogLevel } from './common/logger';
+import { tooltip } from './directives';
 import setupI18n from './locales';
 import './theme/styles/main.scss';
 
@@ -23,6 +24,7 @@ const createUI = (theme: Theme<GlobalVariables>): Plugin => {
 			forEach(components, (component) => {
 				app.component(component.name, component);
 			});
+			app.directive('tooltip', tooltip);
 
 			if (options?.icons) {
 				addIcons(...options.icons);

@@ -1,55 +1,95 @@
 <template>
 	<Teleport :to="popperTo">
 		<div
-			v-show="display__"
 			v-if="refresh__"
 			:id="id__"
 			v-bind="$attrs"
 			ref="popper"
 			:class="block"
-			:style="{ ...theme.vars }">
+			:style="{ ...theme.vars }"
+			@click="onClickPopper">
 			<slot></slot>
 			<div
-				class="arrow"
-				data-popper-arrow></div>
+				ref="arrow"
+				:class="el_arrow"></div>
 		</div>
 	</Teleport>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, watchEffect } from 'vue';
 import { usePrefab } from '../../common/prefab';
-import { extractDom, PopperPlacement, PopperProps, usePopper } from './definition';
+import { extractDom, PopperBemKeys, PopperPlacement, PopperProps, PopperVariables, usePopper } from './definition';
 
 export default defineComponent({
 	name: 'OPopper',
 	props: PopperProps,
-	setup(props) {
-		const prefab = usePrefab(props);
+	emits: ['open', 'close', 'click-popper'],
+	setup(props, { emit }) {
+		const prefab = usePrefab<PopperVariables, PopperBemKeys>(props);
 
-		const { display__ } = prefab;
+		const { display__, theme, bem } = prefab;
 
 		const popper = ref<HTMLElement>();
 
 		const obtainPlacement = computed<PopperPlacement>(() => props.placement);
 
-		const obtainOffset = computed(() => {
-			return [props.offset?.skid || 0, props.offset?.distance || 0];
-		});
+		const obtainArrowPlacement = computed(() => props.arrowPlacement);
 
-		const { popperTo, show, hide } = usePopper(extractDom(props.reference), popper, {
+		const obtainOffset = computed(() => props.offset);
+
+		const obtainHideOnPopper = computed(() => props.hideOnPopper);
+		const obtainHideOnOut = computed(() => props.hideOnOut);
+
+		const obtainShadow = computed(() => (props.shadow ? 'shadow' : ''));
+
+		const arrow = ref<HTMLElement>();
+
+		const { popperTo } = usePopper(extractDom(props.reference), popper, arrow, {
 			placement: obtainPlacement,
 			offset: obtainOffset,
 			mode: props.mode,
-			display: display__
+			display: display__,
+			arrowPlacement: obtainArrowPlacement,
+			hideOnPopper: obtainHideOnPopper,
+			hideOnOut: obtainHideOnOut,
+			updateEveryFrame: props.updateEveryFrame,
+			onPopperOpen() {
+				emit('open');
+			},
+			onPopperClose() {
+				emit('close');
+			}
 		});
+
+		watchEffect(() => {
+			theme.originVars.bgColor = props.bgColor || '';
+		});
+		watchEffect(() => {
+			theme.originVars.borderColor = props.borderColor || '';
+		});
+
+		/**
+		 * @private
+		 */
+		const onClickPopper = () => {
+			emit('click-popper');
+		};
+
+		bem.addModifier(obtainShadow);
+
+		const getEl = () => {
+			return popper;
+		};
 
 		return {
 			...prefab,
+			el_arrow: bem.elements.arrow,
 			popperTo,
 			popper,
-			show,
-			hide
+			arrow,
+			onClickPopper,
+			getEl
 		};
 	}
 });

@@ -13,10 +13,6 @@ type ElementNames<B> = B extends Record<infer K, unknown> ? K : never;
 // };
 type Modifiers<Em extends Record<string, string>, E> = Em extends Record<infer N, infer U> ? (N extends E ? U : never) : never;
 
-class BemElements implements Record<string, string[]> {
-	[x: string]: string[];
-}
-
 export class BemClasses<B extends BemKeys> {
 	private __modifiers: Ref<Set<string | Ref<string>>> = ref(new Set());
 	private __elements: UnwrapNestedRefs<Record<string, Set<string>>> = reactive({});
@@ -47,7 +43,7 @@ export class BemClasses<B extends BemKeys> {
 					if (isRef(modifier)) {
 						_modifier = modifier.value;
 					}
-					return `${this._cType}--${_modifier}`;
+					return _modifier ? `${this._cType}--${_modifier}` : '';
 				})
 			];
 
@@ -68,7 +64,7 @@ export class BemClasses<B extends BemKeys> {
 
 	addModifier(...modifiers: Array<B['modifiers']> | Ref<string>[]) {
 		forEach(modifiers, (modifier) => {
-			if (isRef(modifier) || isString(modifier)) {
+			if (isRef(modifier) || (modifier && isString(modifier))) {
 				this.__modifiers.value.add(modifier);
 			}
 		});

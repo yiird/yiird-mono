@@ -27,7 +27,7 @@ export const ButtonProps = {
 	 */
 	color: {
 		type: String as PropType<ButtonColor>,
-		default: 'info'
+		default: 'primary'
 	},
 	/**
 	 * 文本颜色

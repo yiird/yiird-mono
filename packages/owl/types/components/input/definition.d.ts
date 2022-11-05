@@ -1,5 +1,11 @@
-import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import { PropType } from 'vue';
+import { NumberSize, TshirtSize } from '../../common/type';
+export declare type InputSize = TshirtSize | NumberSize;
+export interface InputIcon {
+    icon: IconName;
+    prefix?: IconPrefix;
+}
 export declare const InputProps: {
     /**
      * 输入类型
@@ -7,6 +13,13 @@ export declare const InputProps: {
     readonly type: {
         readonly type: PropType<"date" | "text" | "password" | "time" | "datetime">;
         readonly default: "text";
+    };
+    /**
+     * 尺寸
+     */
+    readonly size: {
+        readonly type: PropType<InputSize>;
+        readonly default: "md";
     };
     /**
      * 提示语
@@ -18,13 +31,13 @@ export declare const InputProps: {
      * 文本域前缀图标
      */
     readonly prefix: {
-        readonly type: PropType<IconName>;
+        readonly type: PropType<IconDefinition | IconName | InputIcon>;
     };
     /**
      * 文本域后缀图标
      */
     readonly suffix: {
-        readonly type: PropType<IconName>;
+        readonly type: PropType<IconDefinition | IconName | InputIcon>;
     };
     /**
      * 前缀文本
@@ -87,16 +100,10 @@ export declare const InputProps: {
     };
 };
 export declare type InputVariables = {
-    color?: string;
-    placeholderColor?: string;
-    lineHeight?: string;
-    borderColor?: string;
-    prefixBgColor?: string;
-    suffixBgColor?: string;
     radius?: string;
 };
 export declare type InputBemKeys = {
-    modifiers: 'radius' | 'state-success' | 'state-warning' | 'state-danger';
+    modifiers: 'focus' | 'radius' | 'state-success' | 'state-warning' | 'state-danger';
     elements: {
         input: string;
         prefix: string;
@@ -116,4 +123,5 @@ export interface EventBinding {
      */
     value: unknown;
 }
+export declare const getIcon: (icon: IconName | IconDefinition | InputIcon) => InputIcon | undefined;
 export {};

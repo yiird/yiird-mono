@@ -11,7 +11,7 @@
 				v-if="popperReference1"
 				mode="click"
 				:reference="popperReference1">
-				显示起泡
+				显示气泡
 			</o-popper>
 		</div>
 		<div class="popper2">
@@ -24,7 +24,7 @@
 			<o-popper
 				v-if="popperReference2"
 				:reference="popperReference2">
-				显示起泡
+				显示气泡
 			</o-popper>
 		</div>
 		<div class="popper3">
@@ -37,9 +37,8 @@
 			<o-popper
 				v-if="popperReference3"
 				mode="click-out"
-				placement="bottom-start"
 				:reference="popperReference3">
-				显示起泡
+				显示气泡
 			</o-popper>
 		</div>
 	</div>

@@ -7,9 +7,12 @@ import { CalendarBemKeys, CalendarDay, CalendarMonth, CalendarVariables, Calenda
  * 日历
  */
 declare const _sfc_main: DefineComponent<{
-    readonly value: {
-        readonly type: PropType<string | Date>;
-        readonly default: () => Date;
+    readonly format: {
+        readonly type: PropType<string>;
+        readonly default: "yyyy-MM-dd";
+    };
+    readonly modelValue: {
+        readonly type: PropType<string>;
     };
     readonly id: {
         type: StringConstructor;
@@ -69,10 +72,13 @@ declare const _sfc_main: DefineComponent<{
         (key: string | number, named: Record<string, unknown>, plural: number): string;
         (key: string | number, named: Record<string, unknown>, defaultMsg: string): string;
     };
-}, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, ("selected-year" | "selected-month" | "selected-day")[], "selected-year" | "selected-month" | "selected-day", VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
-    readonly value: {
-        readonly type: PropType<string | Date>;
-        readonly default: () => Date;
+}, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, ("selected-year" | "selected-month" | "selected-day" | "update:modelValue")[], "selected-year" | "selected-month" | "selected-day" | "update:modelValue", VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
+    readonly format: {
+        readonly type: PropType<string>;
+        readonly default: "yyyy-MM-dd";
+    };
+    readonly modelValue: {
+        readonly type: PropType<string>;
     };
     readonly id: {
         type: StringConstructor;
@@ -85,8 +91,9 @@ declare const _sfc_main: DefineComponent<{
     "onSelected-year"?: ((...args: any[]) => any) | undefined;
     "onSelected-month"?: ((...args: any[]) => any) | undefined;
     "onSelected-day"?: ((...args: any[]) => any) | undefined;
+    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
 }, {
     readonly display: boolean;
-    readonly value: string | Date;
+    readonly format: string;
 }>;
 export default _sfc_main;

@@ -181,7 +181,8 @@ export const IconProps = {
 	 */
 	rotation: {
 		type: [String, Number] as PropType<IconRotation>,
-		default: null
+		default: null,
+		required: false
 	},
 	/**
 	 * 翻转

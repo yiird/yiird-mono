@@ -21,7 +21,7 @@ export declare const ButtonProps: {
      */
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "info";
+        readonly default: "primary";
     };
     /**
      * 文本颜色

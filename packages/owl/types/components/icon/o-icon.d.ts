@@ -27,6 +27,7 @@ declare const _sfc_main: DefineComponent<{
     readonly rotation: {
         readonly type: PropType<IconRotation>;
         readonly default: null;
+        readonly required: false;
     };
     readonly flip: {
         readonly type: PropType<IconFlip>;
@@ -81,6 +82,7 @@ declare const _sfc_main: DefineComponent<{
     readonly rotation: {
         readonly type: PropType<IconRotation>;
         readonly default: null;
+        readonly required: false;
     };
     readonly flip: {
         readonly type: PropType<IconFlip>;

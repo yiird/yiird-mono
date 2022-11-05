@@ -1,60 +1,28 @@
 @import '../../theme/styles/var';
 @include b('popper') {
+	$bgColor: _var('bg-color', rgba($-global-color-bg-black));
+	$borderColor: _var('border-color', rgba($-global-color-border-light));
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: $bgColor;
 	font-weight: bold;
-	padding: 4px 8px;
+	padding: 5px;
 	border-radius: 4px;
-	background-color: black;
-	color: white;
+	font-size: 90%;
 	display: none;
+	border: 1px solid $borderColor;
 
-	&[data-show] {
-		display: block;
-	}
-
-	&[data-popper-reference-hidden] {
-		visibility: hidden;
-		pointer-events: none;
-		.arrow {
-			display: none;
-		}
-	}
-
-	&[data-popper-placement^='top'] {
-		.arrow {
-			bottom: -4px;
-		}
-	}
-	&[data-popper-placement^='bottom'] {
-		.arrow {
-			top: -4px;
-		}
-	}
-	&[data-popper-placement^='left'] {
-		.arrow {
-			right: -4px;
-		}
-	}
-	&[data-popper-placement^='right'] {
-		.arrow {
-			left: -4px;
-		}
-	}
-
-	.arrow,
-	.arrow::before {
+	@include e('arrow'){
 		position: absolute;
+		background: $bgColor;
 		width: 8px;
 		height: 8px;
-		background: inherit;
-	}
-
-	.arrow {
-		visibility: hidden;
-	}
-
-	.arrow::before {
-		content: '';
-		visibility: visible;
 		transform: rotate(45deg);
+	}
+
+	@include m('shadow'){
+		box-shadow: $-global-box-shadow-low-down;
 	}
 }

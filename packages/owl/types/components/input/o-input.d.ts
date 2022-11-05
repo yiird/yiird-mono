@@ -1,8 +1,8 @@
 import type { BemClasses } from '../../common/bem';
 import type { Theme } from '../../theme';
-import type { IconName } from '@fortawesome/fontawesome-common-types';
+import type { IconDefinition, IconName } from '@fortawesome/fontawesome-common-types';
 import type { DefineComponent, PropType, Ref, WritableComputedRef, ComputedRef, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
-import { InputBemKeys, InputVariables } from './definition';
+import type { InputSize, InputIcon, InputBemKeys,  InputVariables } from './definition';
 /**
  * :::warning 功能描述
  * 此组件为文本域组件，[查看样例](/examples/text)。
@@ -41,14 +41,18 @@ declare const _sfc_main: DefineComponent<{
         readonly type: PropType<"date" | "text" | "password" | "time" | "datetime">;
         readonly default: "text";
     };
+    readonly size: {
+        readonly type: PropType<InputSize>;
+        readonly default: "md";
+    };
     readonly placeholder: {
         readonly type: PropType<string>;
     };
     readonly prefix: {
-        readonly type: PropType<IconName>;
+        readonly type: PropType<IconDefinition | IconName | InputIcon>;
     };
     readonly suffix: {
-        readonly type: PropType<IconName>;
+        readonly type: PropType<IconDefinition | IconName | InputIcon>;
     };
     readonly prefixText: {
         readonly type: PropType<string>;
@@ -94,16 +98,13 @@ declare const _sfc_main: DefineComponent<{
     el_password: Ref<string>;
     el_remove: Ref<string>;
     el_loading: Ref<string>;
+    value: Ref<any>;
     obtainValue: WritableComputedRef<unknown>;
     obtainPlaceholder: ComputedRef<string | undefined>;
-    obtainHasPrefix: ComputedRef<string | true | undefined>;
-    obtainHasSuffix: ComputedRef<string | boolean | undefined>;
-    obtainPrefixIcon: ComputedRef<{
-        icon: IconName;
-    } | undefined>;
-    obtainSuffixIcon: ComputedRef<{
-        icon: IconName;
-    } | undefined>;
+    obtainHasPrefix: ComputedRef<string | true | IconDefinition | InputIcon | undefined>;
+    obtainHasSuffix: ComputedRef<string | boolean | IconDefinition | InputIcon | undefined>;
+    obtainPrefixIcon: ComputedRef<InputIcon | undefined>;
+    obtainSuffixIcon: ComputedRef<InputIcon | undefined>;
     obtainPrefixText: ComputedRef<string | undefined>;
     obtainSuffixText: ComputedRef<string | undefined>;
     obtainPasswordEye: ComputedRef<"eye" | "eye-slash">;
@@ -111,12 +112,19 @@ declare const _sfc_main: DefineComponent<{
     obtainLoading: ComputedRef<boolean>;
     obtainDisabled: ComputedRef<boolean>;
     obtainReadonly: ComputedRef<boolean>;
+    input: Ref<HTMLElement | undefined>;
+    popper: Ref<HTMLElement | undefined>;
+    component: Ref<HTMLElement | undefined>;
+    showPopper: Ref<boolean>;
+    obtainHasPopper: ComputedRef<boolean>;
     onBlur: (e: FocusEvent) => void;
     onFocus: (e: FocusEvent) => void;
     onPrefixIconClick: (e: PointerEvent) => void;
     onSuffixIconClick: (e: PointerEvent) => void;
     onPasswordEyeClick: () => void;
     onRemoveClick: () => void;
+    onSelectedDay: () => void;
+    onEnterPress: (e: KeyboardEvent) => void;
     id__: string;
     cType__: string;
     display__: Ref<boolean>;
@@ -128,14 +136,18 @@ declare const _sfc_main: DefineComponent<{
         readonly type: PropType<"date" | "text" | "password" | "time" | "datetime">;
         readonly default: "text";
     };
+    readonly size: {
+        readonly type: PropType<InputSize>;
+        readonly default: "md";
+    };
     readonly placeholder: {
         readonly type: PropType<string>;
     };
     readonly prefix: {
-        readonly type: PropType<IconName>;
+        readonly type: PropType<IconDefinition | IconName | InputIcon>;
     };
     readonly suffix: {
-        readonly type: PropType<IconName>;
+        readonly type: PropType<IconDefinition | IconName | InputIcon>;
     };
     readonly prefixText: {
         readonly type: PropType<string>;
@@ -180,6 +192,7 @@ declare const _sfc_main: DefineComponent<{
     "onClick-prefix-icon"?: ((...args: any[]) => any) | undefined;
 }, {
     readonly type: "date" | "text" | "password" | "time" | "datetime";
+    readonly size: InputSize;
     readonly disabled: boolean;
     readonly display: boolean;
     readonly radius: number | boolean;

@@ -1,14 +1,14 @@
 import { PropType } from 'vue';
 export declare const CalendarProps: {
+    readonly format: {
+        readonly type: PropType<string>;
+        readonly default: "yyyy-MM-dd";
+    };
     /**
-     * 初始化日期
-     *
-     * @values
-     * @default 'new Date()'
+     * @private
      */
-    readonly value: {
-        readonly type: PropType<string | Date>;
-        readonly default: () => Date;
+    readonly modelValue: {
+        readonly type: PropType<string>;
     };
     readonly id: {
         type: StringConstructor;
@@ -70,6 +70,7 @@ export interface CalendarWeek {
 export interface CalendarEventBinding {
     date: Date;
     type: 'year' | 'month' | 'day';
-    value: number;
+    formatted: string;
+    selectedNum: number;
 }
 export {};

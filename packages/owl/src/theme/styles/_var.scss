@@ -19,6 +19,39 @@ $-global-color-danger: _var('color-danger');
 $-global-color-info: _var('color-info');
 
 $-global-color-bg-opaque: _var('color-bg-opaque');
+$-global-color-bg-black: _var('color-bg-black');
 $-global-color-bg-transparent: _var('color-bg-transparent');
 
-$-global-line-height-base: _var('line-height-base');
+$-global-size:(
+    base: _var('size-base'),
+    xxs: _var('size-xxs'),
+    xs: _var('size-xs'),
+    sm: _var('size-sm'),
+    md: _var('size-md'),
+    lg: _var('size-lg'),
+    xl: _var('size-xl'),
+    xxl: _var('size-xxl'),
+    '1x': _var('size-1-x'),
+    '2x': _var('size-2-x'),
+    '3x': _var('size-3-x'),
+    '4x': _var('size-4-x'),
+    '5x': _var('size-5-x'),
+    '6x': _var('size-6-x'),
+    '7x': _var('size-7-x'),
+    '8x': _var('size-8-x'),
+    '9x': _var('size-9-x'),
+    '10x': _var('size-10-x')
+);
+
+$-global-box-shadow-high-up:_var('box-shadow-high-up');
+$-global-box-shadow-high-down:_var('box-shadow-high-down');
+$-global-box-shadow-high-left:_var('box-shadow-high-left');
+$-global-box-shadow-high-right:_var('box-shadow-high-right');
+$-global-box-shadow-middle-up:_var('box-shadow-middle-up');
+$-global-box-shadow-middle-down:_var('box-shadow-middle-down');
+$-global-box-shadow-middle-left:_var('box-shadow-middle-left');
+$-global-box-shadow-middle-right:_var('box-shadow-middle-right');
+$-global-box-shadow-low-up:_var('box-shadow-low-up');
+$-global-box-shadow-low-down:_var('box-shadow-low-down');
+$-global-box-shadow-low-left:_var('box-shadow-low-left');
+$-global-box-shadow-low-right:_var('box-shadow-low-right');

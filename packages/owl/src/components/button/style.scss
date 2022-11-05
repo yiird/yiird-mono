@@ -1,127 +1,39 @@
-@import '../../theme/styles/bem';
+@import '../../theme/styles/var';
 
-$--button-size: _var('line-height-base');
-
+$--button-size: 2rem;
 $--button-color: var(--o-button-bg-color);
 
 $--button-normal-font-size: 1rem;
 $--button-normal-radus: 3px;
 
-$--button-size-map: (
-	xxs: (
-		//height
-		0.5,
-		//font-size
-		0.7rem,
-		//padding-left & padding-right
-		0.05
-	),
-	xs: (
-		0.7,
-		0.7rem,
-		0.1
-	),
-	sm: (
-		0.8,
-		0.8rem,
-		0.2
-	),
-	md: (
-		1,
-		1rem,
-		0.5
-	),
-	lg: (
-		1.5,
-		1.5rem,
-		0.5
-	),
-	xl: (
-		2,
-		2rem,
-		0.8
-	),
-	xxl: (
-		3,
-		3rem,
-		1
-	),
-	1x: (
-		1,
-		1rem,
-		0.5
-	),
-	2x: (
-		1.5,
-		1.5rem,
-		1
-	),
-	3x: (
-		2,
-		2rem,
-		1
-	),
-	4x: (
-		2.5,
-		2.5rem,
-		1.5
-	),
-	5x: (
-		3,
-		3rem,
-		2
-	),
-	6x: (
-		3.5,
-		3.5rem,
-		2.5
-	),
-	7x: (
-		4,
-		4rem,
-		3
-	),
-	8x: (
-		4.5,
-		4.5rem,
-		3.5
-	),
-	9x: (
-		5,
-		5rem,
-		4
-	),
-	10x: (
-		5.5,
-		5.5rem,
-		4.5
-	)
-);
+$--button-size-arr: ('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x');
 
-@mixin button-size($size-map) {
-	@each $modifier, $item in $size-map {
-		$-height-per: nth($item, 1);
-		$-font-size: nth($item, 2);
-		$-padding-per: nth($item, 3);
+@mixin button-size() {
+	@each $modifier in $--button-size-arr {
+		$height: map-get($-global-size, $modifier);
 		@include m('size-' + $modifier) {
-			height: calc($-height-per * $--button-size);
-			padding: 0 calc($-padding-per * $--button-size);
-			font-size: $-font-size;
+			height: $height;
+
+			@if ($modifier == 'xxs' or $modifier == 'xs') {
+				padding: 0 0.2rem;
+			}
+
+			@if ($modifier != 'xxs' and $modifier != 'xs') {
+				padding: 0 calc(#{$height} / 2);
+			}
+			font-size: calc(#{$height} / 2);
 		}
 	}
 }
 
-@mixin button-shape($size-map) {
+@mixin button-shape() {
 	@include m('shape-circle') {
-		@each $modifier, $item in $size-map {
-			$-height-per: nth($item, 1);
-			$-font-size: nth($item, 2);
-			$-padding-per: nth($item, 3);
-			$r: calc($-padding-per * $--button-size + $-height-per * $--button-size);
+		@each $modifier in $--button-size-arr {
+			$height: map-get($-global-size, $modifier);
 			&.#{$B} {
 				@include m(#{'size-' + $modifier}) {
-					width: $r;
-					height: $r;
+					width: $height;
+					height: $height;
 					border-radius: 50%;
 					padding: 0;
 				}
@@ -130,16 +42,13 @@ $--button-size-map: (
 	}
 
 	@include m('shape-square') {
-		@each $modifier, $item in $size-map {
-			$-height-per: nth($item, 1);
-			$-font-size: nth($item, 2);
-			$-padding-per: nth($item, 3);
-			$r: calc($-padding-per * $--button-size + $-height-per * $--button-size);
+		@each $modifier in $--button-size-arr {
+			$height: map-get($-global-size, $modifier);
 			&.#{$B} {
 				@include m(#{'size-' + $modifier}) {
-					width: $r;
-					height: $r;
-					border-radius: 0.3rem;
+					width: $height;
+					height: $height;
+					border-radius: 5%;
 					padding: 0;
 				}
 			}
@@ -147,28 +56,22 @@ $--button-size-map: (
 	}
 
 	@include m('shape-ellipse') {
-		@each $modifier, $item in $size-map {
-			$-height-per: nth($item, 1);
-			$-font-size: nth($item, 2);
-			$-padding-per: nth($item, 3);
-			$r: calc(($-height-per * $--button-size) / 2);
+		@each $modifier in $--button-size-arr {
+			$height: map-get($-global-size, $modifier);
 			&.#{$B} {
 				@include m(#{'size-' + $modifier}) {
-					border-radius: $r;
+					border-radius: calc($height / 2);
 				}
 			}
 		}
 	}
 
 	@include m('shape-rectangle') {
-		@each $modifier, $item in $size-map {
-			$-height-per: nth($item, 1);
-			$-font-size: nth($item, 2);
-			$-padding-per: nth($item, 3);
-			$r: calc(($-height-per * $--button-size) / 8);
+		@each $modifier in $--button-size-arr {
+			$height: map-get($-global-size, $modifier);
 			&.#{$B} {
 				@include m(#{'size-' + $modifier}) {
-					border-radius: $r;
+					border-radius: calc($height / 8);
 				}
 			}
 		}
@@ -176,12 +79,13 @@ $--button-size-map: (
 }
 
 @include b(button) {
-	display: inline-block;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 	outline: none;
 	user-select: none;
 	color: var(--o-button-text-color);
 	background-color: rgba($--button-color, 1);
-	border-color: #eee;
 	opacity: 0.9;
 	font-weight: normal;
 	font-size: 1rem;
@@ -193,17 +97,14 @@ $--button-size-map: (
 	box-sizing: border-box;
 	transition-property: all;
 	transition-duration: 0.3s;
-	border: none;
+	border: 1px solid transparent;
 	white-space: nowrap;
 	vertical-align: middle;
 
-	&:visited {
-		color: #666;
-	}
 	&:hover,
 	&:focus {
 		outline: none;
-		opacity: 0.8;
+		opacity: 0.7;
 	}
 
 	&:active,
@@ -213,24 +114,24 @@ $--button-size-map: (
 		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
 		text-decoration: none;
 		transition-duration: 0s;
-		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+		box-shadow: inset 0 1px 10px rgba($-global-color-bg-black, 0.3);
 	}
 
-	@include button-size($--button-size-map);
+	@include button-size();
 
-	@include button-shape($--button-size-map);
+	@include button-shape();
 
 	@include m(state-disabled) {
-		top: 0 !important;
-		background: #eee !important;
-		border: 1px solid #ddd !important;
+		background: rgba($-global-color-border-secondary) !important;
+		border: 1px solid rgba($-global-color-border-primary) !important;
 		text-shadow: 0 1px 1px white !important;
-		color: #ccc !important;
+		color: rgba($-global-color-text-lightest);
 		cursor: not-allowed !important;
 		appearance: none !important;
 		-webkit-box-shadow: none !important;
 		box-shadow: none !important;
-		opacity: 0.8 !important;
+		font-weight: bold!important;
+		opacity: .9!important;
 	}
 
 	@include m(mode-light) {
@@ -252,27 +153,4 @@ $--button-size-map: (
 		text-underline-offset: 2px;
 		box-shadow: none !important;
 	}
-	
-
-	// @include m(mode-apple) {
-	// 	letter-spacing: -0.022em;
-	// 	background-color: unset;
-	// 	background-image: linear-gradient(180deg,rgba($--button-color,.5), rgba($--button-color,1));
-	// 	border: 1px solid rgba($--button-color, 1);
-
-	// 	&:before {
-	// 		background-color: initial;
-	// 		background-image: linear-gradient(#fff 0, rgba($--button-color,0) 100%);
-	// 		content: "";
-	// 		height: 50%;
-	// 		opacity: .5;
-	// 	  }
-
-	// 	  &:hover {
-	// 		box-shadow: rgba($--button-color,0.2) 0 3px 15px inset, rgba($--button-color,0.1) 0 3px 5px, rgba($--button-color,0.1) 0 10px 13px;
-	// 		transform: scale(1.05);
-	// 	  }
-	// }
-
-
 }

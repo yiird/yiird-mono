@@ -8,7 +8,7 @@
 	<div class="demo-wrap">
 		<o-input
 			v-model="data"
-			prefix="user"
+			:prefix="faUser"
 			placeholder="请输入">
 		</o-input>
 	</div>
@@ -23,7 +23,7 @@
 	<div class="demo-wrap">
 		<o-input
 			v-model="data"
-			suffix="dollar-sign"
+			:prefix="faDollarSign"
 			suffix-text="美元"
 			placeholder="请输入">
 		</o-input>
@@ -40,11 +40,9 @@
 <script
 	lang="ts"
 	setup>
-import { faDollarSign, faUser } from '@fortawesome/free-solid-svg-icons';
-import { addIcons } from '@yiird/owl';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/pro-thin-svg-icons';
 import { ref, watch } from 'vue';
-
-addIcons(faUser, faDollarSign);
 
 const data = ref();
 

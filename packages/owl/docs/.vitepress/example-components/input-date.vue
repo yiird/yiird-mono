@@ -1,7 +1,6 @@
 <template>
 	<div class="demo-wrap">
 		<o-input
-			v-model="data"
 			type="date"
 			placeholder="请输入">
 		</o-input>
@@ -11,13 +10,13 @@
 <script
 	lang="ts"
 	setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 const data = ref();
 
-watch(data, () => {
-	console.log(data.value);
-});
+// watch(data, () => {
+// 	console.log(data.value);
+// });
 </script>
 
 <style

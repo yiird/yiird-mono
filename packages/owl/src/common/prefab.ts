@@ -41,7 +41,7 @@ export const usePrefab = <V extends Variables, B extends BemKeys = BemKeys>(prop
 	const cType__ = kebabCase(internalInstance.type.name);
 
 	//生成组件ID
-	const id__ = (props.id ?? internalInstance.uid) as string;
+	const id__ = cType__ + '-' + (props.id ?? internalInstance.uid);
 
 	//显示状态
 	const display__ = computed(() => {

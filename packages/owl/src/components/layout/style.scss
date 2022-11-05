@@ -11,7 +11,7 @@
 		position: absolute;
 		width: 100%;
 		height: $height;
-        top:0;
+		top: 0;
 	}
 
 	@include b('footer') {
@@ -24,9 +24,9 @@
 	}
 
 	@include b('sider-left') {
-        $width: _var('width');
-        $top: _var('top');
-        $bottom: _var('bottom');
+		$width: _var('width');
+		$top: _var('top');
+		$bottom: _var('bottom');
 
 		position: absolute;
 		width: $width;
@@ -36,10 +36,9 @@
 	}
 
 	@include b('sider-right') {
-        $width: _var('width');
-        $top: _var('top');
-        $bottom: _var('bottom');
-
+		$width: _var('width');
+		$top: _var('top');
+		$bottom: _var('bottom');
 		position: absolute;
 		width: $width;
 		top: $top;
@@ -48,10 +47,10 @@
 	}
 
 	@include b('main') {
-        $right: _var('right');
-        $left: _var('left');
-        $top: _var('top');
-        $bottom: _var('bottom');
+		$right: _var('right');
+		$left: _var('left');
+		$top: _var('top');
+		$bottom: _var('bottom');
 
 		position: absolute;
 		top: $top;

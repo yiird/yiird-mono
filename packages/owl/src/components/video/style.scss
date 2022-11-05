@@ -1,0 +1,187 @@
+@import '../../theme/styles/var';
+
+@include b('video') {
+	$popperItemHoverColor: rgba($-global-color-primary, 0.2);
+	width: 100%;
+	height: 100%;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	outline: none;
+	@include e('video') {
+		background-color: black;
+		width: 100%;
+		flex-grow: 1;
+	}
+
+	@include e('control') {
+		flex-shrink: 0;
+		position: relative;
+		width: 100%;
+		height: 2rem;
+		background-color: rgba(#000000, 1);
+		user-select: none;
+		&:hover {
+			@include e('progress') {
+				top: -20px;
+				height: 20px;
+				@include e('progress-bar') {
+					left: calc(_var('progress-bar-position') - 10px);
+					&::before {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+
+	@include e('progress') {
+		position: absolute;
+		top: -2px;
+		width: 100%;
+		height: 2px;
+		padding: 0px 5px;
+		background-color: rgba(#000000, 0.5);
+
+		> * {
+			pointer-events: none;
+		}
+
+		&:hover {
+			@include e('progress-bar') {
+				position: absolute;
+				width: 10px;
+				border-radius: 5px;
+			}
+		}
+	}
+
+	@include e('progress-buffer') {
+		width: _var('buffer-position', '0px');
+		height: 100%;
+		background-color: rgba(20, 168, 217, 0.5);
+		border-radius: 10px;
+	}
+	@include e('progress-current') {
+		width: _var('current-position', '0px');
+		height: 100%;
+		position: absolute;
+		top: 0;
+		background-color: rgba(20, 168, 217, 1);
+	}
+
+	@include e('progress-bar') {
+		width: 2px;
+		height: 100%;
+		top: 0;
+		background-color: white;
+		float: right;
+		left: calc(_var('progress-bar-position') - 2px);
+		&::before {
+			display: none;
+			content: attr(data-current-time);
+			position: relative;
+			left: 0;
+			top: -30px;
+			background-color: black;
+			padding: 2px 5px;
+		}
+	}
+
+	@include e('options') {
+		height: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	@include e('options-left') {
+		display: flex;
+	}
+
+	@include e('switch') {
+		font-size: 1.5rem;
+		padding: 0px 10px;
+		&:hover {
+			color: rgba($-global-color-primary, 1);
+		}
+	}
+
+	@include e('timer') {
+	}
+
+	@include e('options-right') {
+		display: flex;
+		padding: 0px 10px;
+		gap: 10px;
+		& {
+			@include b('icon') {
+				&:hover {
+					color: rgba($-global-color-primary, 1);
+				}
+			}
+		}
+	}
+
+	@include e('resolution-popper') {
+		color: white;
+		ul {
+			li {
+				padding: 0px 10px;
+				cursor: pointer;
+				&:hover {
+					background-color: $popperItemHoverColor;
+				}
+				> {
+					@include b('icon') {
+						color: rgb(255 253 46);
+						font-size: 1.2rem;
+						vertical-align: text-top;
+					}
+				}
+			}
+		}
+	}
+	@include e('speed-popper') {
+		color: white;
+		ul {
+			li {
+				padding: 0px 10px;
+				cursor: pointer;
+				text-align: center;
+				&:hover {
+					background-color: $popperItemHoverColor;
+				}
+			}
+		}
+	}
+
+	@include e('volume-popper') {
+		height: 100px;
+		width: 20px;
+		display: flex;
+		flex-direction: column;
+		user-select: none;
+		> div:nth-child(1) {
+			text-align: center;
+			flex-grow: 0;
+			height: 1.5rem;
+			line-height: 1.5rem;
+			color: white;
+		}
+	}
+
+	@include e('volume-progress') {
+		flex-grow: 1;
+		position: relative;
+	}
+
+	@include e('volume-progress-bar') {
+		position: absolute;
+		pointer-events: none;
+		bottom: 0;
+		height: 50%;
+		width: 100%;
+		background-color: rgba($-global-color-primary, 1);
+	}
+}

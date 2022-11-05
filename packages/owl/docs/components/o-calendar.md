@@ -4,11 +4,11 @@
 
 ## Props
 
-| 名称    |     类型    | 必填 | 可选值 | 默认值                  | 描述                       |
-| :------ | :---------: | :--: | :----- | :---------------------- | :------------------------- |
-| id      |    String   |      |        |                         | 组件id，若不设置会自动生成 |
-| display |   Boolean   |      |        | true                    | 显示隐藏                   |
-| value   | string,Date |      |        | <pre>"new Date()"</pre> | 初始化日期                 |
+| 名称    |   类型  | 必填 | 可选值 | 默认值     | 描述                       |
+| :------ | :-----: | :--: | :----- | :--------- | :------------------------- |
+| id      |  String |      |        |            | 组件id，若不设置会自动生成 |
+| display | Boolean |      |        | true       | 显示隐藏                   |
+| format  |  String |      |        | yyyy-MM-dd |                            |
 
 ## Events
 
@@ -52,4 +52,5 @@
 - 选项：
 	 - `date` { Date } : 
 	 - `type` { 'year' | 'month' | 'day' } : 
-	 - `value` { number } : 
+	 - `formatted` { string } : 
+	 - `selectedNum` { number } : 

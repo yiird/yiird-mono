@@ -1,6 +1,16 @@
-import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { findIconDefinition, IconDefinition, IconName, IconPrefix, library } from '@fortawesome/fontawesome-svg-core';
+import { isObject, isString } from 'lodash-es';
 import { PropType } from 'vue';
 import { BaseProps } from '../../common/prefab';
+import { NumberSize, TshirtSize } from '../../common/type';
+import { isIconDefinition } from '../../common/util';
+
+export type InputSize = TshirtSize | NumberSize;
+
+export interface InputIcon {
+	icon: IconName;
+	prefix?: IconPrefix;
+}
 
 export const InputProps = {
 	...BaseProps,
@@ -12,6 +22,13 @@ export const InputProps = {
 		default: 'text'
 	},
 	/**
+	 * 尺寸
+	 */
+	size: {
+		type: String as PropType<InputSize>,
+		default: 'md'
+	},
+	/**
 	 * 提示语
 	 */
 	placeholder: {
@@ -21,13 +38,13 @@ export const InputProps = {
 	 * 文本域前缀图标
 	 */
 	prefix: {
-		type: String as PropType<IconName>
+		type: [String, Object] as PropType<IconName | IconDefinition | InputIcon>
 	},
 	/**
 	 * 文本域后缀图标
 	 */
 	suffix: {
-		type: String as PropType<IconName>
+		type: String as PropType<IconName | IconDefinition | InputIcon>
 	},
 	/**
 	 * 前缀文本
@@ -84,17 +101,11 @@ export const InputProps = {
 } as const;
 
 export type InputVariables = {
-	color?: string;
-	placeholderColor?: string;
-	lineHeight?: string;
-	borderColor?: string;
-	prefixBgColor?: string;
-	suffixBgColor?: string;
 	radius?: string;
 };
 
 export type InputBemKeys = {
-	modifiers: 'radius' | 'state-success' | 'state-warning' | 'state-danger';
+	modifiers: 'focus' | 'radius' | 'state-success' | 'state-warning' | 'state-danger';
 	elements: {
 		input: string;
 		prefix: string;
@@ -116,4 +127,23 @@ export interface EventBinding {
 	value: unknown;
 }
 
+export const getIcon = (icon: IconName | IconDefinition | InputIcon) => {
+	if (isObject(icon)) {
+		if (isIconDefinition(icon)) {
+			if (!findIconDefinition(icon)) {
+				library.add(icon);
+			}
+			return {
+				icon: icon.iconName,
+				prefix: icon.prefix
+			};
+		} else {
+			return icon;
+		}
+	} else if (isString(icon)) {
+		return {
+			icon
+		};
+	}
+};
 export {};

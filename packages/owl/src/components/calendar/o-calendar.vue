@@ -136,12 +136,14 @@
 <script lang="ts">
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight } from '@fortawesome/pro-duotone-svg-icons';
-import { addDays, addMonths, addYears, getDaysInMonth, getISODay, isSameDay, setDate, setMonth, setYear, subDays, subMonths, subYears } from 'date-fns';
+import { addDays, addMonths, addYears, format, getDaysInMonth, getISODay, isSameDay, setDate, setMonth, setYear, subDays, subMonths, subYears } from 'date-fns';
 import { isDate } from 'lodash-es';
-import { computed, defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, reactive, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePrefab } from '../../common/prefab';
+import { transforDate } from '../../common/util';
 import { Icon } from '../icon';
+
 import { CalendarBemKeys, CalendarDay, CalendarEventBinding, CalendarMonth, CalendarProps, CalendarVariables, CalendarWeek, CalendarYear } from './definition';
 
 library.add(faAnglesLeft, faAnglesRight, faAngleLeft, faAngleRight);
@@ -155,7 +157,7 @@ export default defineComponent({
 		Icon
 	},
 	props: CalendarProps,
-	emits: ['selected-year', 'selected-month', 'selected-day'],
+	emits: ['selected-year', 'selected-month', 'selected-day', 'update:modelValue'],
 	setup(props, { emit }) {
 		const { t } = useI18n();
 		const prefab = usePrefab<CalendarVariables, CalendarBemKeys>(props);
@@ -164,10 +166,25 @@ export default defineComponent({
 		const block = bem.block;
 		const elements = bem.elements;
 
-		const now = new Date(props.value);
-		const current = ref(props.value ? (isDate(props.value) ? props.value : new Date(props.value)) : now);
-		const obtainYear = computed(() => current.value.getFullYear());
-		const obtainMonth = computed(() => current.value.getMonth());
+		const now = new Date();
+		const selected = ref(transforDate(props.modelValue) || now);
+		const isDateType = ref(isDate(props.modelValue));
+
+		watchEffect(() => {
+			const modelValue = props.modelValue;
+			if (modelValue === '') {
+				selected.value = now;
+			} else {
+				const _date = transforDate(modelValue);
+				if (_date) {
+					selected.value = _date;
+				}
+			}
+		});
+
+		const obtainSelected = computed(() => selected.value);
+		const obtainYear = computed(() => obtainSelected.value.getFullYear());
+		const obtainMonth = computed(() => obtainSelected.value.getMonth());
 
 		const obtainDays = computed<CalendarDay[]>(() => {
 			const firstDayOfCurrentMonth = new Date(obtainYear.value, obtainMonth.value, 1);
@@ -175,12 +192,12 @@ export default defineComponent({
 			const offsetStartOfFirstDay = getISODay(firstDayOfCurrentMonth) - 1;
 
 			const firstDay = subDays(firstDayOfCurrentMonth, offsetStartOfFirstDay);
-			const daysCount = getDaysInMonth(current.value);
+			const daysCount = getDaysInMonth(obtainSelected.value);
 			const _arr: CalendarDay[] = [];
 			for (let i = 0; i < 42; i++) {
 				const _date = addDays(firstDay, i);
 				const classes = [elements.daysItemText.value];
-				const isSelected = isSameDay(current.value, _date);
+				const isSelected = isSameDay(obtainSelected.value, _date);
 				const isCurrent = isSameDay(now, _date);
 
 				const isDisabled = i < offsetStartOfFirstDay || i >= daysCount + offsetStartOfFirstDay;
@@ -213,9 +230,13 @@ export default defineComponent({
 			const _arr: CalendarYear[] = [];
 			for (let i = yearRangeStart.value; i < yearRangeStart.value + 20; i++) {
 				const isCurrent = i === now.getFullYear();
+				const isSelected = i === obtainSelected.value.getFullYear();
 				const classes = [elements.yearItemText.value];
 				if (isCurrent) {
 					classes.push('current');
+				}
+				if (isSelected) {
+					classes.push('selected');
 				}
 				_arr.push({
 					yearNum: i,
@@ -230,9 +251,13 @@ export default defineComponent({
 			const _arr: CalendarMonth[] = [];
 			for (let i = 1; i <= 12; i++) {
 				const isCurrent = obtainYear.value === now.getFullYear() && i === now.getUTCMonth();
+				const isSelected = i === obtainSelected.value.getMonth() + 1;
 				const classes = [elements.monthItemText.value];
 				if (isCurrent) {
 					classes.push('current');
+				}
+				if (isSelected) {
+					classes.push('selected');
 				}
 				_arr.push({
 					monthNum: i,
@@ -284,7 +309,7 @@ export default defineComponent({
 			if (isYearSelector.value) {
 				yearRangeStart.value -= 20;
 			} else {
-				current.value = subYears(current.value, 1);
+				selected.value = subYears(selected.value, 1);
 			}
 		};
 
@@ -295,33 +320,37 @@ export default defineComponent({
 			if (isYearSelector.value) {
 				yearRangeStart.value += 20;
 			} else {
-				current.value = addYears(current.value, 1);
+				selected.value = addYears(selected.value, 1);
 			}
 		};
 		/**
 		 * @private
 		 */
 		const onPrev = () => {
-			current.value = subMonths(current.value, 1);
+			selected.value = subMonths(selected.value, 1);
 		};
 		/**
 		 * @private
 		 */
 		const onNext = () => {
-			current.value = addMonths(current.value, 1);
+			selected.value = addMonths(selected.value, 1);
 		};
 
 		/**
 		 * @private
 		 */
 		const onSelectDay = (_day: CalendarDay) => {
-			if (!isSameDay(current.value, _day.date)) {
-				current.value = setDate(current.value, _day.dateNum);
+			if (_day.isDisabled) return;
+			if (!isSameDay(selected.value, _day.date)) {
+				const date = setDate(selected.value, _day.dateNum);
+				selected.value = date;
+				const formatted = format(date, props.format);
 
 				const binding: CalendarEventBinding = {
-					date: current.value,
+					date,
 					type: 'day',
-					value: _day.dateNum
+					selectedNum: _day.dateNum,
+					formatted
 				};
 
 				/**
@@ -329,6 +358,10 @@ export default defineComponent({
 				 * @argument {CalendarEventBinding} binding 回调参数
 				 */
 				emit('selected-day', binding);
+				/**
+				 * @private
+				 */
+				emit('update:modelValue', isDateType.value ? date : formatted);
 			}
 		};
 
@@ -336,14 +369,17 @@ export default defineComponent({
 		 * @private
 		 */
 		const onSelectYear = (_year: CalendarYear) => {
-			if (current.value.getFullYear() !== _year.yearNum) {
-				current.value = setYear(current.value, _year.yearNum);
+			if (selected.value.getFullYear() !== _year.yearNum) {
+				const date = setYear(selected.value, _year.yearNum);
+				selected.value = date;
+				const formatted = format(date, props.format);
 				openSelectMonth();
 
 				const binding: CalendarEventBinding = {
-					date: current.value,
+					date,
 					type: 'year',
-					value: _year.yearNum
+					selectedNum: _year.yearNum,
+					formatted
 				};
 
 				/**
@@ -351,6 +387,10 @@ export default defineComponent({
 				 * @argument {CalendarEventBinding} binding 回调参数
 				 */
 				emit('selected-year', binding);
+				/**
+				 * @private
+				 */
+				emit('update:modelValue', isDateType.value ? date : formatted);
 			}
 		};
 
@@ -358,13 +398,16 @@ export default defineComponent({
 		 * @private
 		 */
 		const onSelectMonth = (_month: CalendarMonth) => {
-			if (current.value.getUTCMonth() !== _month.monthNum) {
-				current.value = setMonth(current.value, _month.monthNum - 1);
+			if (selected.value.getUTCMonth() !== _month.monthNum) {
+				const date = setMonth(selected.value, _month.monthNum - 1);
+				selected.value = date;
+				const formatted = format(date, props.format);
 				openSelectDay();
 				const binding: CalendarEventBinding = {
-					date: current.value,
+					date,
 					type: 'month',
-					value: _month.monthNum - 1
+					selectedNum: _month.monthNum - 1,
+					formatted
 				};
 
 				/**
@@ -372,6 +415,10 @@ export default defineComponent({
 				 * @argument {CalendarEventBinding} binding 回调参数
 				 */
 				emit('selected-month', binding);
+				/**
+				 * @private
+				 */
+				emit('update:modelValue', isDateType.value ? date : formatted);
 			}
 		};
 

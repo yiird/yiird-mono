@@ -3,17 +3,15 @@ import { BaseProps } from '../../common/prefab';
 
 export const CalendarProps = {
 	...BaseProps,
+	format: {
+		type: String as PropType<string>,
+		default: 'yyyy-MM-dd'
+	},
 	/**
-	 * 初始化日期
-	 *
-	 * @values
-	 * @default 'new Date()'
+	 * @private
 	 */
-	value: {
-		type: [String, Date] as PropType<string | Date>,
-		default() {
-			return new Date();
-		}
+	modelValue: {
+		type: String as PropType<string>
 	}
 } as const;
 
@@ -75,7 +73,8 @@ export interface CalendarWeek {
 export interface CalendarEventBinding {
 	date: Date;
 	type: 'year' | 'month' | 'day';
-	value: number;
+	formatted: string;
+	selectedNum: number;
 }
 
 export {};

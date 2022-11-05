@@ -23,12 +23,14 @@
 				:text="prefixText"></slot>
 		</div>
 		<input
+			ref="input"
 			v-model="obtainValue"
 			:class="el_input"
 			:placeholder="obtainPlaceholder"
 			:type="obtainType"
-			@focus="onFocus"
-			@blur="onBlur" />
+			@keydown.enter.stop="onEnterPress"
+			@blur="onBlur"
+			@focus="onFocus" />
 
 		<!-- loading icon -->
 		<div
@@ -37,6 +39,7 @@
 			<icon
 				icon="spinner"
 				animation="spin"
+				prefix="fat"
 				:animation-options="{ animationDuration: '1.5s' }"></icon>
 		</div>
 
@@ -44,6 +47,7 @@
 		<div :class="el_remove">
 			<icon
 				icon="remove"
+				prefix="fat"
 				@click.prevent="onRemoveClick"></icon>
 		</div>
 
@@ -53,6 +57,7 @@
 			:class="el_password">
 			<icon
 				fixed-width
+				prefix="fat"
 				:icon="obtainPasswordEye"
 				@click.prevent="onPasswordEyeClick"></icon>
 		</div>
@@ -74,25 +79,33 @@
 				@click="onSuffixIconClick"></icon>
 		</div>
 	</div>
-	<o-popper
+	<popper
 		v-if="obtainHasPopper"
-		mode="click"
+		mode="manul"
+		:display="showPopper"
 		placement="bottom-start"
+		bg-color="white"
 		:reference="component">
-		dddd
-	</o-popper>
+		<calendar
+			ref="popper"
+			v-model="value"
+			@selected-day="onSelectedDay"></calendar>
+	</popper>
 </template>
 
 <script lang="ts">
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEye, faEyeSlash, faRemove, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faRemove, faSpinner } from '@fortawesome/pro-thin-svg-icons';
 import { computed } from '@vue/reactivity';
-import { isNumber, isObject, isString } from 'lodash-es';
-import { defineComponent, ref, watchEffect } from 'vue';
+import { isNumber } from 'lodash-es';
+import { defineComponent, nextTick, ref, watch, watchEffect } from 'vue';
+import { useCheckClickOnElements } from '../../common/composable';
 import { toRealType } from '../../common/dom';
 import { usePrefab } from '../../common/prefab';
+import { Calendar } from '../calendar';
 import { Icon } from '../icon';
-import { EventBinding, InputBemKeys, InputProps, InputVariables } from './definition';
+import { Popper } from '../popper';
+import { EventBinding, getIcon, InputBemKeys, InputProps, InputVariables } from './definition';
 library.add(faEye, faEyeSlash, faRemove, faSpinner);
 /**
  * :::warning 功能描述
@@ -130,7 +143,9 @@ library.add(faEye, faEyeSlash, faRemove, faSpinner);
 export default defineComponent({
 	name: 'OInput',
 	components: {
-		Icon
+		Icon,
+		Popper,
+		Calendar
 	},
 	props: InputProps,
 	emits: ['update:modelValue', 'blur', 'focus', 'click-suffix-icon', 'click-prefix-icon'],
@@ -140,15 +155,19 @@ export default defineComponent({
 
 		const block = bem.block;
 		const elements = bem.elements;
+		const popper = ref<HTMLElement>();
 		const component = ref<HTMLElement>();
+		const input = ref<HTMLElement>();
+		const value = ref();
+		const focus = ref(false);
+
+		const showPopper = ref(false);
 
 		const obtainHasPopper = computed(() => {
-			return props.type === 'date' && component.value;
+			return props.type === 'date' && !!component.value;
 		});
 
-		const obtainPlaceholder = computed(() => {
-			return props.placeholder;
-		});
+		const obtainPlaceholder = computed(() => props.placeholder);
 
 		const obtainPrefixText = computed(() => {
 			return !ctx.slots.prefix ? props.prefixText : undefined;
@@ -164,57 +183,49 @@ export default defineComponent({
 		const obtainHasSuffix = computed(() => {
 			return props.type === 'text' && (!!ctx.slots.suffix || props.suffix || props.suffixText);
 		});
+		const obtainSize = computed(() => 'size-' + props.size);
 
 		const obtainSuffixIcon = computed(() => {
-			if (props.suffix) {
-				if (isObject(props.suffix)) {
-					return props.suffix;
-				} else if (isString(props.suffix)) {
-					return {
-						icon: props.suffix
-					};
-				}
-			}
+			const suffix = props.suffix;
+			if (suffix) return getIcon(suffix);
 		});
 
 		const obtainPrefixIcon = computed(() => {
-			if (props.prefix) {
-				if (isObject(props.prefix)) {
-					return props.prefix;
-				} else if (isString(props.prefix)) {
-					return {
-						icon: props.prefix
-					};
-				}
-			}
+			const prefix = props.prefix;
+			if (prefix) return getIcon(prefix);
 		});
 
 		const obtainValue = computed({
 			get() {
-				let realValue = props.modelValue;
-				if (realValue) {
-					if (props.prefixText && realValue?.startsWith(props.prefixText)) {
-						realValue = realValue.substring(props.prefixText?.length);
+				if (value.value) {
+					return value.value;
+				} else {
+					let realValue = props.modelValue;
+					if (realValue) {
+						if (props.prefixText && realValue?.startsWith(props.prefixText)) {
+							realValue = realValue.substring(props.prefixText?.length);
+						}
+						if (props.suffixText && realValue?.endsWith(props.suffixText)) {
+							const startIndex = realValue.length - props.suffixText.length;
+							realValue = realValue.substring(0, startIndex);
+						}
 					}
-					if (props.suffixText && realValue?.endsWith(props.suffixText)) {
-						const startIndex = realValue.length - props.suffixText.length;
-						realValue = realValue.substring(0, startIndex);
-					}
+					value.value = realValue;
+					return realValue;
 				}
-				return realValue;
 			},
-			set(value) {
-				let realValue = value;
+			set(_value) {
+				let realValue = _value;
+				value.value = _value;
 				if (realValue) {
 					if (props.bind === 'all') {
-						realValue = `${props.prefixText}${value}${props.suffixText}`;
+						realValue = `${props.prefixText}${_value}${props.suffixText}`;
 					} else if (props.bind === 'prefix') {
-						realValue = `${props.prefixText}${value}`;
+						realValue = `${props.prefixText}${_value}`;
 					} else if (props.bind === 'suffix') {
-						realValue = `${value}${props.suffixText}`;
+						realValue = `${_value}${props.suffixText}`;
 					}
 				}
-
 				/**
 				 * @private
 				 */
@@ -224,21 +235,16 @@ export default defineComponent({
 
 		const showPassword = ref(false);
 
-		const obtainPasswordEye = computed(() => {
-			return showPassword.value ? 'eye' : 'eye-slash';
-		});
+		const obtainPasswordEye = computed(() => (showPassword.value ? 'eye' : 'eye-slash'));
 
-		const obtainLoading = computed(() => {
-			return props.loading;
-		});
+		const obtainLoading = computed(() => props.loading);
 
-		const obtainReadonly = computed(() => {
-			return props.readonly;
-		});
+		const obtainReadonly = computed(() => props.readonly);
 
-		const obtainDisabled = computed(() => {
-			return props.disabled;
-		});
+		const obtainDisabled = computed(() => props.disabled);
+		const obtainFocus = computed(() => (focus.value ? 'focus' : ''));
+
+		bem.addModifier(obtainSize, obtainFocus);
 
 		/**
 		 * @private
@@ -267,13 +273,6 @@ export default defineComponent({
 			obtainValue.value = '';
 		};
 
-		// theme.originVars.color = `var(${globalTheme?.namedVars.colorTextLight})`;
-		// theme.originVars.placeholderColor = `var(${globalTheme?.namedVars.colorTextLightest})`;
-		// theme.originVars.borderColor = `var(${globalTheme?.namedVars.colorBorderPrimary})`;
-		// theme.originVars.lineHeight = `var(${globalTheme?.namedVars.lineHeightBase})`;
-		// theme.originVars.prefixBgColor = `var(${globalTheme?.namedVars.colorBorderLightest})`;
-		// theme.originVars.suffixBgColor = `var(${globalTheme?.namedVars.colorBorderLightest})`;
-
 		watchEffect(() => {
 			if (props.radius) {
 				bem.addModifier('radius');
@@ -289,10 +288,14 @@ export default defineComponent({
 		 * @private
 		 */
 		const onFocus = (e: FocusEvent) => {
+			if (obtainHasPopper.value) {
+				showPopper.value = true;
+			}
 			const binding: EventBinding = {
 				event: e,
 				value: toRealType(obtainValue.value)
 			};
+			focus.value = true;
 			/**
 			 * 获得焦点
 			 * @argument {EventBinding} binding 回调参数
@@ -300,10 +303,11 @@ export default defineComponent({
 			ctx.emit('focus', binding);
 		};
 
-		/**
-		 * @private
-		 */
-		const onBlur = (e: FocusEvent) => {
+		const _doBlur = (e: FocusEvent) => {
+			if (obtainHasPopper.value) {
+				showPopper.value = false;
+			}
+			focus.value = false;
 			const binding: EventBinding = {
 				event: e,
 				value: toRealType(obtainValue.value)
@@ -313,6 +317,15 @@ export default defineComponent({
 			 * @argument {EventBinding} binding 回调参数
 			 */
 			ctx.emit('blur', binding);
+		};
+
+		/**
+		 * @private
+		 */
+		const onBlur = (e: FocusEvent) => {
+			if (!obtainHasPopper.value) {
+				_doBlur(e);
+			}
 		};
 
 		/**
@@ -344,6 +357,28 @@ export default defineComponent({
 			 */
 			ctx.emit('click-suffix-icon', binding);
 		};
+
+		const onSelectedDay = () => {
+			nextTick(() => {
+				input.value?.focus();
+			});
+		};
+
+		const onEnterPress = (e: KeyboardEvent) => {
+			if (e.target instanceof HTMLInputElement) {
+				e.target.blur();
+			}
+		};
+		const { isOnElement } = useCheckClickOnElements(obtainHasPopper, component, popper);
+		watch(isOnElement, (flag) => {
+			if (!flag) {
+				const e = new FocusEvent('blur', {
+					relatedTarget: input.value
+				});
+				_doBlur(e);
+			}
+		});
+
 		return {
 			...prefab,
 			theme,
@@ -354,6 +389,7 @@ export default defineComponent({
 			el_password: elements.password,
 			el_remove: elements.remove,
 			el_loading: elements.loading,
+			value,
 			obtainValue,
 			obtainPlaceholder,
 			obtainHasPrefix,
@@ -367,14 +403,19 @@ export default defineComponent({
 			obtainLoading,
 			obtainDisabled,
 			obtainReadonly,
+			input,
+			popper,
 			component,
+			showPopper,
 			obtainHasPopper,
 			onBlur,
 			onFocus,
 			onPrefixIconClick,
 			onSuffixIconClick,
 			onPasswordEyeClick,
-			onRemoveClick
+			onRemoveClick,
+			onSelectedDay,
+			onEnterPress
 		};
 	}
 });

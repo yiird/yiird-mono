@@ -174,6 +174,7 @@ export declare const IconProps: {
     readonly rotation: {
         readonly type: PropType<IconRotation>;
         readonly default: null;
+        readonly required: false;
     };
     /**
      * 翻转

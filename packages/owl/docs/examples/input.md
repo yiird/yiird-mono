@@ -32,8 +32,32 @@ title: 输入组件 o-input
 </ClientOnly>
 
 
+## Size
+
+<ClientOnly>
+    <Example name="input-size"></Example>
+</ClientOnly>
+
+
 ## Date
 
 <ClientOnly>
     <Example name="input-date"></Example>
 </ClientOnly>
+
+
+
+
+
+
+
+
+
+## Date
+## Date
+## Date
+## Date
+
+
+
+<br>

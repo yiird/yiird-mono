@@ -13,7 +13,7 @@ declare const _sfc_main: DefineComponent<{
     };
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "info";
+        readonly default: "primary";
     };
     readonly textColor: {
         readonly type: PropType<string>;
@@ -54,7 +54,7 @@ declare const _sfc_main: DefineComponent<{
     };
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "info";
+        readonly default: "primary";
     };
     readonly textColor: {
         readonly type: PropType<string>;
