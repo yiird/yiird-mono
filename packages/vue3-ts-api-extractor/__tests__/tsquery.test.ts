@@ -18,6 +18,30 @@ export default {
 	name:'TestComponent'
 }
 `;
+
+const script3 = `
+const obtainValue = computed({
+	get() {
+		let realValue = props.modelValue;
+		if (props.prefixText && realValue?.startsWith(props.prefixText)) {
+			realValue = realValue.substring(0, props.prefixText?.length - 1);
+		}
+		if (props.suffixText && realValue?.endsWith(props.suffixText)) {
+			const startIndex = realValue.length - props.suffixText.length - 1;
+			realValue = realValue.substring(startIndex, realValue.length - 1);
+		}
+		return realValue;
+	},
+	set(value) {
+		let realValue = value;
+		if (props.bind === 'all') {
+		} else if (props.bind === 'prefix') {
+		} else if (props.bind === 'suffix') {
+		}
+		ctx.emit('update:modelValue', realValue);
+	}
+});
+`;
 describe('Test Tsquery', () => {
 	test('Test Tsquery Declarations Selector', () => {
 		const not = ':not([modifiers.0.kind=' + SyntaxKind.ExportKeyword + '])';
@@ -36,5 +60,14 @@ describe('Test Tsquery', () => {
 		});
 		nodes.filter((_node) => root !== _node && root === _node.parent);
 		expect(nodes.length).toBeGreaterThan(0);
+	});
+
+	test('ddddd', () => {
+		const selector = 'CallExpression:has([name=emit])';
+		const root = tsquery.ast(script3, '', ScriptKind.TSX);
+		const nodes = tsquery(root, selector, {
+			visitAllChildren: true
+		});
+		console.log(nodes);
 	});
 });

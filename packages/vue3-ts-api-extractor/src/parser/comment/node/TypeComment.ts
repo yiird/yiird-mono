@@ -62,7 +62,11 @@ export class TypeComment extends NodeComment {
 	}
 
 	public isBasic() {
-		if (!this.name || this.isLiteralType) {
+		if (
+			!this.name ||
+			this.isLiteralType ||
+			((!this.properties || this.properties.length == 0) && (!this.associations || this.associations.length == 0) && (!this.typeArguments || this.typeArguments.length == 0))
+		) {
 			return true;
 		}
 		return Utils.isBasicType(this.name);

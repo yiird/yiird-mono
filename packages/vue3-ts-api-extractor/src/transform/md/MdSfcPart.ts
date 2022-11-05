@@ -32,7 +32,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 			doc += styles.line();
 			doc += styles.line();
 		}
-		doc += styles.html(comment.description || '');
+		doc += comment.description || '';
 
 		const specialTypes: Set<TypeComment> = new Set();
 
@@ -98,6 +98,9 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 			const names = headers.map((header) => header.name);
 			const datas: Array<Data> = [];
 			props.forEach((prop) => {
+				if (prop.isPrivate) {
+					return;
+				}
 				const record: Data = {};
 				const propObject = this._commentToObject(prop);
 				Object.keys(propObject)
@@ -109,23 +112,40 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 								const typeName = type?.name;
 
 								let typeArgumentName;
-								if ('object' === typeName?.toLocaleLowerCase() || 'array' === typeName?.toLocaleLowerCase()) {
+								const typeNameLower = typeName?.toLocaleLowerCase();
+								if ('object' === typeNameLower || 'array' === typeNameLower) {
 									if (type?.typeArguments) {
 										const _type = type?.typeArguments[0];
 										typeArgumentName = _type.name;
 									}
 								}
+								const mdTypes: string[] = [];
 								if (type?.typeArguments) {
 									const _type = type.typeArguments[0];
 									if (_type.associationType) {
-										this._handleSpecialTypeWithAssociationType(_type, specialTypes);
+										const specials = this._handleSpecialTypeWithAssociationType(_type, specialTypes);
+										if ('string' !== typeNameLower) {
+											_type.text?.split('|').forEach((t_text) => {
+												t_text = t_text.trim();
+												const spType = specials.find((t) => t.name === t_text);
+												if (spType) {
+													mdTypes.push(`[${t_text}](#${t_text.toLocaleLowerCase()})`);
+												} else {
+													mdTypes.push(t_text);
+												}
+											});
+										}
 									} else {
 										type.getSpecialTypes().forEach((_stype) => {
 											specialTypes.add(_stype);
 										});
 									}
 								}
-								record[name] = typeArgumentName ? `[${typeArgumentName}](#${typeArgumentName.toLocaleLowerCase()})` : typeName || '';
+								if (mdTypes.length > 0) {
+									record[name] = mdTypes.join(',');
+								} else {
+									record[name] = typeArgumentName ? `[${typeArgumentName}](#${typeArgumentName.toLocaleLowerCase()})` : typeName || '';
+								}
 							} else {
 								record[name] = '';
 							}
@@ -181,6 +201,9 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 			const names = headers.map((header) => header.name);
 			const datas: Array<Data> = [];
 			events.forEach((event) => {
+				if (event.isPrivate) {
+					return;
+				}
 				const record: Data = {};
 				const propObject = this._commentToObject(event);
 				Object.keys(propObject)
@@ -197,7 +220,6 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 										if (!arg.type.isBasic()) {
 											_specialTypes.push(arg.type);
 										}
-										_specialTypes.push(...arg.type.getSpecialTypes());
 									}
 								}
 							});
@@ -207,6 +229,10 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 								argsStr += `关联类型：`;
 								_specialTypes.forEach((specilType) => {
 									argsStr += `[${specilType.name}](#${specilType.name?.toLocaleLowerCase()}) `;
+									specialTypes.add(specilType);
+									specilType.getSpecialTypes().forEach((value) => {
+										specialTypes.add(value);
+									});
 								});
 							}
 
@@ -275,20 +301,34 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
 			doc += styles.h(level + 1, '关联类型');
 			doc += styles.line();
 			doc += styles.line();
+			const exists: string[] = [];
 			specialTypes.forEach((type) => {
-				doc += styles.line();
-				doc += this._typePart.toMd(type, level + 2);
+				if (type.name && !exists.includes(type.name)) {
+					if (type.associations || type.properties) {
+						doc += styles.line();
+						doc += this._typePart.toMd(type, level + 2);
+					}
+					exists.push(type.name);
+				}
 			});
 		}
 
 		return doc;
 	}
 	private _handleSpecialTypeWithAssociationType(_type: TypeComment, specialTypes: Set<TypeComment>) {
+		const arr: TypeComment[] = [];
 		_type.associations?.forEach((association) => {
 			association.getSpecialTypes().forEach((_stype) => {
-				specialTypes.add(_stype);
+				arr.push(_stype);
 			});
+			if (!association.isBasic() && !association.associationType) {
+				arr.push(association);
+			}
 		});
+		arr.forEach((item) => {
+			specialTypes.add(item);
+		});
+		return arr;
 	}
 
 	private _code(str: string) {

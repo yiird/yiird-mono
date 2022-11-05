@@ -45,6 +45,8 @@ export class EventCommentParser extends AbstractCommentParser<EventComment> {
 
 		if (jsdoc) {
 			comment.description = JsdocUtils.getDescription(jsdoc);
+			const privateTag = JsdocUtils.getTag('private', jsdoc);
+			comment.isPrivate = !!privateTag;
 		}
 
 		return comment;

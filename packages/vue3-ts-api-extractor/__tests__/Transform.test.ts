@@ -6,7 +6,7 @@ describe('Test Transform', () => {
 		extractor({
 			scanner: {
 				root: '/Users/gavin/Works/projects/self/vscode-workspace/yiird-mono/packages/owl/src/components/',
-				scanDirs: ['icon'],
+				scanDirs: ['button'],
 				extensions: ['.ts', '.vue'],
 				externals: ['vue'],
 				watch: true

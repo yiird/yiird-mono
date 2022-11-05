@@ -112,7 +112,7 @@ export class PropCommentParser extends AbstractCommentParser<PropComment> {
 		typeArg.associations?.forEach((association) => {
 			if (association.associationType === AssociationType.union) {
 				values.push(...this._handleUnionValues(association));
-			} else if (association.name) {
+			} else if (association.name && association.isLiteralType) {
 				values.push(association.name);
 			}
 		});

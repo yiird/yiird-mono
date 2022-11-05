@@ -199,9 +199,13 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 		const events: Array<EventComment> = [];
 
 		this._searchNodes.forEach((_node) => {
-			tsquery(_node, 'ExpressionStatement:has(CallExpression[expression.name=emit]),ExpressionStatement:has(CallExpression[expression.name.name=$emit])', {
-				visitAllChildren: true
-			}).forEach((_n) => {
+			tsquery(
+				_node,
+				'ExpressionStatement:has([expression.expression.name=emit]),ExpressionStatement:has(CallExpression[expression.name.name=$emit]),ExpressionStatement:has([name=emit]),ExpressionStatement:has([name=$emit])',
+				{
+					visitAllChildren: true
+				}
+			).forEach((_n) => {
 				events.push(this._eventPaser.parse(_n));
 			});
 		});
