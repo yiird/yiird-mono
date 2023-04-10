@@ -20,8 +20,11 @@ export default defineComponent({
 			return widthCount.value + 'px';
 		});
 
-		setInterval(() => {
+		const timer = setInterval(() => {
 			widthCount.value += 10;
+			if (widthCount.value > 300) {
+				clearInterval(timer);
+			}
 		}, 2000);
 		return {
 			obtainWidth

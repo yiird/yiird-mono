@@ -1,33 +1,39 @@
 import { forEach, isString, isSymbol, kebabCase } from 'lodash-es';
 import { isRef, reactive, ref, Ref, UnwrapNestedRefs, watchEffect } from 'vue';
 
-export interface BemKeys {
+export type BemKeys = {
 	modifiers: string;
-	elements: Record<string, string>;
-}
-
-type ElementNames<B> = B extends Record<infer K, unknown> ? K : never;
+	elements: {
+		[key: string]: string;
+	};
+};
 
 // type Modifiers<Em extends Record<string, string>, E, V = string> = keyof {
 // 	[K in Em extends Record<infer N, infer U> ? (N extends E ? U : never) : never]: V;
 // };
-type Modifiers<Em extends Record<string, string>, E> = Em extends Record<infer N, infer U> ? (N extends E ? U : never) : never;
+
+type Keys<B extends BemKeys> = keyof B['elements'];
+type Values<B extends BemKeys> = B['elements'][Keys<B>];
+
+type RefEs<B extends BemKeys> = { [key in Keys<B>]: Ref<Values<B>> };
 
 export class BemClasses<B extends BemKeys> {
 	private __modifiers: Ref<Set<string | Ref<string>>> = ref(new Set());
-	private __elements: UnwrapNestedRefs<Record<string, Set<string>>> = reactive({});
+	// Record<keyof Keys<B>, Set<Values<B>>>
+	private __elements: UnwrapNestedRefs<Record<keyof Keys<B>, Set<Values<B>>>> = reactive({});
 
 	private _block: Ref<string[]> = ref([]);
-	private _elements: Record<string, Ref<string>>;
+	private _elements: RefEs<B>;
 
 	private _cType: string;
 
 	constructor(cType: string) {
 		this._cType = cType;
-		const proxyElements = new Proxy({} as Record<string | symbol, Ref<string>>, {
+		const proxyElements = new Proxy({} as RefEs<B>, {
 			get(target, property) {
 				if (!isSymbol(property) && !property.startsWith('__v') && !target[property]) {
 					target[property] = ref(`${cType}__${kebabCase(property)}`);
+					proxyElements.set(target, property, ref(`${cType}__${kebabCase(property)}`));
 					return target[property];
 				} else {
 					return target[property];
@@ -58,7 +64,7 @@ export class BemClasses<B extends BemKeys> {
 		return this._block;
 	}
 
-	get elements(): Record<ElementNames<B['elements']>, Ref<string>> {
+	get elements(): RefEs<B> {
 		return this._elements;
 	}
 
@@ -74,17 +80,18 @@ export class BemClasses<B extends BemKeys> {
 		this.__modifiers.value.delete(modifier);
 	}
 
-	addElementModifier(element: ElementNames<B['elements']>, ...modifiers: Array<Modifiers<B['elements'], typeof element>>) {
-		if (!this.__elements[element]) {
-			this.__elements[element] = new Set();
+	addElementModifier<Es extends B['elements'], E extends keyof Es>(element: E, ...modifiers: Es extends Record<E, infer M> ? M[] : never) {
+		if (!this.__elements[element as string]) {
+			this.__elements[element as string] = new Set();
 		}
-		const set = this.__elements[element];
+
+		const set = this.__elements[element as string];
 		forEach(modifiers, (modifier) => {
 			set.add(modifier);
 		});
 	}
 
-	removeElementModifier(element: ElementNames<B['elements']>, ...modifiers: Array<Modifiers<B['elements'], typeof element>>) {
+	removeElementModifier<Es extends B['elements'], E extends keyof Es>(element: E, ...modifiers: Es extends Record<E, infer M> ? M[] : never) {
 		const set = this.__elements[element];
 		modifiers.forEach((modifier) => {
 			set.delete(modifier);

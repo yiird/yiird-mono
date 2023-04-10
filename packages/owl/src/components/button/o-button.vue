@@ -26,7 +26,7 @@ import { ButtonBemKeys, ButtonProps, ButtonVariables } from './definition';
 export default defineComponent({
 	name: 'OButton',
 	props: ButtonProps,
-	setup(props) {
+	setup(props, { emit }) {
 		const prefab = usePrefab<ButtonVariables, ButtonBemKeys>(props);
 		const { theme, bem } = prefab;
 
