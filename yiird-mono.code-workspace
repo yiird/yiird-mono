@@ -14,7 +14,7 @@
 		}
 	],
 	"settings": {
-		"editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint", "source.formatDocument"],
+		"editor.codeActionsOnSave": [ "source.fixAll.eslint", "source.formatDocument"],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.fontSize": 14,
 		"search.exclude": {
@@ -46,6 +46,6 @@
 			"packages/owl/src/components/popper/o-popper.vue": [
 				"OPopper"
 			]
-		}
+		},
 	}
 }

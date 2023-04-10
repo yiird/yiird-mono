@@ -2447,6 +2447,22 @@
   dependencies:
     vue-demi "*"
 
+"@yiird/vue3-ts-api-extractor@^2.1.0":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@yiird/vue3-ts-api-extractor/-/vue3-ts-api-extractor-2.1.1.tgz#014669d62fec610f2d8230d064cb3609ce7cd2f3"
+  integrity sha512-KqnMCCPlLPqs/OQM+5Fv2LOUEfXbWuR0GBTRsC1d+VMm0yn6eX2WT92Q0eQyY/l63jNQNSlBc6RnFTiSnl5lgw==
+  dependencies:
+    "@babel/runtime" "^7.18.3"
+    "@phenomnomnominal/tsquery" "^4.2.0"
+    "@vue/compiler-core" "^3.2.31"
+    "@vue/compiler-sfc" "^3.2.31"
+    chokidar "^3.5.3"
+    glob "^7.2.0"
+    lodash-es "^4.17.21"
+    markdown-table "^3.0.2"
+    not-json "^1.0.1"
+    string-width "^5.1.2"
+
 acorn-jsx@^5.2.0, acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
