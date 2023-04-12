@@ -1,7 +1,7 @@
-import { IconName as _IconName } from '@fortawesome/fontawesome-svg-core';
-import { PropType } from 'vue';
+import type { IconName as _IconName } from '@fortawesome/fontawesome-svg-core';
+import type { PropType } from 'vue';
+import type { NumberSize } from '../../common/type';
 import { BaseProps } from '../../common/prefab';
-import { NumberSize } from '../../common/type';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type IconVariables = {};

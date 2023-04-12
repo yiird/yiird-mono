@@ -1,5 +1,6 @@
 import { forEach, isString, isSymbol, kebabCase } from 'lodash-es';
-import { isRef, reactive, ref, Ref, UnwrapNestedRefs, watchEffect } from 'vue';
+import { isRef, reactive, ref, watchEffect, type Ref } from 'vue';
+import type { UnwrapNestedRefs } from 'vue';
 
 export type BemKeys = {
 	modifiers: string;

@@ -12,7 +12,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject, onScopeDispose, watchEffect } from 'vue';
 import { usePrefab } from '../../common/prefab';
-import { MainPositionKey, SiderProps, SiderVariables } from './definition';
+import { MainPositionKey, SiderProps, type SiderVariables } from './definition';
 export default defineComponent({
 	name: 'OSiderLeft',
 	props: SiderProps,
@@ -55,8 +55,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

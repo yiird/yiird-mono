@@ -5,7 +5,7 @@ describe('Test Scanner', () => {
 	//测试阻止重复加载文件
 	test('Test Duplicate File', () => {
 		const scanner = new Scanner({
-			root: '/Users/gavin/Works/projects/self/vscode-workspace/yiird-mono/packages/vue3-ts-api-extractor/__tests__',
+			root: '/Users/loufei/works/projects/vscode/yiird-mono/packages/vue3-ts-api-extractor/__tests__',
 			scanDirs: ['test-resouces'],
 			extensions: ['.ts', '.vue'],
 			ignore: ['button/**'],
@@ -20,10 +20,10 @@ describe('Test Scanner', () => {
 
 	//测试强制加载文件
 	test('Test ForceUpdate File', () => {
-		const c_file = '/Users/gavin/Works/projects/self/vscode-workspace/yiird-mono/packages/vue3-ts-api-extractor/__tests__/test-resouces/c.ts';
+		const c_file = '/Users/loufei/works/projects/vscode/yiird-mono/packages/vue3-ts-api-extractor/__tests__/test-resouces/c.ts';
 
 		const scanner = new Scanner({
-			root: '/Users/gavin/Works/projects/self/vscode-workspace/yiird-mono/packages/vue3-ts-api-extractor/__tests__',
+			root: '/Users/loufei/works/projects/vscode/yiird-mono/packages/vue3-ts-api-extractor/__tests__',
 			scanDirs: ['test-resouces'],
 			extensions: ['.ts'],
 			ignore: ['button/**'],

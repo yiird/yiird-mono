@@ -1,16 +1,43 @@
 @import '../../theme/styles/var';
 
-$--input-size-arr:('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x');
+$--input-size-arr: ('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x');
 
 @mixin button-size() {
 	@each $modifier in $--input-size-arr {
 		$height: map-get($-global-size, $modifier);
-		$fontSize:calc(#{$height} / 2);
+		$fontSize: calc(#{$height} / 2);
 		@if ($modifier == 'xxs') {
 			$fontSize: calc(map-get($-global-size, 'xs') / 2);
 		}
 
-		@if ($modifier == 'lg' or $modifier == 'xl' or $modifier == 'xl' or $modifier == 'xxl' or $modifier == '2x' or $modifier == '3x' or $modifier == '4x' or $modifier == '5x' or $modifier == '6x' or $modifier == '7x' or $modifier == '8x' or $modifier == '9x' or $modifier == '10x') {
+		@if (
+			$modifier ==
+				'lg' or
+				$modifier ==
+				'xl' or
+				$modifier ==
+				'xl' or
+				$modifier ==
+				'xxl' or
+				$modifier ==
+				'2x' or
+				$modifier ==
+				'3x' or
+				$modifier ==
+				'4x' or
+				$modifier ==
+				'5x' or
+				$modifier ==
+				'6x' or
+				$modifier ==
+				'7x' or
+				$modifier ==
+				'8x' or
+				$modifier ==
+				'9x' or
+				$modifier ==
+				'10x'
+		) {
 			$fontSize: calc(#{$height} / 3);
 		}
 
@@ -26,20 +53,20 @@ $--input-size-arr:('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x',
 			height: $height;
 			line-height: calc($height - 2px);
 			font-size: $fontSize;
-			
+
 			@include e('input') {
 				@if ($modifier == 'xxs') {
-					zoom: .8;
+					zoom: 0.8;
 				}
 			}
 
 			@include e('prefix') {
 				min-width: $height;
 			}
-			@include e('suffix'){
+			@include e('suffix') {
 				min-width: $height;
 			}
-			@include e('password'){
+			@include e('password') {
 				min-width: $height;
 			}
 		}
@@ -53,7 +80,7 @@ $--input-size-arr:('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x',
 	$radius: _var('radius', 0.25rem);
 	$prefixBgColor: _var('prefix-bg-color', rgba($-global-color-bg-transparent));
 	$suffixBgColor: _var('suffix-bg-color', rgba($-global-color-bg-transparent));
-    $placeholderColor:_var('placeholder-color',rgba($-global-color-text-lightest));
+	$placeholderColor: _var('placeholder-color', rgba($-global-color-text-lightest));
 
 	display: inline-flex;
 	color: $color;
@@ -124,5 +151,4 @@ $--input-size-arr:('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x',
 	}
 
 	@include button-size();
-	
 }

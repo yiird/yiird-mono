@@ -14,9 +14,10 @@
 		}
 	],
 	"settings": {
-		"editor.codeActionsOnSave": [ "source.fixAll.eslint", "source.formatDocument"],
+		"editor.codeActionsOnSave": [ "source.fixAll.eslint", "source.formatDocument","source.sortImports"],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.fontSize": 14,
+		"typescript.enablePromptUseWorkspaceTsdk": true,
 		"search.exclude": {
 			"node_modules": false
 		},
@@ -47,5 +48,6 @@
 				"OPopper"
 			]
 		},
+		"typescript.tsdk": "node_modules/typescript/lib",
 	}
 }

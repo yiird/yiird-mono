@@ -13,7 +13,7 @@ describe('Test Transform', () => {
 			},
 			output: {
 				single: false,
-				dir: '/Users/gavin/Works/projects/self/vscode-workspace/yiird-mono/packages/vue3-ts-api-extractor/__tests__/md',
+				dir: '/Users/loufei/works/projects/vscode/yiird-mono/packages/vue3-ts-api-extractor/__tests__/md',
 				filename(filename) {
 					return filename;
 				},

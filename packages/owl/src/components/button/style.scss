@@ -130,8 +130,8 @@ $--button-size-arr: ('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x
 		appearance: none !important;
 		-webkit-box-shadow: none !important;
 		box-shadow: none !important;
-		font-weight: bold!important;
-		opacity: .9!important;
+		font-weight: bold !important;
+		opacity: 0.9 !important;
 	}
 
 	@include m(mode-light) {

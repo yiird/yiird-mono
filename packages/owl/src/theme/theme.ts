@@ -1,8 +1,9 @@
 import { forEach, kebabCase } from 'lodash-es';
-import { InjectionKey, nextTick, reactive, UnwrapNestedRefs, watchEffect } from 'vue';
+import { nextTick, reactive, watchEffect } from 'vue';
+import type { InjectionKey, UnwrapNestedRefs } from 'vue';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export type Variables = Record<string, string | undefined>;
+export type Variables = Partial<Record<string, string>>;
 
 export type GlobalVariables = {
 	// 字体
@@ -142,7 +143,7 @@ export class Theme<V extends Variables> {
 					}
 					if (dom) {
 						if (dom instanceof Document) {
-							const cssList = [];
+							const cssList: Array<String> = [];
 							cssList.push(':root{\n');
 							forEach(this.vars, (value, name) => {
 								cssList.push(`${name}:${value};\n`);

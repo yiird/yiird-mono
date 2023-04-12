@@ -1,4 +1,5 @@
-import { GlobalVariables, Theme } from './theme';
+import { Theme } from './theme';
+import type { GlobalVariables } from './theme';
 
 const sizeBase = 2;
 

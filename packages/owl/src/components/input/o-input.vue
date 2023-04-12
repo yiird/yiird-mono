@@ -14,6 +14,7 @@
 				v-if="obtainPrefixIcon"
 				fixed-width
 				v-bind="obtainPrefixIcon"
+				:prefix="undefined"
 				@click="onPrefixIconClick"></icon>
 			{{ obtainPrefixText }}
 			<!-- 前缀 -->
@@ -76,6 +77,7 @@
 				v-if="obtainSuffixIcon"
 				fixed-width
 				v-bind="obtainSuffixIcon"
+				:prefix="undefined"
 				@click="onSuffixIconClick"></icon>
 		</div>
 	</div>
@@ -94,18 +96,17 @@
 </template>
 
 <script lang="ts">
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library, type IconDefinition, type IconName } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash, faRemove, faSpinner } from '@fortawesome/pro-thin-svg-icons';
-import { computed } from '@vue/reactivity';
 import { isNumber } from 'lodash-es';
-import { defineComponent, nextTick, ref, watch, watchEffect } from 'vue';
+import { defineComponent, nextTick, ref, watch, watchEffect, computed, type PropType } from 'vue';
 import { useCheckClickOnElements } from '../../common/composable';
 import { toRealType } from '../../common/dom';
-import { usePrefab } from '../../common/prefab';
+import { BaseProps, usePrefab } from '../../common/prefab';
 import { Calendar } from '../calendar';
 import { Icon } from '../icon';
 import { Popper } from '../popper';
-import { EventBinding, getIcon, InputBemKeys, InputProps, InputVariables } from './definition';
+import { type EventBinding, getIcon, type InputBemKeys, InputProps, type InputVariables, type InputSize, type InputIcon } from './definition';
 library.add(faEye, faEyeSlash, faRemove, faSpinner);
 /**
  * :::warning 功能描述
@@ -149,8 +150,9 @@ export default defineComponent({
 	},
 	props: InputProps,
 	emits: ['update:modelValue', 'blur', 'focus', 'click-suffix-icon', 'click-prefix-icon'],
-	setup(props, ctx) {
+	setup(props, { slots, emit }) {
 		const prefab = usePrefab<InputVariables, InputBemKeys>(props);
+
 		const { theme, bem } = prefab;
 
 		const block = bem.block;
@@ -170,29 +172,31 @@ export default defineComponent({
 		const obtainPlaceholder = computed(() => props.placeholder);
 
 		const obtainPrefixText = computed(() => {
-			return !ctx.slots.prefix ? props.prefixText : undefined;
+			return !slots.prefix ? props.prefixText : undefined;
 		});
 		const obtainSuffixText = computed(() => {
-			return !ctx.slots.suffix ? props.suffixText : undefined;
+			return !slots.suffix ? props.suffixText : undefined;
 		});
 
 		const obtainHasPrefix = computed(() => {
-			return !!ctx.slots.prefix || props.prefix || props.prefixText;
+			return !!slots.prefix || props.prefix || props.prefixText;
 		});
 
 		const obtainHasSuffix = computed(() => {
-			return props.type === 'text' && (!!ctx.slots.suffix || props.suffix || props.suffixText);
+			return props.type === 'text' && (!!slots.suffix || props.suffix || props.suffixText);
 		});
 		const obtainSize = computed(() => 'size-' + props.size);
 
 		const obtainSuffixIcon = computed(() => {
 			const suffix = props.suffix;
 			if (suffix) return getIcon(suffix);
+			return undefined;
 		});
 
 		const obtainPrefixIcon = computed(() => {
 			const prefix = props.prefix;
 			if (prefix) return getIcon(prefix);
+			return undefined;
 		});
 
 		const obtainValue = computed({
@@ -200,17 +204,18 @@ export default defineComponent({
 				if (value.value) {
 					return value.value;
 				} else {
-					let realValue = props.modelValue;
-					if (realValue) {
-						if (props.prefixText && realValue?.startsWith(props.prefixText)) {
-							realValue = realValue.substring(props.prefixText?.length);
+					let realValue: any = undefined;
+					if (props.modelValue) {
+						if (props.prefixText && props.modelValue?.startsWith(props.prefixText)) {
+							realValue = props.modelValue.substring(props.prefixText?.length);
 						}
-						if (props.suffixText && realValue?.endsWith(props.suffixText)) {
-							const startIndex = realValue.length - props.suffixText.length;
-							realValue = realValue.substring(0, startIndex);
+						if (props.suffixText && props.modelValue?.endsWith(props.suffixText)) {
+							const startIndex = props.modelValue.length - props.suffixText.length;
+							realValue = props.modelValue.substring(0, startIndex);
 						}
 					}
-					value.value = realValue;
+					//TODO 临时去掉
+					//value.value = realValue;
 					return realValue;
 				}
 			},
@@ -229,7 +234,7 @@ export default defineComponent({
 				/**
 				 * @private
 				 */
-				ctx.emit('update:modelValue', realValue);
+				emit('update:modelValue', realValue);
 			}
 		});
 
@@ -300,7 +305,7 @@ export default defineComponent({
 			 * 获得焦点
 			 * @argument {EventBinding} binding 回调参数
 			 */
-			ctx.emit('focus', binding);
+			emit('focus', binding);
 		};
 
 		const _doBlur = (e: FocusEvent) => {
@@ -316,7 +321,7 @@ export default defineComponent({
 			 * 失去焦点
 			 * @argument {EventBinding} binding 回调参数
 			 */
-			ctx.emit('blur', binding);
+			emit('blur', binding);
 		};
 
 		/**
@@ -340,7 +345,7 @@ export default defineComponent({
 			 * 前缀图标单击事件
 			 * @argument {EventBinding} binding 回调参数
 			 */
-			ctx.emit('click-prefix-icon', binding);
+			emit('click-prefix-icon', binding);
 		};
 
 		/**
@@ -355,7 +360,7 @@ export default defineComponent({
 			 * 后缀图标单击事件
 			 * @argument {EventBinding} binding 回调参数
 			 */
-			ctx.emit('click-suffix-icon', binding);
+			emit('click-suffix-icon', binding);
 		};
 
 		const onSelectedDay = () => {
@@ -421,8 +426,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

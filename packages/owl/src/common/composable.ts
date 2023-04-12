@@ -1,5 +1,5 @@
 import screenfull from 'screenfull';
-import { isRef, onMounted, onUnmounted, Ref, ref, watch } from 'vue';
+import { isRef, onMounted, onUnmounted, type Ref, ref, watch } from 'vue';
 import { info } from '../common/logger';
 import { checkClickOnElements } from './dom';
 

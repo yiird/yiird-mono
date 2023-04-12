@@ -1,0 +1,88 @@
+{
+	// Place your snippets for vue here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	"Create Owl Component File": {
+		"prefix": "owl",
+		"body": [
+			"<template>",
+			"<${2:div}",
+			"v-show=\"display__\"",
+			"v-if=\"refresh__\"",
+			":id=\"id__\"",
+			":class=\"block\"",
+			":style=\"{ ...theme.vars }\">",
+			"</${2:div}>",
+			"</template>",
+			"<script lang=\"ts\">",
+			"import { defineComponent } from 'vue';",
+			"import { usePrefab } from '../../common/prefab';",
+			"import { GlobalThemeKey } from '../../theme';",
+			"import {  ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}Props } from './definition';",
+			"import type { ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}BemKeys, ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}Variables } from './definition';",
+			"",
+			"/**",
+			" * ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}使用",
+			" * @name O${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}",
+			" */",
+			"export default defineComponent({",
+			"name: 'O${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}',",
+			"props: ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}Props,",
+			"setup(props, { emit }) {",
+			"const prefab = usePrefab<${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}Variables, ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}BemKeys>(props);",
+			"",
+			"return {",
+			"...prefab,",
+			"};",
+			"",
+			"}",
+			"});",
+			"</script>",
+			"<style lang=\"scss\" scoped>",
+			"@import './style.scss';",
+			"</style>"
+		]
+	},
+	"Create Owl Export File": {
+		"prefix": "oexport",
+		"body": [
+			"import ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} from './o-${TM_DIRECTORY/.*\\/(.+)/$1/}.vue';",
+			"export * from './definition';",
+			"export { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} };",
+			"export type ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Instance = InstanceType<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}>;",
+			""
+		],
+		"description": "owl"
+	},
+	"Create Owl Definition File": {
+		"prefix": "odefine",
+		"body": [
+			"import { BaseProps } from '../../common/prefab';",
+			"",
+			"export type ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Variables = {};",
+			"",
+			"export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props = {",
+			"...BaseProps",
+			"} as const;",
+			"",
+			"export type ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}BemKeys = {",
+			"modifiers: never;",
+			"elements: {",
+			"};",
+			"};",
+			""
+		],
+		"description": "owl"
+	}
+}

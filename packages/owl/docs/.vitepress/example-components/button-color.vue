@@ -10,9 +10,7 @@
 	<o-button color="danger">danger</o-button>
 </template>
 
-<script
-	setup
-	lang="ts">
+<script setup lang="ts">
 const doclick = () => {
 	console.log('xxxdoclick');
 };

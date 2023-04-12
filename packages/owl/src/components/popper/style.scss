@@ -14,7 +14,7 @@
 	display: none;
 	border: 1px solid $borderColor;
 
-	@include e('arrow'){
+	@include e('arrow') {
 		position: absolute;
 		background: $bgColor;
 		width: 8px;
@@ -22,7 +22,7 @@
 		transform: rotate(45deg);
 	}
 
-	@include m('shadow'){
+	@include m('shadow') {
 		box-shadow: $-global-box-shadow-low-down;
 	}
 }

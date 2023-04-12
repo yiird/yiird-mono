@@ -1,5 +1,5 @@
 import { isString, isUndefined } from 'lodash-es';
-import { ComponentPublicInstance, Ref } from 'vue';
+import type { ComponentPublicInstance, Ref } from 'vue';
 
 export const splitSize = (cssStr: string) => {
 	const regex = /(px|em|rem|vw|vh|vmin|vmax)$/g;

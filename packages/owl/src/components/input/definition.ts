@@ -1,8 +1,8 @@
-import { findIconDefinition, IconDefinition, IconName, IconPrefix, library } from '@fortawesome/fontawesome-svg-core';
+import { findIconDefinition, type IconDefinition, type IconName, type IconPrefix, library } from '@fortawesome/fontawesome-svg-core';
 import { isObject, isString } from 'lodash-es';
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import { BaseProps } from '../../common/prefab';
-import { NumberSize, TshirtSize } from '../../common/type';
+import type { NumberSize, TshirtSize } from '../../common/type';
 import { isIconDefinition } from '../../common/util';
 
 export type InputSize = TshirtSize | NumberSize;
@@ -32,7 +32,7 @@ export const InputProps = {
 	 * 提示语
 	 */
 	placeholder: {
-		type: String as PropType<string>
+		type: String
 	},
 	/**
 	 * 文本域前缀图标
@@ -44,19 +44,19 @@ export const InputProps = {
 	 * 文本域后缀图标
 	 */
 	suffix: {
-		type: String as PropType<IconName | IconDefinition | InputIcon>
+		type: [String, Object] as PropType<IconName | IconDefinition | InputIcon>
 	},
 	/**
 	 * 前缀文本
 	 */
 	prefixText: {
-		type: String as PropType<string>
+		type: String
 	},
 	/**
 	 * 后缀文本
 	 */
 	suffixText: {
-		type: String as PropType<string>
+		type: String
 	},
 	/**
 	 * 输入的值，绑定前缀、后缀或两者的文本
@@ -68,40 +68,40 @@ export const InputProps = {
 	 * 圆角
 	 */
 	radius: {
-		type: [Boolean, Number] as PropType<boolean | number>,
+		type: [Boolean, Number],
 		default: true
 	},
 	/**
 	 * 加载状态
 	 */
 	loading: {
-		type: Boolean as PropType<boolean>,
+		type: Boolean,
 		default: false
 	},
 	/**
 	 * 禁用状态
 	 */
 	disabled: {
-		type: Boolean as PropType<boolean>,
+		type: Boolean,
 		default: false
 	},
 	/**
 	 * 禁用状态
 	 */
 	readonly: {
-		type: Boolean as PropType<boolean>,
+		type: Boolean,
 		default: false
 	},
 	/**
 	 * @private
 	 */
 	modelValue: {
-		type: String as PropType<string>
+		type: String
 	}
 } as const;
 
 export type InputVariables = {
-	radius?: string;
+	radius: string | undefined;
 };
 
 export type InputBemKeys = {
@@ -111,7 +111,7 @@ export type InputBemKeys = {
 		prefix: string;
 		suffix: string;
 		remove: string;
-		password: 'show';
+		password: string;
 		loading: string;
 	};
 };

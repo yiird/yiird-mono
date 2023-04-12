@@ -1,4 +1,4 @@
-import vueI18n from '@intlify/vite-plugin-vue-i18n';
+import vueI18n from '@intlify/unplugin-vue-i18n/vite';
 import { extractor } from '@yiird/vue3-ts-api-extractor';
 import path from 'path';
 import { defineConfig } from 'vitepress';
@@ -27,7 +27,11 @@ export default defineConfig({
 	head: [['link', { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' }]],
 	lang: 'zh-CN',
 	markdown: {
-		theme: 'vitesse-light'
+		theme: {
+			dark: 'vitesse-dark',
+			light: 'vitesse-light'
+		},
+		lineNumbers: true
 	},
 	themeConfig: {
 		logo: '/images/logomin.png',
@@ -144,7 +148,7 @@ export default defineConfig({
 				}
 			},
 			vueI18n({
-				include: path.resolve(__dirname, '../../src/locales/**')
+				include: path.resolve(__dirname, '../../src/locales/messages/**')
 			})
 		]
 	}

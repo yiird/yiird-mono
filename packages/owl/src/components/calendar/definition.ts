@@ -1,4 +1,4 @@
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
 import { BaseProps } from '../../common/prefab';
 
 export const CalendarProps = {

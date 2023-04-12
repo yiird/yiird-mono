@@ -40,11 +40,11 @@ import { faCode } from '@fortawesome/free-solid-svg-icons';
 import { computed } from '@vue/reactivity';
 
 import axios from 'axios';
-import { getHighlighter, setCDN } from 'shiki';
+import { getHighlighter, setCDN,setWasm } from 'shiki';
 import { withBase } from 'vitepress';
 import { defineComponent, PropType, ref, watchEffect } from 'vue';
 
-setCDN(withBase('/shiki/'));
+setCDN(withBase('/shiki/')); 
 
 export default defineComponent({
 	props: {
@@ -97,35 +97,40 @@ export default defineComponent({
 		// 		false
 		// 	);
 		// });
+		
 
-		watchEffect(() => {
+		watchEffect(async () => {
 			const preRE = /^<pre.*?>/;
-			const theme = isDark.value ? 'material-palenight' : 'material-lighter';
+			const theme = isDark.value ? 'vitesse-dark' : 'vitesse-light';
+			const responseWasm = await fetch("/shiki/dist/onig.wasm");
+			const wasmArrayBuffer = await responseWasm.arrayBuffer();
+			setWasm(wasmArrayBuffer);
 			getHighlighter({
-				themes: ['material-lighter', 'material-palenight'],
+				themes: ['vitesse-dark', 'vitesse-light'],
 				paths: {
-					themes: withBase('themes/'),
-					languages: withBase('languages/')
+					themes: 'themes/',
+					languages: 'languages/'
 				}
 			}).then((highlighter) => {
-				prettierCode.value = highlighter.codeToHtml(codeText.value, { lang: 'vue', theme: theme }).replace(preRE, '<pre>');
+				prettierCode.value = highlighter.codeToHtml(codeText.value, { lang: 'vue', theme: theme}).replace(preRE, '<pre>');
 				if (codeContainer.value && prettierCode) {
 					codeContainer.value.outerHTML = prettierCode.value;
 				}
-			});
+			}).catch(e=>{console.log(e)});
 		});
 
 		axios.get('/example-components/' + props.name + '.vue').then((result) => {
-			codeText.value = result.data;
-		});
+				codeText.value = result.data;
+			});
 
-		const fullExampleSrc = withBase('/iframe-content');
+
+		//const fullExampleSrc = withBase('/iframe-content');
 
 		// setInterval(() => {
 		// 	ifShowSeeSource.value = !ifShowSeeSource.value;
 		// }, 2000);
 
-		return { slots, ifShowCode, faCode, obtainIframeHeight, codeContainer, codeRender, fullExampleSrc };
+		return { slots, ifShowCode, faCode, obtainIframeHeight, codeContainer, codeRender };
 	}
 });
 </script>

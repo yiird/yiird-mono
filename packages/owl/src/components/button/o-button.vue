@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import { computed } from '@vue/reactivity';
 import { capitalize } from 'lodash-es';
-import { defineComponent, inject, watchEffect } from 'vue';
+import { defineComponent, computed, inject, watchEffect } from 'vue';
 import { usePrefab } from '../../common/prefab';
 import { GlobalThemeKey } from '../../theme';
-import { ButtonBemKeys, ButtonProps, ButtonVariables } from './definition';
+import { ButtonProps } from './definition';
+import type { ButtonBemKeys, ButtonVariables } from './definition';
 
 /**
  * Button使用
@@ -26,7 +26,7 @@ import { ButtonBemKeys, ButtonProps, ButtonVariables } from './definition';
 export default defineComponent({
 	name: 'OButton',
 	props: ButtonProps,
-	setup(props, { emit }) {
+	setup(props) {
 		const prefab = usePrefab<ButtonVariables, ButtonBemKeys>(props);
 		const { theme, bem } = prefab;
 
@@ -78,8 +78,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

@@ -1,4 +1,4 @@
-import { IconDefinition, IconPack, library } from '@fortawesome/fontawesome-svg-core';
+import { type IconDefinition, type IconPack, library } from '@fortawesome/fontawesome-svg-core';
 import Icon from './o-icon.vue';
 export * from './definition';
 export { Icon };

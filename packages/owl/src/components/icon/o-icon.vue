@@ -7,7 +7,6 @@
 		:icon="[obtainPrefix, obtainIcon]"
 		:size="obtainSize"
 		:fixed-width="obtainFixedWidth"
-		:rotation="obtainRotation"
 		:flip="obtainFlip"
 		:style="{ ...theme.vars, ...obtainAnimationOptions }">
 	</FontAwesomeIcon>
@@ -15,13 +14,13 @@
 
 <script lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 import { forEach, kebabCase } from 'lodash-es';
 import { defineComponent } from 'vue';
 import { BemClasses } from '../../common/bem';
 import { usePrefab } from '../../common/prefab';
 import { Theme } from '../../theme';
-import { IconProps, IconVariables } from './definition';
+import { IconProps, type IconVariables } from './definition';
 
 /**
  * Button使用
@@ -107,8 +106,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

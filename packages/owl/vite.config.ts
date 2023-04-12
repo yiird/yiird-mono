@@ -1,10 +1,10 @@
-/// <reference types="vitest" />
-import vueI18n from '@intlify/vite-plugin-vue-i18n';
+import { fileURLToPath, URL } from 'node:url';
+import vueI18n from '@intlify/unplugin-vue-i18n/vite';
+import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import jsx from '@vitejs/plugin-vue-jsx';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import { resolve } from 'path';
 
-import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
@@ -12,7 +12,7 @@ export default defineConfig({
 	clearScreen: false,
 	plugins: [
 		vue(),
-		jsx(),
+		vueJsx(),
 		dts({
 			entryRoot: './src',
 			outputDir: 'types',
@@ -21,7 +21,7 @@ export default defineConfig({
 			exclude: ['**/env.d.ts', '**/client.d.ts', 'docs/**']
 		}),
 		vueI18n({
-			include: resolve(__dirname, '../../src/locales/**')
+			include: resolve(__dirname, './src/locales/messages/**')
 		})
 	],
 	esbuild: {
@@ -29,7 +29,8 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js'
+			'vue-i18n': 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js',
+			'@': fileURLToPath(new URL('./src', import.meta.url))
 		}
 	},
 	build: {
@@ -50,8 +51,5 @@ export default defineConfig({
 				}
 			}
 		}
-	},
-	test: {
-		environment: 'happy-dom'
 	}
 });

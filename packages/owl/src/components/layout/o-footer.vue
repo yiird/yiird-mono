@@ -12,7 +12,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject, onScopeDispose, watchEffect } from 'vue';
 import { usePrefab } from '../../common/prefab';
-import { FooterVariables, HeaderProps, MainPositionKey } from './definition';
+import { type FooterVariables, HeaderProps, MainPositionKey } from './definition';
 
 export default defineComponent({
 	name: 'OFooter',
@@ -51,8 +51,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

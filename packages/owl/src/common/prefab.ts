@@ -1,7 +1,7 @@
 import { kebabCase } from 'lodash-es';
-import { computed, ExtractPropTypes, getCurrentInstance, InjectionKey, nextTick, ref, Ref } from 'vue';
-import { Theme, Variables } from '../theme';
-import { BemClasses, BemKeys } from './bem';
+import { computed, type ExtractPropTypes, getCurrentInstance, type InjectionKey, nextTick, ref, type Ref } from 'vue';
+import { Theme, type Variables } from '../theme';
+import { BemClasses, type BemKeys } from './bem';
 
 export const BaseProps = {
 	/**
@@ -29,7 +29,7 @@ export type OCommonPrefab<V extends Variables, B extends BemKeys> = {
 	block: Ref<string[]>;
 	domRefresh: () => void;
 };
-export const usePrefab = <V extends Variables, B extends BemKeys = BemKeys>(props: ExtractPropTypes<typeof BaseProps>): OCommonPrefab<V, B> => {
+export const usePrefab = <V extends Variables, B extends BemKeys = BemKeys>(props: any): OCommonPrefab<V, B> => {
 	//获取组件对象实例
 	const internalInstance = getCurrentInstance();
 

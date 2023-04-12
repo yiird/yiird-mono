@@ -143,8 +143,8 @@ import { useI18n } from 'vue-i18n';
 import { usePrefab } from '../../common/prefab';
 import { transforDate } from '../../common/util';
 import { Icon } from '../icon';
-
-import { CalendarBemKeys, CalendarDay, CalendarEventBinding, CalendarMonth, CalendarProps, CalendarVariables, CalendarWeek, CalendarYear } from './definition';
+import { CalendarProps } from './definition';
+import type { CalendarBemKeys, CalendarDay, CalendarEventBinding, CalendarMonth, CalendarVariables, CalendarWeek, CalendarYear } from './definition';
 
 library.add(faAnglesLeft, faAnglesRight, faAngleLeft, faAngleRight);
 
@@ -463,8 +463,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

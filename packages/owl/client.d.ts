@@ -2,9 +2,9 @@
 // We suggest you to commit this file into source control
 // Read more: https://github.com/vuejs/vue-next/pull/3399
 
-import '@vue/runtime-core';
+import 'vue';
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
 	export interface GlobalComponents {
 		OButton: typeof import('./types/components/button/o-button')['default'];
 		OIcon: typeof import('./types/components/icon/o-icon')['default'];

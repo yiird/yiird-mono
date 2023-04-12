@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, inject, watchEffect } from 'vue';
 import { usePrefab } from '../../common/prefab';
-import { MainPositionKey, MainProps, MainVariables } from './definition';
+import { MainPositionKey, MainProps, type MainVariables } from './definition';
 export default defineComponent({
 	name: 'OMain',
 	props: MainProps,
@@ -40,8 +40,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

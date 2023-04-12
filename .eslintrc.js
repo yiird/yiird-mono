@@ -1,3 +1,5 @@
+require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
 	root: true,
 	env: {
@@ -7,19 +9,13 @@ module.exports = {
 	//eslintIgnore: ['/dist/', '/node_modules/'],
 	parser: 'vue-eslint-parser',
 	parserOptions: {
-		parser: '@typescript-eslint/parser',
-		ecmaFeatures: {
-			jsx: true
-		},
-		ecmaVersion: 2020,
-		sourceType: 'module'
+		ecmaVersion: 'latest'
 	},
 	extends: [
-		'eslint:recommended', //eslint 推荐配置
-		'plugin:vue/vue3-recommended', // eslint-plugin-vue 插件提供的vue3推荐配置
-		'plugin:@typescript-eslint/recommended', //@typescript-eslint/eslint-plugin 插件提供的 typescript的推荐配置
-		'prettier',
-		'plugin:prettier/recommended'
+		'plugin:vue/vue3-essential',
+		'eslint:recommended',
+		'@vue/eslint-config-typescript',
+		'@vue/eslint-config-prettier/skip-formatting'
 	],
 	rules: {
 		'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -37,10 +33,12 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
-			env: {
-				jest: true
-			}
+		  files: [
+			'packages/*/cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}'
+		  ],
+		  'extends': [
+			'plugin:cypress/recommended'
+		  ]
 		}
-	]
+	  ]
 };

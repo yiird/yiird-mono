@@ -1,7 +1,6 @@
-import { PropType } from 'vue';
+import type { PropType } from 'vue';
+import type { NumberSize, TshirtSize } from '../../common/type';
 import { BaseProps } from '../../common/prefab';
-
-import { NumberSize, TshirtSize } from '../../common/type';
 
 export type ButtonShape = `rectangle` | `circle` | `square` | `ellipse`;
 export type ButtonColor = `info` | `primary` | `success` | `warning` | `danger`;

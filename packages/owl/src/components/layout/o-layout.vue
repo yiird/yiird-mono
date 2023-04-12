@@ -12,7 +12,7 @@
 <script lang="tsx">
 import { defineComponent, provide, reactive } from 'vue';
 import { usePrefab } from '../../common/prefab';
-import { LayoutProps, LayoutVariables, MainPosition, MainPositionKey } from './definition';
+import { LayoutProps, type LayoutVariables, type MainPosition, MainPositionKey } from './definition';
 
 export default defineComponent({
 	name: 'OLayout',
@@ -35,8 +35,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>

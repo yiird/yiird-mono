@@ -1,4 +1,4 @@
-import { ExtractPropTypes } from 'vue';
+import type { ExtractPropTypes } from 'vue';
 
 export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
 	[K in T extends ReadonlyArray<infer U> ? U : never]: V;

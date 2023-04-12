@@ -1,8 +1,9 @@
 import { forEach } from 'lodash-es';
-import { createI18n, I18n, Locale, LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
+import type { I18n, Locale, LocaleMessageDictionary, VueMessageType } from 'vue-i18n';
 
-import en from './en';
-import zh from './zh.json';
+import en from './messages/en';
+import zh from './messages/zh.json';
 
 // const customRule: PluralizationRule = (choice, choicesLength, orgRule) => {
 // 	console.log(choice, choicesLength, orgRule ? orgRule(choice, choicesLength) : '');

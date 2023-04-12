@@ -12,7 +12,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject, onScopeDispose, watchEffect } from 'vue';
 import { usePrefab } from '../../common/prefab';
-import { HeaderProps, HeaderVariables, MainPositionKey } from './definition';
+import { HeaderProps, type HeaderVariables, MainPositionKey } from './definition';
 
 export default defineComponent({
 	name: 'OHeader',
@@ -51,8 +51,6 @@ export default defineComponent({
 });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 @import './style.scss';
 </style>
