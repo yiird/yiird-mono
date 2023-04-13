@@ -9,6 +9,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    YIcon: typeof import('@yiird/elements')['Icon']
+    YIcon: typeof import('./packages/icon/template.vue')['default']
   }
 }

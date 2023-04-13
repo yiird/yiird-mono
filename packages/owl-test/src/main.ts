@@ -1,6 +1,10 @@
-import { createUI, ThemeNormal } from '@yiird/owl';
-import '@yiird/owl/style';
+import { YE, type YEOptions } from '@yiird/elements';
 import { createApp } from 'vue';
+
 import App from './App.vue';
 
-createApp(App).use(createUI(ThemeNormal)).mount('#app');
+const options: YEOptions = {
+	prefix: 'y'
+};
+
+createApp(App).use(YE, options).mount('#app');

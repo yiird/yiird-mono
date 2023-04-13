@@ -1,8 +1,8 @@
 {
 	"folders": [
-		{
+		/* {
 			"path": "."
-		},
+		}, */
 		{
 			"path": "packages/owl"
 		},
@@ -10,11 +10,18 @@
 			"path": "packages/owl-test"
 		},
 		{
+			"path": "packages/elements"
+		},
+		{
+			"path": "packages/handler"
+		},
+		{
 			"path": "packages/vue3-ts-api-extractor"
 		}
 	],
 	"settings": {
-		"editor.codeActionsOnSave": [ "source.fixAll.eslint", "source.formatDocument","source.sortImports"],
+		"editor.codeActionsOnSave": [
+		 "source.sortImports","source.organizeImports","source.fixAll.eslint", "source.formatDocument"],
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.fontSize": 14,
 		"typescript.enablePromptUseWorkspaceTsdk": true,
@@ -48,6 +55,6 @@
 				"OPopper"
 			]
 		},
-		"typescript.tsdk": "node_modules/typescript/lib",
+		"typescript.tsdk": "/Users/loufei/works/projects/vscode/yiird-mono/node_modules/typescript/lib",
 	}
 }
