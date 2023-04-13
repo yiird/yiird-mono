@@ -1,6 +1,6 @@
 {
 	"name": "@yiird/elements",
-	"version": "0.1.0-alpha.5",
+	"version": "0.1.0-alpha.6",
 	"private": false,
 	"main": "dist/yiird-elements.umd.js",
 	"module": "dist/yiird-elements.mjs",
@@ -12,8 +12,6 @@
 	"publishConfig": {
 		"access": "public"
 	},
-
-	
 	"exports": {
 		".": {
 			"import": "./dist/yiird-elements.mjs",
