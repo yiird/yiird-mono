@@ -11,10 +11,14 @@
     "commit:owl": "lerna exec --scope @yiird/owl -- git add . && cz",
     "commit:extractor": "lerna exec --scope @yiird/vue3-ts-api-extractor -- git add . && cz",
     "commit:all": "git add . && cz",
-    "lpre:owl": "lerna version --no-private --conventional-prerelease=@yiird/owl --create-release github && lerna publish from-git",
-    "lr:owl": "lerna version --no-private --conventional-graduate=@yiird/owl --create-release github && lerna publish from-git",
-    "lpre:extractor": "lerna version --no-private --conventional-prerelease=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
-    "lr:extractor": "lerna version --no-private --conventional-graduate=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
+    "pre-release:owl": "lerna version --no-private --conventional-prerelease=@yiird/owl --create-release github && lerna publish from-git",
+    "release:owl": "lerna version --no-private --conventional-graduate=@yiird/owl --create-release github && lerna publish from-git",
+    "pre-release:extractor": "lerna version --no-private --conventional-prerelease=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
+    "release:extractor": "lerna version --no-private --conventional-graduate=@yiird/vue3-ts-api-extractor --create-release github && lerna publish from-git",
+    "pre-release:handler": "lerna version --no-private --conventional-prerelease=@yiird/handler --create-release github && lerna publish from-git",
+    "release:handler": "lerna version --no-private --conventional-graduate=@yiird/handler --create-release github && lerna publish from-git",
+    "pre-release:elements": "lerna version --no-private --conventional-prerelease=@yiird/elements --create-release github && lerna publish from-git",
+    "release:elements": "lerna version --no-private --conventional-graduate=@yiird/elements --create-release github && lerna publish from-git",
     "lint": "lerna run lint -- --fix"
   },
   "dependencies": {
