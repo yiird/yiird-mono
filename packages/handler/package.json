@@ -1,6 +1,6 @@
 {
 	"name": "@yiird/handler",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": false,
 	"main": "dist/yiird-handler.js",
 	"module": "dist/yiird-handler.mjs",
