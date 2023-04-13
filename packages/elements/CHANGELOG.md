@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.5](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.4...@yiird/elements@0.1.0-alpha.5) (2023-04-13)
+
+### Bug Fixes
+
+-   package.json ([126712d](https://github.com/yiird/yiird-mono/commit/126712d0925114d8433f8b522386b188729ab150))
+
 # [0.1.0-alpha.4](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.3...@yiird/elements@0.1.0-alpha.4) (2023-04-13)
 
 **Note:** Version bump only for package @yiird/elements
