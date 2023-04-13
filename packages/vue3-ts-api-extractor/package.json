@@ -70,5 +70,5 @@
 		"rollup-plugin-node-externals": "^4.0.0",
 		"ts-jest": "^28.0.5"
 	},
-	"gitHead": "5557a6f18de5707c65b1fe530b94011d3d85c040"
+	"gitHead": "8822903937c412ea8d67f98cb59400b6e31e1b9b"
 }
