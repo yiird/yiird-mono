@@ -10,41 +10,41 @@ import pkg from './package.json';
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 export default defineConfig([
-	{
-		input: './src/index.ts',
-		output: [
-			{ file: pkg.main, format: 'cjs', exports: 'named' },
-			{ file: pkg.module, format: 'esm' }
-		],
-		plugins: [
-			del({ targets: 'dist/*' }),
-			externals({
-				include: ['chokidar', 'events'],
-				exclude: ['lodash-es', 'markdown-table', 'string-width']
-			}),
-			nodeResolve({ extensions }),
-			commonjs(),
-			babel({
-				babelHelpers: 'runtime',
-				exclude: '**/node_modules/**',
-				extensions,
-				presets: ['@babel/preset-env', '@babel/preset-typescript'],
-				plugins: ['@babel/plugin-transform-runtime']
-			})
-		]
-	},
-	{
-		// 生成 .d.ts 类型声明文件
-		input: './src/index.ts',
-		output: {
-			file: pkg.types,
-			format: 'es'
-		},
-		plugins: [
-			externals({
-				include: ['chokidar', 'events']
-			}),
-			dts()
-		]
-	}
+    {
+        input: './src/index.ts',
+        output: [
+            { file: pkg.main, format: 'cjs', exports: 'named' },
+            { file: pkg.module, format: 'esm' }
+        ],
+        plugins: [
+            del({ targets: 'dist/*' }),
+            externals({
+                include: ['chokidar', 'events'],
+                exclude: ['lodash-es', 'markdown-table', 'string-width']
+            }),
+            nodeResolve({ extensions }),
+            commonjs(),
+            babel({
+                babelHelpers: 'runtime',
+                exclude: '**/node_modules/**',
+                extensions,
+                presets: ['@babel/preset-env', '@babel/preset-typescript'],
+                plugins: ['@babel/plugin-transform-runtime']
+            })
+        ]
+    },
+    {
+        // 生成 .d.ts 类型声明文件
+        input: './src/index.ts',
+        output: {
+            file: pkg.types,
+            format: 'es'
+        },
+        plugins: [
+            externals({
+                include: ['chokidar', 'events']
+            }),
+            dts()
+        ]
+    }
 ]);

@@ -136,7 +136,7 @@ export declare const IconProps: {
      */
     readonly prefix: {
         readonly type: PropType<IconPrefix>;
-        readonly default: "fas";
+        readonly default: 'fas';
     };
     /**
      * 图标名称
@@ -159,7 +159,7 @@ export declare const IconProps: {
      */
     readonly size: {
         readonly type: PropType<IconSize>;
-        readonly default: "sm";
+        readonly default: 'sm';
     };
     /**
      * 修复图标宽度

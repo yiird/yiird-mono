@@ -1,14 +1,14 @@
 <template>
-	<o-time></o-time>
+    <o-time></o-time>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-	setup() {
-		return {};
-	}
+    setup() {
+        return {};
+    }
 });
 </script>
 

@@ -1,3 +1,6 @@
+// @yiird/elements 插件配置
 export type YEOptions = {
-	prefix: string;
+    prefix: string;
 };
+
+export type ThemeVar = {};

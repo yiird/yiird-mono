@@ -1,5 +1,5 @@
 <template>
-	<div>{{ name }}</div>
+    <div>{{ name }}</div>
 </template>
 
 <script lang="ts">
@@ -7,8 +7,8 @@ import { defineComponent } from 'vue';
 import { Props } from './logic';
 
 export default defineComponent({
-	props: Props,
-	setup(props, ctx) {}
+    props: Props,
+    setup(props, ctx) {}
 });
 </script>
 

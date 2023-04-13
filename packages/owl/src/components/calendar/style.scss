@@ -1,214 +1,214 @@
 @import '../../theme/styles/var';
 
 @include b('calendar') {
-	$itemSize: 2rem;
-	$gap: 10px;
-	$itemTextBorderWidth: _var('item-text-border-width', 2px);
-	$itemWrapWidth: _var('item-wrap-width', 2.5rem);
-	$itemWrapHeight: _var('item-wrap-height', 2.5rem);
-	$selectedColor: _var('selected-color', rgba($-global-color-primary));
-	$hoverColor: _var('hover-color', rgba($-global-color-primary, 0.1));
-	$currentColor: _var('current-color', rgba($-global-color-primary, 0.2));
-	$disabledColor: _var('disabled-color', rgba($-global-color-text-lightest));
-	$buttonColor: _var('button-color', rgba($-global-color-text-light));
+    $itemSize: 2rem;
+    $gap: 10px;
+    $itemTextBorderWidth: _var('item-text-border-width', 2px);
+    $itemWrapWidth: _var('item-wrap-width', 2.5rem);
+    $itemWrapHeight: _var('item-wrap-height', 2.5rem);
+    $selectedColor: _var('selected-color', rgba($-global-color-primary));
+    $hoverColor: _var('hover-color', rgba($-global-color-primary, 0.1));
+    $currentColor: _var('current-color', rgba($-global-color-primary, 0.2));
+    $disabledColor: _var('disabled-color', rgba($-global-color-text-lightest));
+    $buttonColor: _var('button-color', rgba($-global-color-text-light));
 
-	user-select: none;
-	min-width: calc($itemWrapWidth * 7 + $gap * 6);
-	color: rgba($-global-color-text-secondary);
+    user-select: none;
+    min-width: calc($itemWrapWidth * 7 + $gap * 6);
+    color: rgba($-global-color-text-secondary);
 
-	@include e('selector-wrap') {
-		flex-shrink: 0;
-		display: flex;
-		justify-content: space-evenly;
-		line-height: 3rem;
-		margin-bottom: 1rem;
-	}
+    @include e('selector-wrap') {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-evenly;
+        line-height: 3rem;
+        margin-bottom: 1rem;
+    }
 
-	@include e('selector-button') {
-		cursor: pointer;
-		min-width: 2rem;
-		text-align: center;
-		&:hover {
-			opacity: 0.5;
-			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-		}
-		&:active {
-			opacity: 0.5;
-			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-		}
-	}
-	@include e('selector-text') {
-		font-size: 1.3rem;
-		font-weight: bold;
-	}
+    @include e('selector-button') {
+        cursor: pointer;
+        min-width: 2rem;
+        text-align: center;
+        &:hover {
+            opacity: 0.5;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        &:active {
+            opacity: 0.5;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+    }
+    @include e('selector-text') {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
 
-	@include e('current-text') {
-		position: absolute;
-		color: green;
-		top: -1rem;
-		right: 0;
-		font-size: 0.9rem;
-		zoom: 0.9;
-	}
+    @include e('current-text') {
+        position: absolute;
+        color: green;
+        top: -1rem;
+        right: 0;
+        font-size: 0.9rem;
+        zoom: 0.9;
+    }
 
-	@include e('week-wrap') {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-		grid-template-rows: 1fr;
-		align-items: center;
-		justify-items: center;
-		gap: $gap;
-		border-bottom: 0.5px solid rgba($-global-color-border-secondary);
-		margin-bottom: 10px;
-	}
+    @include e('week-wrap') {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        align-items: center;
+        justify-items: center;
+        gap: $gap;
+        border-bottom: 0.5px solid rgba($-global-color-border-secondary);
+        margin-bottom: 10px;
+    }
 
-	@include e('week-item') {
-		min-width: $itemWrapWidth;
-		min-height: $itemWrapHeight;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
+    @include e('week-item') {
+        min-width: $itemWrapWidth;
+        min-height: $itemWrapHeight;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
-	@include e('week-item-text') {
-		flex-shrink: 0;
-		box-sizing: border-box;
-		display: block;
-		text-align: center;
-		width: $itemSize;
-		height: $itemSize;
-		border: $itemTextBorderWidth solid transparent;
-		line-height: calc($itemSize - $itemTextBorderWidth);
-		border-radius: $itemSize;
-	}
+    @include e('week-item-text') {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        display: block;
+        text-align: center;
+        width: $itemSize;
+        height: $itemSize;
+        border: $itemTextBorderWidth solid transparent;
+        line-height: calc($itemSize - $itemTextBorderWidth);
+        border-radius: $itemSize;
+    }
 
-	@include e('days-wrap') {
-		flex-grow: 1;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-		grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-		align-items: center;
-		justify-items: center;
-		gap: $gap;
-	}
+    @include e('days-wrap') {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+        align-items: center;
+        justify-items: center;
+        gap: $gap;
+    }
 
-	@include e('days-item') {
-		min-width: $itemWrapWidth;
-		min-height: $itemWrapHeight;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		position: relative;
-		&:hover {
-			background-color: $hoverColor;
-		}
-	}
+    @include e('days-item') {
+        min-width: $itemWrapWidth;
+        min-height: $itemWrapHeight;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        &:hover {
+            background-color: $hoverColor;
+        }
+    }
 
-	@include e('days-item-text') {
-		flex-shrink: 0;
-		box-sizing: border-box;
-		display: block;
-		text-align: center;
-		width: $itemSize;
-		height: $itemSize;
-		border: $itemTextBorderWidth solid transparent;
-		line-height: calc($itemSize - $itemTextBorderWidth);
-		border-radius: $itemSize;
-		&.selected {
-			border-color: $selectedColor;
-		}
+    @include e('days-item-text') {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        display: block;
+        text-align: center;
+        width: $itemSize;
+        height: $itemSize;
+        border: $itemTextBorderWidth solid transparent;
+        line-height: calc($itemSize - $itemTextBorderWidth);
+        border-radius: $itemSize;
+        &.selected {
+            border-color: $selectedColor;
+        }
 
-		&.current {
-			background-color: $currentColor;
-		}
+        &.current {
+            background-color: $currentColor;
+        }
 
-		&.disabled {
-			cursor: not-allowed;
-			color: $disabledColor;
-		}
-	}
+        &.disabled {
+            cursor: not-allowed;
+            color: $disabledColor;
+        }
+    }
 
-	@include e('year-wrap') {
-		flex-grow: 1;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-		gap: $gap;
-		justify-items: center;
-	}
+    @include e('year-wrap') {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+        gap: $gap;
+        justify-items: center;
+    }
 
-	@include e('year-item') {
-		min-width: calc($itemWrapWidth * 2);
-		min-height: $itemWrapHeight;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		position: relative;
-		&:hover {
-			background-color: $hoverColor;
-		}
-	}
+    @include e('year-item') {
+        min-width: calc($itemWrapWidth * 2);
+        min-height: $itemWrapHeight;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        &:hover {
+            background-color: $hoverColor;
+        }
+    }
 
-	@include e('year-item-text') {
-		flex-shrink: 0;
-		box-sizing: border-box;
-		display: block;
-		text-align: center;
-		width: calc($itemSize * 2);
-		height: $itemSize;
-		border: $itemTextBorderWidth solid transparent;
-		line-height: calc($itemSize - $itemTextBorderWidth);
-		border-radius: $itemSize;
-		&.current {
-			background-color: $currentColor;
-		}
-		&.selected {
-			border-color: $selectedColor;
-		}
-	}
+    @include e('year-item-text') {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        display: block;
+        text-align: center;
+        width: calc($itemSize * 2);
+        height: $itemSize;
+        border: $itemTextBorderWidth solid transparent;
+        line-height: calc($itemSize - $itemTextBorderWidth);
+        border-radius: $itemSize;
+        &.current {
+            background-color: $currentColor;
+        }
+        &.selected {
+            border-color: $selectedColor;
+        }
+    }
 
-	@include e('month-wrap') {
-		flex-grow: 1;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-template-rows: 1fr 1fr 1fr 1fr;
-		gap: $gap;
-		justify-items: center;
-	}
+    @include e('month-wrap') {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        gap: $gap;
+        justify-items: center;
+    }
 
-	@include e('month-item') {
-		min-width: calc($itemWrapWidth * 2);
-		min-height: $itemWrapHeight;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		position: relative;
-		&:hover {
-			background-color: $hoverColor;
-		}
-	}
+    @include e('month-item') {
+        min-width: calc($itemWrapWidth * 2);
+        min-height: $itemWrapHeight;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        &:hover {
+            background-color: $hoverColor;
+        }
+    }
 
-	@include e('month-item-text') {
-		flex-shrink: 0;
-		box-sizing: border-box;
-		display: block;
-		text-align: center;
-		width: calc($itemSize * 2);
-		height: $itemSize;
-		border: $itemTextBorderWidth solid transparent;
-		line-height: calc($itemSize - $itemTextBorderWidth);
-		border-radius: $itemSize;
+    @include e('month-item-text') {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        display: block;
+        text-align: center;
+        width: calc($itemSize * 2);
+        height: $itemSize;
+        border: $itemTextBorderWidth solid transparent;
+        line-height: calc($itemSize - $itemTextBorderWidth);
+        border-radius: $itemSize;
 
-		&.current {
-			background-color: $currentColor;
-		}
-		&.selected {
-			border-color: $selectedColor;
-		}
-	}
+        &.current {
+            background-color: $currentColor;
+        }
+        &.selected {
+            border-color: $selectedColor;
+        }
+    }
 }

@@ -84,5 +84,26 @@
 			""
 		],
 		"description": "owl"
+	},
+	"Create Yiird Export File":{
+		"description": "创建Yiird组件导出文件",
+		"prefix": "yindex",
+		"body": [
+			"import { capitalize, type App, type Plugin } from 'vue';",
+			"import type { YEOptions } from '../types/global';",
+			"",
+			"import ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} from './template.vue';",
+			"",
+			"export type { YEOptions };",
+			"export * from './logic';",
+			"export { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} };",
+			"",
+			"export default {",
+			"install(app: App, optinos: YEOptions) {",
+			"const { prefix = 'y' } = optinos;",
+			"app.component(capitalize(`\\${prefix}${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}`), ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}});",
+			"}",
+			"} as Plugin;",
+		]
 	}
 }

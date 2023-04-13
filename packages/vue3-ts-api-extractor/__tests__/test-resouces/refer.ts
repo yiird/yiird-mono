@@ -2,5 +2,5 @@
  * sss
  */
 export interface Ifc {
-	a: string;
+    a: string;
 }

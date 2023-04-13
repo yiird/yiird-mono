@@ -23,17 +23,17 @@ export default {
 `;
 
 describe('Test common', () => {
-	test('SfcFile', () => {
-		const sfcFile = new SfcFile('', sfc);
-		expect(sfcFile.lang).toBe(ScriptKind.TS);
-		expect(sfcFile.template?.content).toBe('<span></span>');
-		expect(sfcFile.referInfos.length).toBe(2);
-	});
+    test('SfcFile', () => {
+        const sfcFile = new SfcFile('', sfc);
+        expect(sfcFile.lang).toBe(ScriptKind.TS);
+        expect(sfcFile.template?.content).toBe('<span></span>');
+        expect(sfcFile.referInfos.length).toBe(2);
+    });
 
-	test('ScriptFile', () => {
-		const scriptFile = new ScriptFile('', script, ScriptKind.TS);
-		expect(scriptFile.referInfos.length).toBe(2);
-		expect(scriptFile.referInfos[0].refer).toBe('vue');
-		expect(scriptFile.referInfos[1].refer).toBe('../a');
-	});
+    test('ScriptFile', () => {
+        const scriptFile = new ScriptFile('', script, ScriptKind.TS);
+        expect(scriptFile.referInfos.length).toBe(2);
+        expect(scriptFile.referInfos[0].refer).toBe('vue');
+        expect(scriptFile.referInfos[1].refer).toBe('../a');
+    });
 });

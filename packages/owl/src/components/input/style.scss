@@ -3,152 +3,152 @@
 $--input-size-arr: ('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x');
 
 @mixin button-size() {
-	@each $modifier in $--input-size-arr {
-		$height: map-get($-global-size, $modifier);
-		$fontSize: calc(#{$height} / 2);
-		@if ($modifier == 'xxs') {
-			$fontSize: calc(map-get($-global-size, 'xs') / 2);
-		}
+    @each $modifier in $--input-size-arr {
+        $height: map-get($-global-size, $modifier);
+        $fontSize: calc(#{$height} / 2);
+        @if ($modifier == 'xxs') {
+            $fontSize: calc(map-get($-global-size, 'xs') / 2);
+        }
 
-		@if (
-			$modifier ==
-				'lg' or
-				$modifier ==
-				'xl' or
-				$modifier ==
-				'xl' or
-				$modifier ==
-				'xxl' or
-				$modifier ==
-				'2x' or
-				$modifier ==
-				'3x' or
-				$modifier ==
-				'4x' or
-				$modifier ==
-				'5x' or
-				$modifier ==
-				'6x' or
-				$modifier ==
-				'7x' or
-				$modifier ==
-				'8x' or
-				$modifier ==
-				'9x' or
-				$modifier ==
-				'10x'
-		) {
-			$fontSize: calc(#{$height} / 3);
-		}
+        @if (
+            $modifier ==
+                'lg' or
+                $modifier ==
+                'xl' or
+                $modifier ==
+                'xl' or
+                $modifier ==
+                'xxl' or
+                $modifier ==
+                '2x' or
+                $modifier ==
+                '3x' or
+                $modifier ==
+                '4x' or
+                $modifier ==
+                '5x' or
+                $modifier ==
+                '6x' or
+                $modifier ==
+                '7x' or
+                $modifier ==
+                '8x' or
+                $modifier ==
+                '9x' or
+                $modifier ==
+                '10x'
+        ) {
+            $fontSize: calc(#{$height} / 3);
+        }
 
-		// @if ($modifier == 'lg' or $modifier == 'xl') {
-		// 	$fontWeight: 300;
-		// }
+        // @if ($modifier == 'lg' or $modifier == 'xl') {
+        // 	$fontWeight: 300;
+        // }
 
-		// @if($modifier == 'xxl' ){
-		// 	$fontWeight: 300;
-		// }
+        // @if($modifier == 'xxl' ){
+        // 	$fontWeight: 300;
+        // }
 
-		@include m('size-' + $modifier) {
-			height: $height;
-			line-height: calc($height - 2px);
-			font-size: $fontSize;
+        @include m('size-' + $modifier) {
+            height: $height;
+            line-height: calc($height - 2px);
+            font-size: $fontSize;
 
-			@include e('input') {
-				@if ($modifier == 'xxs') {
-					zoom: 0.8;
-				}
-			}
+            @include e('input') {
+                @if ($modifier == 'xxs') {
+                    zoom: 0.8;
+                }
+            }
 
-			@include e('prefix') {
-				min-width: $height;
-			}
-			@include e('suffix') {
-				min-width: $height;
-			}
-			@include e('password') {
-				min-width: $height;
-			}
-		}
-	}
+            @include e('prefix') {
+                min-width: $height;
+            }
+            @include e('suffix') {
+                min-width: $height;
+            }
+            @include e('password') {
+                min-width: $height;
+            }
+        }
+    }
 }
 
 @include b('input') {
-	$passwordeyeActiveColor: rgba($-global-color-primary);
-	$borderColor: _var('border-color', rgba($-global-color-border-primary));
-	$color: _var('color', rgba($-global-color-text-light));
-	$radius: _var('radius', 0.25rem);
-	$prefixBgColor: _var('prefix-bg-color', rgba($-global-color-bg-transparent));
-	$suffixBgColor: _var('suffix-bg-color', rgba($-global-color-bg-transparent));
-	$placeholderColor: _var('placeholder-color', rgba($-global-color-text-lightest));
+    $passwordeyeActiveColor: rgba($-global-color-primary);
+    $borderColor: _var('border-color', rgba($-global-color-border-primary));
+    $color: _var('color', rgba($-global-color-text-light));
+    $radius: _var('radius', 0.25rem);
+    $prefixBgColor: _var('prefix-bg-color', rgba($-global-color-bg-transparent));
+    $suffixBgColor: _var('suffix-bg-color', rgba($-global-color-bg-transparent));
+    $placeholderColor: _var('placeholder-color', rgba($-global-color-text-lightest));
 
-	display: inline-flex;
-	color: $color;
-	width: 100%;
-	border: 1px solid $borderColor;
-	vertical-align: middle;
-	font-weight: 400;
+    display: inline-flex;
+    color: $color;
+    width: 100%;
+    border: 1px solid $borderColor;
+    vertical-align: middle;
+    font-weight: 400;
 
-	@include m('radius') {
-		border-radius: $radius;
-	}
+    @include m('radius') {
+        border-radius: $radius;
+    }
 
-	@include e('prefix') {
-		flex-shrink: 0;
-		min-width: 1vh;
-		text-align: center;
-		padding: 0 0.5rem;
-		background-color: $prefixBgColor;
-		border-right: 1px solid $borderColor;
-	}
+    @include e('prefix') {
+        flex-shrink: 0;
+        min-width: 1vh;
+        text-align: center;
+        padding: 0 0.5rem;
+        background-color: $prefixBgColor;
+        border-right: 1px solid $borderColor;
+    }
 
-	@include e('suffix') {
-		flex-shrink: 0;
-		text-align: center;
-		padding: 0 0.5rem;
-		background-color: $suffixBgColor;
-		border-left: 1px solid $borderColor;
-	}
+    @include e('suffix') {
+        flex-shrink: 0;
+        text-align: center;
+        padding: 0 0.5rem;
+        background-color: $suffixBgColor;
+        border-left: 1px solid $borderColor;
+    }
 
-	@include e('password') {
-		flex-shrink: 0;
-		text-align: center;
-		padding: 0 0.5rem;
-		@include m('show') {
-			color: $passwordeyeActiveColor;
-		}
-	}
+    @include e('password') {
+        flex-shrink: 0;
+        text-align: center;
+        padding: 0 0.5rem;
+        @include m('show') {
+            color: $passwordeyeActiveColor;
+        }
+    }
 
-	@include e('remove') {
-		display: none;
-		flex-shrink: 0;
-		text-align: center;
-		padding: 0 0.5rem;
-	}
+    @include e('remove') {
+        display: none;
+        flex-shrink: 0;
+        text-align: center;
+        padding: 0 0.5rem;
+    }
 
-	&:hover {
-		@include e('remove') {
-			display: block;
-		}
-	}
+    &:hover {
+        @include e('remove') {
+            display: block;
+        }
+    }
 
-	@include e('loading') {
-		flex-shrink: 0;
-		text-align: center;
-		padding: 0 0.5rem;
-	}
+    @include e('loading') {
+        flex-shrink: 0;
+        text-align: center;
+        padding: 0 0.5rem;
+    }
 
-	@include e('input') {
-		width: 0;
-		flex-grow: 1;
-		outline: none;
-		padding: 0 0.3rem;
-		font-weight: inherit;
-		&::placeholder {
-			font-weight: inherit;
-			color: $placeholderColor;
-		}
-	}
+    @include e('input') {
+        width: 0;
+        flex-grow: 1;
+        outline: none;
+        padding: 0 0.3rem;
+        font-weight: inherit;
+        &::placeholder {
+            font-weight: inherit;
+            color: $placeholderColor;
+        }
+    }
 
-	@include button-size();
+    @include button-size();
 }

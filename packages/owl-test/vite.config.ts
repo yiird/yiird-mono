@@ -5,14 +5,14 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [
-		vue(),
-		Components({
-			resolvers: [
-				YEComponentResolver({
-					debug: true
-				})
-			]
-		})
-	]
+    plugins: [
+        vue(),
+        Components({
+            resolvers: [
+                YEComponentResolver({
+                    debug: true
+                })
+            ]
+        })
+    ]
 });

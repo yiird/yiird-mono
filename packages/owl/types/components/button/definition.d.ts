@@ -14,14 +14,14 @@ export declare const ButtonProps: {
      */
     readonly size: {
         readonly type: PropType<ButtonSize>;
-        readonly default: "md";
+        readonly default: 'md';
     };
     /**
      * 颜色
      */
     readonly color: {
         readonly type: PropType<ButtonColor>;
-        readonly default: "primary";
+        readonly default: 'primary';
     };
     /**
      * 文本颜色
@@ -34,7 +34,7 @@ export declare const ButtonProps: {
      */
     readonly shape: {
         readonly type: PropType<ButtonShape>;
-        readonly default: "rectangle";
+        readonly default: 'rectangle';
     };
     /**
      * 是否禁用按钮
@@ -48,7 +48,7 @@ export declare const ButtonProps: {
      */
     readonly mode: {
         readonly type: PropType<ButtonMode>;
-        readonly default: "normal";
+        readonly default: 'normal';
     };
     readonly id: {
         type: StringConstructor;
@@ -59,7 +59,17 @@ export declare const ButtonProps: {
     };
 };
 export declare type ButtonBemKeys = {
-    modifiers: 'shape-rectangle' | 'shape-circle' | 'shape-square' | 'shape-ellipse' | 'mode-light' | 'mode-empty' | 'mode-link' | 'state-hover' | 'state-active' | 'state-disabled';
+    modifiers:
+        | 'shape-rectangle'
+        | 'shape-circle'
+        | 'shape-square'
+        | 'shape-ellipse'
+        | 'mode-light'
+        | 'mode-empty'
+        | 'mode-link'
+        | 'state-hover'
+        | 'state-active'
+        | 'state-disabled';
     elements: {
         text: string;
         icon: string;

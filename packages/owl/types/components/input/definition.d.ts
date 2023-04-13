@@ -11,15 +11,15 @@ export declare const InputProps: {
      * 输入类型
      */
     readonly type: {
-        readonly type: PropType<"date" | "text" | "password" | "time" | "datetime">;
-        readonly default: "text";
+        readonly type: PropType<'date' | 'text' | 'password' | 'time' | 'datetime'>;
+        readonly default: 'text';
     };
     /**
      * 尺寸
      */
     readonly size: {
         readonly type: PropType<InputSize>;
-        readonly default: "md";
+        readonly default: 'md';
     };
     /**
      * 提示语
@@ -55,7 +55,7 @@ export declare const InputProps: {
      * 输入的值，绑定前缀、后缀或两者的文本
      */
     readonly bind: {
-        readonly type: PropType<"prefix" | "all" | "suffix">;
+        readonly type: PropType<'prefix' | 'all' | 'suffix'>;
     };
     /**
      * 圆角

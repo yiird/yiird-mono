@@ -1,8 +1,8 @@
 {
 	"folders": [
-		/* {
+		{
 			"path": "."
-		}, */
+		},
 		{
 			"path": "packages/owl"
 		},
@@ -56,5 +56,9 @@
 			]
 		},
 		"typescript.tsdk": "/Users/loufei/works/projects/vscode/yiird-mono/node_modules/typescript/lib",
+		"files.exclude": {
+			"**/dist": true,
+			"**/node_modules": true
+		},
 	}
 }

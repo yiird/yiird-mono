@@ -1,12 +1,12 @@
 <template>
-	<div
-		v-show="display__"
-		v-if="refresh__"
-		:id="id__"
-		:class="block"
-		:style="{ ...theme.vars }">
-		<slot></slot>
-	</div>
+    <div
+        v-show="display__"
+        v-if="refresh__"
+        :id="id__"
+        :class="block"
+        :style="{ ...theme.vars }">
+        <slot></slot>
+    </div>
 </template>
 
 <script lang="ts">
@@ -15,39 +15,39 @@ import { usePrefab } from '../../common/prefab';
 import { HeaderProps, type HeaderVariables, MainPositionKey } from './definition';
 
 export default defineComponent({
-	name: 'OHeader',
-	props: HeaderProps,
-	setup(props) {
-		const prefab = usePrefab<HeaderVariables>(props);
-		const { theme, bem } = prefab;
+    name: 'OHeader',
+    props: HeaderProps,
+    setup(props) {
+        const prefab = usePrefab<HeaderVariables>(props);
+        const { theme, bem } = prefab;
 
-		const block = bem.block;
+        const block = bem.block;
 
-		const mainPosition = inject(MainPositionKey);
+        const mainPosition = inject(MainPositionKey);
 
-		const obtainHeight = computed(() => {
-			return props.height;
-		});
+        const obtainHeight = computed(() => {
+            return props.height;
+        });
 
-		watchEffect(() => {
-			if (mainPosition) {
-				mainPosition.top = obtainHeight.value;
-			}
-			theme.originVars.height = obtainHeight.value;
-		});
+        watchEffect(() => {
+            if (mainPosition) {
+                mainPosition.top = obtainHeight.value;
+            }
+            theme.originVars.height = obtainHeight.value;
+        });
 
-		onScopeDispose(() => {
-			if (mainPosition) {
-				mainPosition.top = undefined;
-			}
-		});
+        onScopeDispose(() => {
+            if (mainPosition) {
+                mainPosition.top = undefined;
+            }
+        });
 
-		return {
-			...prefab,
-			theme,
-			block
-		};
-	}
+        return {
+            ...prefab,
+            theme,
+            block
+        };
+    }
 });
 </script>
 

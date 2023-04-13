@@ -43,31 +43,31 @@ const obtainValue = computed({
 });
 `;
 describe('Test Tsquery', () => {
-	test('Test Tsquery Declarations Selector', () => {
-		const not = ':not([modifiers.0.kind=' + SyntaxKind.ExportKeyword + '])';
-		const selector = `VariableStatement${not},FunctionDeclaration${not},ClassDeclaration${not}`;
-		const results = tsquery(script, selector, {
-			visitAllChildren: true
-		});
-		expect(results.length).toBe(2);
-	});
+    test('Test Tsquery Declarations Selector', () => {
+        const not = ':not([modifiers.0.kind=' + SyntaxKind.ExportKeyword + '])';
+        const selector = `VariableStatement${not},FunctionDeclaration${not},ClassDeclaration${not}`;
+        const results = tsquery(script, selector, {
+            visitAllChildren: true
+        });
+        expect(results.length).toBe(2);
+    });
 
-	test('Test Tsquery First Level Children', () => {
-		const root = tsquery.ast(script2, '', ScriptKind.TSX);
-		const selector = `VariableStatement,FunctionDeclaration`;
-		const nodes = tsquery(root, selector, {
-			visitAllChildren: true
-		});
-		nodes.filter((_node) => root !== _node && root === _node.parent);
-		expect(nodes.length).toBeGreaterThan(0);
-	});
+    test('Test Tsquery First Level Children', () => {
+        const root = tsquery.ast(script2, '', ScriptKind.TSX);
+        const selector = `VariableStatement,FunctionDeclaration`;
+        const nodes = tsquery(root, selector, {
+            visitAllChildren: true
+        });
+        nodes.filter((_node) => root !== _node && root === _node.parent);
+        expect(nodes.length).toBeGreaterThan(0);
+    });
 
-	test('ddddd', () => {
-		const selector = 'CallExpression:has([name=emit])';
-		const root = tsquery.ast(script3, '', ScriptKind.TSX);
-		const nodes = tsquery(root, selector, {
-			visitAllChildren: true
-		});
-		console.log(nodes);
-	});
+    test('ddddd', () => {
+        const selector = 'CallExpression:has([name=emit])';
+        const root = tsquery.ast(script3, '', ScriptKind.TSX);
+        const nodes = tsquery(root, selector, {
+            visitAllChildren: true
+        });
+        console.log(nodes);
+    });
 });

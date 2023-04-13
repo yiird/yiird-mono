@@ -1,14 +1,14 @@
 <template>
-	<button
-		v-show="display__"
-		v-if="refresh__"
-		:id="id__"
-		:class="block"
-		:disabled="disabled"
-		:style="{ ...theme.vars }">
-		<!-- 默认插槽 -->
-		<slot></slot>
-	</button>
+    <button
+        v-show="display__"
+        v-if="refresh__"
+        :id="id__"
+        :class="block"
+        :disabled="disabled"
+        :style="{ ...theme.vars }">
+        <!-- 默认插槽 -->
+        <slot></slot>
+    </button>
 </template>
 
 <script lang="ts">
@@ -24,57 +24,57 @@ import type { ButtonBemKeys, ButtonVariables } from './definition';
  * @name OButton
  */
 export default defineComponent({
-	name: 'OButton',
-	props: ButtonProps,
-	setup(props) {
-		const prefab = usePrefab<ButtonVariables, ButtonBemKeys>(props);
-		const { theme, bem } = prefab;
+    name: 'OButton',
+    props: ButtonProps,
+    setup(props) {
+        const prefab = usePrefab<ButtonVariables, ButtonBemKeys>(props);
+        const { theme, bem } = prefab;
 
-		const globalTheme = inject(GlobalThemeKey);
+        const globalTheme = inject(GlobalThemeKey);
 
-		const block = bem.block;
-		const elements = bem.elements;
+        const block = bem.block;
+        const elements = bem.elements;
 
-		const obtainBgColor = computed(() => {
-			const color = props.color;
-			const key = `color${capitalize(color)}`;
-			return globalTheme?.varNames[key];
-		});
+        const obtainBgColor = computed(() => {
+            const color = props.color;
+            const key = `color${capitalize(color)}`;
+            return globalTheme?.varNames[key];
+        });
 
-		const obtainTextColor = computed(() => {
-			return props.textColor || 'white';
-		});
+        const obtainTextColor = computed(() => {
+            return props.textColor || 'white';
+        });
 
-		const obtainShape = computed(() => {
-			return 'shape-' + props.shape;
-		});
+        const obtainShape = computed(() => {
+            return 'shape-' + props.shape;
+        });
 
-		const obtainSize = computed(() => {
-			return 'size-' + props.size;
-		});
+        const obtainSize = computed(() => {
+            return 'size-' + props.size;
+        });
 
-		const obtainMode = computed(() => {
-			return 'mode-' + props.mode;
-		});
+        const obtainMode = computed(() => {
+            return 'mode-' + props.mode;
+        });
 
-		watchEffect(() => {
-			theme.originVars.bgColor = `var(${obtainBgColor.value})`;
-			theme.originVars.textColor = obtainTextColor.value;
-			if (props.disabled) {
-				bem.addModifier('state-disabled');
-			} else {
-				bem.removeModifier('state-disabled');
-			}
-		});
-		bem.addModifier(obtainShape, obtainSize, obtainMode);
+        watchEffect(() => {
+            theme.originVars.bgColor = `var(${obtainBgColor.value})`;
+            theme.originVars.textColor = obtainTextColor.value;
+            if (props.disabled) {
+                bem.addModifier('state-disabled');
+            } else {
+                bem.removeModifier('state-disabled');
+            }
+        });
+        bem.addModifier(obtainShape, obtainSize, obtainMode);
 
-		return {
-			...prefab,
-			theme,
-			block,
-			elements
-		};
-	}
+        return {
+            ...prefab,
+            theme,
+            block,
+            elements
+        };
+    }
 });
 </script>
 

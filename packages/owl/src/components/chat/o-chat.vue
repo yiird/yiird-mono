@@ -1,10 +1,10 @@
 <template>
-	<div
-		v-show="display__"
-		v-if="refresh__"
-		:id="id__"
-		:class="block"
-		:style="{ ...theme.vars }"></div>
+    <div
+        v-show="display__"
+        v-if="refresh__"
+        :id="id__"
+        :class="block"
+        :style="{ ...theme.vars }"></div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -18,15 +18,15 @@ import type { ChatBemKeys, ChatVariables } from './definition';
  * @name OChat
  */
 export default defineComponent({
-	name: 'OChat',
-	props: ChatProps,
-	setup(props, { emit }) {
-		const prefab = usePrefab<ChatVariables, ChatBemKeys>(props);
+    name: 'OChat',
+    props: ChatProps,
+    setup(props, { emit }) {
+        const prefab = usePrefab<ChatVariables, ChatBemKeys>(props);
 
-		return {
-			...prefab
-		};
-	}
+        return {
+            ...prefab
+        };
+    }
 });
 </script>
 <style lang="scss" scoped>

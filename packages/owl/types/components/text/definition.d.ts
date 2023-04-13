@@ -32,7 +32,7 @@ export declare const TextProps: {
      * 输入的值，绑定前缀、后缀或两者的文本
      */
     readonly bind: {
-        readonly type: PropType<"prefix" | "all" | "suffix">;
+        readonly type: PropType<'prefix' | 'all' | 'suffix'>;
     };
     /**
      * 圆角

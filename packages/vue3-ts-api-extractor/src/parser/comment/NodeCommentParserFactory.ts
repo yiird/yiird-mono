@@ -7,11 +7,11 @@ import { ParamCommentParser } from './ts/ParamCommentParser';
 import { TypeCommentParser } from './ts/TypeCommentParser';
 
 export class NodeCommentParserFactory {
-	static createTypeParser(structure: ScriptStructure, context: Context): AbstractCommentParser<TypeComment> {
-		return new TypeCommentParser(structure, context);
-	}
+    static createTypeParser(structure: ScriptStructure, context: Context): AbstractCommentParser<TypeComment> {
+        return new TypeCommentParser(structure, context);
+    }
 
-	static createParamParser(structure: ScriptStructure, context: Context): AbstractCommentParser<ParamComment> {
-		return new ParamCommentParser(this.createTypeParser(structure, context), structure, context);
-	}
+    static createParamParser(structure: ScriptStructure, context: Context): AbstractCommentParser<ParamComment> {
+        return new ParamCommentParser(this.createTypeParser(structure, context), structure, context);
+    }
 }

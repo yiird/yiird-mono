@@ -11,39 +11,39 @@ import setupI18n from './locales';
 import './theme/styles/main.scss';
 
 export type OwlOptions = {
-	icons?: Array<IconDefinitionOrPack>;
-	debug?: boolean;
-	debugLevel?: LogLevel;
+    icons?: Array<IconDefinitionOrPack>;
+    debug?: boolean;
+    debugLevel?: LogLevel;
 };
 
 const createUI = (theme: Theme<GlobalVariables>): Plugin => {
-	theme = theme || ThemeNormal;
-	return {
-		install(app: App, options?: OwlOptions) {
-			app.use(setupI18n());
-			forEach(components, (component) => {
-				app.component(component.name, component);
-			});
-			app.directive('tooltip', tooltip);
+    theme = theme || ThemeNormal;
+    return {
+        install(app: App, options?: OwlOptions) {
+            app.use(setupI18n());
+            forEach(components, (component) => {
+                app.component(component.name, component);
+            });
+            app.directive('tooltip', tooltip);
 
-			if (options?.icons) {
-				addIcons(...options.icons);
-			}
+            if (options?.icons) {
+                addIcons(...options.icons);
+            }
 
-			configure({
-				debug: options?.debug,
-				level: options?.debugLevel
-			});
-			app.provide(GlobalThemeKey, theme);
-			theme.mount();
+            configure({
+                debug: options?.debug,
+                level: options?.debugLevel
+            });
+            app.provide(GlobalThemeKey, theme);
+            theme.mount();
 
-			// nextTick(() => {
-			// 	const modelsWrap = document.createElement('div');
-			// 	modelsWrap.id = 'models';
-			// 	document.body.appendChild(modelsWrap);
-			// });
-		}
-	};
+            // nextTick(() => {
+            // 	const modelsWrap = document.createElement('div');
+            // 	modelsWrap.id = 'models';
+            // 	document.body.appendChild(modelsWrap);
+            // });
+        }
+    };
 };
 
 export * from './components';

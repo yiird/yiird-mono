@@ -21,7 +21,8 @@
     "release:handler": "lerna version --no-private --conventional-graduate=@yiird/handler --create-release github && lerna publish from-git",
     "pre-release:elements": "lerna version --no-private --conventional-prerelease=@yiird/elements --create-release github && lerna publish from-git",
     "release:elements": "lerna version --no-private --conventional-graduate=@yiird/elements --create-release github && lerna publish from-git",
-    "lint": "lerna run lint -- --fix"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore --ignore-pattern **/public",
+		"format": "prettier --write ./packages/**/src"
   },
   "dependencies": {
     "lodash-es": "^4.17.21"

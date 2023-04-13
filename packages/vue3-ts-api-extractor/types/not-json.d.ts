@@ -1,3 +1,3 @@
 declare module 'not-json' {
-	function parse(str: string): any;
+    function parse(str: string): any;
 }

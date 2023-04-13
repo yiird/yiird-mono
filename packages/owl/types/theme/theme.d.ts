@@ -76,15 +76,18 @@ export declare class Theme<V extends Variables> {
      * @param vars 主题变量
      */
     constructor(componentType: string, vars?: V);
-    get originVars(): UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined; }>;
+    get originVars(): UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined }>;
     get vars(): UnwrapNestedRefs<object>;
     get namedVars(): Record<keyof V, string>;
     get varNames(): Record<string, string>;
     mount(dom?: Document | HTMLElement): void;
 }
 export declare const GlobalThemeKey: InjectionKey<Theme<GlobalVariables>>;
-export declare const useTheme: <V extends Variables>(componentType: string, vars?: V | undefined) => {
-    originVars: UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined; }>;
+export declare const useTheme: <V extends Variables>(
+    componentType: string,
+    vars?: V | undefined
+) => {
+    originVars: UnwrapNestedRefs<{ -readonly [key in keyof V]?: string | undefined }>;
     vars: UnwrapNestedRefs<Record<string, string | undefined>>;
     varNames: Record<string, string>;
 };

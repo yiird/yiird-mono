@@ -11,7 +11,7 @@ export declare const LayoutProps: {
 export declare const HeaderProps: {
     readonly height: {
         readonly type: PropType<string>;
-        readonly default: "5rem";
+        readonly default: '5rem';
     };
     readonly id: {
         type: StringConstructor;
@@ -24,7 +24,7 @@ export declare const HeaderProps: {
 export declare const FooterProps: {
     readonly height: {
         readonly type: PropType<string>;
-        readonly default: "5rem";
+        readonly default: '5rem';
     };
     readonly id: {
         type: StringConstructor;
@@ -49,7 +49,7 @@ export declare const SiderProps: {
      */
     readonly width: {
         readonly type: PropType<string>;
-        readonly default: "10rem";
+        readonly default: '10rem';
     };
     readonly id: {
         type: StringConstructor;

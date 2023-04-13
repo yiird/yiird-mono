@@ -24,23 +24,23 @@ import zh from './messages/zh.json';
 // };
 
 export default function setupI18n(options = { locale: 'zh', fallbackLocale: 'en' }) {
-	const i18n = createI18n({
-		messages: {
-			zh,
-			en
-		},
-		legacy: false,
-		pluralRules: {
-			zh: (choice) => choice
-		},
-		...options
-	});
-	document?.querySelector('html')?.setAttribute('lang', options.locale);
-	return i18n;
+    const i18n = createI18n({
+        messages: {
+            zh,
+            en
+        },
+        legacy: false,
+        pluralRules: {
+            zh: (choice) => choice
+        },
+        ...options
+    });
+    document?.querySelector('html')?.setAttribute('lang', options.locale);
+    return i18n;
 }
 
 export function addI18nMessages(i18n: I18n, messages: Record<Locale, LocaleMessageDictionary<VueMessageType>>) {
-	forEach(messages, (message, locale) => {
-		i18n.global.mergeLocaleMessage(locale, message);
-	});
+    forEach(messages, (message, locale) => {
+        i18n.global.mergeLocaleMessage(locale, message);
+    });
 }

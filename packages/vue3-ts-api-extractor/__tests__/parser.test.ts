@@ -56,29 +56,29 @@ const sfc = `
 `;
 
 describe('Test Parser', () => {
-	test('TsxParser.parseDeclarations', () => {
-		const scriptFile = new ScriptFile('x.ts', script, ScriptKind.JSX);
-		const context = new Context();
-		const parser = new TsxParser(scriptFile, context);
-		const scriptStructure = parser.parse();
-		expect(scriptStructure.filename).toBe('x.ts');
-		expect(scriptStructure.declarations.size).toBe(2);
-		expect(scriptStructure.declarations.get('method')?.localDeclarations.get('b')).not.toBeUndefined();
-	});
+    test('TsxParser.parseDeclarations', () => {
+        const scriptFile = new ScriptFile('x.ts', script, ScriptKind.JSX);
+        const context = new Context();
+        const parser = new TsxParser(scriptFile, context);
+        const scriptStructure = parser.parse();
+        expect(scriptStructure.filename).toBe('x.ts');
+        expect(scriptStructure.declarations.size).toBe(2);
+        expect(scriptStructure.declarations.get('method')?.localDeclarations.get('b')).not.toBeUndefined();
+    });
 
-	test('TsxParser.parseEntries', () => {
-		const scriptFile = new ScriptFile('x.ts', script2, ScriptKind.JSX);
-		const context = new Context();
-		const parser = new TsxParser(scriptFile, context);
-		const scriptStructure = parser.parse();
-		expect(scriptStructure.entries.size).toBe(9);
-	});
+    test('TsxParser.parseEntries', () => {
+        const scriptFile = new ScriptFile('x.ts', script2, ScriptKind.JSX);
+        const context = new Context();
+        const parser = new TsxParser(scriptFile, context);
+        const scriptStructure = parser.parse();
+        expect(scriptStructure.entries.size).toBe(9);
+    });
 
-	test('TemplateSlotParser.parseSlotNodes', () => {
-		const sfcFile = new SfcFile('x.ts', sfc);
-		const context = new Context();
-		const parser = new TemplateSlotParser(sfcFile, context);
-		const sfcStructure = parser.parse();
-		expect(sfcStructure.slotNodes.length).toBe(2);
-	});
+    test('TemplateSlotParser.parseSlotNodes', () => {
+        const sfcFile = new SfcFile('x.ts', sfc);
+        const context = new Context();
+        const parser = new TemplateSlotParser(sfcFile, context);
+        const sfcStructure = parser.parse();
+        expect(sfcStructure.slotNodes.length).toBe(2);
+    });
 });

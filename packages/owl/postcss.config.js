@@ -1,8 +1,8 @@
 module.exports = {
-	plugins: {
-		autoprefixer: {
-			cascade: true
-		},
-		'postcss-rem': {}
-	}
+    plugins: {
+        autoprefixer: {
+            cascade: true
+        },
+        'postcss-rem': {}
+    }
 };

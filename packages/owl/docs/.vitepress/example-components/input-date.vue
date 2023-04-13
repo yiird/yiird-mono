@@ -1,15 +1,13 @@
 <template>
-	<div class="demo-wrap">
-		<o-input
-			type="date"
-			placeholder="请输入">
-		</o-input>
-	</div>
+    <div class="demo-wrap">
+        <o-input
+            type="date"
+            placeholder="请输入">
+        </o-input>
+    </div>
 </template>
 
-<script
-	lang="ts"
-	setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 
 const data = ref();
@@ -19,10 +17,8 @@ const data = ref();
 // });
 </script>
 
-<style
-	lang="scss"
-	scoped>
+<style lang="scss" scoped>
 .demo-wrap {
-	padding: 20px;
+    padding: 20px;
 }
 </style>

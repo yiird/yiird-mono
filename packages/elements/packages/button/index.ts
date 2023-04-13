@@ -5,7 +5,7 @@ export * from './logic';
 export { Button };
 export type { YEOptions };
 export default {
-	install(app: App, optinos: YEOptions) {
-		app.component(capitalize(`${optinos.prefix}Button`), Button);
-	}
+    install(app: App, optinos: YEOptions) {
+        app.component(capitalize(`${optinos.prefix}Button`), Button);
+    }
 } as Plugin;

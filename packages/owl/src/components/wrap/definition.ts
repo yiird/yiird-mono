@@ -1,7 +1,7 @@
 import { BaseProps } from '../../common/prefab';
 
 export const PopperWrapProps = {
-	...BaseProps
+    ...BaseProps
 } as const;
 
 export {};

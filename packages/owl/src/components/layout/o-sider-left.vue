@@ -1,12 +1,12 @@
 <template>
-	<div
-		v-show="display__"
-		v-if="refresh__"
-		:id="id__"
-		:class="block"
-		:style="{ ...theme.vars }">
-		<slot></slot>
-	</div>
+    <div
+        v-show="display__"
+        v-if="refresh__"
+        :id="id__"
+        :class="block"
+        :style="{ ...theme.vars }">
+        <slot></slot>
+    </div>
 </template>
 
 <script lang="ts">
@@ -14,44 +14,44 @@ import { computed, defineComponent, inject, onScopeDispose, watchEffect } from '
 import { usePrefab } from '../../common/prefab';
 import { MainPositionKey, SiderProps, type SiderVariables } from './definition';
 export default defineComponent({
-	name: 'OSiderLeft',
-	props: SiderProps,
-	setup(props) {
-		const prefab = usePrefab<SiderVariables>(props);
-		const { cType__, theme, bem } = prefab;
+    name: 'OSiderLeft',
+    props: SiderProps,
+    setup(props) {
+        const prefab = usePrefab<SiderVariables>(props);
+        const { cType__, theme, bem } = prefab;
 
-		const mainPosition = inject(MainPositionKey);
-		if (mainPosition && mainPosition.existSider === cType__) {
-			throw Error('不能在同一侧，放置两个Sider组件');
-		}
-		const block = bem.block;
+        const mainPosition = inject(MainPositionKey);
+        if (mainPosition && mainPosition.existSider === cType__) {
+            throw Error('不能在同一侧，放置两个Sider组件');
+        }
+        const block = bem.block;
 
-		const obtainWidth = computed(() => {
-			return props.width;
-		});
+        const obtainWidth = computed(() => {
+            return props.width;
+        });
 
-		watchEffect(() => {
-			if (mainPosition) {
-				mainPosition.left = obtainWidth.value;
-			}
+        watchEffect(() => {
+            if (mainPosition) {
+                mainPosition.left = obtainWidth.value;
+            }
 
-			theme.originVars.width = obtainWidth.value;
-			theme.originVars.top = mainPosition?.top || '0';
-			theme.originVars.bottom = mainPosition?.bottom || '0';
-		});
+            theme.originVars.width = obtainWidth.value;
+            theme.originVars.top = mainPosition?.top || '0';
+            theme.originVars.bottom = mainPosition?.bottom || '0';
+        });
 
-		onScopeDispose(() => {
-			if (mainPosition) {
-				mainPosition.left = undefined;
-			}
-		});
+        onScopeDispose(() => {
+            if (mainPosition) {
+                mainPosition.left = undefined;
+            }
+        });
 
-		return {
-			...prefab,
-			theme,
-			block
-		};
-	}
+        return {
+            ...prefab,
+            theme,
+            block
+        };
+    }
 });
 </script>
 

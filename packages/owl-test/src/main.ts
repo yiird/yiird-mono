@@ -4,7 +4,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 
 const options: YEOptions = {
-	prefix: 'y'
+    prefix: 'y'
 };
 
 createApp(App).use(YE, options).mount('#app');

@@ -1,8 +1,19 @@
 import type { BemClasses } from '../../common/bem';
 import type { Theme } from '../../theme';
 import type { IconDefinition, IconName } from '@fortawesome/fontawesome-common-types';
-import type { DefineComponent, PropType, Ref, WritableComputedRef, ComputedRef, ComponentOptionsMixin, VNodeProps, AllowedComponentProps, ComponentCustomProps, ExtractPropTypes } from 'vue';
-import type { InputSize, InputIcon, InputBemKeys,  InputVariables } from './definition';
+import type {
+    DefineComponent,
+    PropType,
+    Ref,
+    WritableComputedRef,
+    ComputedRef,
+    ComponentOptionsMixin,
+    VNodeProps,
+    AllowedComponentProps,
+    ComponentCustomProps,
+    ExtractPropTypes
+} from 'vue';
+import type { InputSize, InputIcon, InputBemKeys, InputVariables } from './definition';
 /**
  * :::warning 功能描述
  * 此组件为文本域组件，[查看样例](/examples/text)。
@@ -36,167 +47,182 @@ import type { InputSize, InputIcon, InputBemKeys,  InputVariables } from './defi
  *
  * `--o-input-suffix-bg-color` 后缀背景色
  */
-declare const _sfc_main: DefineComponent<{
-    readonly type: {
-        readonly type: PropType<"date" | "text" | "password" | "time" | "datetime">;
-        readonly default: "text";
-    };
-    readonly size: {
-        readonly type: PropType<InputSize>;
-        readonly default: "md";
-    };
-    readonly placeholder: {
-        readonly type: PropType<string>;
-    };
-    readonly prefix: {
-        readonly type: PropType<IconDefinition | IconName | InputIcon>;
-    };
-    readonly suffix: {
-        readonly type: PropType<IconDefinition | IconName | InputIcon>;
-    };
-    readonly prefixText: {
-        readonly type: PropType<string>;
-    };
-    readonly suffixText: {
-        readonly type: PropType<string>;
-    };
-    readonly bind: {
-        readonly type: PropType<"prefix" | "all" | "suffix">;
-    };
-    readonly radius: {
-        readonly type: PropType<number | boolean>;
-        readonly default: true;
-    };
-    readonly loading: {
-        readonly type: PropType<boolean>;
-        readonly default: false;
-    };
-    readonly disabled: {
-        readonly type: PropType<boolean>;
-        readonly default: false;
-    };
-    readonly readonly: {
-        readonly type: PropType<boolean>;
-        readonly default: false;
-    };
-    readonly modelValue: {
-        readonly type: PropType<string>;
-    };
-    readonly id: {
-        type: StringConstructor;
-    };
-    readonly display: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-}, {
-    theme: Theme<InputVariables>;
-    block: Ref<string[]>;
-    el_prefix: Ref<string>;
-    el_suffix: Ref<string>;
-    el_input: Ref<string>;
-    el_password: Ref<string>;
-    el_remove: Ref<string>;
-    el_loading: Ref<string>;
-    value: Ref<any>;
-    obtainValue: WritableComputedRef<unknown>;
-    obtainPlaceholder: ComputedRef<string | undefined>;
-    obtainHasPrefix: ComputedRef<string | true | IconDefinition | InputIcon | undefined>;
-    obtainHasSuffix: ComputedRef<string | boolean | IconDefinition | InputIcon | undefined>;
-    obtainPrefixIcon: ComputedRef<InputIcon | undefined>;
-    obtainSuffixIcon: ComputedRef<InputIcon | undefined>;
-    obtainPrefixText: ComputedRef<string | undefined>;
-    obtainSuffixText: ComputedRef<string | undefined>;
-    obtainPasswordEye: ComputedRef<"eye" | "eye-slash">;
-    obtainType: ComputedRef<"text" | "password">;
-    obtainLoading: ComputedRef<boolean>;
-    obtainDisabled: ComputedRef<boolean>;
-    obtainReadonly: ComputedRef<boolean>;
-    input: Ref<HTMLElement | undefined>;
-    popper: Ref<HTMLElement | undefined>;
-    component: Ref<HTMLElement | undefined>;
-    showPopper: Ref<boolean>;
-    obtainHasPopper: ComputedRef<boolean>;
-    onBlur: (e: FocusEvent) => void;
-    onFocus: (e: FocusEvent) => void;
-    onPrefixIconClick: (e: PointerEvent) => void;
-    onSuffixIconClick: (e: PointerEvent) => void;
-    onPasswordEyeClick: () => void;
-    onRemoveClick: () => void;
-    onSelectedDay: () => void;
-    onEnterPress: (e: KeyboardEvent) => void;
-    id__: string;
-    cType__: string;
-    display__: Ref<boolean>;
-    refresh__: Ref<boolean>;
-    bem: BemClasses<InputBemKeys>;
-    domRefresh: () => void;
-}, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, ("update:modelValue" | "blur" | "focus" | "click-suffix-icon" | "click-prefix-icon")[], "update:modelValue" | "blur" | "focus" | "click-suffix-icon" | "click-prefix-icon", VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
-    readonly type: {
-        readonly type: PropType<"date" | "text" | "password" | "time" | "datetime">;
-        readonly default: "text";
-    };
-    readonly size: {
-        readonly type: PropType<InputSize>;
-        readonly default: "md";
-    };
-    readonly placeholder: {
-        readonly type: PropType<string>;
-    };
-    readonly prefix: {
-        readonly type: PropType<IconDefinition | IconName | InputIcon>;
-    };
-    readonly suffix: {
-        readonly type: PropType<IconDefinition | IconName | InputIcon>;
-    };
-    readonly prefixText: {
-        readonly type: PropType<string>;
-    };
-    readonly suffixText: {
-        readonly type: PropType<string>;
-    };
-    readonly bind: {
-        readonly type: PropType<"prefix" | "all" | "suffix">;
-    };
-    readonly radius: {
-        readonly type: PropType<number | boolean>;
-        readonly default: true;
-    };
-    readonly loading: {
-        readonly type: PropType<boolean>;
-        readonly default: false;
-    };
-    readonly disabled: {
-        readonly type: PropType<boolean>;
-        readonly default: false;
-    };
-    readonly readonly: {
-        readonly type: PropType<boolean>;
-        readonly default: false;
-    };
-    readonly modelValue: {
-        readonly type: PropType<string>;
-    };
-    readonly id: {
-        type: StringConstructor;
-    };
-    readonly display: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-}>> & {
-    "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
-    onBlur?: ((...args: any[]) => any) | undefined;
-    onFocus?: ((...args: any[]) => any) | undefined;
-    "onClick-suffix-icon"?: ((...args: any[]) => any) | undefined;
-    "onClick-prefix-icon"?: ((...args: any[]) => any) | undefined;
-}, {
-    readonly type: "date" | "text" | "password" | "time" | "datetime";
-    readonly size: InputSize;
-    readonly disabled: boolean;
-    readonly display: boolean;
-    readonly radius: number | boolean;
-    readonly loading: boolean;
-    readonly readonly: boolean;
-}>;
+declare const _sfc_main: DefineComponent<
+    {
+        readonly type: {
+            readonly type: PropType<'date' | 'text' | 'password' | 'time' | 'datetime'>;
+            readonly default: 'text';
+        };
+        readonly size: {
+            readonly type: PropType<InputSize>;
+            readonly default: 'md';
+        };
+        readonly placeholder: {
+            readonly type: PropType<string>;
+        };
+        readonly prefix: {
+            readonly type: PropType<IconDefinition | IconName | InputIcon>;
+        };
+        readonly suffix: {
+            readonly type: PropType<IconDefinition | IconName | InputIcon>;
+        };
+        readonly prefixText: {
+            readonly type: PropType<string>;
+        };
+        readonly suffixText: {
+            readonly type: PropType<string>;
+        };
+        readonly bind: {
+            readonly type: PropType<'prefix' | 'all' | 'suffix'>;
+        };
+        readonly radius: {
+            readonly type: PropType<number | boolean>;
+            readonly default: true;
+        };
+        readonly loading: {
+            readonly type: PropType<boolean>;
+            readonly default: false;
+        };
+        readonly disabled: {
+            readonly type: PropType<boolean>;
+            readonly default: false;
+        };
+        readonly readonly: {
+            readonly type: PropType<boolean>;
+            readonly default: false;
+        };
+        readonly modelValue: {
+            readonly type: PropType<string>;
+        };
+        readonly id: {
+            type: StringConstructor;
+        };
+        readonly display: {
+            type: BooleanConstructor;
+            default: boolean;
+        };
+    },
+    {
+        theme: Theme<InputVariables>;
+        block: Ref<string[]>;
+        el_prefix: Ref<string>;
+        el_suffix: Ref<string>;
+        el_input: Ref<string>;
+        el_password: Ref<string>;
+        el_remove: Ref<string>;
+        el_loading: Ref<string>;
+        value: Ref<any>;
+        obtainValue: WritableComputedRef<unknown>;
+        obtainPlaceholder: ComputedRef<string | undefined>;
+        obtainHasPrefix: ComputedRef<string | true | IconDefinition | InputIcon | undefined>;
+        obtainHasSuffix: ComputedRef<string | boolean | IconDefinition | InputIcon | undefined>;
+        obtainPrefixIcon: ComputedRef<InputIcon | undefined>;
+        obtainSuffixIcon: ComputedRef<InputIcon | undefined>;
+        obtainPrefixText: ComputedRef<string | undefined>;
+        obtainSuffixText: ComputedRef<string | undefined>;
+        obtainPasswordEye: ComputedRef<'eye' | 'eye-slash'>;
+        obtainType: ComputedRef<'text' | 'password'>;
+        obtainLoading: ComputedRef<boolean>;
+        obtainDisabled: ComputedRef<boolean>;
+        obtainReadonly: ComputedRef<boolean>;
+        input: Ref<HTMLElement | undefined>;
+        popper: Ref<HTMLElement | undefined>;
+        component: Ref<HTMLElement | undefined>;
+        showPopper: Ref<boolean>;
+        obtainHasPopper: ComputedRef<boolean>;
+        onBlur: (e: FocusEvent) => void;
+        onFocus: (e: FocusEvent) => void;
+        onPrefixIconClick: (e: PointerEvent) => void;
+        onSuffixIconClick: (e: PointerEvent) => void;
+        onPasswordEyeClick: () => void;
+        onRemoveClick: () => void;
+        onSelectedDay: () => void;
+        onEnterPress: (e: KeyboardEvent) => void;
+        id__: string;
+        cType__: string;
+        display__: Ref<boolean>;
+        refresh__: Ref<boolean>;
+        bem: BemClasses<InputBemKeys>;
+        domRefresh: () => void;
+    },
+    unknown,
+    {},
+    {},
+    ComponentOptionsMixin,
+    ComponentOptionsMixin,
+    ('update:modelValue' | 'blur' | 'focus' | 'click-suffix-icon' | 'click-prefix-icon')[],
+    'update:modelValue' | 'blur' | 'focus' | 'click-suffix-icon' | 'click-prefix-icon',
+    VNodeProps & AllowedComponentProps & ComponentCustomProps,
+    Readonly<
+        ExtractPropTypes<{
+            readonly type: {
+                readonly type: PropType<'date' | 'text' | 'password' | 'time' | 'datetime'>;
+                readonly default: 'text';
+            };
+            readonly size: {
+                readonly type: PropType<InputSize>;
+                readonly default: 'md';
+            };
+            readonly placeholder: {
+                readonly type: PropType<string>;
+            };
+            readonly prefix: {
+                readonly type: PropType<IconDefinition | IconName | InputIcon>;
+            };
+            readonly suffix: {
+                readonly type: PropType<IconDefinition | IconName | InputIcon>;
+            };
+            readonly prefixText: {
+                readonly type: PropType<string>;
+            };
+            readonly suffixText: {
+                readonly type: PropType<string>;
+            };
+            readonly bind: {
+                readonly type: PropType<'prefix' | 'all' | 'suffix'>;
+            };
+            readonly radius: {
+                readonly type: PropType<number | boolean>;
+                readonly default: true;
+            };
+            readonly loading: {
+                readonly type: PropType<boolean>;
+                readonly default: false;
+            };
+            readonly disabled: {
+                readonly type: PropType<boolean>;
+                readonly default: false;
+            };
+            readonly readonly: {
+                readonly type: PropType<boolean>;
+                readonly default: false;
+            };
+            readonly modelValue: {
+                readonly type: PropType<string>;
+            };
+            readonly id: {
+                type: StringConstructor;
+            };
+            readonly display: {
+                type: BooleanConstructor;
+                default: boolean;
+            };
+        }>
+    > & {
+        'onUpdate:modelValue'?: ((...args: any[]) => any) | undefined;
+        onBlur?: ((...args: any[]) => any) | undefined;
+        onFocus?: ((...args: any[]) => any) | undefined;
+        'onClick-suffix-icon'?: ((...args: any[]) => any) | undefined;
+        'onClick-prefix-icon'?: ((...args: any[]) => any) | undefined;
+    },
+    {
+        readonly type: 'date' | 'text' | 'password' | 'time' | 'datetime';
+        readonly size: InputSize;
+        readonly disabled: boolean;
+        readonly display: boolean;
+        readonly radius: number | boolean;
+        readonly loading: boolean;
+        readonly readonly: boolean;
+    }
+>;
 export default _sfc_main;

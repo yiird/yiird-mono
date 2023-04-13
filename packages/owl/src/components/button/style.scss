@@ -9,148 +9,148 @@ $--button-normal-radus: 3px;
 $--button-size-arr: ('xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x');
 
 @mixin button-size() {
-	@each $modifier in $--button-size-arr {
-		$height: map-get($-global-size, $modifier);
-		@include m('size-' + $modifier) {
-			height: $height;
+    @each $modifier in $--button-size-arr {
+        $height: map-get($-global-size, $modifier);
+        @include m('size-' + $modifier) {
+            height: $height;
 
-			@if ($modifier == 'xxs' or $modifier == 'xs') {
-				padding: 0 0.2rem;
-			}
+            @if ($modifier == 'xxs' or $modifier == 'xs') {
+                padding: 0 0.2rem;
+            }
 
-			@if ($modifier != 'xxs' and $modifier != 'xs') {
-				padding: 0 calc(#{$height} / 2);
-			}
-			font-size: calc(#{$height} / 2);
-		}
-	}
+            @if ($modifier != 'xxs' and $modifier != 'xs') {
+                padding: 0 calc(#{$height} / 2);
+            }
+            font-size: calc(#{$height} / 2);
+        }
+    }
 }
 
 @mixin button-shape() {
-	@include m('shape-circle') {
-		@each $modifier in $--button-size-arr {
-			$height: map-get($-global-size, $modifier);
-			&.#{$B} {
-				@include m(#{'size-' + $modifier}) {
-					width: $height;
-					height: $height;
-					border-radius: 50%;
-					padding: 0;
-				}
-			}
-		}
-	}
+    @include m('shape-circle') {
+        @each $modifier in $--button-size-arr {
+            $height: map-get($-global-size, $modifier);
+            &.#{$B} {
+                @include m(#{'size-' + $modifier}) {
+                    width: $height;
+                    height: $height;
+                    border-radius: 50%;
+                    padding: 0;
+                }
+            }
+        }
+    }
 
-	@include m('shape-square') {
-		@each $modifier in $--button-size-arr {
-			$height: map-get($-global-size, $modifier);
-			&.#{$B} {
-				@include m(#{'size-' + $modifier}) {
-					width: $height;
-					height: $height;
-					border-radius: 5%;
-					padding: 0;
-				}
-			}
-		}
-	}
+    @include m('shape-square') {
+        @each $modifier in $--button-size-arr {
+            $height: map-get($-global-size, $modifier);
+            &.#{$B} {
+                @include m(#{'size-' + $modifier}) {
+                    width: $height;
+                    height: $height;
+                    border-radius: 5%;
+                    padding: 0;
+                }
+            }
+        }
+    }
 
-	@include m('shape-ellipse') {
-		@each $modifier in $--button-size-arr {
-			$height: map-get($-global-size, $modifier);
-			&.#{$B} {
-				@include m(#{'size-' + $modifier}) {
-					border-radius: calc($height / 2);
-				}
-			}
-		}
-	}
+    @include m('shape-ellipse') {
+        @each $modifier in $--button-size-arr {
+            $height: map-get($-global-size, $modifier);
+            &.#{$B} {
+                @include m(#{'size-' + $modifier}) {
+                    border-radius: calc($height / 2);
+                }
+            }
+        }
+    }
 
-	@include m('shape-rectangle') {
-		@each $modifier in $--button-size-arr {
-			$height: map-get($-global-size, $modifier);
-			&.#{$B} {
-				@include m(#{'size-' + $modifier}) {
-					border-radius: calc($height / 8);
-				}
-			}
-		}
-	}
+    @include m('shape-rectangle') {
+        @each $modifier in $--button-size-arr {
+            $height: map-get($-global-size, $modifier);
+            &.#{$B} {
+                @include m(#{'size-' + $modifier}) {
+                    border-radius: calc($height / 8);
+                }
+            }
+        }
+    }
 }
 
 @include b(button) {
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	outline: none;
-	user-select: none;
-	color: var(--o-button-text-color);
-	background-color: rgba($--button-color, 1);
-	opacity: 0.9;
-	font-weight: normal;
-	font-size: 1rem;
-	text-decoration: none;
-	text-align: center;
-	margin: 0;
-	appearance: none;
-	cursor: pointer;
-	box-sizing: border-box;
-	transition-property: all;
-	transition-duration: 0.3s;
-	border: 1px solid transparent;
-	white-space: nowrap;
-	vertical-align: middle;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    user-select: none;
+    color: var(--o-button-text-color);
+    background-color: rgba($--button-color, 1);
+    opacity: 0.9;
+    font-weight: normal;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    margin: 0;
+    appearance: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition-property: all;
+    transition-duration: 0.3s;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    vertical-align: middle;
 
-	&:hover,
-	&:focus {
-		outline: none;
-		opacity: 0.7;
-	}
+    &:hover,
+    &:focus {
+        outline: none;
+        opacity: 0.7;
+    }
 
-	&:active,
-	&.active,
-	&.is-active {
-		opacity: 1;
-		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-		text-decoration: none;
-		transition-duration: 0s;
-		box-shadow: inset 0 1px 10px rgba($-global-color-bg-black, 0.3);
-	}
+    &:active,
+    &.active,
+    &.is-active {
+        opacity: 1;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+        text-decoration: none;
+        transition-duration: 0s;
+        box-shadow: inset 0 1px 10px rgba($-global-color-bg-black, 0.3);
+    }
 
-	@include button-size();
+    @include button-size();
 
-	@include button-shape();
+    @include button-shape();
 
-	@include m(state-disabled) {
-		background: rgba($-global-color-border-secondary) !important;
-		border: 1px solid rgba($-global-color-border-primary) !important;
-		text-shadow: 0 1px 1px white !important;
-		color: rgba($-global-color-text-lightest);
-		cursor: not-allowed !important;
-		appearance: none !important;
-		-webkit-box-shadow: none !important;
-		box-shadow: none !important;
-		font-weight: bold !important;
-		opacity: 0.9 !important;
-	}
+    @include m(state-disabled) {
+        background: rgba($-global-color-border-secondary) !important;
+        border: 1px solid rgba($-global-color-border-primary) !important;
+        text-shadow: 0 1px 1px white !important;
+        color: rgba($-global-color-text-lightest);
+        cursor: not-allowed !important;
+        appearance: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        font-weight: bold !important;
+        opacity: 0.9 !important;
+    }
 
-	@include m(mode-light) {
-		background-color: rgba($--button-color, 0.2);
-		border: 1px solid rgba($--button-color, 1);
-		color: rgba($--button-color, 1);
-	}
+    @include m(mode-light) {
+        background-color: rgba($--button-color, 0.2);
+        border: 1px solid rgba($--button-color, 1);
+        color: rgba($--button-color, 1);
+    }
 
-	@include m(mode-empty) {
-		background-color: transparent;
-		border: 2px solid rgba($--button-color, 1);
-		color: rgba($--button-color, 1);
-	}
+    @include m(mode-empty) {
+        background-color: transparent;
+        border: 2px solid rgba($--button-color, 1);
+        color: rgba($--button-color, 1);
+    }
 
-	@include m(mode-link) {
-		background-color: transparent;
-		color: rgba($--button-color, 1);
-		text-decoration: underline;
-		text-underline-offset: 2px;
-		box-shadow: none !important;
-	}
+    @include m(mode-link) {
+        background-color: transparent;
+        color: rgba($--button-color, 1);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        box-shadow: none !important;
+    }
 }

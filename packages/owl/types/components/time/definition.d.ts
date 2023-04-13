@@ -2,7 +2,7 @@ import { PropType } from 'vue';
 export declare const TimeProps: {
     readonly format: {
         readonly type: PropType<string>;
-        readonly default: "yyyy-MM-dd";
+        readonly default: 'yyyy-MM-dd';
     };
     /**
      * @private

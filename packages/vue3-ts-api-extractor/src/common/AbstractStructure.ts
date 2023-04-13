@@ -1,11 +1,11 @@
 export abstract class AbstractStructure {
-	private _filename: string;
+    private _filename: string;
 
-	constructor(filename: string) {
-		this._filename = filename;
-	}
+    constructor(filename: string) {
+        this._filename = filename;
+    }
 
-	get filename() {
-		return this._filename;
-	}
+    get filename() {
+        return this._filename;
+    }
 }

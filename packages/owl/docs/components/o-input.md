@@ -36,8 +36,8 @@
 
 | 名称   | 参数 | 描述 |
 | :----- | :--- | :--- |
-| prefix |      | 前缀 |
-| suffix |      | 后缀 |
+| prefix |      |      |
+| suffix |      |      |
 
 ## Props
 
@@ -49,11 +49,11 @@
 | size        |                      String                     |      | `xxs` , `xs` , `sm` , `md` , `lg` , `xl` , `xxl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` | md     | 尺寸                                 |
 | placeholder |                      String                     |      |                                                                                                                         |        | 提示语                               |
 | prefix      | IconName,IconDefinition,[InputIcon](#inputicon) |      |                                                                                                                         |        | 文本域前缀图标                       |
-| suffix      |                      String                     |      |                                                                                                                         |        | 文本域后缀图标                       |
+| suffix      | IconName,IconDefinition,[InputIcon](#inputicon) |      |                                                                                                                         |        | 文本域后缀图标                       |
 | prefixText  |                      String                     |      |                                                                                                                         |        | 前缀文本                             |
 | suffixText  |                      String                     |      |                                                                                                                         |        | 后缀文本                             |
 | bind        |                      String                     |      | `all` , `prefix` , `suffix`                                                                                             |        | 输入的值，绑定前缀、后缀或两者的文本 |
-| radius      |                  boolean,number                 |      |                                                                                                                         | true   | 圆角                                 |
+| radius      |                [Boolean, Number]                |      |                                                                                                                         | true   | 圆角                                 |
 | loading     |                     Boolean                     |      |                                                                                                                         | false  | 加载状态                             |
 | disabled    |                     Boolean                     |      |                                                                                                                         | false  | 禁用状态                             |
 | readonly    |                     Boolean                     |      |                                                                                                                         | false  | 禁用状态                             |

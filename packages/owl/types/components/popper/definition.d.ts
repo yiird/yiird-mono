@@ -22,7 +22,19 @@ export interface PopperOffset {
      */
     mainAxis?: number;
 }
-export declare type PopperPlacement = 'top' | 'top-start' | 'top-end' | 'right' | 'right-start' | 'right-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end';
+export declare type PopperPlacement =
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end';
 export declare const PopperProps: {
     /**
      * 参照物
@@ -77,7 +89,7 @@ export declare const PopperProps: {
      * @values `edge` `*-start|*-end`靠近参照物边缘开始或结束, `fit` 自适应
      */
     arrowPlacement: {
-        type: PropType<"edge" | "fit">;
+        type: PropType<'edge' | 'fit'>;
         default: string;
     };
     shadow: {
@@ -118,7 +130,12 @@ export declare type PopperOptions = {
     hideOnOut?: Ref<boolean> | boolean;
     arrowPlacement?: Ref<string> | string;
 };
-export declare const usePopper: (referenceEl: HTMLElement | VirtualElement, popperDom: Ref<HTMLElement | undefined>, arrowDom: Ref<HTMLElement | undefined>, options?: PopperOptions | undefined) => {
+export declare const usePopper: (
+    referenceEl: HTMLElement | VirtualElement,
+    popperDom: Ref<HTMLElement | undefined>,
+    arrowDom: Ref<HTMLElement | undefined>,
+    options?: PopperOptions | undefined
+) => {
     popperTo: string;
 };
 export {};

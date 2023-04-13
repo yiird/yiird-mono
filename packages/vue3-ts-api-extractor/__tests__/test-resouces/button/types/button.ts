@@ -5,8 +5,8 @@ import { OComponentInstance, OPrefabExpose, OPrefabOptionsDefine, OPrefabPrivate
 export type OButtonExpose = OPrefabExpose;
 
 export type OButtonPrivate = OPrefabPrivate & {
-	rootRef: Ref<HTMLButtonElement | null>;
-	obtainText: Ref<string | undefined>;
+    rootRef: Ref<HTMLButtonElement | null>;
+    obtainText: Ref<string | undefined>;
 };
 
 export type OButtonPrefabDefine = OButtonExpose & OButtonPrivate;

@@ -21,20 +21,20 @@ props.bar // number | undefined
 `;
 
 const getSFCParseOptions = (filePath: string): SFCParseOptions => {
-	const sfcParseOptions: SFCParseOptions = {};
-	sfcParseOptions.filename = filePath;
-	sfcParseOptions.sourceMap = false;
-	return sfcParseOptions;
+    const sfcParseOptions: SFCParseOptions = {};
+    sfcParseOptions.filename = filePath;
+    sfcParseOptions.sourceMap = false;
+    return sfcParseOptions;
 };
 
 describe('Test Vue Sfc Parser', () => {
-	test('Test Tsquery Declarations Selector', () => {
-		const sfcParseOptions = getSFCParseOptions('./aa.vue');
-		const sfc = parse(source, sfcParseOptions);
-		const aa = compileScript(sfc.descriptor, {
-			id: 'aa',
-			reactivityTransform: false
-		});
-		console.log(aa.content);
-	});
+    test('Test Tsquery Declarations Selector', () => {
+        const sfcParseOptions = getSFCParseOptions('./aa.vue');
+        const sfc = parse(source, sfcParseOptions);
+        const aa = compileScript(sfc.descriptor, {
+            id: 'aa',
+            reactivityTransform: false
+        });
+        console.log(aa.content);
+    });
 });
