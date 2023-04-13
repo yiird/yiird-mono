@@ -9,6 +9,9 @@
 	"files": [
 		"dist"
 	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"exports": {
 		".": {
 			"import": "./dist/yiird-handler.mjs",
