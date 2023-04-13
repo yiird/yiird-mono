@@ -69,5 +69,6 @@
 		"rollup-plugin-dts": "^4.2.2",
 		"rollup-plugin-node-externals": "^4.0.0",
 		"ts-jest": "^28.0.5"
-	}
+	},
+	"gitHead": "95081373620cbaf11f2b93cb356e7d4489a48ecd"
 }

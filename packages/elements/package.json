@@ -5,6 +5,7 @@
 	"main": "dist/yiird-elements.umd.js",
 	"module": "dist/yiird-elements.mjs",
 	"types": "dist/index.d.ts",
+	"license": "ISC",
 	"files": [
 		"dist"
 	],
@@ -51,5 +52,6 @@
 		"vite-plugin-dts": "^2.2.0",
 		"vitest": "^0.29.1",
 		"vue-tsc": "^1.2.0"
-	}
+	},
+	"gitHead": "95081373620cbaf11f2b93cb356e7d4489a48ecd"
 }
