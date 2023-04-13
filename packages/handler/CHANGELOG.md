@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/yiird/yiird-mono/compare/@yiird/handler@0.1.1...@yiird/handler@0.1.2) (2023-04-13)
+
+**Note:** Version bump only for package @yiird/handler
+
 ## [0.1.1](https://github.com/yiird/yiird-mono/compare/@yiird/handler@0.1.0...@yiird/handler@0.1.1) (2023-04-13)
 
 ### Bug Fixes
