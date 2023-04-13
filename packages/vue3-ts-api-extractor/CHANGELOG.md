@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2-alpha.2](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.2-alpha.1...@yiird/vue3-ts-api-extractor@2.1.2-alpha.2) (2023-04-13)
+
+### Bug Fixes
+
+-   添加版权 ([2f0c8aa](https://github.com/yiird/yiird-mono/commit/2f0c8aa913321247dc2e83905a0a29a179edbb2e))
+
 ## [2.1.2-alpha.1](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.2-alpha.0...@yiird/vue3-ts-api-extractor@2.1.2-alpha.1) (2023-04-13)
 
 **Note:** Version bump only for package @yiird/vue3-ts-api-extractor

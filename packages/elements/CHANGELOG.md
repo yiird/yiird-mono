@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.1](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.0...@yiird/elements@0.1.0-alpha.1) (2023-04-13)
+
+### Bug Fixes
+
+-   添加版权 ([2f0c8aa](https://github.com/yiird/yiird-mono/commit/2f0c8aa913321247dc2e83905a0a29a179edbb2e))
+
 # 0.1.0-alpha.0 (2023-04-13)
 
 ### Features
