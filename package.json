@@ -10,6 +10,8 @@
     "build": "lerna run build",
     "commit:owl": "lerna exec --scope @yiird/owl -- git add . && cz",
     "commit:extractor": "lerna exec --scope @yiird/vue3-ts-api-extractor -- git add . && cz",
+    "commit:handler": "lerna exec --scope @yiird/handler -- git add . && cz",
+    "commit:elements": "lerna exec --scope @yiird/elements -- git add . && cz",
     "commit:all": "git add . && cz",
     "pre-release:owl": "lerna version --no-private --conventional-prerelease=@yiird/owl --create-release github && lerna publish from-git",
     "release:owl": "lerna version --no-private --conventional-graduate=@yiird/owl --create-release github && lerna publish from-git",
