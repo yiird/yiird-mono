@@ -12,6 +12,8 @@
 	"publishConfig": {
 		"access": "public"
 	},
+
+	
 	"exports": {
 		".": {
 			"import": "./dist/yiird-elements.mjs",
