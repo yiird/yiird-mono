@@ -1,6 +1,7 @@
-import { extractCommentsPlugin, sinnpetToCustomblockPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
+import { componentsResolver, extractCommentsPlugin, sinnpetToCustomblockPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
 import { isArray, kebabCase } from 'lodash';
 import { resolve } from 'path';
+import Components from 'unplugin-vue-components/vite';
 import { defineConfig, type MarkdownOptions } from 'vitepress';
 
 const markdownOptions: MarkdownOptions = {
@@ -36,10 +37,21 @@ export default defineConfig({
         esbuild: {
             treeShaking: true
         },
-        ssr: {
-            noExternal: ['lodash-es']
-        },
+
         plugins: [
+            Components({
+                globs: ['../../packages/*.{vue}'],
+                resolvers: [
+                    componentsResolver({
+                        prefix: 'y',
+                        debug: true,
+                        exportName: 'default',
+                        from: ({ partialName }) => {
+                            return resolve(__dirname, `../../packages/${kebabCase(partialName)}/template.vue`);
+                        }
+                    })
+                ]
+            }),
             extractCommentsPlugin({
                 root: resolve(__dirname, '../../'),
                 scanDirs: ['./packages'],
@@ -52,6 +64,7 @@ export default defineConfig({
                 }
             }),
             sinnpetToCustomblockPlugin({
+                include: /example-components.*(.vue)$/,
                 injectComponentPropertiesName: 'PRE_BLOCK'
             })
         ]

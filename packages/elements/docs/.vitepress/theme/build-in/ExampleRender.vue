@@ -25,7 +25,7 @@ const component = ref(null);
 
 onMounted(() => {
     if (component.value) {
-        prettierCode.value = ((component.value as ComponentPublicInstance).$.type as any)['PRE_BLOCK'];
+        prettierCode.value = (component.value as ComponentPublicInstance).$options.PRE_BLOCK;
     }
 });
 </script>

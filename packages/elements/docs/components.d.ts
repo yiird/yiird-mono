@@ -5,10 +5,10 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export { }
+export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    YIcon: typeof import('./packages/icon/template.vue')['default']
+    YIcon: typeof import('./../packages/icon/template.vue')['default']
   }
 }

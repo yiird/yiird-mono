@@ -1,3 +1,3 @@
-export * from './components-resolver';
-export * from './generate-md-document';
-export * from './vitepress-sinnpets-to-cutomblock';
+export * from './other/components-resolver';
+export * from './plugins/generate-md-document';
+export * from './plugins/vitepress-sinnpets-to-cutomblock';

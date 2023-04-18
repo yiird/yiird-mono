@@ -1,8 +1,9 @@
+import { isArray } from 'lodash';
 import { isAbsolute, relative, resolve } from 'node:path';
 import { Plugin, createFilter } from 'vite';
 import { createMarkdownRenderer, defineConfigWithTheme, type MarkdownOptions } from 'vitepress';
 
-type FilterPattern = ReadonlyArray<string | RegExp> | string | RegExp | null;
+type FilterPattern = Array<string | RegExp> | string | RegExp | null;
 
 type Options = {
     /**
@@ -23,11 +24,17 @@ type Options = {
 
 export const sinnpetToCustomblockPlugin = (rawOptions?: Options): Plugin => {
     const customBlockTagName = 'internal-component-pre-block';
-    const options = Object.assign({ include: [`${resolve('./docs')}/**/*.vue`, RegExp(`vue&type=${customBlockTagName}`)], docsRoot: resolve('./docs') }, rawOptions);
+    const options: Options = Object.assign({ include: [`${resolve('./docs')}/**/*.vue`], docsRoot: resolve('./docs') }, rawOptions);
+
+    if (!isArray(options.include)) {
+        options.include = [options.include!];
+    }
+    const blockFilterPattern = new RegExp(`vue&type=${customBlockTagName}`);
+    options.include.push(blockFilterPattern);
 
     const filter = createFilter(options.include, options.exclude);
 
-    if (!isAbsolute(options.docsRoot)) {
+    if (!isAbsolute(options.docsRoot!)) {
         options.docsRoot = resolve(__dirname, '../');
     }
 
@@ -40,12 +47,12 @@ export const sinnpetToCustomblockPlugin = (rawOptions?: Options): Plugin => {
             if (filter(id)) {
                 if (id.endsWith('.vue')) {
                     const md = await createMarkdownRenderer('.', options.markdown);
-                    const prettierCode = md.render(`<<< @/${relative(resolve(options.docsRoot, '../'), id)}`);
+                    const prettierCode = md.render(`<<< @/${relative(resolve(options.docsRoot!, '../'), id)}`);
                     code += `\n<${customBlockTagName}> \n${prettierCode}\n</${customBlockTagName}>;
             `;
                 } else {
                     return `export default Compont => {
-                        Compont.${options.injectComponentPropertiesName} = \`${code}\`
+                        Compont.${options.injectComponentPropertiesName} = \`${code}\`;
                     }`;
                 }
             }
