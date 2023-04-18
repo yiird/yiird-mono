@@ -3,7 +3,7 @@ import { AbstractMdPart } from './AbstractMdPart';
 
 export class MdTypePart extends AbstractMdPart<TypeComment> {
     toMd(comment: TypeComment, level: number): string {
-        const styles = this.options.styles;
+        const styles = this.options.styles!;
         let doc = '';
         const specilTypes: Set<TypeComment> = new Set(comment.getSpecialTypes());
         if (comment.name) {

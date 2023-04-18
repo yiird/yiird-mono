@@ -19,8 +19,8 @@ npm i -D @yiird/vue3-ts-api-extractor
 import { extractor } from '@yiird/vue3-ts-api-extractor'
 
 const options = {
+	root: '项目根路径【绝对路径】',
 	scanner: {
-		root: '扫描组件根目录【绝对路径】',
 		// scanDirs 跟路径下的子目录
 		scanDirs: ['test-resouces'],
 		extensions: ['.ts', '.vue'],
@@ -50,7 +50,6 @@ extractorobj.extractor(filename);
 ## 配置 `options`
 
 * ### `options.scanner` { Object }
-  * `root` { String } `root`是项目根路径的绝对路径
   * `scanDirs` { String[] } 相对`root`的源码文件目录，可以是多个。例如：以下目录结构，`root` 是指向 `project-dir` 的绝对路径，`scanDirs` 为相对于`project-dir`目录的路径, 例如: `scanDirs:['./resource','./resource2']`，当然也可以设置为：`sanDirs:['.']`，工具会递归扫描项目下的所有符合 `extensions` 中后缀的文件，并加载到缓存中，这样会扫描一部分与业务逻辑无关的文件。比如一些项目配置文件。
   
     ```

@@ -39,13 +39,10 @@
 	},
 	"scripts": {
 		"build": "rollup -c rollup.config.ts",
-		"test": "jest"
+		"test": "vitest"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.18.3",
-		"@phenomnomnominal/tsquery": "^4.2.0",
-		"@vue/compiler-core": "^3.2.31",
-		"@vue/compiler-sfc": "^3.2.31",
+		"@phenomnomnominal/tsquery": "^5.0.1",
 		"chokidar": "^3.5.3",
 		"glob": "^7.2.0",
 		"markdown-table": "^3.0.2",
@@ -53,6 +50,7 @@
 		"string-width": "^5.1.2"
 	},
 	"devDependencies": {
+		"vue": "^3.2.47",
 		"@babel/core": "^7.18.2",
 		"@babel/plugin-transform-runtime": "^7.18.2",
 		"@babel/preset-env": "^7.18.2",
@@ -62,13 +60,10 @@
 		"@rollup/plugin-node-resolve": "^13.3.0",
 		"@rollup/plugin-typescript": "^8.3.3",
 		"@types/glob": "^7.2.0",
-		"@types/jest": "^27.4.1",
-		"jest": "^28.1.1",
 		"rollup": "^2.75.6",
 		"rollup-plugin-delete": "^2.0.0",
 		"rollup-plugin-dts": "^4.2.2",
-		"rollup-plugin-node-externals": "^4.0.0",
-		"ts-jest": "^28.0.5"
+		"rollup-plugin-node-externals": "^4.0.0"
 	},
 	"gitHead": "8822903937c412ea8d67f98cb59400b6e31e1b9b"
 }

@@ -1,5 +1,5 @@
 // @yiird/elements 插件配置
-export type YEOptions = {
+export type ElementOptions = {
     prefix: string;
 };
 

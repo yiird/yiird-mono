@@ -38,7 +38,7 @@ export default defineConfig([
         input: './src/index.ts',
         output: {
             file: pkg.types,
-            format: 'es'
+            format: 'esm'
         },
         plugins: [
             externals({

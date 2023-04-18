@@ -3,11 +3,7 @@ import { Context } from './common/Context';
 import { SfcCommentParser } from './parser/comment/ts/SfcCommentParser';
 import { SfcStructure } from './parser/node/SfcStructure';
 import { Provider } from './transform/Provider';
-
-export type TransResult = {
-    sfc: SfcStructure;
-    value: unknown;
-};
+import { TransResult } from './types';
 
 export class Transform {
     private _context: Context;
@@ -41,6 +37,7 @@ export class Transform {
                 const comment = parser.parse(main);
                 const value = this._provider.to(comment);
                 rs.push({
+                    comment,
                     sfc,
                     value
                 });

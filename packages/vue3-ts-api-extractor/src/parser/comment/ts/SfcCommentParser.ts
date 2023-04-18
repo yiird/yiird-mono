@@ -3,18 +3,19 @@ import { AttributeNode, DirectiveNode, SimpleExpressionNode } from '@vue/compile
 import ts, { Identifier, MethodDeclaration, Node, ReturnStatement } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
+import { SfcFile } from '../../../common/SfcFile';
 import { ExportNode } from '../../node/ExportNode';
 import { SfcStructure } from '../../node/SfcStructure';
 import { TemplateSlotNode } from '../../node/TemplateSlotNode';
 import { AbstractCommentParser } from '../AbstractCommentParser';
+import { CommentParserFactory } from '../CommentParserFactory';
+import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 import { EventComment } from '../basic/EventComment';
 import { MethodComment } from '../basic/MethodComment';
 import { PropComment } from '../basic/PropComment';
 import { SfcComment } from '../basic/SfcComment';
 import { SlotComment } from '../basic/SlotComment';
-import { CommentParserFactory } from '../CommentParserFactory';
 import { PropertyComment } from '../node/PropertyComment';
-import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 
 const SpecialAttr = ['is', 'ref', 'key', 'name'];
 
@@ -31,6 +32,24 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
         const jsdoc = jsdocs[0];
 
         const comment = new SfcComment();
+
+        const scriptFile = <SfcFile>this.context.getScriptFile(this.structure.filename);
+        comment.additional = scriptFile.customBlocks
+            ?.filter((block) => block.type === 'docs')
+            .map((block) => {
+                const content = block.content.trim();
+                if (!comment.vitepress_frontmatter) {
+                    if (content.startsWith('---')) {
+                        const mached = content.match(/---\n(.*?)\n---/s);
+                        if (mached) {
+                            comment.vitepress_frontmatter = mached[0];
+                            return content.replace(mached[0], '\n');
+                        }
+                    }
+                }
+                return block.content;
+            });
+
         const methods = new Array<MethodComment>();
 
         if (ts.isCallExpression(sfcNode)) {

@@ -1,20 +1,25 @@
 import type { App, Plugin } from 'vue';
-import ButtonPlugin from './button';
+import * as components from './components';
 import { DEFAULT_PREFIX } from './constants';
-import IconPlugin from './icon';
-import type { YEOptions } from './types/global';
+import type { ElementOptions } from './types/global';
 
 const YE: Plugin = {
-    install(app: App, optinos: YEOptions) {
-        if (!optinos.prefix) {
-            optinos.prefix = DEFAULT_PREFIX;
+    install(app: App, optinos?: ElementOptions) {
+        if (!optinos) {
+            optinos = {
+                prefix: DEFAULT_PREFIX
+            };
         }
-        app.use(IconPlugin, optinos);
-        app.use(ButtonPlugin, optinos);
+
+        Object.values(components)
+            .filter((com) => !!com.install)
+            .forEach((plugin) => {
+                app.use(plugin as Plugin, optinos);
+            });
     }
 };
-export { Button } from './button';
-export { Icon } from './icon';
-export type { YEOptions };
+export * from './components';
+export type { ElementOptions };
 export { YE };
+
 export default YE;

@@ -1,5 +1,5 @@
-import { describe, test } from '@jest/globals';
-import { compileScript, parse, SFCParseOptions } from '@vue/compiler-sfc';
+import { describe, test } from 'vitest';
+import { SFCParseOptions, compileScript, parse } from 'vue/compiler-sfc';
 
 const source = `
 <template>
@@ -18,6 +18,15 @@ const props = defineProps({
 props.foo // string
 props.bar // number | undefined
 </script>
+
+
+<docs lang="md">
+---
+dd:aa
+---
+
+jianjajajaa
+</docs>
 `;
 
 const getSFCParseOptions = (filePath: string): SFCParseOptions => {

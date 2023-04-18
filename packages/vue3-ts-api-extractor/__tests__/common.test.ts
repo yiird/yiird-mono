@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
 import { ScriptKind } from 'typescript';
+import { describe, expect, test } from 'vitest';
 import { ScriptFile } from '../src/common/ScriptFile';
 import { SfcFile } from '../src/common/SfcFile';
 

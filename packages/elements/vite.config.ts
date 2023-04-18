@@ -2,11 +2,11 @@ import { fileURLToPath, URL } from 'node:url';
 
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { YEComponentResolver } from '@yiird/handler';
-import { capitalize, kebabCase } from 'lodash';
+import { componentsResolver, extractCommentsPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
+import { capitalize, isArray, kebabCase } from 'lodash';
 import { resolve } from 'node:path';
 import Components from 'unplugin-vue-components/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import dts from 'vite-plugin-dts';
 import { pkgExports } from './scripts/pkg-exports-reset';
 import type { EntryInfo } from './scripts/type';
@@ -64,7 +64,7 @@ function buildConfig(info: EntryInfo) {
             Components({
                 globs: ['packages/*.{vue}'],
                 resolvers: [
-                    YEComponentResolver({
+                    componentsResolver({
                         prefix: 'y',
                         debug: true,
                         exportName: 'default',
@@ -73,7 +73,26 @@ function buildConfig(info: EntryInfo) {
                         }
                     })
                 ]
-            })
+            }),
+            extractCommentsPlugin({
+                root: resolve(__dirname, './'),
+                scanDirs: ['./packages'],
+                outputDir: './docs/components',
+                filename({ outfilename, outDir, info }) {
+                    if (!isArray(info)) {
+                        const file = resolve(outDir, kebabCase(info.comment.name) + '.md');
+                        console.log(file);
+                        return file;
+                    }
+                    return outfilename;
+                }
+            }),
+            {
+                name: 'generate-entry-ts',
+                enforce: 'post',
+                apply: 'serve',
+                async transform(code: string, id: string) {}
+            } as Plugin
         ],
         resolve: {
             alias: {

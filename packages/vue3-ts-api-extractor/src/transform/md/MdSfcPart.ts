@@ -1,13 +1,12 @@
-import isArray from 'lodash-es/isArray';
-import isObject from 'lodash-es/isObject';
+import { isArray, isObject } from 'lodash-es';
 import notJSON from 'not-json';
 import { DefaultValue } from '../../parser/comment/basic/PropComment';
 import { SfcComment } from '../../parser/comment/basic/SfcComment';
 import { TypeComment } from '../../parser/comment/node/TypeComment';
 import { MdOptions } from '../../types';
 import { AbstractMdPart } from './AbstractMdPart';
-import { EventHeaders, PropHeaders, SlotHeaders } from './constanst';
 import { Data } from './Style';
+import { EventHeaders, PropHeaders, SlotHeaders } from './constanst';
 
 export class MdSfcPart extends AbstractMdPart<SfcComment> {
     private _typePart;
@@ -21,10 +20,21 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
         const events = comment.events;
         const props = comment.props;
         const methods = comment.methods;
-        const styles = this.options.styles;
+        const styles = this.options.styles!;
         let doc = '';
 
+        if (comment.vitepress_frontmatter) {
+            doc += comment.vitepress_frontmatter;
+            doc += styles.line();
+            doc += styles.line();
+        }
+
         doc += styles.h(level, comment.name || '');
+        doc += styles.line();
+        comment.additional?.forEach((block) => {
+            doc += block;
+            doc += styles.line();
+        });
         doc += styles.line();
         doc += styles.line();
         if (comment.author || comment.date) {

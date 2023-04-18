@@ -1,6 +1,6 @@
-import EventEmitter from 'events';
 import { writeFileSync } from 'fs';
-import { basename, extname, join } from 'path';
+import EventEmitter from 'node:events';
+import { basename, extname, isAbsolute, join, resolve } from 'path';
 import { Scanner } from './Scanner';
 import { Transform } from './Transform';
 import { MdProvider } from './transform/MdProvider';
@@ -9,41 +9,8 @@ import { ExtractorOptions } from './types';
 export * from './types';
 
 export const extractor = (options: ExtractorOptions) => {
-    // const scanner = new Scanner(options.scanner);
-    // scanner.scan();
-    // const context = scanner.getContext();
-
-    // let provider;
-    // if (options.output.type === 'markdown') {
-    // 	provider = new MdProvider(options.markdown);
-    // }
-    // if (provider) {
-    // 	const transform = new Transform(context, provider);
-    // 	const result = transform.execute();
-    // 	const allValue: string[] = [];
-    // 	result.forEach(({ value, sfc }) => {
-    // 		if (options.output.single) {
-    // 			allValue.push(value + '');
-    // 		} else {
-    // 			let outfilename = join(options.output.dir, basename(sfc.filename, extname(sfc.filename)) + '.md');
-    // 			outfilename = options.output.filename(outfilename);
-    // 			writeFileSync(outfilename, value + '', {
-    // 				encoding: 'utf-8',
-    // 				flag: 'w+'
-    // 			});
-    // 		}
-    // 	});
-
-    // 	if (allValue.length > 0 && options.output.filename) {
-    // 		let outfilename = join(options.output.dir, 'README.md');
-    // 		outfilename = options.output.filename(outfilename);
-
-    // 		writeFileSync(outfilename, allValue.join('\n\n'));
-    // 	}
-    // }
     const extractor = new Extractor(options);
-    extractor.extractor();
-    return extractor;
+    return extractor.extractor();
 };
 
 export class Extractor extends EventEmitter {
@@ -54,6 +21,15 @@ export class Extractor extends EventEmitter {
     constructor(options: ExtractorOptions) {
         super();
         this._options = options;
+
+        this._options.scanner.scanDirs.forEach((scandir, index, arr) => {
+            if (!isAbsolute(scandir)) arr[index] = resolve(this._options.root, scandir);
+        });
+
+        if (!isAbsolute(this._options.output.dir)) {
+            this._options.output.dir = resolve(this._options.root, this._options.output.dir);
+        }
+
         this._scanner = new Scanner(this._options.scanner);
         if (this._options.output.type === 'markdown') {
             this._provider = new MdProvider(this._options.markdown);
@@ -72,14 +48,16 @@ export class Extractor extends EventEmitter {
         if (filename) {
             this._scanner.scan(filename, true);
         }
-        const result = this._transform.execute(filename);
+        const results = this._transform.execute(filename);
         const allValue: string[] = [];
-        result.forEach(({ value, sfc }) => {
+
+        results.forEach((rs) => {
+            const { sfc, value } = rs;
             if (this._options.output.single) {
                 allValue.push(value + '');
             } else {
                 let outfilename = join(this._options.output.dir, basename(sfc.filename, extname(sfc.filename)) + '.md');
-                outfilename = this._options.output.filename(outfilename);
+                outfilename = this._options.output.filename({ outfilename, outDir: this._options.output.dir, info: rs });
                 writeFileSync(outfilename, value + '', {
                     encoding: 'utf-8',
                     flag: 'w+'
@@ -87,11 +65,12 @@ export class Extractor extends EventEmitter {
             }
         });
 
+        //将所有组件文档输出到单文件中
         if (allValue.length > 0 && this._options.output.filename) {
             let outfilename = join(this._options.output.dir, 'README.md');
-            outfilename = this._options.output.filename(outfilename);
-
+            outfilename = this._options.output.filename({ outfilename, outDir: this._options.output.dir, info: results });
             writeFileSync(outfilename, allValue.join('\n\n'));
         }
+        return this;
     }
 }

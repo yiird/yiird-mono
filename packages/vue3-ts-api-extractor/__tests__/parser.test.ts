@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
 import { ScriptKind } from 'typescript';
+import { describe, expect, test } from 'vitest';
 import { Context } from '../src/common/Context';
 import { ScriptFile } from '../src/common/ScriptFile';
 import { SfcFile } from '../src/common/SfcFile';
@@ -53,6 +53,14 @@ const sfc = `
 	props.foo // string
 	props.bar // number | undefined
 </script>
+
+<docs lang="md">
+---
+dd:aa
+---
+
+jianjajajaa
+</docs>
 `;
 
 describe('Test Parser', () => {

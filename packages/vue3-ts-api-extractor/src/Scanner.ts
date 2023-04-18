@@ -1,7 +1,8 @@
 import { watch } from 'chokidar';
-import EventEmitter from 'events';
-import { glob, IOptions } from 'glob';
-import { isAbsolute, join, resolve } from 'path';
+import { glob } from 'glob';
+import EventEmitter from 'node:events';
+import { lstatSync } from 'node:fs';
+import { isAbsolute, join } from 'path';
 import { Context } from './common/Context';
 import { ScriptFile } from './common/ScriptFile';
 import { SfcFile } from './common/SfcFile';
@@ -31,12 +32,12 @@ export class Scanner extends EventEmitter {
                 watchglobfiles.push('**/*+(' + options.extensions?.join('|') + ')');
             }
             const watcher = watch(watchglobfiles, {
-                cwd: options.root,
-                alwaysStat: true
+                alwaysStat: true,
+                ignoreInitial: true
             });
             watcher.on('all', (eventName, path, states) => {
                 if (states?.isFile()) {
-                    this.emit('filechange', resolve(options.root, path), eventName);
+                    this.emit('filechange', path, eventName);
                 }
             });
         }
@@ -99,17 +100,10 @@ export class Scanner extends EventEmitter {
     private _findAvailableFile(): Array<string> {
         const files: Array<string> = [];
         this._options.scanDirs.forEach((scanDir) => {
-            const globOptions: IOptions = {
-                ignore: this._options.ignore,
-                absolute: true
-            };
-            if (isAbsolute(scanDir)) {
-                globOptions.cwd = scanDir;
-                const _files = glob.sync('**/*+(' + this._options.extensions?.join('|') + ')');
-                files.push(..._files);
-            } else {
-                globOptions.cwd = join(this._options.root, scanDir);
-                const _files = glob.sync('**/*+(' + this._options.extensions?.join('|') + ')', globOptions);
+            if (lstatSync(scanDir).isFile()) {
+                console.error('扫描路径不是目录');
+            } else if (isAbsolute(scanDir)) {
+                const _files = glob.sync('**/*+(' + this._options.extensions?.join('|') + ')', { cwd: scanDir, absolute: true });
                 files.push(..._files);
             }
         });

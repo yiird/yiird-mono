@@ -1,4 +1,4 @@
-import { compileScript, parse, SFCParseOptions, SFCTemplateBlock } from '@vue/compiler-sfc';
+import { compileScript, parse, SFCBlock, SFCParseOptions, SFCTemplateBlock } from 'vue/compiler-sfc';
 import { ScriptFile } from './ScriptFile';
 import { Utils } from './Utils';
 
@@ -12,6 +12,7 @@ const getSFCParseOptions = (filePath: string): SFCParseOptions => {
 export class SfcFile extends ScriptFile {
     private _isSetup: boolean;
     private _template?: SFCTemplateBlock;
+    private _customBlocks?: SFCBlock[];
 
     constructor(filename: string, source: string) {
         const sfcParseOptions = getSFCParseOptions(filename);
@@ -44,6 +45,7 @@ export class SfcFile extends ScriptFile {
         if (template) {
             this._template = template;
         }
+        this._customBlocks = sfc.descriptor.customBlocks;
     }
 
     /**
@@ -52,6 +54,10 @@ export class SfcFile extends ScriptFile {
      */
     public get template(): SFCTemplateBlock | undefined {
         return this._template;
+    }
+
+    public get customBlocks(): SFCBlock[] | undefined {
+        return this._customBlocks;
     }
 
     private static _hash(input: string) {

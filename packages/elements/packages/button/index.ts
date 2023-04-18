@@ -1,11 +1,11 @@
 import { capitalize, type App, type Plugin } from 'vue';
-import type { YEOptions } from '../types/global';
+import type { ElementOptions } from '../types/global';
 import Button from './template.vue';
 export * from './logic';
 export { Button };
-export type { YEOptions };
+export type { ElementOptions };
 export default {
-    install(app: App, optinos: YEOptions) {
+    install(app: App, optinos: ElementOptions) {
         app.component(capitalize(`${optinos.prefix}Button`), Button);
     }
 } as Plugin;

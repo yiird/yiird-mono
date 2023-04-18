@@ -5,8 +5,10 @@ import { PropComment } from './PropComment';
 import { SlotComment } from './SlotComment';
 
 export class SfcComment extends BasicComment {
-    private _author?: string | undefined;
-    private _date?: string | undefined;
+    private _additional?: string[];
+    private _vitepress_frontmatter?: string;
+    private _author?: string;
+    private _date?: string;
 
     private _methods?: Array<MethodComment> | undefined;
 
@@ -15,6 +17,20 @@ export class SfcComment extends BasicComment {
     private _slots?: Array<SlotComment> | undefined;
 
     private _events?: Array<EventComment> | undefined;
+
+    public get additional(): string[] | undefined {
+        return this._additional;
+    }
+    public set additional(value: string[] | undefined) {
+        this._additional = value;
+    }
+
+    public get vitepress_frontmatter(): string | undefined {
+        return this._vitepress_frontmatter;
+    }
+    public set vitepress_frontmatter(value: string | undefined) {
+        this._vitepress_frontmatter = value;
+    }
 
     public get author(): string | undefined {
         return this._author;

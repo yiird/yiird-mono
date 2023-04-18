@@ -8,12 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@yiird/elements": "^0.0.0",
     "@yiird/owl": "^0.1.0-alpha.1",
     "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@yiird/handler": "^0.0.0",
     "@types/jsdom": "^21.1.0",
     "@types/node": "^18.14.2",
     "@vitejs/plugin-vue": "^4.0.0",

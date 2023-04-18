@@ -95,3 +95,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../../themes/styles/_button.scss';
 </style>
+
+<docs>
+---
+dd:aa
+---
+
+jianjajajaa
+</docs>

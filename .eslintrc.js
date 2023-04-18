@@ -34,7 +34,8 @@ module.exports = {
                 alignAttributesVertically: true,
                 ignores: []
             }
-        ]
+        ],
+        'vue/multi-word-component-names': 'off'
     },
     overrides: [
         {

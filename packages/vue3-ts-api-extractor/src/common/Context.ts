@@ -13,7 +13,6 @@ export class Context {
     private _structures = new Map<string, ScriptStructure>();
 
     private _scannerOptions: ScannerOptions = {
-        root: '',
         scanDirs: [],
         extensions: ['.vue', '.ts'],
         externals: ['vue', '@vue/*']

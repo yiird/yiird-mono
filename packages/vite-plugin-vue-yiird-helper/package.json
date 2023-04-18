@@ -1,0 +1,48 @@
+{
+    "name": "@yiird/vite-plugin-vue-yiird-helper",
+    "version": "0.1.5",
+    "private": false,
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "license": "ISC",
+    "files": [
+        "dist"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "run-p type-check build-only",
+        "preview": "vite preview",
+        "build-only": "vite build",
+        "type-check": "vue-tsc --noEmit",
+        "test": "vitest"
+    },
+    "peerDependencies": {
+        "unplugin-vue-components": "*",
+        "@yiird/vue3-ts-api-extractor":"*",
+        "vue": "*"
+    },
+    "devDependencies": {
+        "@types/debug": "^4.1.7",
+        "@types/hash-sum": "^1.0.0",
+        "@types/node": "^18.14.2",
+        "npm-run-all": "^4.1.5",
+        "vite": "^4.1.4",
+        "vite-plugin-dts": "^2.2.0",
+        "unplugin-vue-components": "^0.24.1",
+        "@yiird/vue3-ts-api-extractor": "^2.1.2-alpha.6",
+        "vue": "^3.2.47"
+    },
+    "gitHead": "8822903937c412ea8d67f98cb59400b6e31e1b9b",
+    "dependencies": {
+    }
+}

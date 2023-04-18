@@ -1,10 +1,5 @@
-import { UnwrapNestedRefs } from 'vue';
-import difference from 'lodash-es/difference';
-import forEach from 'lodash-es/forEach';
-import isArray from 'lodash-es/isArray';
-import isObject from 'lodash-es/isObject';
-import isString from 'lodash-es/isString';
-import { getCurrentInstance, isRef, reactive, ref, Ref, watch } from 'vue';
+import { difference, forEach, isArray, isObject, isString } from 'lodash-es';
+import { Ref, UnwrapNestedRefs, getCurrentInstance, isRef, reactive, ref, watch } from 'vue';
 import { OComponentInstance } from './base-define';
 
 type ClsType = undefined | string | Array<string | Ref> | Record<string, boolean> | Ref;

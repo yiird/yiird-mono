@@ -1,6 +1,6 @@
-import { describe, expect, test } from '@jest/globals';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { ScriptKind, SyntaxKind } from 'typescript';
+import { describe, expect, test } from 'vitest';
 
 const script = `
 abstract class A{}
