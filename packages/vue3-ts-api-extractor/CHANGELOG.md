@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.2-alpha.6...@yiird/vue3-ts-api-extractor@2.2.0-alpha.0) (2023-04-18)
+
+### Features
+
+-   **all:** 构建文档自动生成能力 ([ff19873](https://github.com/yiird/yiird-mono/commit/ff19873ace28e6568be3708615a091e713b6f371))
+
 ## [2.1.2-alpha.6](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.2-alpha.5...@yiird/vue3-ts-api-extractor@2.1.2-alpha.6) (2023-04-13)
 
 **Note:** Version bump only for package @yiird/vue3-ts-api-extractor

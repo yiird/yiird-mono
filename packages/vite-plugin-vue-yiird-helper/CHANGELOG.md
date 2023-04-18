@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.2.0 (2023-04-18)
+
+### Features
+
+-   **all:** 构建文档自动生成能力 ([ff19873](https://github.com/yiird/yiird-mono/commit/ff19873ace28e6568be3708615a091e713b6f371))
+
 ## [0.1.5](https://github.com/yiird/yiird-mono/compare/@yiird/handler@0.1.4...@yiird/handler@0.1.5) (2023-04-13)
 
 ### Bug Fixes

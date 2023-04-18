@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.7](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.6...@yiird/elements@0.1.0-alpha.7) (2023-04-18)
+
+### Features
+
+-   **all:** 构建文档自动生成能力 ([ff19873](https://github.com/yiird/yiird-mono/commit/ff19873ace28e6568be3708615a091e713b6f371))
+
 # [0.1.0-alpha.6](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.5...@yiird/elements@0.1.0-alpha.6) (2023-04-13)
 
 ### Bug Fixes
