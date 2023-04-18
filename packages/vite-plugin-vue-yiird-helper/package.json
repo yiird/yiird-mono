@@ -1,6 +1,6 @@
 {
     "name": "@yiird/vite-plugin-vue-yiird-helper",
-    "version": "0.2.0",
+    "version": "0.2.1-alpha.0",
     "private": false,
     "main": "dist/index.js",
     "module": "dist/index.mjs",

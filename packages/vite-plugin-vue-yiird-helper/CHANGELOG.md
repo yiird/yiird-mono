@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vite-plugin-vue-yiird-helper@0.2.0...@yiird/vite-plugin-vue-yiird-helper@0.2.1-alpha.0) (2023-04-18)
+
+### Bug Fixes
+
+-   **helper:** 修改默认扫描路径 ([55bfd37](https://github.com/yiird/yiird-mono/commit/55bfd37d1b31b92e79b9c1cf0883eb45909ba2f4))
+
 # 0.2.0 (2023-04-18)
 
 ### Features

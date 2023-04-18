@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.8](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.7...@yiird/elements@0.1.0-alpha.8) (2023-04-18)
+
+### Bug Fixes
+
+-   **helper:** 修改默认扫描路径 ([55bfd37](https://github.com/yiird/yiird-mono/commit/55bfd37d1b31b92e79b9c1cf0883eb45909ba2f4))
+
 # [0.1.0-alpha.7](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.6...@yiird/elements@0.1.0-alpha.7) (2023-04-18)
 
 ### Features
