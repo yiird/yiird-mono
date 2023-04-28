@@ -1,6 +1,12 @@
 import { ExtractorOptions, FileNameCallback, extractor } from '@yiird/vue3-ts-api-extractor';
-import { resolve } from 'node:path';
-import { Plugin } from 'vite';
+import { existsSync, lstatSync, readdirSync, unlinkSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { FilterPattern, Plugin, createFilter } from 'vite';
+
+type CleanOptions = {
+    target: FilterPattern;
+    ignore?: FilterPattern;
+};
 
 export type Options = {
     root?: string;
@@ -8,10 +14,31 @@ export type Options = {
     outputDir?: string;
     outputSingleFile?: boolean;
     filename?: FileNameCallback;
+    clean?: CleanOptions;
 };
 
+function deleteFolderRecursive(folderPath: string, filter?: (id: string | unknown) => boolean) {
+    if (existsSync(folderPath)) {
+        readdirSync(folderPath).forEach((file) => {
+            const curPath = join(folderPath, file);
+            if (lstatSync(curPath).isDirectory()) {
+                deleteFolderRecursive(curPath, filter);
+            } else {
+                if (filter) {
+                    if (filter(curPath)) {
+                        unlinkSync(curPath);
+                    }
+                } else {
+                    unlinkSync(curPath);
+                }
+            }
+        });
+        // rmdirSync(folderPath);
+    }
+}
+
 export const extractCommentsPlugin = (rawOptions: Options = {}): Plugin[] => {
-    const { root = resolve(__dirname, '.'), scanDirs = ['./src'], outputDir = './dist', filename = ({ outfilename }) => outfilename, outputSingleFile = false } = rawOptions;
+    const { clean, root = resolve(__dirname, '.'), scanDirs = ['./src'], outputDir = './dist', filename = ({ outfilename }) => outfilename, outputSingleFile = false } = rawOptions;
 
     const options: ExtractorOptions = {
         root: root,
@@ -28,7 +55,7 @@ export const extractCommentsPlugin = (rawOptions: Options = {}): Plugin[] => {
             type: 'markdown'
         },
         markdown: {
-            hLevelFrom: 2
+            hLevelFrom: 1
         }
     };
 
@@ -38,6 +65,10 @@ export const extractCommentsPlugin = (rawOptions: Options = {}): Plugin[] => {
             enforce: 'pre',
             apply: 'serve',
             async buildStart() {
+                if (clean) {
+                    const filter = createFilter(clean.target, clean.ignore);
+                    deleteFolderRecursive(resolve(options.root, options.output.dir), filter);
+                }
                 const extractorobj = extractor(options);
                 extractorobj.extractor();
                 extractorobj.on('filechange', (path) => {

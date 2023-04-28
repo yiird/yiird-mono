@@ -1,20 +1,29 @@
----
-dd:aa
----
-
-## Btn
+# Btn
 
 
+Button使用
 
-将的等待的
+## Slots
 
+| 名称    | 参数 | 描述 |
+| :------ | :--- | :--- |
+| default |      |      |
 
-Gavin Lou `2012-12-5 aa`
+## Props
 
-组件说明
+| 名称      |   类型  | 必填 | 可选值                                                                                                                  | 默认值    | 描述                       |
+| :-------- | :-----: | :--: | :---------------------------------------------------------------------------------------------------------------------- | :-------- | :------------------------- |
+| id        |  String |      |                                                                                                                         |           | 组件id，若不设置会自动生成 |
+| display   | Boolean |      |                                                                                                                         | true      | 显示隐藏                   |
+| size      |  String |      | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` | md        | 尺寸                       |
+| color     |  String |      | `default` , `primary` , `success` , `warning` , `danger`                                                                | default   | 颜色                       |
+| textColor |  String |      |                                                                                                                         |           | 文本颜色                   |
+| shape     |  String |      | `rectangle` , `circle` , `square` , `ellipse`                                                                           | rectangle | 形状可选                   |
+| disabled  | Boolean |      |                                                                                                                         | false     | 是否禁用按钮               |
+| mode      |  String |      | `normal` , `empty` , `link` , `dashed`                                                                                  | normal    | 模式                       |
+| loading   | Boolean |      |                                                                                                                         | false     |                            |
 
-### Props
+## Methods
 
-| 名称 |  类型  | 必填 | 可选值          | 默认值 | 描述      |
-| :--- | :----: | :--: | :-------------- | :----- | :-------- |
-| age  | String | true | `a` , `b` , `c` | aasss  | i啊就爱啊 |
+### domRefresh()
+- 用法： 刷新组件

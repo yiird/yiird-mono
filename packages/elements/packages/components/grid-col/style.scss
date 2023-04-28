@@ -1,0 +1,15 @@
+@import '../theme/scss/bem';
+
+@include b('col') {
+    box-sizing: border-box;
+    @for $i from 1 through 24 {
+        @include m('span-' + $i) {
+            width: calc(((100% - 23 * $gutter) / 24) * $i + ($i - 1) * $gutter);
+        }
+    }
+    @for $i from 1 through 24 {
+        @include m('offset-' + $i) {
+            margin-inline-start: calc(((100% - 23 * $gutter) / 24) * $i + ($i - 1) * $gutter);
+        }
+    }
+}

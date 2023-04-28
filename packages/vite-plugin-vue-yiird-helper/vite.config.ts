@@ -15,7 +15,7 @@ export default defineConfig({
             fileName: 'index'
         },
         rollupOptions: {
-            external: ['@yiird/vue3-ts-api-extractor', 'node:path', 'vite', 'vitepress']
+            external: ['@yiird/vue3-ts-api-extractor', 'node:path', 'node:fs', 'vite', 'vitepress']
         }
     },
     plugins: [

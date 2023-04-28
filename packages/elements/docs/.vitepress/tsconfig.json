@@ -1,0 +1,7 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.web.json",
+    "include": ["**/*.*", "../components.d.ts", "env.d.ts"],
+    "compilerOptions": {
+        "ignoreDeprecations": "5.0"
+    }
+}

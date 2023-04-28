@@ -1,0 +1,80 @@
+@import '../theme/scss/bem';
+
+@include b(btn) {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    user-select: none;
+    font-weight: 400;
+    text-decoration: none;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0 calc($height / 2);
+    border: 1px solid $bgColor;
+    height: $height;
+    line-height: $lineHeight;
+    font-size: $fontSize;
+    color: $color;
+    background-color: $bgColor;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+    border-radius: calc($height * 0.1);
+    font-weight: var(--ye-font-weight-bold);
+
+    &:hover,
+    &:focus {
+        opacity: 0.7;
+    }
+
+    &:active,
+    &.active {
+        opacity: 1;
+        text-shadow: unset;
+    }
+
+    @include e('loading') {
+        margin-right: 2px;
+    }
+
+    @include m('disabled') {
+        opacity: 0.5 !important;
+        cursor: not-allowed;
+    }
+
+    @include m('empty') {
+        color: $bgColor;
+        background-color: transparent;
+        border-color: $bgColor;
+    }
+
+    @include m('link') {
+        color: $bgColor;
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: unset;
+        text-decoration: underline;
+        text-underline-offset: 0.2rem;
+    }
+    @include m('dashed') {
+        color: $bgColor;
+        border-style: dashed;
+        background-color: transparent;
+    }
+
+    @include m('circle') {
+        width: $height;
+        border-radius: 100%;
+    }
+
+    @include m('square') {
+        width: $height;
+    }
+
+    @include m('ellipse') {
+        border-radius: calc($height * 0.5);
+    }
+}

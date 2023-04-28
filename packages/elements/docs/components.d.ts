@@ -9,6 +9,15 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    YIcon: typeof import('./../packages/icon/template.vue')['default']
+    YBtn: typeof import('./../packages/index.ts')['Btn']
+    YCol: typeof import('./../packages/index.ts')['Col']
+    YFooter: typeof import('./../packages/index.ts')['Footer']
+    YFramework: typeof import('./../packages/index.ts')['Framework']
+    YHeader: typeof import('./../packages/index.ts')['Header']
+    YIcon: typeof import('./../packages/index.ts')['Icon']
+    YMain: typeof import('./../packages/index.ts')['Main']
+    YRow: typeof import('./../packages/index.ts')['Row']
+    YSider: typeof import('./../packages/index.ts')['Sider']
+    YTheme: typeof import('./../packages/index.ts')['Theme']
   }
 }

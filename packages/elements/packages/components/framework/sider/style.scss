@@ -1,0 +1,13 @@
+@import '../../theme/scss/bem';
+
+@include b('sider') {
+    width: $size;
+    height: $height;
+
+    @include m('left') {
+        order: 2;
+    }
+    @include m('right') {
+        order: 4;
+    }
+}

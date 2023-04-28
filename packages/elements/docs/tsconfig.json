@@ -1,7 +1,0 @@
-{
-    "extends":"../tsconfig.app.json",
-    "include": ["env.d.ts","components.d.ts",".vitepress/**/*.ts",".vitepress/**/*.vue"],
-    "compilerOptions": {
-        "baseUrl": "."
-    }
-}

@@ -1,4 +1,4 @@
-import { capitalize, isString, kebabCase } from 'lodash-es';
+import { capitalize, isString, kebabCase } from 'lodash';
 import type { ComponentResolver } from 'unplugin-vue-components';
 
 type ResolverOptions = {
@@ -16,7 +16,7 @@ export type FromCallArg = {
     name: string;
     partialName: string;
 };
-
+const ignorePartialNames = ['font-awesome-icon'];
 /**
  *
  * @param options
@@ -28,6 +28,12 @@ export function componentsResolver(options: ResolverOptions = {}): ComponentReso
         resolve: (name: string) => {
             const { prefix = 'y' } = options;
             name = kebabCase(name);
+            // if (ignorePartialNames.includes(name)) {
+            //     if (options.debug) {
+            //         console.log(`忽略:${name}`);
+            //     }
+            //     return;
+            // }
             if (options.debug) {
                 console.log(`组件:${name},前缀:${prefix}`);
             }

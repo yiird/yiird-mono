@@ -1,0 +1,177 @@
+<template>
+    <y-row>
+            <y-col :span="24">
+                <y-row
+                    class="row-inner"
+                    :gutter="gutter">
+                    <y-col
+                        class="col-inner"
+                        :span="24">
+                        y-col
+                    </y-col>
+                </y-row>
+                <y-row
+                    class="row-inner"
+                    :gutter="gutter">
+                    <y-col
+                        class="col-inner"
+                        :span="12">
+                        y-col-12
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="12">
+                        y-col-12
+                    </y-col>
+                </y-row>
+                <y-row
+                    class="row-inner"
+                    :gutter="gutter">
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="8">
+                        y-col-8
+                    </y-col>
+                </y-row>
+                <y-row
+                    class="row-inner"
+                    :gutter="gutter">
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                </y-row>
+                <y-row
+                    class="row-inner"
+                    :gutter="gutter">
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-61
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-62
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="12">
+                        y-col-12<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br><br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                        y-col-6<br>
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                </y-row>
+                <y-row
+                    class="row-inner"
+                    :gutter="gutter">
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                    <y-col
+                        class="col-inner"
+                        :span="6">
+                        y-col-6
+                    </y-col>
+                </y-row>
+            </y-col>
+        </y-row>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const gutter = ref<number | number[]>(5);
+
+</script>
+
+<style scoped>
+.row-inner {
+    border: 1px solid red;
+}
+.col-inner {
+    background-color: #1677ff;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+</style>

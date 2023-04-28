@@ -1,0 +1,8 @@
+@import '../theme/scss/bem';
+
+@include b('framework') {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    height: $height;
+}

@@ -1,0 +1,7 @@
+@import '../../theme/scss/bem';
+
+@include b('header') {
+    height: $size;
+    width: 100%;
+    order: 1;
+}

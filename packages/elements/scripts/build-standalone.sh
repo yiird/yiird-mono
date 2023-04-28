@@ -12,9 +12,13 @@ for file in $(find ./packages -type f -name "*.vue"); do
 
   export LIB_DIR=$dir
   export LIB_NAME=$parent_dir
-  if count -eq 0
+  if [ $count -eq 0 ]
     then
       export PKG_RESET='reset'
+  fi
+  if [ $count -ne 0 ]
+    then
+      export PKG_RESET=''
   fi
   vite build
   count=$(($count + 1));

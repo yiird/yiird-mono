@@ -1,9 +1,9 @@
-import { fileURLToPath, URL } from 'node:url';
-
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { capitalize } from 'lodash';
+import { extractCommentsPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
+import { capitalize, isArray, kebabCase } from 'lodash';
 import { resolve } from 'node:path';
+import { URL, fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { pkgExports } from './scripts/pkg-exports-reset';
@@ -58,6 +58,17 @@ function buildConfig(info: EntryInfo) {
                 cleanVueFileName: true,
                 skipDiagnostics: true,
                 rollupTypes: true
+            }),
+            extractCommentsPlugin({
+                root: resolve(__dirname, '.'),
+                scanDirs: ['./packages'],
+                outputDir: './docs/components',
+                filename({ outfilename, outDir, info }) {
+                    if (!isArray(info)) {
+                        return resolve(outDir, kebabCase(info.comment.name) + '.md');
+                    }
+                    return outfilename;
+                }
             })
         ],
         resolve: {
@@ -67,5 +78,4 @@ function buildConfig(info: EntryInfo) {
         }
     });
 }
-
 export default buildConfig(buildInfo);

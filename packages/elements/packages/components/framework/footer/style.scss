@@ -1,0 +1,7 @@
+@import '../../theme/scss/bem';
+
+@include b('footer') {
+    width: 100%;
+    height: $size;
+    order: 5;
+}

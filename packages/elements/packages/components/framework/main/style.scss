@@ -1,0 +1,8 @@
+@import '../../theme/scss/bem';
+
+@include b('main') {
+    width: calc(100% - $left - $right);
+    height: $height;
+    order: 3;
+    overflow: hidden;
+}
