@@ -1,8 +1,8 @@
 <template>
-    <div class="demo">
+    <div :class="{ demo: true, 'demo--transparent': transparent }">
         <div class="demo__display">
             <component
-                ref="component"
+                ref="com"
                 :is="name"></component>
         </div>
         <div :class="['demo__code', { 'demo__code--open': handleFlag }]">
@@ -15,24 +15,27 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, type ComponentPublicInstance } from 'vue';
+import { ref, watchEffect, type ComponentPublicInstance } from 'vue';
 interface Props {
     //样例
-    name: String;
+    name: string;
+    transparent?: boolean;
 }
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+    transparent: false
+});
 
 const prettierCode = ref();
-const component = ref();
+const com = ref();
 const handleFlag = ref(false);
 
 const toggleHandle = () => {
     handleFlag.value = !handleFlag.value;
 };
 
-onMounted(() => {
-    if (component.value) {
-        prettierCode.value = (component.value as ComponentPublicInstance).$options.PRE_BLOCK;
+watchEffect(() => {
+    if (com.value) {
+        prettierCode.value = (com.value as ComponentPublicInstance).$options.PRE_BLOCK;
     }
 });
 </script>
@@ -43,10 +46,14 @@ onMounted(() => {
     .demo__display {
         padding: 10px;
         background-color: #fff;
-        background-image: linear-gradient(45deg, #e6e6e6 25%, transparent 25%, transparent 75%, #e6e6e6 75%, #e6e6e6),
-            linear-gradient(45deg, #e6e6e6 25%, transparent 25%, transparent 75%, #e6e6e6 75%, #e6e6e6);
-        background-size: 10px 10px;
-        background-position: 0 0, 5px 5px;
+    }
+    &.demo--transparent {
+        .demo__display {
+            background-image: linear-gradient(45deg, #e6e6e6 25%, transparent 25%, transparent 75%, #e6e6e6 75%, #e6e6e6),
+                linear-gradient(45deg, #e6e6e6 25%, transparent 25%, transparent 75%, #e6e6e6 75%, #e6e6e6);
+            background-size: 10px 10px;
+            background-position: 0 0, 5px 5px;
+        }
     }
     .demo__code {
         display: none;

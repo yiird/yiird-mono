@@ -22,7 +22,7 @@ type Options = {
     injectComponentPropertiesName: string;
 };
 
-export const sinnpetToCustomblockPlugin = (rawOptions?: Options): Plugin => {
+export const sinnpetToCustomblockPlugin = async (rawOptions?: Options): Promise<Plugin> => {
     const customBlockTagName = 'internal-component-pre-block';
     const options: Options = Object.assign({ include: [`${resolve('./docs')}/**/*.vue`], docsRoot: resolve('./docs') }, rawOptions);
 
@@ -37,22 +37,21 @@ export const sinnpetToCustomblockPlugin = (rawOptions?: Options): Plugin => {
     if (!isAbsolute(options.docsRoot!)) {
         options.docsRoot = resolve(__dirname, '../');
     }
-
+    const md = await createMarkdownRenderer('.', options.markdown);
     return {
         name: 'yiird:sinnpet-to-customblock',
         configResolved(config) {
             options.markdown = defineConfigWithTheme(config).markdown;
         },
-        async transform(code, id) {
+        transform(code, id) {
             if (filter(id)) {
                 if (id.endsWith('.vue')) {
-                    const md = await createMarkdownRenderer('.', options.markdown);
                     const prettierCode = md.render(`<<< @/${relative(resolve(options.docsRoot!, '../'), id)}`);
                     code += `\n<${customBlockTagName}> \n${prettierCode}\n</${customBlockTagName}>;
             `;
                 } else {
                     return `export default Compont => {
-                        Compont.${options.injectComponentPropertiesName} = \`${code}\`;
+                        Compont.${options.injectComponentPropertiesName} = \`${code.replaceAll('`', '\\`').replaceAll('${', '\\${')}\`;
                     }`;
                 }
             }

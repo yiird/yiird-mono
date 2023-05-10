@@ -17,3 +17,4 @@ const TreePlugin: Plugin = {
 export type * from './logic';
 export { Tree, TreePlugin };
 export type { ElementOptions };
+export type TreeType = InstanceType<typeof Tree>;

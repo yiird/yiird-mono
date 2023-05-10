@@ -17,3 +17,4 @@ const SiderPlugin: Plugin = {
 export type * from './logic';
 export { Sider, SiderPlugin };
 export type { ElementOptions };
+export type SiderType = InstanceType<typeof Sider>;

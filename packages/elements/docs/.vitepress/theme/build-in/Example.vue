@@ -7,7 +7,7 @@
 import ExampleRender from './ExampleRender.vue';
 interface Props {
     //样例
-    name: String;
+    name: string;
 }
 const props = defineProps<Props>();
 </script>

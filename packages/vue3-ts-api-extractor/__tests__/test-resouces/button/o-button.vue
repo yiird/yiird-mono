@@ -64,10 +64,20 @@ export default defineComponent({
     name: 'OButton',
     props: ButtonProps,
     setup(props, ctx) {
-        return withButton({
-            props,
-            ctx
-        });
+        /**
+         * 激活目标选项卡
+         *
+         * @param {number | string} activeIndex - TAB序号或ID
+         */
+        const active = (activeIndex: number | string) => {};
+
+        return {
+            ...withButton({
+                props,
+                ctx
+            }),
+            active
+        };
     },
     methods: {
         /**

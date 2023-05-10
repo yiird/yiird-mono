@@ -11,14 +11,19 @@ Col使用
 
 ## Props
 
-| 名称    |      类型     | 必填 | 可选值 | 默认值 | 描述                       |
-| :------ | :-----------: | :--: | :----- | :----- | :------------------------- |
-| id      |     String    |      |        |        | 组件id，若不设置会自动生成 |
-| display |    Boolean    |      |        | true   | 显示隐藏                   |
-| span    | string,number |      |        | 8      | 跨越列数                   |
-| offset  | string,number |      |        |        | 向右偏移列数               |
+| 名称    | 描述                                   |      类型     | 可选值 |
+| :------ | :------------------------------------- | :-----------: | :----- |
+| id      | 组件id，若不设置会自动生成             |     String    |        |
+| display | 显示隐藏<hr>默认值:<br><pre>true</pre> |    Boolean    |        |
+| span    | 跨越列数<hr>默认值:<br><pre>8</pre>    | String,Number |        |
+| offset  | 向右偏移列数                           | String,Number |        |
 
 ## Methods
+
+### setDisplay(flag: boolean)
+- 用法： 设置隐藏
+- 参数：
+	 - flag： true:显示，false:隐藏
 
 ### domRefresh()
 - 用法： 刷新组件

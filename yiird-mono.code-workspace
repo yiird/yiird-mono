@@ -42,9 +42,9 @@
             "packages/owl/src/components/calendar/o-calendar.vue": ["OCalendar"],
             "packages/owl/src/components/popper/o-popper.vue": ["OPopper"]
         },
-        "typescript.tsdk": "/Users/loufei/works/projects/vscode/yiird-mono/node_modules/typescript/lib",
         "files.exclude": {
             "**/node_modules": true
-        }
+        },
+        "typescript.tsdk": "node_modules/typescript/lib"
     }
 }

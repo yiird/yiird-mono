@@ -18,6 +18,9 @@ declare module '@vue/runtime-core' {
     YMain: typeof import('./../packages/index.ts')['Main']
     YRow: typeof import('./../packages/index.ts')['Row']
     YSider: typeof import('./../packages/index.ts')['Sider']
+    YTab: typeof import('./../packages/index.ts')['Tab']
+    YTabs: typeof import('./../packages/index.ts')['Tabs']
     YTheme: typeof import('./../packages/index.ts')['Theme']
+    YTree: typeof import('./../packages/index.ts')['Tree']
   }
 }

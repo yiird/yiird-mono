@@ -35,7 +35,7 @@ export class TemplateSlotParser extends SfcParser {
                 });
             } else if (child.type === 2) {
                 if (!/\t+/g.test(child.content)) {
-                    commentStack.splice(0, commentStack.length);
+                    //commentStack.splice(0, commentStack.length);
                 }
             } else {
                 commentStack.splice(0, commentStack.length);

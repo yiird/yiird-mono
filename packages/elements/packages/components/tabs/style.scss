@@ -1,4 +1,141 @@
 @import '../theme/scss/bem';
 
 @include b('tabs') {
+    @include e('header') {
+        display: flex;
+        margin-bottom: 0.5rem;
+        position: relative;
+        user-select: none;
+
+        @include e(('extra-left', 'extra-right')) {
+            display: flex;
+        }
+
+        @include e('extra-left') {
+            :deep(> *) {
+                margin-right: $gutter;
+            }
+        }
+
+        @include e('extra-right') {
+            :deep(> *) {
+                margin-left: $gutter;
+            }
+        }
+
+        @include e('scroll') {
+            flex-grow: 1;
+            @include e(('aux-right', 'aux-left')) {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 0px;
+                z-index: 0;
+                border: 1px solid $colorBorder;
+                opacity: 0.8;
+            }
+            @include e('aux-left') {
+                visibility: hidden;
+                left: 0;
+                box-shadow: $auxLeftShadow;
+            }
+            @include e('aux-right') {
+                visibility: hidden;
+                right: 0;
+                box-shadow: $auxRightShadow;
+            }
+        }
+    }
+
+    @include e('bar-wrap') {
+        font-size: $fontSize;
+        color: $color;
+        position: relative;
+        white-space: nowrap;
+        display: flex;
+        float: left;
+        min-width: 100%;
+        &::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            border-bottom: 1px solid $colorDivider;
+            z-index: 0;
+        }
+
+        @include e('bar') {
+            cursor: pointer;
+            height: $height;
+            line-height: $lineHeight;
+            margin-right: $gutter;
+            z-index: 1;
+            padding: 0 0.6rem;
+            &.is-active {
+                color: $colorActive;
+            }
+        }
+    }
+    @include m('text') {
+        @include e('bar-wrap') {
+            padding-bottom: 10px;
+            @include e('bar-bottom') {
+                position: absolute;
+                left: $barBottomLeft;
+                bottom: 0;
+                height: 2px;
+                width: $barBottomWidth;
+                background-color: $colorActive;
+                transition: left 0.4s ease;
+            }
+
+            @include e('bar') {
+                &.is-disabled {
+                    cursor: not-allowed;
+                    color: $colorDisabled;
+                }
+            }
+        }
+    }
+
+    @include m('card') {
+        @include e('bar-wrap') {
+            @include e('bar') {
+                margin-right: $gutter;
+                box-sizing: border-box;
+                border: 1px solid $colorBorder;
+                border-bottom: unset;
+                background-color: $colorBg;
+                background-clip: border-box;
+                border-radius: 5px 5px 0 0;
+                &.is-active {
+                    background-color: white;
+                    border-bottom-color: white;
+                }
+                &.is-disabled {
+                    color: white;
+                    opacity: 0.5;
+                    background-color: $colorDisabled;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+    @include m('overflow-left') {
+        @include e('aux-left') {
+            visibility: visible;
+        }
+    }
+
+    @include m('overflow-right') {
+        @include e('aux-right') {
+            visibility: visible;
+        }
+    }
+    @include m('overflow-both') {
+        @include e(('aux-right', 'aux-left')) {
+            visibility: visible;
+        }
+    }
 }

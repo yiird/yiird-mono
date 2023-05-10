@@ -15,3 +15,4 @@ const ThemePlugin: Plugin = {
 
 export type { ElementOptions };
 export { Theme, ThemePlugin };
+export type ThemeType = InstanceType<typeof Theme>;

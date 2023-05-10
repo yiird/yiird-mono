@@ -11,14 +11,19 @@ Sider使用
 
 ## Props
 
-| 名称     |      类型     | 必填 | 可选值           | 默认值 | 描述                       |
-| :------- | :-----------: | :--: | :--------------- | :----- | :------------------------- |
-| id       |     String    |      |                  |        | 组件id，若不设置会自动生成 |
-| display  |    Boolean    |      |                  | true   | 显示隐藏                   |
-| size     | string,number |      |                  | 10     |                            |
-| position |     String    |      | `left` , `right` | left   |                            |
+| 名称     | 描述                                   |      类型     | 可选值           |
+| :------- | :------------------------------------- | :-----------: | :--------------- |
+| id       | 组件id，若不设置会自动生成             |     String    |                  |
+| display  | 显示隐藏<hr>默认值:<br><pre>true</pre> |    Boolean    |                  |
+| size     | <hr>默认值:<br><pre>10</pre>           | String,Number |                  |
+| position | <hr>默认值:<br><pre>left</pre>         |     String    | `left` , `right` |
 
 ## Methods
+
+### setDisplay(flag: boolean)
+- 用法： 设置隐藏
+- 参数：
+	 - flag： true:显示，false:隐藏
 
 ### domRefresh()
 - 用法： 刷新组件

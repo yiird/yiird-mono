@@ -17,3 +17,4 @@ const TabsPlugin: Plugin = {
 export type * from './logic';
 export { Tabs, TabsPlugin };
 export type { ElementOptions };
+export type TabsType = InstanceType<typeof Tabs>;

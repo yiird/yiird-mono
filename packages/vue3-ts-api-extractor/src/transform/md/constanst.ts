@@ -8,14 +8,14 @@ export const PropHeaders: Header[] = [
         align: 'l'
     },
     {
-        name: 'type',
-        label: '类型',
+        name: 'description',
+        label: '描述',
         display: true,
-        align: 'c'
+        align: 'l'
     },
     {
-        name: 'isRequired',
-        label: '必填',
+        name: 'type',
+        label: '类型',
         display: true,
         align: 'c'
     },
@@ -24,19 +24,21 @@ export const PropHeaders: Header[] = [
         label: '可选值',
         display: true,
         align: 'l'
-    },
-    {
-        name: 'defaultValue',
-        label: '默认值',
-        display: true,
-        align: 'l'
-    },
-    {
-        name: 'description',
-        label: '描述',
-        display: true,
-        align: 'l'
     }
+    // ,
+    // {
+    //     name: 'defaultValue',
+    //     label: '默认值',
+    //     display: true,
+    //     align: 'l'
+    // }
+    // ,
+    // {
+    //     name: 'isRequired',
+    //     label: '必填',
+    //     display: true,
+    //     align: 'c'
+    // }
 ];
 
 export const SlotHeaders: Header[] = [

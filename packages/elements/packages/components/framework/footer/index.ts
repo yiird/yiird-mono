@@ -17,3 +17,4 @@ const FooterPlugin: Plugin = {
 export type * from './logic';
 export { Footer, FooterPlugin };
 export type { ElementOptions };
+export type FooterType = InstanceType<typeof Footer>;

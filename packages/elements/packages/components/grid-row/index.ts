@@ -17,3 +17,4 @@ const RowPlugin: Plugin = {
 export type * from './logic';
 export { Row, RowPlugin };
 export type { ElementOptions };
+export type RowType = InstanceType<typeof Row>;

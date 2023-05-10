@@ -1,20 +1,23 @@
+import type { IconDefinition, IconName } from '@fortawesome/pro-duotone-svg-icons';
 import { computed, type ExtractPropTypes, type PropType } from 'vue';
 import { BaseProps, useTheme } from '../../common/prefab';
-import { SIZE_MAP } from '../../config';
-import type { NumberSize, TshirtSize } from '../../types/global';
+import { sizeToFontSize, sizeToHeight } from '../../config';
+import type { Size } from '../../types/global';
 
 export type BtnShape = `rectangle` | `circle` | `square` | `ellipse`;
 export type BtnColor = `default` | `primary` | `success` | `warning` | `danger`;
-export type BtnSize = TshirtSize | NumberSize;
-export type BtnMode = 'normal' | 'empty' | 'link' | 'dashed';
+export type BtnMode = 'default' | 'empty' | 'link' | 'dashed';
 
 export const BtnProps = {
     ...BaseProps,
+    icon: {
+        type: [String, Object] as PropType<IconDefinition | IconName>
+    },
     /**
      * 尺寸
      */
     size: {
-        type: String as PropType<BtnSize>,
+        type: String as PropType<Size>,
         default: 'md'
     },
     /**
@@ -49,56 +52,69 @@ export const BtnProps = {
      */
     mode: {
         type: String as PropType<BtnMode>,
-        default: 'normal'
+        default: 'default'
     },
+    /**
+     * 加载状态
+     */
     loading: {
         type: Boolean,
         default: false
     }
 } as const;
 
+export type BtnPropsType = ExtractPropTypes<typeof BtnProps>;
+
 export interface BtnTheme {
     color?: string;
     bgColor?: string;
+    borderColor?: string;
     height?: string;
     lineHeight?: string;
     fontSize?: string;
     bemModifiers?: string[];
 }
 
-export const useBtnTheme = (props: Readonly<ExtractPropTypes<typeof BtnProps>>) => {
+export const useBtnTheme = (props: Readonly<BtnPropsType>) => {
     const themeConfig = useTheme();
     return computed<BtnTheme>(() => {
         const _themeConfig = themeConfig!.value;
-        let mainColor: string | undefined = _themeConfig.colorGray[2];
+        let bgColor: string | undefined = _themeConfig.ye_colorBg;
+        let color: string | undefined = '#fff';
+        let borderColor: string | undefined = _themeConfig.ye_colorBorder;
 
         switch (props.color) {
             case 'primary':
-                mainColor = _themeConfig.colorPrimary.primary;
+                bgColor = borderColor = _themeConfig.ye_colorPrimary.primary;
                 break;
             case 'success':
-                mainColor = _themeConfig.colorSuccess.primary;
+                bgColor = borderColor = _themeConfig.ye_colorSuccess.primary;
                 break;
             case 'warning':
-                mainColor = _themeConfig.colorWarn.primary;
+                bgColor = borderColor = _themeConfig.ye_colorWarn.primary;
                 break;
             case 'danger':
-                mainColor = _themeConfig.colorError.primary;
+                bgColor = borderColor = _themeConfig.ye_colorError.primary;
                 break;
+            default: {
+                color = _themeConfig.ye_colorPrimaryText;
+            }
         }
 
+        const height = sizeToHeight(themeConfig.value, props.size);
+        const fontSize = sizeToFontSize(themeConfig.value, props.size);
+
         const theme: BtnTheme = {
-            color: '#fff',
-            bgColor: mainColor,
-            height: `${SIZE_MAP[props.size]}em`,
-            lineHeight: `calc( ${SIZE_MAP[props.size]}em - 2px )`,
-            fontSize: (_themeConfig.primaryTextSize * SIZE_MAP[props.size]) / 2 + 'px'
+            color: color,
+            bgColor: bgColor,
+            borderColor: borderColor,
+            height: `${height}px`,
+            lineHeight: `${height - 2}px`,
+            fontSize: `${fontSize}px`
         };
 
         theme.bemModifiers = [];
         switch (props.mode) {
-            case 'normal':
-                break;
             case 'empty':
                 theme.bemModifiers.push('btn--empty');
                 break;
@@ -109,6 +125,12 @@ export const useBtnTheme = (props: Readonly<ExtractPropTypes<typeof BtnProps>>) 
                 theme.bemModifiers.push('btn--dashed');
                 break;
         }
+        if (props.color !== 'default') {
+            if (props.mode !== 'default') {
+                theme.color = theme.borderColor;
+            }
+        }
+
         switch (props.shape) {
             case 'rectangle':
                 theme.bemModifiers.push('btn--rectangle');

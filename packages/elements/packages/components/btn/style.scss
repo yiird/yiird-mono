@@ -15,15 +15,15 @@
     white-space: nowrap;
     vertical-align: middle;
     padding: 0 calc($height / 2);
-    border: 1px solid $bgColor;
+    border: 1px solid $borderColor;
     height: $height;
     line-height: $lineHeight;
     font-size: $fontSize;
     color: $color;
     background-color: $bgColor;
-    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
-    border-radius: calc($height * 0.1);
-    font-weight: var(--ye-font-weight-bold);
+    box-shadow: 0 2px 0 rgba(0,0,0,.02);
+    border-radius: calc($height * 0.2);
+    font-weight: var(--ye-font-weight-light);
 
     &:hover,
     &:focus {
@@ -46,13 +46,11 @@
     }
 
     @include m('empty') {
-        color: $bgColor;
         background-color: transparent;
-        border-color: $bgColor;
+        border-color: $borderColor;
     }
 
     @include m('link') {
-        color: $bgColor;
         background-color: transparent;
         border-color: transparent;
         box-shadow: unset;
@@ -60,7 +58,6 @@
         text-underline-offset: 0.2rem;
     }
     @include m('dashed') {
-        color: $bgColor;
         border-style: dashed;
         background-color: transparent;
     }

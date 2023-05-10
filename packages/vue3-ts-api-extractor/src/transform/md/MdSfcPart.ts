@@ -1,5 +1,6 @@
-import { isArray, isObject } from 'lodash-es';
-import notJSON from 'not-json';
+import jsb from 'js-beautify';
+import { camelCase, isArray, isObject, isString, upperFirst } from 'lodash-es';
+import { Utils } from '../../common/Utils';
 import { DefaultValue } from '../../parser/comment/basic/PropComment';
 import { SfcComment } from '../../parser/comment/basic/SfcComment';
 import { TypeComment } from '../../parser/comment/node/TypeComment';
@@ -116,7 +117,9 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                 Object.keys(propObject)
                     .filter((key) => names.includes(key))
                     .forEach((name) => {
-                        if (name === 'type') {
+                        if (name === 'name') {
+                            record[name] = prop.isRequired ? prop.name + '<br /><span>(*)</span>' : prop.name + '';
+                        } else if (name === 'type') {
                             const type = prop.type;
                             if (type) {
                                 const typeName = type?.name;
@@ -126,7 +129,11 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                                 if ('object' === typeNameLower || 'array' === typeNameLower) {
                                     if (type?.typeArguments) {
                                         const _type = type?.typeArguments[0];
-                                        typeArgumentName = _type.name;
+                                        if (_type?.typeArguments) {
+                                            typeArgumentName = _type.text;
+                                        } else {
+                                            typeArgumentName = _type.name;
+                                        }
                                     }
                                 }
                                 const mdTypes: string[] = [];
@@ -152,9 +159,17 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                                     }
                                 }
                                 if (mdTypes.length > 0) {
-                                    record[name] = mdTypes.join(',');
+                                    record[name] = mdTypes.map((type) => upperFirst(camelCase(type))).join(',');
                                 } else {
-                                    record[name] = typeArgumentName ? `[${typeArgumentName}](#${typeArgumentName.toLocaleLowerCase()})` : typeName || '';
+                                    if ('array' === typeNameLower) {
+                                        if (typeArgumentName && Utils.isBasicType(typeArgumentName)) {
+                                            record[name] = typeArgumentName ? `${typeArgumentName}[]` : typeName || '';
+                                        } else {
+                                            record[name] = typeArgumentName ? `[${typeArgumentName}](#${typeArgumentName.toLocaleLowerCase()})[]` : typeName || '';
+                                        }
+                                    } else {
+                                        record[name] = typeArgumentName ? `[${typeArgumentName}](#${typeArgumentName.toLocaleLowerCase()})` : typeName || '';
+                                    }
                                 }
                             } else {
                                 record[name] = '';
@@ -179,6 +194,25 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                             }
                         } else if (name === 'description') {
                             record[name] = styles.html(prop.description || '');
+
+                            const defaultValue = propObject['defaultValue'];
+                            if (defaultValue) {
+                                record[name] += '<hr>';
+                                record[name] += '默认值:';
+                                record[name] += '<br>';
+                                if (isArray(defaultValue)) {
+                                    const dv: string[] = [];
+                                    defaultValue.forEach((_dv) => {
+                                        dv.push(`${_dv.condition ? _dv.condition + '<br>' : ''}${this._code(_dv.value)}`);
+                                    });
+                                    record[name] += dv.join('<br>');
+                                } else if (isObject(defaultValue)) {
+                                    const dv = defaultValue as DefaultValue;
+                                    record[name] += `${dv.condition ? dv.condition + '<br>' : ''}${this._code(dv.value)}`;
+                                } else if (isString(defaultValue)) {
+                                    record[name] += `${this._code(defaultValue)}`;
+                                }
+                            }
                         } else if (name === 'values') {
                             if (prop.values && prop.values.length > 0) {
                                 record[name] =
@@ -271,13 +305,14 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                 const _specialTypes: TypeComment[] = [];
                 method.parameters?.forEach((parameter) => {
                     if (parameter.type) {
-                        if (parameter.type.name) {
+                        if (parameter.type.name || parameter.type.associationType) {
                             _parameters.push(`${parameter.name}:${!parameter.isRequired ? '?' : ''} ${parameter.type.getFullname()}`);
-                            if (!parameter.type.isBasic()) {
-                                _specialTypes.push(parameter.type);
-                            }
-                            _specialTypes.push(...parameter.type.getSpecialTypes());
                         }
+
+                        if (!parameter.type.isBasic()) {
+                            _specialTypes.push(parameter.type);
+                        }
+                        _specialTypes.push(...parameter.type.getSpecialTypes());
                     }
                 });
                 doc += `(${_parameters.join(',')})`;
@@ -342,12 +377,6 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
     }
 
     private _code(str: string) {
-        try {
-            const jsonStr = notJSON.parse(str.trim());
-            const json = JSON.stringify(jsonStr, null, 2);
-            return `<pre>${json.replace(/[\n|\r]+/g, '<br>')}</pre>`;
-        } catch (e) {
-            return str;
-        }
+        return `<pre>${jsb.js(str, { indent_size: 2 }).replace(/[\n|\r]+/g, '<br>')}</pre>`;
     }
 }

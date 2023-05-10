@@ -8,11 +8,14 @@ export const FooterProps = {
         default: 10
     }
 } as const;
+
+export type FooterPropsType = ExtractPropTypes<typeof FooterProps>;
+
 export interface FooterTheme {
     bemModifiers?: string[];
     size?: string;
 }
-export const useFooterTheme = (props: Readonly<ExtractPropTypes<typeof FooterProps>>) => {
+export const useFooterTheme = (props: FooterPropsType) => {
     const framework = inject(FRAMEWORK_CONFIG_KEY);
 
     if (framework) {

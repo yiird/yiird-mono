@@ -33,6 +33,33 @@ interface AdvanceType {
 export const ButtonProps = {
     ...BaseProps,
     /**
+     * 图标名称
+     *
+     * 例如：
+     * &lt;i class=&quot;fa-solid fa-address-book&quot;&gt;&lt;/i&gt;
+     * 描述的是 `fas` 风格的 `address-book`。
+     *
+     * 组件配置如下：
+     * `prefix`="fas"
+     * `icon`="address-book"
+     * 或
+     * 不设置 `prefix`
+     * 设置`icon` 为 `IconDefinition`类型
+     *
+     * <pre>
+     * `import { faCamera } from '@fortawesome/free-solid-svg-icons';`
+     * // faCamera 为`IconDefinition`类型
+     * </pre>
+     * [查询图标](https://fontawesome.com/search?m=free)
+     */
+    icon: {
+        type: [String, Object] as PropType<IconName | IconDefinition>,
+        required: true
+    },
+    arr: {
+        type: Array as PropType<AdvanceType[]>
+    },
+    /**
      * 尺寸
      * @prop
      * @values `xxs`, `xs`, `sm`, `md`, `lg`, `xl`, `xxl`
@@ -84,28 +111,6 @@ export const ButtonProps = {
         validator: (value: string) => {
             // 这个值必须匹配下列字符串中的一个
             return ['light', 'empty', 'link'].indexOf(value) !== -1;
-        }
-    },
-    /**
-     * 复杂prop举例
-     *
-     * @default
-     * {
-     *  // a 说明
-     * 	a:[{
-     * 		name:'a',
-     * 		age:1
-     * 	}],
-     * 	b:2
-     * }
-     */
-    obj: {
-        type: Object as PropType<AdvanceType>,
-        default() {
-            return {
-                a: 1,
-                b: 2
-            };
         }
     }
 } as const;

@@ -17,3 +17,5 @@ const HeaderPlugin: Plugin = {
 export type * from './logic';
 export { Header, HeaderPlugin };
 export type { ElementOptions };
+
+export type HeaderType = InstanceType<typeof Header>;

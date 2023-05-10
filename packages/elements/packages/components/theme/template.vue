@@ -3,8 +3,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, watchEffect } from 'vue';
-import { OPTIONS_KEY, generThemeConfig } from '../../config';
+import { computed, defineComponent, inject, onMounted, watchEffect } from 'vue';
+import { usePrefab } from '../../common/prefab';
+import { CACHE_INSTANCES, OPTIONS_KEY, generThemeConfig } from '../../config';
 import { ThemeProps } from './logic';
 
 /**
@@ -14,21 +15,27 @@ export default defineComponent({
     name: 'Theme',
     props: ThemeProps,
     setup(props) {
+        const { cType__ } = usePrefab(props);
         const options = inject(OPTIONS_KEY);
-
-        if (options) {
-            watchEffect(() => {
-                if (props.themeVars && options) {
-                    const themeConfig = generThemeConfig(props.dark, props.themeVars);
-                    options.themeConfig = themeConfig;
-                }
-            });
+        const INSTANCES = CACHE_INSTANCES.get(cType__);
+        if (INSTANCES && INSTANCES?.size > 1) {
+            return;
         }
-    }
-});
-</script>
-<style lang="scss">
-:root {
+        if (options) {
+            if (props.themeVars && options) {
+                const themeConfig = generThemeConfig(props.dark, props.themeVars);
+                options.themeConfig = themeConfig;
+            }
+        }
+
+        const styleContent = computed(() => {
+            const theme = options?.themeConfig;
+            return `
+html{
+    font-size: ${theme?.ye_fontSizeStr};
+    font-family: ${theme?.ye_fontFamily};
+}
+:root{
     --ye-font-weight-light: 400;
     --ye-font-weight-regular: 500;
     --ye-font-weight-bold: 600;
@@ -45,4 +52,31 @@ export default defineComponent({
     --ye-boxshadow-low-left: -1px 0px 2px -2px rgb(0 0 0 / 16%), -3px 0px 6px 0px rgb(0 0 0 / 12%), -5px 0px 12px 4px rgb(0 0 0 / 9%);
     --ye-boxshadow-low-right: 1px 0px 2px -2px rgb(0 0 0 / 16%), 3px 0px 6px 0px rgb(0 0 0 / 12%), 5px 0px 12px 4px rgb(0 0 0 / 9%);
 }
-</style>
+            `;
+        });
+
+        const updateGlobalVars = (content: string) => {
+            let style = document.querySelector('[data-ye-vars]');
+            if (style) {
+                style.textContent = content;
+            }
+        };
+
+        onMounted(async () => {
+            const style = document.createElement('style');
+            style.setAttribute('type', 'text/css');
+            style.setAttribute('data-ye-vars', '');
+            document.head.append(style);
+            updateGlobalVars(styleContent.value);
+        });
+
+        watchEffect(() => {
+            updateGlobalVars(styleContent.value);
+        });
+
+        return {
+            theme: options!.themeConfig || {}
+        };
+    }
+});
+</script>

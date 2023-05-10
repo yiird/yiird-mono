@@ -6,11 +6,14 @@
         :class="[cType__, theme.bemModifiers]"
         :disabled="disabled">
         <!-- 默认插槽 -->
-        <icon
+        <Icon
             v-if="loading"
             class="btn__loading"
             :icon="faSpinner"
             animation="spin" />
+        <Icon
+            v-if="icon"
+            :icon="icon"></Icon>
         <span class="btn__text"><slot></slot></span>
     </button>
 </template>
@@ -25,6 +28,7 @@ import { BtnProps, useBtnTheme } from './logic';
  * Button使用
  * @name Btn
  */
+//@ts-ignore
 export default defineComponent({
     name: 'Btn',
     props: BtnProps,
@@ -45,6 +49,7 @@ export default defineComponent({
 //字体颜色
 $color: v-bind('theme.color');
 $bgColor: v-bind('theme.bgColor');
+$borderColor: v-bind('theme.borderColor');
 $height: v-bind('theme.height');
 $lineHeight: v-bind('theme.lineHeight');
 $fontSize: v-bind('theme.fontSize');

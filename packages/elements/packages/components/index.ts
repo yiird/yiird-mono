@@ -7,5 +7,6 @@ export * from './framework/sider';
 export * from './grid-col';
 export * from './grid-row';
 export * from './icon';
+export * from './tabs';
 export * from './theme';
 export * from './tree';

@@ -122,17 +122,21 @@ export class Context {
     private _handle_ALL_IN_Exports(referStructure: ScriptStructure) {
         const map = new Map();
         referStructure.entries.forEach((entry, key) => {
-            if (key.startsWith('ALL_IN_')) {
-                if (entry instanceof ExportFromNode) {
-                    const referPath = Utils.getReferPath(referStructure.filename, entry.moduleSpecifier, this.scannerOptions.extensions);
-                    if (referPath) {
-                        const _referStructure = this.getStructure(referPath);
+            if (entry instanceof ExportFromNode) {
+                const referPath = Utils.getReferPath(referStructure.filename, entry.moduleSpecifier, this.scannerOptions.extensions);
+                if (referPath) {
+                    const _referStructure = this.getStructure(referPath);
+                    if (key.startsWith('ALL_IN_')) {
                         if (_referStructure) {
                             const _map = this._handle_ALL_IN_Exports(_referStructure);
                             _map.forEach((_entry, _key) => {
                                 map.set(_key, _entry);
                             });
                         }
+                    } else {
+                        _referStructure?.entries.forEach((_entry, _key) => {
+                            map.set(_key, _entry);
+                        });
                     }
                 }
             } else {

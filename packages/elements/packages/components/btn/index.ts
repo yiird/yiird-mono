@@ -16,3 +16,4 @@ const BtnPlugin: Plugin = {
 export type { BtnColor, BtnMode, BtnShape, BtnSize } from './logic';
 export { Btn, BtnPlugin };
 export type { ElementOptions };
+export type BtnType = InstanceType<typeof Btn>;

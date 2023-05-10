@@ -88,6 +88,12 @@ function components(baseUrl: string) {
                 { text: '图标', link: `${baseUrl}/icon` },
                 { text: '按钮', link: `${baseUrl}/btn` }
             ]
+        },
+        {
+            text: '数据',
+            items: [
+                { text: '树', link: `${baseUrl}/tree` },
+            ]
         }
     ];
 

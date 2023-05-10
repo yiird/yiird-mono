@@ -1,7 +1,9 @@
 import { kebabCase } from 'lodash-es';
-import { computed, getCurrentInstance, inject, nextTick, ref, toRef, type Ref } from 'vue';
-import { DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
+import { getCurrentInstance, inject, nextTick, onMounted, ref, toRef, type Ref } from 'vue';
+import { CACHE_INSTANCES, DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
 import type { ElementOptions } from '../types/global';
+
+export const BaseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted'];
 
 export const BaseProps = {
     /**
@@ -31,6 +33,8 @@ export type CommonPrefab = {
     ELEMENT_OPTIONS__: ElementOptions;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
+    isMounted: Ref<boolean>;
+    setDisplay: (flag: boolean) => void;
     domRefresh: () => void;
 };
 export const usePrefab = (props: any): CommonPrefab => {
@@ -45,12 +49,23 @@ export const usePrefab = (props: any): CommonPrefab => {
     const cType__ = kebabCase(internalInstance.type.name);
 
     //生成组件ID
-    const id__ = cType__ + '-' + (props.id ?? internalInstance.uid);
+    const id__ = props.id ? props.id : cType__ + '-' + internalInstance.uid;
 
-    //显示状态
-    const display__ = computed(() => {
-        return (props.display as boolean) ?? true;
-    });
+    if (!CACHE_INSTANCES.has(cType__)) {
+        CACHE_INSTANCES.set(cType__, new Map());
+    }
+    const INSTANCE_COLLECT = CACHE_INSTANCES.get(cType__);
+    INSTANCE_COLLECT!.set(id__, internalInstance);
+
+    const display__ = ref(props.display ?? true);
+
+    /**
+     * 设置隐藏
+     * @param flag true:显示，false:隐藏
+     */
+    const setDisplay = (flag: boolean) => {
+        display__.value = flag;
+    };
 
     //刷新状态
     const refresh__ = ref(true);
@@ -67,6 +82,12 @@ export const usePrefab = (props: any): CommonPrefab => {
         });
     };
 
+    const isMounted = ref(false);
+
+    onMounted(() => {
+        isMounted.value = true;
+    });
+
     return {
         ELEMENT_OPTIONS__: inject<ElementOptions>(OPTIONS_KEY, {} as ElementOptions),
         uid__: internalInstance.uid,
@@ -74,6 +95,8 @@ export const usePrefab = (props: any): CommonPrefab => {
         cType__,
         display__,
         refresh__,
+        isMounted,
+        setDisplay,
         domRefresh
     };
 };

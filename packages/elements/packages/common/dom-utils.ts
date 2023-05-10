@@ -1,7 +1,7 @@
 export const getElementById = (id: string) => document.getElementById(id);
 
 export const styleValueToNumber = (value: string) => {
-    return Number(value.replace(/[a-z|\W]*/g, ''));
+    return parseFloat(value);
 };
 
 export const getTargetHeight = (target: Element) => {

@@ -18,6 +18,7 @@ const IconPlugin: Plugin = {
 export type { IconAnimation, IconAnimationOptions, IconFlip, IconRotation, IconSize } from './logic';
 export type { ElementOptions };
 export { Icon, IconPlugin };
+export type IconType = InstanceType<typeof Icon>;
 
 export type IconDefinitionOrPack = IconDefinition | IconPack;
 

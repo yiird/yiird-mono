@@ -17,3 +17,4 @@ const MainPlugin: Plugin = {
 export type * from './logic';
 export { Main, MainPlugin };
 export type { ElementOptions };
+export type MainType = InstanceType<typeof Main>;

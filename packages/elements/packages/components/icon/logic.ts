@@ -135,7 +135,8 @@ export interface IconAnimationOptions {
 export const IconProps = {
     ...BaseProps,
     /**
-     * fontawesome 图标前缀
+     * fontawesome 图标风格前缀
+     * 如果icon为`IconDefinition`类型值，则不需要设置此项
      */
     prefix: {
         type: String as PropType<IconPrefix>,
@@ -151,6 +152,12 @@ export const IconProps = {
      * 组件配置如下：
      * `prefix`="fas"
      * `icon`="address-book"
+     * 或
+     * 不设置 `prefix`
+     * 设置`icon` 为 `IconDefinition`类型
+     *
+     * `import { faCamera } from '@fortawesome/free-solid-svg-icons';`
+     *
      * [查询图标](https://fontawesome.com/search?m=free)
      */
     icon: {

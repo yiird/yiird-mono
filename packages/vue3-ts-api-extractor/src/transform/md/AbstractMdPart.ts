@@ -7,7 +7,7 @@ export abstract class AbstractMdPart<C extends BasicComment | NodeComment> {
     private _options: MdOptions;
 
     public get styles(): typeof MdStyles {
-        return this.options.styles;
+        return this.options.styles!;
     }
 
     constructor(options: MdOptions) {

@@ -1,6 +1,6 @@
 <template>
-	<component :is="layout"></component>
-	<o-popper-wrap></o-popper-wrap>
+    <component :is="layout"></component>
+    <o-popper-wrap></o-popper-wrap>
 </template>
 
 <script lang="ts">
@@ -10,13 +10,13 @@ import { defineComponent } from 'vue';
 import DemoLayout from './DemoLayout.vue';
 const { Layout } = DefaultTheme;
 export default defineComponent({
-	setup() {
-		const { frontmatter } = useData();
-		return {
-			frontmatter,
-			layout: frontmatter.value.layout === 'demo' ? DemoLayout : Layout
-		};
-	}
+    setup() {
+        const { frontmatter } = useData();
+        return {
+            frontmatter,
+            layout: frontmatter.value.layout === 'demo' ? DemoLayout : Layout
+        };
+    }
 });
 </script>
 

@@ -17,3 +17,4 @@ const GridColPlugin: Plugin = {
 export type * from './logic';
 export { Col, GridColPlugin };
 export type { ElementOptions };
+export type ColType = InstanceType<typeof Col>;

@@ -13,14 +13,19 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         let comment = new TypeComment();
 
         if (ts.isTypeReferenceNode(node)) {
-            comment = this.parse(node.typeName);
-            comment.text = node.getText();
-            if (node.typeArguments && node.typeArguments.length > 0) {
-                const typeArguments: TypeComment[] = [];
-                node.typeArguments.forEach((arg) => {
-                    typeArguments.push(this.parse(arg));
-                });
-                comment.typeArguments = typeArguments;
+            if (Utils.isBasicType(node.typeName.getText()) && node.typeArguments) {
+                const _comment = this.parse(node.typeArguments[0]);
+                Utils.assignObject(comment, _comment);
+            } else {
+                comment = this.parse(node.typeName);
+                comment.text = node.getText();
+                if (node.typeArguments && node.typeArguments.length > 0) {
+                    const typeArguments: TypeComment[] = [];
+                    node.typeArguments.forEach((arg) => {
+                        typeArguments.push(this.parse(arg));
+                    });
+                    comment.typeArguments = typeArguments;
+                }
             }
         } else if (ts.isTypeAliasDeclaration(node)) {
             const _comment = this.parse(node.type);
@@ -28,6 +33,9 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         } else if (ts.isAsExpression(node)) {
             comment = this.parse(node.type);
             comment.text = node.type.getText();
+        } else if (ts.isArrayTypeNode(node)) {
+            const _comment = this.parse(node.elementType);
+            Utils.assignObject(comment, _comment);
         } else if (ts.isUnionTypeNode(node) || ts.isIntersectionTypeNode(node)) {
             comment.associationType = ts.isUnionTypeNode(node) ? AssociationType.union : AssociationType.intersection;
             const associations: TypeComment[] = [];
@@ -36,6 +44,14 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
             });
             comment.associations = associations;
             comment.text = node.getText();
+        } else if (ts.isTypeLiteralNode(node)) {
+            const properties: PropertyComment[] = [];
+            node.members.forEach((member) => {
+                if (ts.isPropertySignature(member)) {
+                    properties.push(this.parseProperty(member));
+                }
+            });
+            comment.properties = properties;
         } else if (ts.isInterfaceDeclaration(node) || ts.isClassDeclaration(node)) {
             comment.name = node.name?.text;
             const properties: PropertyComment[] = [];

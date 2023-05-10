@@ -17,3 +17,4 @@ const FrameworkPlugin: Plugin = {
 export type * from './logic';
 export { Framework, FrameworkPlugin };
 export type { ElementOptions };
+export type FrameworkType = InstanceType<typeof Framework>;

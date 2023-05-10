@@ -84,6 +84,8 @@ export class TypeComment extends NodeComment {
                 if (_type.name && !Utils.isBasicType(_type.name)) {
                     specilTypes.push(_type);
                     specilTypes.push(..._type.getSpecialTypes());
+                } else {
+                    specilTypes.push(..._type.getSpecialTypes());
                 }
             });
         }
