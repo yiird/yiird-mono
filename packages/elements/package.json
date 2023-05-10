@@ -1,136 +1,136 @@
 {
-  "name": "@yiird/elements",
-  "version": "0.1.0-alpha.8",
-  "private": false,
-  "main": "dist/yiird-elements.umd.js",
-  "module": "dist/yiird-elements.mjs",
-  "types": "dist/index.d.ts",
-  "license": "ISC",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/yiird-elements.mjs",
-      "require": "./dist/yiird-elements.umd.js"
+    "name": "@yiird/elements",
+    "version": "0.1.0-alpha.9",
+    "private": false,
+    "main": "dist/yiird-elements.umd.js",
+    "module": "dist/yiird-elements.mjs",
+    "types": "dist/index.d.ts",
+    "license": "ISC",
+    "files": [
+        "dist"
+    ],
+    "publishConfig": {
+        "access": "public"
     },
-    "./style.css": "./dist/style.css",
-    "./tab": {
-      "import": "./dist/standalone/tab/index.mjs",
-      "require": "./dist/standalone/tab/index.umd.js"
+    "exports": {
+        ".": {
+            "import": "./dist/yiird-elements.mjs",
+            "require": "./dist/yiird-elements.umd.js"
+        },
+        "./style.css": "./dist/style.css",
+        "./tab": {
+            "import": "./dist/standalone/tab/index.mjs",
+            "require": "./dist/standalone/tab/index.umd.js"
+        },
+        "./tab/style.css": "./dist/tab/style.css",
+        "./tabs": {
+            "import": "./dist/standalone/tabs/index.mjs",
+            "require": "./dist/standalone/tabs/index.umd.js"
+        },
+        "./tabs/style.css": "./dist/tabs/style.css",
+        "./tree": {
+            "import": "./dist/standalone/tree/index.mjs",
+            "require": "./dist/standalone/tree/index.umd.js"
+        },
+        "./tree/style.css": "./dist/tree/style.css",
+        "./grid-col": {
+            "import": "./dist/standalone/grid-col/index.mjs",
+            "require": "./dist/standalone/grid-col/index.umd.js"
+        },
+        "./grid-col/style.css": "./dist/grid-col/style.css",
+        "./footer": {
+            "import": "./dist/standalone/footer/index.mjs",
+            "require": "./dist/standalone/footer/index.umd.js"
+        },
+        "./footer/style.css": "./dist/footer/style.css",
+        "./sider": {
+            "import": "./dist/standalone/sider/index.mjs",
+            "require": "./dist/standalone/sider/index.umd.js"
+        },
+        "./sider/style.css": "./dist/sider/style.css",
+        "./main": {
+            "import": "./dist/standalone/main/index.mjs",
+            "require": "./dist/standalone/main/index.umd.js"
+        },
+        "./main/style.css": "./dist/main/style.css",
+        "./header": {
+            "import": "./dist/standalone/header/index.mjs",
+            "require": "./dist/standalone/header/index.umd.js"
+        },
+        "./header/style.css": "./dist/header/style.css",
+        "./framework": {
+            "import": "./dist/standalone/framework/index.mjs",
+            "require": "./dist/standalone/framework/index.umd.js"
+        },
+        "./framework/style.css": "./dist/framework/style.css",
+        "./grid-row": {
+            "import": "./dist/standalone/grid-row/index.mjs",
+            "require": "./dist/standalone/grid-row/index.umd.js"
+        },
+        "./grid-row/style.css": "./dist/grid-row/style.css",
+        "./btn": {
+            "import": "./dist/standalone/btn/index.mjs",
+            "require": "./dist/standalone/btn/index.umd.js"
+        },
+        "./btn/style.css": "./dist/btn/style.css",
+        "./theme": {
+            "import": "./dist/standalone/theme/index.mjs",
+            "require": "./dist/standalone/theme/index.umd.js"
+        },
+        "./theme/style.css": "./dist/theme/style.css",
+        "./icon": {
+            "import": "./dist/standalone/icon/index.mjs",
+            "require": "./dist/standalone/icon/index.umd.js"
+        },
+        "./icon/style.css": "./dist/icon/style.css"
     },
-    "./tab/style.css": "./dist/tab/style.css",
-    "./tabs": {
-      "import": "./dist/standalone/tabs/index.mjs",
-      "require": "./dist/standalone/tabs/index.umd.js"
+    "scripts": {
+        "dev": "vite",
+        "build": "run-p type-check build-only && bash scripts/build-standalone.sh",
+        "build:main": "run-p type-check build-only",
+        "preview": "vite preview",
+        "test:unit": "vitest",
+        "build-only": "vite build",
+        "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+        "format": "prettier --write src/",
+        "commit": "git add . && cz",
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs"
     },
-    "./tabs/style.css": "./dist/tabs/style.css",
-    "./tree": {
-      "import": "./dist/standalone/tree/index.mjs",
-      "require": "./dist/standalone/tree/index.umd.js"
+    "dependencies": {
+        "@ant-design/colors": "^7.0.0",
+        "@fortawesome/fontawesome-svg-core": "^6.4.0",
+        "@fortawesome/vue-fontawesome": "^3.0.3",
+        "animate.css": "^4.1.1",
+        "color": "^4.2.3",
+        "smooth-scrollbar": "^8.8.3",
+        "vue": "^3.2.47"
     },
-    "./tree/style.css": "./dist/tree/style.css",
-    "./grid-col": {
-      "import": "./dist/standalone/grid-col/index.mjs",
-      "require": "./dist/standalone/grid-col/index.umd.js"
+    "devDependencies": {
+        "@fortawesome/pro-duotone-svg-icons": "^6.4.0",
+        "@fortawesome/pro-light-svg-icons": "^6.4.0",
+        "@fortawesome/pro-regular-svg-icons": "^6.4.0",
+        "@fortawesome/pro-solid-svg-icons": "^6.4.0",
+        "@fortawesome/pro-thin-svg-icons": "^6.4.0",
+        "@fortawesome/sharp-light-svg-icons": "^6.4.0",
+        "@fortawesome/sharp-regular-svg-icons": "^6.4.0",
+        "@fortawesome/sharp-solid-svg-icons": "^6.4.0",
+        "@types/color": "^3.0.3",
+        "@types/jsdom": "^21.1.0",
+        "@vitejs/plugin-vue": "^4.0.0",
+        "@vitejs/plugin-vue-jsx": "^3.0.0",
+        "@vue/test-utils": "^2.3.0",
+        "@vue/tsconfig": "^0.1.3",
+        "@yiird/vite-plugin-vue-yiird-helper": "^0.3.0-alpha.0",
+        "jsdom": "^21.1.0",
+        "npm-run-all": "^4.1.5",
+        "vite": "^4.1.4",
+        "vite-plugin-dts": "^2.2.0",
+        "vitepress": "^1.0.0-alpha.65",
+        "vitest": "^0.29.1",
+        "vue-tsc": "^1.2.0"
     },
-    "./grid-col/style.css": "./dist/grid-col/style.css",
-    "./footer": {
-      "import": "./dist/standalone/footer/index.mjs",
-      "require": "./dist/standalone/footer/index.umd.js"
-    },
-    "./footer/style.css": "./dist/footer/style.css",
-    "./sider": {
-      "import": "./dist/standalone/sider/index.mjs",
-      "require": "./dist/standalone/sider/index.umd.js"
-    },
-    "./sider/style.css": "./dist/sider/style.css",
-    "./main": {
-      "import": "./dist/standalone/main/index.mjs",
-      "require": "./dist/standalone/main/index.umd.js"
-    },
-    "./main/style.css": "./dist/main/style.css",
-    "./header": {
-      "import": "./dist/standalone/header/index.mjs",
-      "require": "./dist/standalone/header/index.umd.js"
-    },
-    "./header/style.css": "./dist/header/style.css",
-    "./framework": {
-      "import": "./dist/standalone/framework/index.mjs",
-      "require": "./dist/standalone/framework/index.umd.js"
-    },
-    "./framework/style.css": "./dist/framework/style.css",
-    "./grid-row": {
-      "import": "./dist/standalone/grid-row/index.mjs",
-      "require": "./dist/standalone/grid-row/index.umd.js"
-    },
-    "./grid-row/style.css": "./dist/grid-row/style.css",
-    "./btn": {
-      "import": "./dist/standalone/btn/index.mjs",
-      "require": "./dist/standalone/btn/index.umd.js"
-    },
-    "./btn/style.css": "./dist/btn/style.css",
-    "./theme": {
-      "import": "./dist/standalone/theme/index.mjs",
-      "require": "./dist/standalone/theme/index.umd.js"
-    },
-    "./theme/style.css": "./dist/theme/style.css",
-    "./icon": {
-      "import": "./dist/standalone/icon/index.mjs",
-      "require": "./dist/standalone/icon/index.umd.js"
-    },
-    "./icon/style.css": "./dist/icon/style.css"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check build-only && bash scripts/build-standalone.sh",
-    "build:main": "run-p type-check build-only",
-    "preview": "vite preview",
-    "test:unit": "vitest",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/",
-    "commit": "git add . && cz",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
-  },
-  "dependencies": {
-    "@ant-design/colors": "^7.0.0",
-    "@fortawesome/fontawesome-svg-core": "^6.4.0",
-    "@fortawesome/vue-fontawesome": "^3.0.3",
-    "animate.css": "^4.1.1",
-    "color": "^4.2.3",
-    "smooth-scrollbar": "^8.8.3",
-    "vue": "^3.2.47"
-  },
-  "devDependencies": {
-    "@fortawesome/pro-duotone-svg-icons": "^6.4.0",
-    "@fortawesome/pro-light-svg-icons": "^6.4.0",
-    "@fortawesome/pro-regular-svg-icons": "^6.4.0",
-    "@fortawesome/pro-solid-svg-icons": "^6.4.0",
-    "@fortawesome/pro-thin-svg-icons": "^6.4.0",
-    "@fortawesome/sharp-light-svg-icons": "^6.4.0",
-    "@fortawesome/sharp-regular-svg-icons": "^6.4.0",
-    "@fortawesome/sharp-solid-svg-icons": "^6.4.0",
-    "@types/color": "^3.0.3",
-    "@types/jsdom": "^21.1.0",
-    "@vitejs/plugin-vue": "^4.0.0",
-    "@vitejs/plugin-vue-jsx": "^3.0.0",
-    "@vue/test-utils": "^2.3.0",
-    "@vue/tsconfig": "^0.1.3",
-    "@yiird/vite-plugin-vue-yiird-helper": "^0.2.1-alpha.0",
-    "jsdom": "^21.1.0",
-    "npm-run-all": "^4.1.5",
-    "vite": "^4.1.4",
-    "vite-plugin-dts": "^2.2.0",
-    "vitepress": "^1.0.0-alpha.65",
-    "vitest": "^0.29.1",
-    "vue-tsc": "^1.2.0"
-  },
-  "gitHead": "8822903937c412ea8d67f98cb59400b6e31e1b9b"
+    "gitHead": "8822903937c412ea8d67f98cb59400b6e31e1b9b"
 }

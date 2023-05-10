@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0-alpha.1](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.2.0-alpha.0...@yiird/vue3-ts-api-extractor@2.2.0-alpha.1) (2023-05-10)
+
+### Features
+
+-   **elements:** 完成选项卡组件，修改其他组件 bug ([3c60548](https://github.com/yiird/yiird-mono/commit/3c60548ef86a6ec3fe0c6942c63dc8f83cc24a04))
+
 # [2.2.0-alpha.0](https://github.com/yiird/yiird-mono/compare/@yiird/vue3-ts-api-extractor@2.1.2-alpha.6...@yiird/vue3-ts-api-extractor@2.2.0-alpha.0) (2023-04-18)
 
 ### Features
