@@ -10,7 +10,7 @@ export enum FileKind {
     VUE
 }
 
-export const BASIC_TYPE = ['string', 'object', 'array', 'boolean', 'number', 'set', 'map'];
+export const BASIC_TYPE = ['string', 'object', 'array', 'boolean', 'number', 'set', 'map', 'any', 'unknow'];
 
 export class Utils {
     static getScriptKind = (lang: string) => {

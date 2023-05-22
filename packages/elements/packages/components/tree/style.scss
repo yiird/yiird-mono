@@ -1,5 +1,111 @@
 @import '../theme/scss/bem';
 
 @include b(tree) {
-	
+    @include e('node') {
+        font-size: $fontSize;
+        height: $height;
+        line-height: $lineHeight;
+
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        user-select: none;
+        outline: none;
+
+        @include e('indent') {
+            display: flex;
+            align-items: stretch;
+            flex-wrap: nowrap;
+            height: 100%;
+            @include e('indent-space') {
+                width: calc($fontSize * 1.5);
+                display: block;
+                position: relative;
+                height: 100%;
+                &::before {
+                    position: absolute;
+                    top: -50%;
+                    left: calc(50% - 1px);
+                    border-left: 1px dotted $colorBorder;
+                    bottom: calc(50% + 1px);
+                    content: '';
+                }
+
+                @include when('hide-line') {
+                    &::before {
+                        border-left: 1px solid transparent;
+                    }
+                }
+
+                &:last-child {
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        left: 50%;
+                        right: 0;
+                        bottom: calc(50% + 1px);
+                        border-bottom: 1px dotted $colorBorder;
+                    }
+                }
+            }
+        }
+
+        @include e('content') {
+            display: flex;
+            align-items: center;
+            column-gap: 0.25rem;
+
+            @include e('icon') {
+                font-size: 1.3em;
+            }
+            @include e('text') {
+                cursor: pointer;
+                padding: 0 0.25rem;
+                box-sizing: border-box;
+                border: 1px solid transparent;
+                border-radius: 5px;
+
+                &:hover {
+                    background-color: $colorHover;
+                }
+            }
+        }
+
+        @include when('first-brother') {
+            @include e('indent-space') {
+                &:last-child {
+                    &::before {
+                        top: 0;
+                    }
+                }
+            }
+        }
+
+        @include when('selected') {
+            @include e('icon') {
+                color: $colorFocus;
+            }
+            @include e('text') {
+                color: $colorSelected;
+            }
+        }
+
+        @include when('half-check') {
+            @include e('icon') {
+                color: unset;
+            }
+        }
+    }
+
+    @include m('no-line') {
+        @include e('indent-space') {
+            &::before {
+                border-color: transparent;
+            }
+
+            &:after {
+                border-color: transparent;
+            }
+        }
+    }
 }

@@ -2,10 +2,12 @@ import { gray, green, orange, presetDarkPalettes, presetPalettes, purple, red } 
 import Color from 'color';
 import type { ComponentInternalInstance, InjectionKey } from 'vue';
 import type { ElementOptions, FrameworkConfig, NumberSize, ThemeConfig, TshirtSize, UserThemeVars } from './types/global';
+import type { Scroll } from './types/scroll';
 
 export const DEFAULT_PREFIX = 'y';
 export const OPTIONS_KEY = Symbol('options-key') as InjectionKey<ElementOptions>;
 export const FRAMEWORK_CONFIG_KEY = Symbol('framework-key') as InjectionKey<FrameworkConfig>;
+export const SCROLL_KEY = Symbol('scroll-key') as InjectionKey<Scroll>;
 
 export const CACHE_INSTANCES = new Map<string, Map<string, ComponentInternalInstance>>();
 
@@ -48,9 +50,9 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
         ye_fontSize: themeVars.ye_fontSize || 14,
         ye_baseHeightPercentOfFontSize,
         ye_fontSizeStr: (themeVars.ye_fontSize || 14) + 'px',
-        fontWeightLight: themeVars.fontWeightLight || 400,
-        fontWeightRegular: themeVars.fontWeightRegular || 500,
-        fontWeightBold: themeVars.fontWeightBold || 600,
+        ye_fontWeightLight: themeVars.fontWeightLight || 400,
+        ye_fontWeightRegular: themeVars.fontWeightRegular || 500,
+        ye_fontWeightBold: themeVars.fontWeightBold || 600,
         ye_colorPrimary: colorPrimary,
         ye_colorSuccess: colorSuccess,
         ye_colorError: colorError,
@@ -62,9 +64,9 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
         ye_primaryTextSizeStr: (themeVars.ye_fontSize || 14) + 'px',
         ye_secondaryTextSize: (themeVars.ye_fontSize || 14) - 1,
         ye_secondaryTextSizeStr: (themeVars.ye_fontSize || 14) - 1 + 'px',
-        ye_colorHover: colorPrimary[3],
-        ye_colorActive: colorPrimary[5],
-        ye_colorFocus: colorPrimary[4],
+        ye_colorHover: colorPrimary[1],
+        ye_colorActive: colorPrimary[4],
+        ye_colorFocus: colorPrimary[5],
         ye_colorBg: neutral.colorBg,
         ye_colorDivider: neutral.colorDivider,
         ye_colorBorder: neutral.colorBorder,

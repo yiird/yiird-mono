@@ -1,4 +1,4 @@
-import { faClose, type IconDefinition, type IconName } from '@fortawesome/pro-light-svg-icons';
+import { faClose, type IconDefinition } from '@fortawesome/pro-light-svg-icons';
 import { isNumber, isString } from 'lodash-es';
 import {
     computed,
@@ -18,11 +18,11 @@ import {
     type UnwrapRef,
     type VNodeRef
 } from 'vue';
-import { useScroll, type Scroll, type ScrollOptions } from '../../common/composites';
-import { BaseProps, usePrefab, useTheme, type CommonPrefab } from '../../common/prefab';
+import { useScroll } from '../../common/composites';
+import { baseExpose, BaseProps, usePrefab, useTheme, type CommonPrefab } from '../../common/prefab';
 import { sizeToFontSize, sizeToHeight } from '../../config';
-import type { ThemeConfig } from '../../types/global';
-import type { BtnSize } from '../btn';
+import type { Size, ThemeConfig } from '../../types/global';
+import type { Scroll, ScrollOptions } from '../../types/scroll';
 
 /**
  * 标签对象
@@ -30,13 +30,16 @@ import type { BtnSize } from '../btn';
 export interface TabItem {
     id?: string;
     name: string;
-    icon?: IconName | IconDefinition;
+    icon?: string | IconDefinition;
     closeable?: boolean;
     page?: string | Component;
 }
 
 export const TabsProps = {
     ...BaseProps,
+    /**
+     * 选项
+     */
     items: {
         type: Array as PropType<TabItem[]>,
         default() {
@@ -70,7 +73,7 @@ export const TabsProps = {
      * 尺寸
      */
     size: {
-        type: String as PropType<BtnSize>,
+        type: String as PropType<Size>,
         default: 'md'
     },
     /**
@@ -192,7 +195,7 @@ const obtainTheme = (props: TabsPropsType, prefab: CommonPrefab, tabsConfig: Unw
     });
 };
 
-export const useTabs = (props: TabsPropsType) => {
+export const setupTabs = (props: TabsPropsType) => {
     const prefab = usePrefab(props);
 
     const barRefs: VNodeRef = ref({});
@@ -228,21 +231,25 @@ export const useTabs = (props: TabsPropsType) => {
     const scopeId = (getCurrentInstance()?.type as any).__scopeId;
     const scrollOptions: ScrollOptions = {
         plugins: {
-            hideTrack: { track: 'both' },
+            hideTrack: { enabled: true, track: 'both' },
             auxEl: {
+                enabled: true,
                 scopeId: scopeId,
                 auxPosition: ['tabs__aux-left', 'tabs__aux-right']
             },
             lifecircle: {
+                enabled: true,
                 onInit() {
                     moveInView(tabsConfig.currentActiveIndex);
                 }
             },
             disableScrollBar: {
+                enabled: true,
                 y: true
             }
         }
     };
+
     const scroll = useScroll(scrollRef, scrollOptions);
 
     /**
@@ -342,10 +349,12 @@ export const useTabs = (props: TabsPropsType) => {
         tabs: items,
         barRefs,
         scrollRef,
-        active,
-        close,
         currentActiveIndex,
         disabledIndexes,
-        faClose
+        faClose,
+        active,
+        close
     };
 };
+
+export const expose = [...baseExpose, 'active', 'close'];

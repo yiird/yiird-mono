@@ -1,13 +1,15 @@
 import ts, { Expression, ObjectLiteralElementLike, PropertyAssignment, SyntaxKind } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { AbstractCommentParser } from '../AbstractCommentParser';
+import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 import { DefaultValue, PropComment } from '../basic/PropComment';
 import { AssociationType, TypeComment } from '../node/TypeComment';
-import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 
 export class PropCommentParser extends AbstractCommentParser<PropComment> {
     private _typeParser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
     parse(node: Expression | ObjectLiteralElementLike) {
+        this._typeParser.init();
+
         const jsdocs = JsdocUtils.getJsDoc(node);
         const jsdoc = jsdocs[0];
         const comment = new PropComment();

@@ -27,6 +27,8 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 
     private _searchNodes: Node[] = [];
     parse(node: ExportNode) {
+        this._typePaser.init();
+
         const sfcNode = node.projection || node.root;
         const jsdocs = JsdocUtils.getJsDoc(node.root);
         const jsdoc = jsdocs[0];
@@ -128,6 +130,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
                 const targetNode = scriptNode?.projection || scriptNode?.root;
                 if (targetNode) {
                     comments.push(...this._findEndReturn(targetNode, scriptNode.root));
+                    this._searchNodes.push(targetNode);
                 }
             }
         } else if (ts.isArrowFunction(inputNode) || ts.isFunctionDeclaration(inputNode)) {

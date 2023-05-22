@@ -1,5 +1,5 @@
 import jsb from 'js-beautify';
-import { camelCase, isArray, isObject, isString, upperFirst } from 'lodash-es';
+import { camelCase, isArray, isObject, isString, snakeCase, upperFirst } from 'lodash-es';
 import { Utils } from '../../common/Utils';
 import { DefaultValue } from '../../parser/comment/basic/PropComment';
 import { SfcComment } from '../../parser/comment/basic/SfcComment';
@@ -73,7 +73,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                                         if (!arg.type.isBasic()) {
                                             _specialTypes.push(arg.type);
                                         }
-                                        _specialTypes.push(...arg.type.getSpecialTypes());
+                                        _specialTypes.push(...arg.type.getSpecialTypes([]));
                                     }
                                 }
                             });
@@ -96,7 +96,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                     });
                 datas.push(record);
             });
-            doc += this.styles.table(headers, datas);
+            doc += this.styles.table(headers, datas, 'slots');
         }
 
         if (props && props.length > 0) {
@@ -118,7 +118,8 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                     .filter((key) => names.includes(key))
                     .forEach((name) => {
                         if (name === 'name') {
-                            record[name] = prop.isRequired ? prop.name + '<br /><span>(*)</span>' : prop.name + '';
+                            const propName = prop.name ? snakeCase(prop.name).replaceAll('_', '-') : '';
+                            record[name] = prop.isRequired ? propName + '<br /><span>(*)</span>' : propName + '';
                         } else if (name === 'type') {
                             const type = prop.type;
                             if (type) {
@@ -153,7 +154,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                                             });
                                         }
                                     } else {
-                                        type.getSpecialTypes().forEach((_stype) => {
+                                        type.getSpecialTypes([]).forEach((_stype) => {
                                             specialTypes.add(_stype);
                                         });
                                     }
@@ -232,7 +233,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                 datas.push(record);
             });
 
-            doc += this.styles.table(headers, datas);
+            doc += this.styles.table(headers, datas, 'props');
         }
 
         if (events && events.length > 0) {
@@ -253,7 +254,10 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                 Object.keys(propObject)
                     .filter((key) => names.includes(key))
                     .forEach((name) => {
-                        if (name === 'args') {
+                        if (name === 'name') {
+                            const propName = event.name ? snakeCase(event.name).replaceAll('_', '-') : '';
+                            record[name] = propName;
+                        } else if (name === 'args') {
                             const _args: string[] = [];
                             const _specialTypes: TypeComment[] = [];
                             let argsStr = '';
@@ -274,7 +278,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                                 _specialTypes.forEach((specilType) => {
                                     argsStr += `[${specilType.name}](#${specilType.name?.toLocaleLowerCase()}) `;
                                     specialTypes.add(specilType);
-                                    specilType.getSpecialTypes().forEach((value) => {
+                                    specilType.getSpecialTypes([]).forEach((value) => {
                                         specialTypes.add(value);
                                     });
                                 });
@@ -287,7 +291,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                     });
                 datas.push(record);
             });
-            doc += this.styles.table(headers, datas);
+            doc += this.styles.table(headers, datas, 'events');
         }
 
         if (methods && methods.length > 0) {
@@ -312,7 +316,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                         if (!parameter.type.isBasic()) {
                             _specialTypes.push(parameter.type);
                         }
-                        _specialTypes.push(...parameter.type.getSpecialTypes());
+                        _specialTypes.push(...parameter.type.getSpecialTypes([]));
                     }
                 });
                 doc += `(${_parameters.join(',')})`;
@@ -363,7 +367,7 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
     private _handleSpecialTypeWithAssociationType(_type: TypeComment, specialTypes: Set<TypeComment>) {
         const arr: TypeComment[] = [];
         _type.associations?.forEach((association) => {
-            association.getSpecialTypes().forEach((_stype) => {
+            association.getSpecialTypes([]).forEach((_stype) => {
                 arr.push(_stype);
             });
             if (!association.isBasic() && !association.associationType) {

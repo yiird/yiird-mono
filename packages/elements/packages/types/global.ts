@@ -32,6 +32,11 @@ export interface ThemeConfig extends Record<string, any> {
     ye_fontSize: number;
     ye_fontSizeStr: string;
     ye_baseHeightPercentOfFontSize: number;
+
+    ye_fontWeightLight: number;
+    ye_fontWeightRegular: number;
+    ye_fontWeightBold: number;
+
     /** 主色 */
     ye_colorPrimary: string[] & {
         primary?: string | undefined;

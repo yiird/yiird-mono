@@ -13,7 +13,7 @@
             "</template>",
             "<script lang=\"ts\">",
             "import { defineComponent } from 'vue';",
-            "import { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props, use${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} } from './logic';",
+            "import { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props, setup${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}, ${TM_DIRECTORY/.*\\/(.+)/${1}/}Expose } from './logic';",
             "/**",
             " * ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}使用",
             " * @name ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}",
@@ -21,11 +21,9 @@
             "export default defineComponent({",
             "    name: '${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}',",
             "    props: ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props,",
+            "    expose: ${TM_DIRECTORY/.*\\/(.+)/${1}/}Expose,",
             "    setup(props) {",
-            "        const logic = use${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}(props);",
-            "        return {",
-            "            ...logic",
-            "        };",
+            "        return setup${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}(props);",
             "    }",
             "});",
             "",
@@ -76,7 +74,7 @@
         "prefix": "ye:logic",
         "body": [
             "import { computed, type ExtractPropTypes, type PropType } from 'vue';",
-            "import { BaseProps, useTheme, usePrefab, type CommonPrefab } from '../../common/prefab';",
+            "import { BaseProps, baseExpose, useTheme, usePrefab, type CommonPrefab } from '../../common/prefab';",
             "export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props = {",
             "    ...BaseProps,",
             "} as const;",
@@ -101,7 +99,7 @@
             "    });",
             "};",
             "",
-            "export const use${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} = (props: ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}PropsType) => {",
+            "export const setup${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} = (props: ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}PropsType) => {",
             "    const prefab = usePrefab(props);",
             "    const theme = obtainTheme(props,prefab);",
             "    return {",
@@ -109,6 +107,7 @@
             "        theme,",
             "    };",
             "}",
+            "export const ${TM_DIRECTORY/.*\\/(.+)/${1}/}Expose = [...baseExpose];",
         ]
     }
 }

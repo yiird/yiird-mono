@@ -1,4 +1,4 @@
-import type { IconDefinition, IconName } from '@fortawesome/pro-duotone-svg-icons';
+import type { IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
 import { computed, type ExtractPropTypes, type PropType } from 'vue';
 import { BaseProps, useTheme } from '../../common/prefab';
 import { sizeToFontSize, sizeToHeight } from '../../config';
@@ -11,7 +11,7 @@ export type BtnMode = 'default' | 'empty' | 'link' | 'dashed';
 export const BtnProps = {
     ...BaseProps,
     icon: {
-        type: [String, Object] as PropType<IconDefinition | IconName>
+        type: [String, Object] as PropType<string | IconDefinition>
     },
     /**
      * 尺寸

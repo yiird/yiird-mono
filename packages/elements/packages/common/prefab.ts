@@ -3,7 +3,7 @@ import { getCurrentInstance, inject, nextTick, onMounted, ref, toRef, type Ref }
 import { CACHE_INSTANCES, DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
 import type { ElementOptions } from '../types/global';
 
-export const BaseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted'];
+export const baseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted'];
 
 export const BaseProps = {
     /**

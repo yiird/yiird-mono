@@ -9,11 +9,12 @@
         <Icon
             v-if="loading"
             class="btn__loading"
-            :icon="faSpinner"
+            name="spinner"
+            prefix="fat"
             animation="spin" />
         <Icon
             v-if="icon"
-            :icon="icon"></Icon>
+            :name="icon"></Icon>
         <span class="btn__text"><slot></slot></span>
     </button>
 </template>
@@ -28,7 +29,6 @@ import { BtnProps, useBtnTheme } from './logic';
  * Button使用
  * @name Btn
  */
-//@ts-ignore
 export default defineComponent({
     name: 'Btn',
     props: BtnProps,

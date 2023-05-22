@@ -26,6 +26,8 @@ export abstract class AbstractCommentParser<C extends BasicComment | NodeComment
         return this._structure;
     }
 
+    init() {}
+
     abstract parse(node: AbstractNode | Node, scope?: Node): C;
 
     /**

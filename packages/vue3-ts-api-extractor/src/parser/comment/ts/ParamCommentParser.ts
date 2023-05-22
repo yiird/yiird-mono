@@ -15,6 +15,8 @@ export class ParamCommentParser extends AbstractCommentParser<ParamComment> {
     //private _typeParser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 
     parse(node: Node): ParamComment {
+        this._typeParser.init();
+
         const jsdocs = JsdocUtils.getJsDoc(node);
         const jsdoc = jsdocs[0];
         const comment = new ParamComment();

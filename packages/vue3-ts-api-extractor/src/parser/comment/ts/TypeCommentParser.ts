@@ -7,11 +7,16 @@ import { PropertyComment } from '../node/PropertyComment';
 import { AssociationType, TypeComment } from '../node/TypeComment';
 
 export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
+    recursionTimes: Record<string, Record<string, number>> = {};
+    types: Record<string, Record<string, TypeComment>> = {};
+    init() {
+        this.recursionTimes = {};
+        this.types = {};
+    }
     parse(node: Node): TypeComment {
         const jsdocs = JsdocUtils.getJsDoc(node);
         const jsdoc = jsdocs[0];
         let comment = new TypeComment();
-
         if (ts.isTypeReferenceNode(node)) {
             if (Utils.isBasicType(node.typeName.getText()) && node.typeArguments) {
                 const _comment = this.parse(node.typeArguments[0]);
@@ -87,6 +92,7 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         if (jsdoc) {
             comment.description = JsdocUtils.getDescription(jsdoc);
         }
+
         return comment;
     }
 
@@ -95,13 +101,48 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         const jsdoc = jsdocs[0];
         const comment = new PropertyComment();
         comment.name = node.name.getText();
-        if (node.type) {
-            comment.type = this.parse(node.type);
+        const typeName = node.type?.getText();
+        const _recursionTimes = typeName ? this.getRecursionTimes(node, typeName) : 0;
+        const filename = node.getSourceFile().fileName;
+        if (_recursionTimes < 20 && typeName) {
+            if (!comment.type && node.type) {
+                comment.type = this.parse(node.type);
+            } else {
+                comment.type = this.types[filename][typeName];
+            }
         }
 
         if (jsdoc) {
             comment.description = JsdocUtils.getDescription(jsdoc);
         }
+        if (comment.name && typeName) {
+            if (!this.recursionTimes[filename]) {
+                this.recursionTimes[filename] = {};
+            }
+            if (!this.types[filename]) {
+                this.types[filename] = {};
+            }
+            const times = this.recursionTimes[filename][typeName];
+            if (comment.type && !Utils.isBasicType(typeName)) {
+                this.recursionTimes[filename][typeName] = times ? times + 1 : 0;
+                this.types[filename][typeName] = comment.type;
+            }
+        }
         return comment;
+    }
+
+    getRecursionTimes(node: Node, name: string) {
+        const filename = node.getSourceFile().fileName;
+        let times = 0;
+        if (this.recursionTimes[filename]) {
+            if (!this.recursionTimes[filename][name]) {
+                this.recursionTimes[filename][name] = 0;
+            }
+            if (!Utils.isBasicType(name)) {
+                times = this.recursionTimes[filename][name]++;
+            }
+        }
+
+        return times;
     }
 }

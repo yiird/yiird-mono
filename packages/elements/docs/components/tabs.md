@@ -5,24 +5,38 @@ Tabs使用
 
 ## Slots
 
+
+<div class="slots">
+
 | 名称        | 参数 | 描述         |
 | :---------- | :--- | :----------- |
 | extra-left  |      | 左侧辅助插槽 |
 | extra-right |      | 右侧辅助插槽 |
 
+</div>
+
+
+
 ## Props
 
-| 名称         | 描述                                                                                                                                                      |          类型         | 可选值          |
-| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------: | :-------------- |
-| id           | 组件id，若不设置会自动生成                                                                                                                                |         String        |                 |
-| display      | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                    |        Boolean        |                 |
-| items        | <hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                               | [TabItem](#tabitem)[] |                 |
-| activeKey    | 当前激活的选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>0</pre>                                                                    |     Number,String     |                 |
-| disabledKeys | 禁用选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                          |     String,Number     |                 |
-| closeable    | 是否可关闭<hr>默认值:<br><pre>false</pre>                                                                                                                 |        Boolean        |                 |
-| size         | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                          |         String        |                 |
-| mode         | 文本模式<hr>默认值:<br><pre>text</pre>                                                                                                                    |         String        | `text` , `card` |
-| gutter       | 间距<hr>默认值:<br><pre>default (rawProps: any) {<br>  if ('card' === rawProps.mode) {<br>    return 5;<br>  } else {<br>    return 15;<br>  }<br>}</pre> |         Number        |                 |
+
+<div class="props">
+
+| 名称          | 描述                                                                                                                                                      |          类型         | 可选值                                                                                                                  |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id            | 组件id，若不设置会自动生成                                                                                                                                |         String        |                                                                                                                         |
+| display       | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                    |        Boolean        |                                                                                                                         |
+| items         | 选项<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                           | [TabItem](#tabitem)[] |                                                                                                                         |
+| active-key    | 当前激活的选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>0</pre>                                                                    |     Number,String     |                                                                                                                         |
+| disabled-keys | 禁用选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                          |     String,Number     |                                                                                                                         |
+| closeable     | 是否可关闭<hr>默认值:<br><pre>false</pre>                                                                                                                 |        Boolean        |                                                                                                                         |
+| size          | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                          |         String        | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| mode          | 文本模式<hr>默认值:<br><pre>text</pre>                                                                                                                    |         String        | `text` , `card`                                                                                                         |
+| gutter        | 间距<hr>默认值:<br><pre>default (rawProps: any) {<br>  if ('card' === rawProps.mode) {<br>    return 5;<br>  } else {<br>    return 15;<br>  }<br>}</pre> |         Number        |                                                                                                                         |
+
+</div>
+
+
 
 ## Methods
 
@@ -55,6 +69,6 @@ Tabs使用
 - 选项：
 	 - `id` { string } : 
 	 - `name` { string } : 
-	 - `icon` { IconName | IconDefinition } : 
+	 - `icon` { string | IconDefinition } : 
 	 - `closeable` { boolean } : 
 	 - `page` { string | Component } : 

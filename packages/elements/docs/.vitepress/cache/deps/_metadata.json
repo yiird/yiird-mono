@@ -1,83 +1,95 @@
 {
   "hash": "32f49438",
-  "browserHash": "5cc72c32",
+  "browserHash": "77fc977c",
   "optimized": {
     "vue": {
       "src": "../../../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "753fb615",
+      "fileHash": "a4443fd6",
       "needsInterop": false
     },
     "lodash-es": {
       "src": "../../../../../../node_modules/lodash-es/lodash.js",
       "file": "lodash-es.js",
-      "fileHash": "2592a923",
+      "fileHash": "7d7321b5",
       "needsInterop": false
     },
     "@fortawesome/free-solid-svg-icons": {
       "src": "../../../../../../node_modules/@fortawesome/free-solid-svg-icons/index.mjs",
       "file": "@fortawesome_free-solid-svg-icons.js",
-      "fileHash": "d7e40168",
+      "fileHash": "3628f4ec",
+      "needsInterop": false
+    },
+    "@fortawesome/pro-light-svg-icons": {
+      "src": "../../../../../../node_modules/@fortawesome/pro-light-svg-icons/index.mjs",
+      "file": "@fortawesome_pro-light-svg-icons.js",
+      "fileHash": "32998e39",
       "needsInterop": false
     },
     "@ant-design/colors": {
       "src": "../../../../../../node_modules/@ant-design/colors/es/index.js",
       "file": "@ant-design_colors.js",
-      "fileHash": "93db2aa5",
-      "needsInterop": false
-    },
-    "@fortawesome/fontawesome-svg-core": {
-      "src": "../../../../../../node_modules/@fortawesome/fontawesome-svg-core/index.mjs",
-      "file": "@fortawesome_fontawesome-svg-core.js",
-      "fileHash": "5848deca",
-      "needsInterop": false
-    },
-    "@fortawesome/pro-duotone-svg-icons": {
-      "src": "../../../../../../node_modules/@fortawesome/pro-duotone-svg-icons/index.mjs",
-      "file": "@fortawesome_pro-duotone-svg-icons.js",
-      "fileHash": "09e337c0",
-      "needsInterop": false
-    },
-    "@fortawesome/vue-fontawesome": {
-      "src": "../../../../../../node_modules/@fortawesome/vue-fontawesome/index.es.js",
-      "file": "@fortawesome_vue-fontawesome.js",
-      "fileHash": "64ee35d0",
+      "fileHash": "a9cdea63",
       "needsInterop": false
     },
     "color": {
       "src": "../../../../../../node_modules/color/index.js",
       "file": "color.js",
-      "fileHash": "3f90614f",
+      "fileHash": "87d1c304",
       "needsInterop": true
     },
-    "@fortawesome/pro-light-svg-icons": {
-      "src": "../../../../../../node_modules/@fortawesome/pro-light-svg-icons/index.mjs",
-      "file": "@fortawesome_pro-light-svg-icons.js",
-      "fileHash": "b470f046",
+    "@fortawesome/fontawesome-svg-core": {
+      "src": "../../../../../../node_modules/@fortawesome/fontawesome-svg-core/index.mjs",
+      "file": "@fortawesome_fontawesome-svg-core.js",
+      "fileHash": "52282a75",
+      "needsInterop": false
+    },
+    "@fortawesome/pro-duotone-svg-icons": {
+      "src": "../../../../../../node_modules/@fortawesome/pro-duotone-svg-icons/index.mjs",
+      "file": "@fortawesome_pro-duotone-svg-icons.js",
+      "fileHash": "6228a81e",
+      "needsInterop": false
+    },
+    "@fortawesome/vue-fontawesome": {
+      "src": "../../../../../../node_modules/@fortawesome/vue-fontawesome/index.es.js",
+      "file": "@fortawesome_vue-fontawesome.js",
+      "fileHash": "0678b254",
+      "needsInterop": false
+    },
+    "@fortawesome/pro-thin-svg-icons": {
+      "src": "../../../../../../node_modules/@fortawesome/pro-thin-svg-icons/index.mjs",
+      "file": "@fortawesome_pro-thin-svg-icons.js",
+      "fileHash": "81ee9b8a",
       "needsInterop": false
     },
     "smooth-scrollbar": {
       "src": "../../../../../../node_modules/smooth-scrollbar/index.js",
       "file": "smooth-scrollbar.js",
-      "fileHash": "06b9092b",
+      "fileHash": "b616db99",
       "needsInterop": false
     },
-    "smooth-scrollbar/scrollbar": {
-      "src": "../../../../../../node_modules/smooth-scrollbar/scrollbar.js",
-      "file": "smooth-scrollbar_scrollbar.js",
-      "fileHash": "3856e363",
+    "smooth-scrollbar/plugins/overscroll": {
+      "src": "../../../../../../node_modules/smooth-scrollbar/plugins/overscroll/index.js",
+      "file": "smooth-scrollbar_plugins_overscroll.js",
+      "fileHash": "f744c761",
       "needsInterop": false
     },
-    "lodash": {
-      "src": "../../../../../../node_modules/lodash/lodash.js",
-      "file": "lodash.js",
-      "fileHash": "86a6a2a8",
-      "needsInterop": true
+    "@fortawesome/pro-regular-svg-icons": {
+      "src": "../../../../../../node_modules/@fortawesome/pro-regular-svg-icons/index.mjs",
+      "file": "@fortawesome_pro-regular-svg-icons.js",
+      "fileHash": "200174d3",
+      "needsInterop": false
+    },
+    "@fortawesome/pro-solid-svg-icons": {
+      "src": "../../../../../../node_modules/@fortawesome/pro-solid-svg-icons/index.mjs",
+      "file": "@fortawesome_pro-solid-svg-icons.js",
+      "fileHash": "38be5dd1",
+      "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-ZYG2JE7L": {
-      "file": "chunk-ZYG2JE7L.js"
+    "chunk-FBEJMNSL": {
+      "file": "chunk-FBEJMNSL.js"
     },
     "chunk-EJOTFXO6": {
       "file": "chunk-EJOTFXO6.js"

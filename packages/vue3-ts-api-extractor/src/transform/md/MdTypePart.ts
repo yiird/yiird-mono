@@ -5,7 +5,7 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
     toMd(comment: TypeComment, level: number): string {
         const styles = this.options.styles!;
         let doc = '';
-        const specilTypes: Set<TypeComment> = new Set(comment.getSpecialTypes());
+        const specilTypes: Set<TypeComment> = new Set(comment.getSpecialTypes([]));
         if (comment.name) {
             doc += styles.line();
             doc += styles.h(level, `${comment.getFullname()}`);
@@ -29,7 +29,7 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
                 comment.associations.forEach((association) => {
                     doc += styles.line();
                     const typeName = association.getFullname();
-                    association.getSpecialTypes().forEach((_type) => {
+                    association.getSpecialTypes([]).forEach((_type) => {
                         specilTypes.add(_type);
                     });
 

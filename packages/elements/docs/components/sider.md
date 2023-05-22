@@ -5,11 +5,21 @@ Sider使用
 
 ## Slots
 
+
+<div class="slots">
+
 | 名称    | 参数 | 描述 |
 | :------ | :--- | :--- |
 | default |      |      |
 
+</div>
+
+
+
 ## Props
+
+
+<div class="props">
 
 | 名称     | 描述                                   |      类型     | 可选值           |
 | :------- | :------------------------------------- | :-----------: | :--------------- |
@@ -17,6 +27,10 @@ Sider使用
 | display  | 显示隐藏<hr>默认值:<br><pre>true</pre> |    Boolean    |                  |
 | size     | <hr>默认值:<br><pre>10</pre>           | String,Number |                  |
 | position | <hr>默认值:<br><pre>left</pre>         |     String    | `left` , `right` |
+
+</div>
+
+
 
 ## Methods
 

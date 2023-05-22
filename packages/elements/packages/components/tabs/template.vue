@@ -23,12 +23,12 @@
                         @click="active(index)">
                         <Icon
                             v-if="tab.icon"
-                            :icon="tab.icon"></Icon>
+                            :name="tab.icon"></Icon>
                         <span>{{ tab.name }}</span>
                         <Icon
                             v-if="!tab.disabled && tab.closeable"
                             @click.stop="close(index)"
-                            :icon="faClose"></Icon>
+                            :name="faClose"></Icon>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
 import 'animate.css';
 import { defineComponent } from 'vue';
 import { Icon } from '../icon';
-import { TabsProps, useTabs } from './logic';
+import { TabsProps, expose, setupTabs } from './logic';
 
 /**
  * Tabs使用
@@ -68,10 +68,10 @@ import { TabsProps, useTabs } from './logic';
 export default defineComponent({
     name: 'Tabs',
     props: TabsProps,
-    expose: ['active'],
+    expose,
     components: { Icon },
     setup(props) {
-        const logic = useTabs(props);
+        const logic = setupTabs(props);
         return {
             ...logic
         };

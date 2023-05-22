@@ -1,0 +1,9 @@
+@import '../theme/scss/bem';
+
+@include b('panel') {
+    height: 500px;
+
+    @include e('container'){
+        height: 100%;
+    }
+}

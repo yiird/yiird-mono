@@ -1,4 +1,4 @@
-import type { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
+import type { IconDefinition, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import type { PropType } from 'vue';
 import { BaseProps } from '../../common/prefab';
 import type { NumberSize } from '../../types/global';
@@ -11,7 +11,6 @@ export type IconRotation = 90 | 180 | 270 | '90' | '180' | '270';
 export type IconFlip = 'horizontal' | 'vertical' | 'both';
 
 export type IconAnimation = 'beat' | 'fade' | 'beat-fade' | 'bounce' | 'flip' | 'shake' | 'spin' | 'spin-pulse' | 'spin-reverse' | 'spin-pulse-reverse';
-
 /**
  * 动画配置选项
  */
@@ -160,8 +159,8 @@ export const IconProps = {
      *
      * [查询图标](https://fontawesome.com/search?m=free)
      */
-    icon: {
-        type: [String, Object] as PropType<IconName | IconDefinition>,
+    name: {
+        type: [String, Object] as PropType<string | IconDefinition>,
         required: true
     },
     /**

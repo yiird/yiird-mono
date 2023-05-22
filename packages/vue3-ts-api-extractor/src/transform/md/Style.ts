@@ -31,7 +31,7 @@ export const MdStyles = {
     quote: (str: string) => `> ${str}`,
     important: (str: string) => `\`${str}\``,
     code: (str: string, lang: string) => `\`\`\`${lang}${MdStyles.line()}${str}${MdStyles.line()}\`\`\``,
-    table: (headers: Array<Header>, data: Array<Data>) => {
+    table: (headers: Array<Header>, data: Array<Data>, cls: string) => {
         const nameIndex: string[] = [];
         const _headers = headers.filter((head) => head.display);
         const _headerNames = _headers.map((header) => {
@@ -56,9 +56,9 @@ export const MdStyles = {
             tableData.push(record);
         });
 
-        return markdownTable(tableData, {
+        return `\n<div class="${cls}">\n\n${markdownTable(tableData, {
             align: headers.map((header) => header.align),
             stringLength: stringWidth
-        });
+        })}\n\n</div>\n\n`;
     }
 };

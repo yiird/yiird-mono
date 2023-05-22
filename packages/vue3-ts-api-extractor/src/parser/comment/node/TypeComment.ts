@@ -1,3 +1,4 @@
+import { uniqWith } from 'lodash-es';
 import { Utils } from '../../../common/Utils';
 import { NodeComment } from './NodeComment';
 import { PropertyComment } from './PropertyComment';
@@ -76,16 +77,16 @@ export class TypeComment extends NodeComment {
         return this._text;
     }
 
-    public getSpecialTypes() {
-        const specilTypes: TypeComment[] = [];
-
+    public getSpecialTypes(specilTypes: TypeComment[]) {
         if (this.typeArguments && this.typeArguments.length > 0) {
             this.typeArguments.forEach((_type) => {
-                if (_type.name && !Utils.isBasicType(_type.name)) {
-                    specilTypes.push(_type);
-                    specilTypes.push(..._type.getSpecialTypes());
-                } else {
-                    specilTypes.push(..._type.getSpecialTypes());
+                if (!this.checkDuplicate(specilTypes, _type)) {
+                    if (_type.name && !Utils.isBasicType(_type.name)) {
+                        specilTypes.push(_type);
+                        if (!this.checkDuplicate(specilTypes, _type)) {
+                            specilTypes.push(..._type.getSpecialTypes(specilTypes));
+                        }
+                    }
                 }
             });
         }
@@ -93,18 +94,40 @@ export class TypeComment extends NodeComment {
             this.associations.forEach((_type) => {
                 if (_type.name && !_type.isBasic()) {
                     specilTypes.push(_type);
-                    specilTypes.push(..._type.getSpecialTypes());
+                    if (!this.checkDuplicate(specilTypes, _type)) {
+                        specilTypes.push(..._type.getSpecialTypes(specilTypes));
+                    }
                 }
             });
         }
         if (this.properties && this.properties.length > 0) {
             this.properties.forEach((property) => {
                 if (property.type) {
-                    specilTypes.push(...property.type.getSpecialTypes());
+                    if (property.type.name && !property.type.isBasic()) {
+                        specilTypes.push(property.type);
+                        if (!this.checkDuplicate(specilTypes, property.type)) {
+                            specilTypes.push(...property.type.getSpecialTypes(specilTypes));
+                        } else {
+                            property.type.properties?.forEach((_type) => {
+                                if (_type.type?.name && !_type.type?.isBasic()) {
+                                    specilTypes.push(_type.type);
+                                    if (!this.checkDuplicate(specilTypes, _type.type)) {
+                                        specilTypes.push(..._type.type.getSpecialTypes(specilTypes));
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
             });
         }
 
-        return specilTypes;
+        return uniqWith(specilTypes, (a, b) => {
+            return a.name === b.name;
+        });
+    }
+
+    checkDuplicate(specilTypes: TypeComment[], type: TypeComment) {
+        return !!specilTypes.find((st) => st.name === type.name);
     }
 }

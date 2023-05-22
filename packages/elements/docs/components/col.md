@@ -5,11 +5,21 @@ Col使用
 
 ## Slots
 
+
+<div class="slots">
+
 | 名称    | 参数 | 描述 |
 | :------ | :--- | :--- |
 | default |      |      |
 
+</div>
+
+
+
 ## Props
+
+
+<div class="props">
 
 | 名称    | 描述                                   |      类型     | 可选值 |
 | :------ | :------------------------------------- | :-----------: | :----- |
@@ -17,6 +27,10 @@ Col使用
 | display | 显示隐藏<hr>默认值:<br><pre>true</pre> |    Boolean    |        |
 | span    | 跨越列数<hr>默认值:<br><pre>8</pre>    | String,Number |        |
 | offset  | 向右偏移列数                           | String,Number |        |
+
+</div>
+
+
 
 ## Methods
 

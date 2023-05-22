@@ -112,6 +112,10 @@ function components(baseUrl: string) {
                 {
                     text: '选项卡',
                     link: `${baseUrl}/tabs`
+                },
+                {
+                    text: '面板',
+                    link: `${baseUrl}/panel`
                 }
             ]
         });
@@ -139,6 +143,10 @@ function components(baseUrl: string) {
                 {
                     text: '选项卡',
                     link: `${baseUrl}/tabs`
+                },
+                {
+                    text: '面板',
+                    link: `${baseUrl}/panel`
                 }
             ]
         });

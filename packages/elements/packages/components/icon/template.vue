@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { forEach, isObject, kebabCase } from 'lodash-es';
+import { forEach, kebabCase } from 'lodash-es';
 import { computed, defineComponent } from 'vue';
 import { usePrefab } from '../../common/prefab';
 import { IconProps } from './logic';
@@ -29,13 +29,7 @@ export default defineComponent({
         FontAwesomeIcon
     },
     setup(props) {
-        const obtainIcon = computed(() => {
-            if (isObject(props.icon)) {
-                return props.icon;
-            } else {
-                return `fa-${props.prefix} fa-${props.icon}`;
-            }
-        });
+        const obtainIcon = computed(() => props.name);
 
         const obtainSize = computed(() => {
             return props.size;

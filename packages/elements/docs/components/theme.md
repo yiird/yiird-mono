@@ -5,16 +5,30 @@ Theme 用于配置主题
 
 ## Slots
 
+
+<div class="slots">
+
 | 名称    | 参数 | 描述 |
 | :------ | :--- | :--- |
 | default |      |      |
 
+</div>
+
+
+
 ## Props
 
-| 名称      | 描述                            |               类型              | 可选值 |
-| :-------- | :------------------------------ | :-----------------------------: | :----- |
-| dark      | <hr>默认值:<br><pre>false</pre> |             Boolean             |        |
-| themeVars |                                 | [UserThemeVars](#userthemevars) |        |
+
+<div class="props">
+
+| 名称       | 描述                            |               类型              | 可选值 |
+| :--------- | :------------------------------ | :-----------------------------: | :----- |
+| dark       | <hr>默认值:<br><pre>false</pre> |             Boolean             |        |
+| theme-vars |                                 | [UserThemeVars](#userthemevars) |        |
+
+</div>
+
+
 
 ## 关联类型
 

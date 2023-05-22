@@ -1,14 +1,16 @@
 import ts, { Node } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { AbstractCommentParser } from '../AbstractCommentParser';
+import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 import { EventComment } from '../basic/EventComment';
 import { PropertyComment } from '../node/PropertyComment';
-import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
 
 export class EventCommentParser extends AbstractCommentParser<EventComment> {
     private _typeParser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 
     parse(node: Node): EventComment {
+        this._typeParser.init();
+
         const jsdocs = JsdocUtils.getJsDoc(node);
         const jsdoc = jsdocs[0];
         const comment = new EventComment();

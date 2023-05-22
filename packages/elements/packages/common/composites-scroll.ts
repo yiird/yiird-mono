@@ -1,51 +1,41 @@
+import { merge } from 'lodash-es';
 import Scrollbar from 'smooth-scrollbar';
-import type { ScrollbarOptions, ScrollStatus } from 'smooth-scrollbar/interfaces';
+import type { ScrollStatus } from 'smooth-scrollbar/interfaces';
+import OverscrollPlugin from 'smooth-scrollbar/plugins/overscroll';
 import { onBeforeUnmount, onMounted, reactive, type Ref } from 'vue';
-import {
-    AuxElPlugin,
-    DisableScrollBarPlugin,
-    HideTrackPlugin,
-    LifecirclePlugin,
-    type AuxElPluginOptions,
-    type DisableScrollBarPluginOptions,
-    type HideTrackPluginOptions,
-    type LifecirclePluginOptions
-} from './scrollbar-plugin';
-
-Scrollbar.use(LifecirclePlugin, HideTrackPlugin, AuxElPlugin, DisableScrollBarPlugin);
-/**
- * none 无溢出状态
- * left 左侧溢出状态
- * right 右侧溢出状态
- * both 两侧溢出溢出状态
- */
-export type HorizontalOutBoundsState = 'none' | 'left' | 'right' | 'both';
-export type VerticalOutBoundsState = 'none' | 'top' | 'bottom' | 'both';
-
-export interface ScrollOptions extends Partial<ScrollbarOptions> {
-    plugins?: {
-        auxEl?: AuxElPluginOptions;
-        hideTrack?: HideTrackPluginOptions;
-        lifecircle?: LifecirclePluginOptions;
-        disableScrollBar?: DisableScrollBarPluginOptions;
-    };
-}
-
-export interface Scroll {
-    scrollbar?: Scrollbar;
-    overflowState: {
-        x: HorizontalOutBoundsState;
-        y: VerticalOutBoundsState;
-    };
-}
+import type { Scroll, ScrollOptions } from '../types/scroll';
+import { AuxElPlugin, DisableScrollBarPlugin, HideTrackPlugin, LifecirclePlugin, VirtualPagePlugin } from './scrollbar-plugin';
+Scrollbar.use(LifecirclePlugin, HideTrackPlugin, AuxElPlugin, DisableScrollBarPlugin, VirtualPagePlugin, OverscrollPlugin);
 
 export const useScroll = (container: Ref<HTMLElement | undefined>, options?: ScrollOptions) => {
-    const scroll = reactive<Scroll>({
-        overflowState: {
-            x: 'none',
-            y: 'none'
-        }
+    if (options) {
+        options = merge(
+            {
+                plugins: {
+                    // 过屏效果,禁用此效果 overscroll:false 默认为false
+                    overscroll: {
+                        // iOS风格的“bounce”效果，Android风格的“glow”效果
+                        effect: 'bounce',
+                        // onScroll: undefined,
+                        // 动量衰减阻尼因子，介于（0，1）之间的浮点值。值越低，滚动越平滑（绘制帧也越多）。
+                        damping: 0.1,
+                        // 允许的最大过屏距离。
+                        maxOverscroll: 100,
+                        // glow 效果时 过屏遮罩的演示
+                        glowColor: 'red'
+                    },
+
+                    virtualPage: false
+                }
+            },
+            options
+        );
+    }
+
+    const scroll: Scroll = reactive({
+        overflowState: { x: 'none', y: 'none' }
     });
+
     //溢出监听
     const overflowListener = ({ offset, limit }: ScrollStatus) => {
         const containerEl = scroll.scrollbar?.containerEl;
@@ -68,6 +58,7 @@ export const useScroll = (container: Ref<HTMLElement | undefined>, options?: Scr
             }
         }
     };
+
     onMounted(() => {
         if (container.value) {
             scroll.scrollbar = Scrollbar.init(container.value, options);
