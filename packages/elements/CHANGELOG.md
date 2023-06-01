@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0...@yiird/elements@0.1.1) (2023-06-01)
+
+### Bug Fixes
+
+-   a ([3725628](https://github.com/yiird/yiird-mono/commit/372562844ec4a218231225bb4447bc8e160597b7))
+
 # [0.1.0](https://github.com/yiird/yiird-mono/compare/@yiird/elements@0.1.0-alpha.9...@yiird/elements@0.1.0) (2023-06-01)
 
 ### Features

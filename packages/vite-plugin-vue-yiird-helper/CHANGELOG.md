@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-alpha.2](https://github.com/yiird/yiird-mono/compare/@yiird/vite-plugin-vue-yiird-helper@0.3.0-alpha.1...@yiird/vite-plugin-vue-yiird-helper@0.3.0-alpha.2) (2023-06-01)
+
+### Bug Fixes
+
+-   a ([3725628](https://github.com/yiird/yiird-mono/commit/372562844ec4a218231225bb4447bc8e160597b7))
+
 # [0.3.0-alpha.1](https://github.com/yiird/yiird-mono/compare/@yiird/vite-plugin-vue-yiird-helper@0.3.0-alpha.0...@yiird/vite-plugin-vue-yiird-helper@0.3.0-alpha.1) (2023-06-01)
 
 **Note:** Version bump only for package @yiird/vite-plugin-vue-yiird-helper

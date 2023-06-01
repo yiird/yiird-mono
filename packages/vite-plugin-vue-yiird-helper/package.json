@@ -1,6 +1,6 @@
 {
     "name": "@yiird/vite-plugin-vue-yiird-helper",
-    "version": "0.3.0-alpha.1",
+    "version": "0.3.0-alpha.2",
     "private": false,
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -34,7 +34,7 @@
     "devDependencies": {
         "@types/debug": "^4.1.7",
         "@types/hash-sum": "^1.0.0",
-        "@yiird/vue3-ts-api-extractor": "^2.2.0-alpha.2",
+        "@yiird/vue3-ts-api-extractor": "^2.2.0-alpha.3",
         "npm-run-all": "^4.1.5",
         "unplugin-vue-components": "^0.24.1",
         "vite": "^4.3.9",
