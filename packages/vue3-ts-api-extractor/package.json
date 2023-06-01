@@ -1,6 +1,6 @@
 {
     "name": "@yiird/vue3-ts-api-extractor",
-    "version": "2.2.0-alpha.1",
+    "version": "2.2.0-alpha.2",
     "private": false,
     "description": "Vue + ts 生成markdownApi文档",
     "keywords": [
@@ -65,7 +65,7 @@
         "rollup-plugin-delete": "^2.0.0",
         "rollup-plugin-dts": "^4.2.2",
         "rollup-plugin-node-externals": "^4.0.0",
-        "vue": "^3.2.47"
+        "vue": "^3.3.4"
     },
     "gitHead": "8822903937c412ea8d67f98cb59400b6e31e1b9b"
 }
