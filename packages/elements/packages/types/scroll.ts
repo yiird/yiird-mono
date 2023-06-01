@@ -22,6 +22,7 @@ export interface OverflowBoundsState {
 export interface PageBoundary {
     start: number;
     end: number;
+    pageSize: number;
 }
 
 export interface VirtualPage {
@@ -37,30 +38,51 @@ export interface VirtualPage {
 export interface Scroll {
     scrollbar?: Scrollbar;
     overflowState: OverflowBoundsState;
+    setOptions: (_options?: ScrollOptions) => void;
 }
 
 export type HideTrackPluginOptions = {
-    enabled: boolean;
     track?: 'none' | 'x' | 'y' | 'both';
 };
 
 export type AuxElPluginOptions = {
-    enabled: boolean;
     scopeId?: string;
     auxPosition?: string[];
 };
 
+/**
+ * 禁用滚动条
+ */
 export type DisableScrollBarPluginOptions = {
-    enabled: boolean;
+    /**
+     * 是否禁用x轴
+     */
     x?: boolean;
+    /**
+     * 是否禁用y轴
+     */
     y?: boolean;
 };
 
+/**
+ * 滚动条声明周期
+ */
 export type LifecirclePluginOptions = {
-    enabled: boolean;
+    /**
+     * 初始化
+     */
     onInit?: (scrollbar: Scrollbar) => void;
+    /**
+     * 销毁
+     */
     onDestroy?: (scrollbar: Scrollbar) => void;
+    /**
+     * 更新
+     */
     onUpdate?: (scrollbar: Scrollbar) => void;
+    /**
+     * 渲染
+     */
     onRender?: (_remainMomentum: Data2d, scrollbar: Scrollbar) => void;
 };
 
@@ -70,6 +92,6 @@ export type VirtualPagePluginOptions = {
     totalCount: Ref<number>;
     focusIndex?: Ref<number>;
     triggerCount?: number;
-    renderPageCount: number;
+    preRenderScreenSize?: number;
     boundary?: Ref<PageBoundary>;
 };

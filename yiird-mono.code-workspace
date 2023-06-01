@@ -7,9 +7,6 @@
             "path": "packages/owl"
         },
         {
-            "path": "packages/owl-test"
-        },
-        {
             "path": "packages/elements"
         },
         {
@@ -32,6 +29,7 @@
         "files.associations": {
             "*.json": "jsonc"
         },
+        "eslint.workingDirectories": [{ "mode": "auto" }],
         "i18n-ally.localesPaths": ["src/locales"],
         "i18n-ally.keystyle": "nested",
         "i18n-ally.sortKeys": true,

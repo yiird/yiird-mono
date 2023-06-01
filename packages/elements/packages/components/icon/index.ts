@@ -1,5 +1,3 @@
-import type { IconDefinition, IconPack } from '@fortawesome/fontawesome-svg-core';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
 import type { ElementOptions, Plugin } from '../../types/global';
@@ -15,13 +13,8 @@ const IconPlugin: Plugin = {
     }
 };
 
-export type { IconAnimation, IconAnimationOptions, IconFlip, IconRotation, IconSize } from './logic';
+export type * from './logic';
+export { addIcons } from './logic';
 export type { ElementOptions };
 export { Icon, IconPlugin };
 export type IconType = InstanceType<typeof Icon>;
-
-export type IconDefinitionOrPack = IconDefinition | IconPack;
-
-export const addIcons = (...icons: IconDefinitionOrPack[]) => {
-    library.add(...icons);
-};

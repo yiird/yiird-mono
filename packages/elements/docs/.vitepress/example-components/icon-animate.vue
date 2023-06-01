@@ -3,37 +3,37 @@
     <br />
     <y-icon
         fixed-width
-        icon="camera"
+        name="camera"
         animation="beat"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        icon="coffee"
+        name="coffee"
         animation="beat-fade"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        icon="6"
+        name="6"
         animation="fade"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        icon="basketball"
+        name="basketball"
         animation="bounce"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        icon="home"
+        name="home"
         animation="flip"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        icon="bell"
+        name="bell"
         animation="shake"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        icon="sync"
+        name="sync"
         animation="spin"
         size="2x"></y-icon>
     <hr />
@@ -41,29 +41,22 @@
     <br />
     <y-icon
         fixed-width
-        icon="camera"
+        name="camera"
         animation="beat"
         :animation-options="animationOptions"
         size="2x"></y-icon>
     <hr />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { fa6, faBasketball, faBell, faCamera, faCoffee, faHome, faSync } from '@fortawesome/free-solid-svg-icons';
-import { defineComponent, ref, type Ref } from 'vue';
-import { addIcons, type IconAnimationOptions } from '../../../packages';
+import { addIcons, type IconAnimationOptions } from '@yiird/elements';
+import { ref, type Ref } from 'vue';
 
 addIcons(faCamera, faCoffee, fa6, faHome, faBasketball, faBell, faSync);
 
-export default defineComponent({
-    setup() {
-        const animationOptions: Ref<IconAnimationOptions> = ref({
-            animationDuration: '3s'
-        });
-        return {
-            animationOptions
-        };
-    }
+const animationOptions: Ref<IconAnimationOptions> = ref({
+    animationDuration: '3s'
 });
 </script>
 

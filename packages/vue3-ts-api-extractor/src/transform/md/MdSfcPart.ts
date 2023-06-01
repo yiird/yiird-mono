@@ -118,7 +118,12 @@ export class MdSfcPart extends AbstractMdPart<SfcComment> {
                     .filter((key) => names.includes(key))
                     .forEach((name) => {
                         if (name === 'name') {
-                            const propName = prop.name ? snakeCase(prop.name).replaceAll('_', '-') : '';
+                            let propName = prop.name ? snakeCase(prop.name).replaceAll('_', '-') : '';
+
+                            if (prop.isModel) {
+                                propName = propName ? `v-model:${propName}` : 'v-model';
+                            }
+
                             record[name] = prop.isRequired ? propName + '<br /><span>(*)</span>' : propName + '';
                         } else if (name === 'type') {
                             const type = prop.type;

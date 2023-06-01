@@ -22,10 +22,8 @@ export default defineComponent({
             return;
         }
         if (options) {
-            if (props.themeVars && options) {
-                const themeConfig = generThemeConfig(props.dark, props.themeVars);
-                options.themeConfig = themeConfig;
-            }
+            const themeConfig = generThemeConfig(props.dark, props.themeVars);
+            options.themeConfig = Object.assign(options.themeConfig, themeConfig);
         }
 
         const styleContent = computed(() => {

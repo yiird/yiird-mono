@@ -33,7 +33,10 @@ export const useScroll = (container: Ref<HTMLElement | undefined>, options?: Scr
     }
 
     const scroll: Scroll = reactive({
-        overflowState: { x: 'none', y: 'none' }
+        overflowState: { x: 'none', y: 'none' },
+        setOptions(_options?: ScrollOptions) {
+            options = merge(options, _options);
+        }
     });
 
     //溢出监听
@@ -61,6 +64,7 @@ export const useScroll = (container: Ref<HTMLElement | undefined>, options?: Scr
 
     onMounted(() => {
         if (container.value) {
+            console.log('iii 2');
             scroll.scrollbar = Scrollbar.init(container.value, options);
             scroll.scrollbar.addListener(overflowListener);
         }
@@ -72,5 +76,6 @@ export const useScroll = (container: Ref<HTMLElement | undefined>, options?: Scr
             scroll.scrollbar.destroy();
         }
     });
+
     return scroll;
 };

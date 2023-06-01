@@ -1,25 +1,25 @@
 import { ScrollbarPlugin } from 'smooth-scrollbar';
 import type { Data2d, ScrollListener, ScrollStatus } from 'smooth-scrollbar/interfaces';
-import { EffectScope, effectScope, isRef, nextTick, watch, type UnwrapNestedRefs } from 'vue';
+import { isRef, nextTick, watch, type UnwrapNestedRefs } from 'vue';
 import type { AuxElPluginOptions, DisableScrollBarPluginOptions, HideTrackPluginOptions, LifecirclePluginOptions, PageBoundary, VirtualPage } from '../types/scroll';
 
 export class HideTrackPlugin extends ScrollbarPlugin {
     static pluginName = 'hideTrack';
 
     static defaultOptions: HideTrackPluginOptions = {
-        enabled: false,
         track: 'none'
     };
 
     onInit() {
-        if (!this.options.enabled) return;
         const track = this.options.track;
-        if (track === 'both') {
-            this.scrollbar.containerEl.querySelectorAll('.scrollbar-track')?.forEach((el) => el.remove());
-        } else if (track === 'x') {
-            this.scrollbar.containerEl.querySelector('.scrollbar-track-x')?.remove();
-        } else if (track === 'y') {
-            this.scrollbar.containerEl.querySelector('.scrollbar-track-y')?.remove();
+        if (track) {
+            if (track === 'both') {
+                this.scrollbar.containerEl.querySelectorAll('.scrollbar-track')?.forEach((el) => el.remove());
+            } else if (track === 'x') {
+                this.scrollbar.containerEl.querySelector('.scrollbar-track-x')?.remove();
+            } else if (track === 'y') {
+                this.scrollbar.containerEl.querySelector('.scrollbar-track-y')?.remove();
+            }
         }
     }
 }
@@ -28,7 +28,6 @@ export class AuxElPlugin extends ScrollbarPlugin {
     static pluginName = 'auxEl';
 
     static defaultOptions: AuxElPluginOptions = {
-        enabled: false,
         auxPosition: []
     };
 
@@ -43,10 +42,11 @@ export class AuxElPlugin extends ScrollbarPlugin {
     }
 
     onInit() {
-        if (!this.options.enabled) return;
-        this.options.auxPosition.forEach((aux: string) => {
-            this.createEl(aux, this.options.scopeId);
-        });
+        if (this.options.auxPosition && this.options.auxPosition.length > 0) {
+            this.options.auxPosition.forEach((aux: string) => {
+                this.createEl(aux, this.options.scopeId);
+            });
+        }
     }
 }
 
@@ -54,13 +54,11 @@ export class DisableScrollBarPlugin extends ScrollbarPlugin {
     static pluginName = 'disableScrollBar';
 
     static defaultOptions: DisableScrollBarPluginOptions = {
-        enabled: false,
         x: false,
         y: false
     };
 
     transformDelta(delta: Data2d, _evt: Event): Data2d {
-        if (!this.options.enabled) return delta;
         if (_evt instanceof WheelEvent) {
             if (this.options.x) {
                 delta.x = 0;
@@ -75,24 +73,19 @@ export class DisableScrollBarPlugin extends ScrollbarPlugin {
 
 export class LifecirclePlugin extends ScrollbarPlugin {
     static pluginName = 'lifecircle';
-    static defaultOptions: LifecirclePluginOptions = {
-        enabled: false
-    };
+    static defaultOptions: LifecirclePluginOptions = {};
 
     onInit() {
-        if (!this.options.enabled) return;
         if (this.options.onInit) {
             this.options.onInit(this.scrollbar);
         }
     }
     onDestroy() {
-        if (!this.options.enabled) return;
         if (this.options.onDestroy) {
             this.options.onDestroy(this.scrollbar);
         }
     }
     onUpdate() {
-        if (!this.options.enabled) return;
         if (this.options.onUpdate) {
             this.options.onUpdate(this.scrollbar);
         }
@@ -103,8 +96,6 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
     static pluginName = 'virtualPage';
 
     boundary?: UnwrapNestedRefs<PageBoundary>;
-
-    scope: EffectScope = effectScope(true);
 
     virtualPage: VirtualPage = {
         page: 0,
@@ -121,8 +112,8 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
     unitHeight?: number;
     totalCount?: number;
     itemClass?: string;
-    triggerCount?: number;
-    renderPageCount = 3;
+    triggerCount = 500;
+    preRenderScreenSize = 3;
 
     scrollListener?: ScrollListener;
 
@@ -137,11 +128,10 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
             throw new Error('[VirtualPagePlugin] 缺少配置:totalCount');
         }
         this.itemClass = this.options.itemClass;
-        this.triggerCount = this.options.triggerCount;
-        this.renderPageCount = this.options.renderPageCount;
-        this.scope.run(() => {
-            this._initVirtualPage();
-        });
+        this.triggerCount = this.options.triggerCount || 500;
+        this.preRenderScreenSize = this.options.preRenderScreenSize || 5;
+
+        this._initVirtualPage();
 
         this.scrollListener = this.gescrollListener();
 
@@ -152,7 +142,6 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
         if (this.scrollListener) {
             this.scrollbar.removeListener(this.scrollListener);
         }
-        this.scope.stop();
     }
 
     gescrollListener() {
@@ -201,10 +190,10 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
                     const containerHeight = this.scrollbar.size.container.height;
                     const pageSize = Math.round(containerHeight / _unitHeight);
 
-                    if (_totalCount > pageSize * this.renderPageCount) {
+                    if (_totalCount > this.triggerCount && _totalCount > pageSize * this.preRenderScreenSize) {
                         const lastCount = _totalCount % pageSize;
                         const totalPage = Math.floor(_totalCount / pageSize);
-                        const offsetRenderPageCount = (this.renderPageCount - 1) / 2;
+                        const offsetRenderPageCount = (this.preRenderScreenSize - 1) / 2;
                         const firstPage = offsetRenderPageCount;
                         const lastPage = lastCount > 0 ? totalPage - offsetRenderPageCount - 1 : totalPage - offsetRenderPageCount;
                         this.virtualPage.totalPage = totalPage;
@@ -214,7 +203,7 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
                         this.virtualPage.page = this.virtualPage.page || firstPage;
                         this.virtualPage.lastCount = lastCount;
                         this.virtualPage.offsetRenderPageCount = offsetRenderPageCount;
-                        // console.log(this.virtualPage);
+
                         prev_focusIndex = prev_focusIndex || 0;
                         if (prev_focusIndex !== _focusIndex) {
                             this._computedBoundary(_focusIndex, prev_focusIndex === undefined ? 0 : _focusIndex - prev_focusIndex);
@@ -267,15 +256,9 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
             let offsetUnis;
 
             if (focusIndex && focusAsc) {
-                const ceilPage = Math.ceil(focusIndex / pageSize);
                 const floorPage = Math.floor(focusIndex / pageSize);
                 currentPage = floorPage;
 
-                console.log(
-                    `page:${currentPage}/${totalPage},focusIndex:${focusIndex},ll:${focusIndex % pageSize}|${
-                        focusIndex % (this.renderPageCount * pageSize)
-                    } ceil|floor:${ceilPage}|${floorPage}`
-                );
                 if (currentPage <= firstPage) {
                     if (focusIndex === pageSize / 2) {
                         offsetUnis = -1;
@@ -284,14 +267,13 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
                     }
                 } else if (currentPage >= lastPage) {
                     currentPage = lastPage;
-                    offsetUnis = pageSize * (this.renderPageCount / 2) + (focusIndex - currentPage * pageSize) - pageSize;
+                    offsetUnis = pageSize * (this.preRenderScreenSize / 2) + (focusIndex - currentPage * pageSize) - pageSize;
                 } else {
                     offsetUnis = pageSize * offsetRenderPageCount + (focusIndex % pageSize) - pageSize / 2;
                 }
-                console.log(currentPage);
             } else {
                 if (this.positionState === 'scrolling-bottom') {
-                    offsetUnis = pageSize * offsetRenderPageCount;
+                    offsetUnis = pageSize * (offsetRenderPageCount + 1);
                 } else if (this.positionState === 'scrolling-top') {
                     offsetUnis = pageSize;
                 }
@@ -301,14 +283,13 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
             const startPage = currentPage - offsetRenderPageCount;
 
             const start = pageSize * startPage;
-            let end = start + pageSize * this.renderPageCount;
+            let end = start + pageSize * this.preRenderScreenSize;
 
             if (lastCount > 0 && currentPage >= totalPage - offsetRenderPageCount - 1) {
                 end += lastCount;
             }
 
-            boundary.value = { start, end };
-            console.log(start);
+            boundary.value = { start, end, pageSize };
 
             //滚动条偏移
             if (offsetUnis) {

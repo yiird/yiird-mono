@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Icon } from '../icon';
-import { TreeProps, setupTree, treeEmits, treeExpose } from './logic';
+import { TreeEmits, TreeProps, setupTree, treeExpose } from './logic';
 /**
  * Tree使用
  * @name Tree
@@ -64,7 +64,7 @@ import { TreeProps, setupTree, treeEmits, treeExpose } from './logic';
 export default defineComponent({
     name: 'Tree',
     props: TreeProps,
-    emits: treeEmits,
+    emits: TreeEmits,
     expose: treeExpose,
     components: { Icon },
     setup(props, ctx) {

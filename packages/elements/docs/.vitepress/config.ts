@@ -1,19 +1,16 @@
-import { componentsResolver, extractCommentsPlugin, sinnpetToCustomblockPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
-import { isArray, kebabCase } from 'lodash';
+import { componentsResolver } from '@yiird/vite-plugin-vue-yiird-helper';
 import { resolve } from 'path';
-import Components from 'unplugin-vue-components/vite';
 import { defineConfig, type MarkdownOptions } from 'vitepress';
 
 const markdownOptions: MarkdownOptions = {
     lineNumbers: true
 };
 
-console.log(process.env.NODE_ENV);
-
 const yeComponentsResolver = () => {
     if (process.env.NODE_ENV === 'production') {
         return componentsResolver({
-            prefix: 'y'
+            prefix: 'y',
+            debug: true
         });
     } else {
         return componentsResolver({
@@ -34,48 +31,16 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'Home', link: '/' },
-            { text: '组件', link: '/components/', activeMatch: '/components/' },
-            { text: 'Examples', link: '/examples/', activeMatch: '/examples/' }
+            /* { text: '组件', link: '/components/', activeMatch: '/components/' },
+            { text: 'Examples', link: '/examples/', activeMatch: '/examples/' } */
         ],
         siteTitle: 'Doc',
         sidebar: {
-            '/components/': generateComponentSiderBar(),
-            '/examples/': generateExampleSiderBar()
+           /*  '/components/': generateComponentSiderBar(),
+            '/examples/': generateExampleSiderBar() */
         },
 
         socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
-    },
-    vite: {
-        clearScreen: false,
-        esbuild: {
-            treeShaking: true
-        },
-
-        plugins: [
-            Components({
-                globs: ['../../packages/*.{vue}'],
-                resolvers: [yeComponentsResolver()]
-            }),
-            extractCommentsPlugin({
-                root: resolve(__dirname, '../../'),
-                scanDirs: ['./packages'],
-                outputDir: './docs/components',
-                clean: {
-                    target: [/components.*(.md)$/],
-                    ignore: [/components.*(index.md)$/]
-                },
-                filename({ outfilename, outDir, info }) {
-                    if (!isArray(info)) {
-                        return resolve(outDir, kebabCase(info.comment.name) + '.md');
-                    }
-                    return outfilename;
-                }
-            }),
-            sinnpetToCustomblockPlugin({
-                include: /example-components.*(.vue)$/,
-                injectComponentPropertiesName: 'PRE_BLOCK'
-            })
-        ]
     }
 });
 
@@ -90,10 +55,16 @@ function components(baseUrl: string) {
             ]
         },
         {
-            text: '数据',
+            text: '数据展示',
             items: [
                 { text: '树', link: `${baseUrl}/tree` },
+                { text: '气泡弹框', link: `${baseUrl}/popover` },
+                { text: '列表', link: `${baseUrl}/list` }
             ]
+        },
+        {
+            text: '数据录入',
+            items: [{ text: '输入', link: `${baseUrl}/input` }]
         }
     ];
 

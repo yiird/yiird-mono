@@ -1,0 +1,93 @@
+@import '../theme/scss/bem';
+
+@include b('popover') {
+    position: absolute;
+    background-color: $bgColor;
+    padding: 5px;
+    border-radius: $radius;
+    border: 1px solid $bgColor;
+    max-width: $maxWidth;
+    visibility: hidden;
+    box-shadow: $shadow;
+
+    @include e('text'){
+        color: $color;
+    }
+  
+
+    @include e('arrow') {
+        position: absolute;
+        background: $bgColor;
+        width: $arrowSize;
+        height: $arrowSize;
+        transform: rotate(45deg);
+        border: 1px solid $bgColor;
+    }
+
+    @include m('border') {
+        background-color: #ffffff;
+        @include e('text'){
+            color: $bgColor;
+        }
+        @include e('arrow') {
+            background: #ffffff;
+        }
+    }
+
+    @include m('empty') {
+        background-color: transparent;
+        border-color: transparent;
+        @include e('arrow') {
+            border-color: transparent;
+            background: #ffffff;
+        }
+    }
+
+   /*  @include m('arrow-border') {
+        background-color: transparent;
+        border-color: transparent;
+        @include e('arrow') {
+            background-color: transparent;
+        }
+    }
+
+    @include m('arrow-fill') {
+        background-color: transparent;
+        border-color: transparent;
+        @include e('arrow') {
+            background-color: transparent;
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            border: calc($arrowSize / 2) solid;
+            border-color: $bgColor;
+        }
+    } */
+
+
+    @include m('arrow-top') {
+        @include e('arrow') {
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+        }
+    }
+
+    @include m('arrow-bottom') {
+        @include e('arrow') {
+            border-top-color: transparent;
+            border-left-color: transparent;
+        }
+    }
+    @include m('arrow-left') {
+        @include e('arrow') {
+            border-top-color: transparent;
+            border-right-color: transparent;
+        }
+    }
+    @include m('arrow-right') {
+        @include e('arrow') {
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+        }
+    }
+}

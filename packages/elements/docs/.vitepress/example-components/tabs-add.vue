@@ -1,32 +1,30 @@
 <template>
-    <y-theme>
-        <y-tabs
-            ref="tabs"
-            :gutter="15"
-            :items="items">
-            <template v-slot:extra-left>
-                <y-btn
-                    mode="empty"
-                    size="md"
-                    @click="go(0)">
-                    Go First
-                </y-btn>
-            </template>
-            <template v-slot:extra-right>
-                <y-btn
-                    mode="empty"
-                    size="md"
-                    @click="go(9)">
-                    Go Last
-                </y-btn>
-                <y-btn
-                    mode="empty"
-                    size="md"
-                    :icon="faPlus"
-                    @click="plus()"></y-btn>
-            </template>
-        </y-tabs>
-    </y-theme>
+    <y-tabs
+        ref="tabs"
+        :gutter="15"
+        :items="items">
+        <template v-slot:extra-left>
+            <y-btn
+                mode="empty"
+                size="md"
+                @click="go(0)">
+                Go First
+            </y-btn>
+        </template>
+        <template v-slot:extra-right>
+            <y-btn
+                mode="empty"
+                size="md"
+                @click="goLast()">
+                Go Last
+            </y-btn>
+            <y-btn
+                mode="empty"
+                size="md"
+                :icon="faPlus"
+                @click="plus()"></y-btn>
+        </template>
+    </y-tabs>
 </template>
 <script lang="ts" setup>
 import { faPlus } from '@fortawesome/pro-light-svg-icons';
@@ -49,6 +47,10 @@ const go = (index: number) => {
     tabs.value.active(index, true);
 };
 
+const goLast = ()=>{
+    tabs.value.active(items.value.length - 1, true);
+}
+
 const plus = () => {
     const index = items.value.length + 1;
     items.value.push({
@@ -57,5 +59,4 @@ const plus = () => {
         closeable: true
     });
 };
-
 </script>

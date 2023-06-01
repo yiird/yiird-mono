@@ -63,6 +63,9 @@ export class PropCommentParser extends AbstractCommentParser<PropComment> {
 
         if (jsdoc) {
             comment.description = JsdocUtils.getDescription(jsdoc);
+            const modelTag = JsdocUtils.getTag('model', jsdoc);
+            comment.isModel = !!modelTag;
+
             const privateTag = JsdocUtils.getTag('private', jsdoc);
             comment.isPrivate = !!privateTag;
             const valuesTag = JsdocUtils.getTag('values', jsdoc);
@@ -91,7 +94,13 @@ export class PropCommentParser extends AbstractCommentParser<PropComment> {
                 comment.defaultValue = defaultValues;
             }
 
-            comment.isRequired = !!comment.isRequired;
+            const nameTag = JsdocUtils.getTag('name', jsdoc);
+
+            if (nameTag) {
+                comment.name = JsdocUtils.getDescription(nameTag);
+            }
+
+            // comment.isRequired = !!comment.isRequired;
         } else {
             comment.isPrivate = false;
             comment.isRequired = false;

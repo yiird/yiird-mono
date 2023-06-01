@@ -13,7 +13,7 @@ const BtnPlugin: Plugin = {
     }
 };
 
-export type { BtnColor, BtnMode, BtnShape } from './logic';
+export type { BtnMode, BtnShape } from './logic';
 export { Btn, BtnPlugin };
 export type { ElementOptions };
 export type BtnType = InstanceType<typeof Btn>;

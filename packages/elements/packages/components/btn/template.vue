@@ -3,55 +3,67 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
+        ref="buttonRef"
         :class="[cType__, theme.bemModifiers]"
         :disabled="disabled">
         <!-- 默认插槽 -->
         <Icon
             v-if="loading"
+            :name="faLoader"
             class="btn__loading"
-            name="spinner"
-            prefix="fat"
             animation="spin" />
         <Icon
             v-if="icon"
             :name="icon"></Icon>
         <span class="btn__text"><slot></slot></span>
+
+        <Popover
+            v-if="obtainHasPopover"
+            :allow-placement="['bottom']"
+            :offset="10"
+            :reference="buttonRef"
+            default-placement="bottom"
+            shadow-direction="down"
+            mode="empty">
+            <template #default="slotProps">
+                <slot
+                    :is-open="slotProps.isOpen"
+                    name="drop"></slot>
+            </template>
+        </Popover>
     </button>
 </template>
 
 <script lang="ts">
-import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 import { defineComponent } from 'vue';
-import { usePrefab } from '../../common/prefab';
 import { Icon } from '../icon';
-import { BtnProps, useBtnTheme } from './logic';
+import { Popover } from '../popover';
+import { BtnProps, setupBtn } from './logic';
 /**
  * Button使用
  * @name Btn
  */
 export default defineComponent({
     name: 'Btn',
+    components: { Icon, Popover },
     props: BtnProps,
-    components: { Icon },
-    setup(props) {
-        const prefab = usePrefab(props);
-        const theme = useBtnTheme(props);
-        return {
-            ...prefab,
-            theme,
-            faSpinner
-        };
+    setup(props, ctx) {
+        return setupBtn(props, ctx);
     }
 });
 </script>
 
 <style lang="scss" scoped>
 //字体颜色
-$color: v-bind('theme.color');
-$bgColor: v-bind('theme.bgColor');
-$borderColor: v-bind('theme.borderColor');
+$colorText: v-bind('theme.color.text');
+$colorPrimary: v-bind('theme.color.primary');
+$colorPrimaryHover: v-bind('theme.color.primaryHover');
+$colorSecondary: v-bind('theme.color.secondary');
+$colorHalfAlpha: v-bind('theme.color.halfAlpha');
+
 $height: v-bind('theme.height');
 $lineHeight: v-bind('theme.lineHeight');
 $fontSize: v-bind('theme.fontSize');
+$shadow: v-bind('theme.shadow');
 @import './style.scss';
 </style>

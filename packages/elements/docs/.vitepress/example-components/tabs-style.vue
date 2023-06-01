@@ -1,16 +1,14 @@
 <template>
-    <y-theme>
-        <y-tabs
-            mode="card"
-            :items="items"></y-tabs>
-    </y-theme>
+    <y-tabs
+        mode="card"
+        :items="items"></y-tabs>
 </template>
 
 <script lang="ts" setup>
 import { faCamera, faHome } from '@fortawesome/pro-light-svg-icons';
-import type { TabItem } from '../../../packages';
+import type { TabItem } from '@yiird/elements';
 
-const items: TabItem[] = [
+const items: Array<TabItem> = [
     {
         name: 'TAB1',
         page: 'Page1',

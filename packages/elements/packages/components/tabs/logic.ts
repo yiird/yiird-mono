@@ -1,4 +1,4 @@
-import { faClose, type IconDefinition } from '@fortawesome/pro-light-svg-icons';
+import { faClose } from '@fortawesome/pro-light-svg-icons';
 import { isNumber, isString } from 'lodash-es';
 import {
     computed,
@@ -13,16 +13,18 @@ import {
     type ExtractPropTypes,
     type PropType,
     type Ref,
+    type SetupContext,
     type ShallowRef,
     type UnwrapNestedRefs,
     type UnwrapRef,
     type VNodeRef
 } from 'vue';
 import { useScroll } from '../../common/composites';
-import { baseExpose, BaseProps, usePrefab, useTheme, type CommonPrefab } from '../../common/prefab';
+import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToFontSize, sizeToHeight } from '../../config';
-import type { Size, ThemeConfig } from '../../types/global';
+import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
 import type { Scroll, ScrollOptions } from '../../types/scroll';
+import type { IconNameOrDefinition } from '../icon/logic';
 
 /**
  * 标签对象
@@ -30,7 +32,7 @@ import type { Scroll, ScrollOptions } from '../../types/scroll';
 export interface TabItem {
     id?: string;
     name: string;
-    icon?: string | IconDefinition;
+    icon?: IconNameOrDefinition;
     closeable?: boolean;
     page?: string | Component;
 }
@@ -133,9 +135,11 @@ export interface TabsTheme extends ThemeConfig {
     auxRightShadow?: string;
 }
 
-const obtainTheme = (props: TabsPropsType, prefab: CommonPrefab, tabsConfig: UnwrapNestedRefs<TabsConfig>, barRefs: Ref<Element[]>, scroll: UnwrapRef<Scroll>) => {
+const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: UnwrapNestedRefs<TabsConfig>, barRefs: Ref<Element[]>, scroll: UnwrapRef<Scroll>) => {
     const themeConfig = useTheme();
     const isMounted = ref(false);
+
+    const { props } = ctx;
 
     onMounted(() => {
         isMounted.value = true;
@@ -195,7 +199,7 @@ const obtainTheme = (props: TabsPropsType, prefab: CommonPrefab, tabsConfig: Unw
     });
 };
 
-export const setupTabs = (props: TabsPropsType) => {
+export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
     const prefab = usePrefab(props);
 
     const barRefs: VNodeRef = ref({});
@@ -231,22 +235,20 @@ export const setupTabs = (props: TabsPropsType) => {
     const scopeId = (getCurrentInstance()?.type as any).__scopeId;
     const scrollOptions: ScrollOptions = {
         plugins: {
-            hideTrack: { enabled: true, track: 'both' },
+            hideTrack: { track: 'both' },
             auxEl: {
-                enabled: true,
                 scopeId: scopeId,
                 auxPosition: ['tabs__aux-left', 'tabs__aux-right']
             },
             lifecircle: {
-                enabled: true,
                 onInit() {
                     moveInView(tabsConfig.currentActiveIndex);
                 }
             },
             disableScrollBar: {
-                enabled: true,
                 y: true
-            }
+            },
+            overscroll: false
         }
     };
 
@@ -336,7 +338,7 @@ export const setupTabs = (props: TabsPropsType) => {
         active(activeIndex);
     };
 
-    const theme = obtainTheme(props, prefab, tabsConfig, barRefs, scroll);
+    const theme = obtainTheme({ props, prefab, ...ctx }, tabsConfig, barRefs, scroll);
 
     onMounted(() => {
         const activeIndex = _findNearAvaliableIndex(_findItemIndex(props.activeKey));

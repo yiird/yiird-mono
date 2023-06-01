@@ -1,0 +1,112 @@
+@import '../theme/scss/bem';
+
+@include b('input') {
+    display: flex;
+    align-items: center;
+    font-size: $fontSize;
+    width: 100%;
+
+    @include e('label') {
+        white-space: nowrap;
+        color: $colorPrimary;
+    }
+
+    @include e('content') {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        border: 1px solid $colorSecondary;
+        border-radius: 5px;
+        height: $height;
+        padding: 0 5px;
+
+        // box-shadow: 0 0 2px gray;
+
+        :deep(.btn) {
+            padding: 0;
+            height: 100%;
+            line-height: calc(100% - 2px);
+            border-color: transparent;
+            border-radius: unset;
+            box-shadow: none;
+            .btn__text {
+                font-size: 0.8em;
+            }
+        }
+
+        @include e('input') {
+            flex-grow: 1;
+            height: 100%;
+            @include e('input-el'){
+                padding: 0 10px;
+                height: 100%;
+                font-size: inherit;
+                color: $colorText;
+                width: 100%;
+            }
+        }
+
+        @include e('loading') {
+            color: $colorPrimary;
+        }
+
+        @include e(('suffix', 'prefix')) {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        @include e('prefix') {
+            padding-right: 5px;
+            &::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                border-right: 1px solid $colorSecondary;
+            }
+
+            @include e('prefix-slot') {
+                color: $colorPrimary;
+            }
+        }
+
+        @include e('suffix') {
+            padding-left: 10px;
+            &::before {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 0;
+                bottom: 0;
+                border-left: 1px solid $colorSecondary;
+            }
+
+            @include e('suffix-slot') {
+                color: $colorPrimary;
+            }
+        }
+    }
+
+    @include m('focus') {
+        @include e('content') {
+            box-shadow: 0 0 0 2px $colorHalfAlpha;
+        }
+
+        @include e('input') {
+            @include e('input-el'){
+                color: $colorTextDefault;
+            }
+        }
+    }
+
+    @include m('disabled') {
+        @include e('input') {
+            opacity: 0.5;
+            cursor: not-allowed;
+            color: $colorPrimary;
+        }
+    }
+}

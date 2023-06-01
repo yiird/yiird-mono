@@ -1,9 +1,72 @@
 @import '../theme/scss/bem';
 
 @include b('panel') {
-    height: 500px;
+    height: $height;
+    width: $width;
+    overflow: hidden;
 
-    @include e('container'){
-        height: 100%;
+    border: 1px solid $borderColor;
+    border-radius: 5px;
+
+    @include e('header') {
+        height: $headerHeight;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $borderColor;
+        color: $color;
+
+        @include e('title') {
+            letter-spacing: 1px;
+            font-weight: $titleFontWeight;
+            padding: 0 calc($headerHeight * 0.35);
+        }
+        @include e('header-right') {
+            padding: 0 calc($headerHeight * 0.35);
+            display: flex;
+            :deep(.btn) {
+                padding: 0;
+                font-weight: $titleFontWeight;
+            }
+        }
+    }
+
+    @include e('container') {
+        height: calc(100% - $headerHeight - $footerHeight);
+        padding: 0 calc($headerHeight * 0.25);
+        :deep(.scrollbar-track){
+            background-color: $borderColor;
+        }
+    }
+
+    @include m('no-header') {
+        @include e('container') {
+            height: calc(100% - $footerHeight);
+        }
+    }
+
+    @include m('no-footer') {
+        @include e('container') {
+            height: calc(100% - $headerHeight);
+        }
+    }
+    @include m('no-border') {
+        border: none;
+        @include e('header') {
+            border: none;
+            background-color: $headerBg;
+        }
+    }
+
+    @include m('no-header-footer') {
+        @include e('container') {
+            height: 100%;
+        }
+    }
+
+    @include e('footer') {
+        height: $footerHeight;
     }
 }

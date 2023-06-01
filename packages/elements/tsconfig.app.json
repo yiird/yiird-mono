@@ -1,14 +1,16 @@
 {
-	"extends": "@vue/tsconfig/tsconfig.web.json",
-	"include": ["env.d.ts","./packages/**/*.ts", "./packages/**/*.vue"],
-	"exclude": ["src/**/__tests__/*"],
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"ignoreDeprecations": "5.0",
-		"composite": true,
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	}
+    "extends": "@vue/tsconfig/tsconfig.web.json",
+    "include": ["packages/**/*.ts", "packages/**/*.vue"],
+    "exclude": ["src/**/__tests__/*"],
+    "compilerOptions": {
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "ignoreDeprecations": "5.0",
+        "composite": true,
+        "baseUrl": ".",
+		"rootDirs": ["packages"],
+        "types": ["vite/client"],
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    }
 }

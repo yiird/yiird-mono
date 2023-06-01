@@ -78,7 +78,7 @@
     }
     @include m('text') {
         @include e('bar-wrap') {
-            padding-bottom: 10px;
+            padding-bottom: 5px;
             @include e('bar-bottom') {
                 position: absolute;
                 left: $barBottomLeft;
@@ -101,10 +101,10 @@
     @include m('card') {
         @include e('bar-wrap') {
             @include e('bar') {
+                position: relative;
                 margin-right: $gutter;
                 box-sizing: border-box;
                 border: 1px solid $colorBorder;
-                border-bottom: unset;
                 background-color: $colorBg;
                 background-clip: border-box;
                 border-radius: 5px 5px 0 0;
@@ -117,6 +117,14 @@
                     opacity: 0.5;
                     background-color: $colorDisabled;
                     cursor: not-allowed;
+                }
+                &::before {
+                    position: absolute;
+                    content: '';
+                    width: calc($gutter + 2px);
+                    left: calc($gutter * -1 - 2px);
+                    bottom: -1px;
+                    border-bottom: 1px solid $colorBorder;
                 }
             }
         }

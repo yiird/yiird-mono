@@ -1,9 +1,7 @@
 <template>
-    <y-theme>
-        <y-tabs
-            :gutter="15"
-            :items="items"></y-tabs>
-    </y-theme>
+    <y-tabs
+        :gutter="15"
+        :items="items"></y-tabs>
 </template>
 
 <script lang="ts" setup>

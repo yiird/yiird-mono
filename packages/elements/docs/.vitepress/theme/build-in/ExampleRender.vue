@@ -45,7 +45,7 @@ watchEffect(() => {
     color: initial;
     .demo__display {
         padding: 10px;
-        background-color: #fff;
+        background-color: transparent;
     }
     &.demo--transparent {
         .demo__display {

@@ -1,17 +1,13 @@
 <template>
-    <y-theme>
-        <y-tabs
-            :gutter="15"
-            :disabled-keys="disabledKeys"
-            :items="items"></y-tabs>
-    </y-theme>
+    <y-tabs
+        :gutter="15"
+        :disabled-keys="disabledKeys"
+        :items="items"></y-tabs>
     <br />
-    <y-theme>
-        <y-tabs
-            mode="card"
-            :disabled-keys="disabledKeys"
-            :items="items"></y-tabs>
-    </y-theme>
+    <y-tabs
+        mode="card"
+        :disabled-keys="disabledKeys"
+        :items="items"></y-tabs>
 </template>
 <script lang="ts" setup>
 const items = [

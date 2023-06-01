@@ -1,0 +1,15 @@
+@import '../../theme/scss/bem';
+
+@include b('row') {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-flow: row wrap;
+    gap: #{$gutterAuxiliaryAxis} #{$gutterMainAxis};
+    margin-bottom: #{$gutterAuxiliaryAxis};
+    box-sizing: border-box;
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+}

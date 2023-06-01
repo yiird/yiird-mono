@@ -3,42 +3,42 @@
     <br />
     <y-icon
         :fixed-width="false"
-        icon="camera"
+        name="camera"
         size="2x"></y-icon>
     <y-icon
         :fixed-width="false"
-        icon="coffee"
+        name="coffee"
         size="2x"></y-icon>
     <y-icon
         :fixed-width="false"
-        icon="6"
+        name="6"
         size="2x"></y-icon>
     <y-icon
         :fixed-width="false"
-        icon="home"
+        name="home"
         size="2x"></y-icon>
     <br />
     <hr />
     <span class="tip">对齐</span>
     <br />
     <y-icon
-        icon="camera"
+        name="camera"
         size="2x"></y-icon>
     <y-icon
-        icon="coffee"
+        name="coffee"
         size="2x"></y-icon>
     <y-icon
-        icon="6"
+        name="6"
         size="2x"></y-icon>
     <y-icon
-        icon="home"
+        name="home"
         size="2x"></y-icon>
     <br />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { fa6, faCamera, faCoffee, faHome } from '@fortawesome/free-solid-svg-icons';
-import { addIcons } from '../../../packages';
+import { addIcons } from '@yiird/elements';
 
 addIcons(faCamera, faCoffee, fa6, faHome);
 </script>

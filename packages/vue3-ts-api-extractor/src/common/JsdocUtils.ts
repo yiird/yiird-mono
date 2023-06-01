@@ -56,8 +56,7 @@ export class JsdocUtils {
             }
         }
         const jsDocStr = '/**\n *' + typedefs.join('\n *') + '\n */';
-
-        return tsquery.query(tsquery.ast(jsDocStr, filename, ScriptKind.TS), 'JSDocComment', {
+        return tsquery.query(tsquery.ast(jsDocStr, filename, ScriptKind.TS), 'JSDoc', {
             visitAllChildren: true
         });
     }

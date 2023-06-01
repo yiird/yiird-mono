@@ -11,7 +11,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 'latest'
     },
-    extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-typescript', '@vue/eslint-config-prettier/skip-formatting'],
+    extends: ['plugin:vue/vue3-essential', 'plugin:vue/vue3-recommended', 'eslint:recommended', '@vue/eslint-config-typescript', '@vue/eslint-config-prettier/skip-formatting'],
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -36,7 +36,28 @@ module.exports = {
             }
         ],
         'vue/multi-word-component-names': 'off',
-        'vue/no-reserved-component-names': 'off'
+        'vue/no-reserved-component-names': 'off',
+        'vue/attributes-order': [
+            'error',
+            {
+                order: [
+                    'DEFINITION',
+                    'LIST_RENDERING',
+                    'CONDITIONALS',
+                    'RENDER_MODIFIERS',
+                    'GLOBAL',
+                    ['UNIQUE', 'SLOT'],
+                    'TWO_WAY_BINDING',
+                    'OTHER_DIRECTIVES',
+                    'ATTR_DYNAMIC',
+                    'ATTR_STATIC',
+                    'ATTR_SHORTHAND_BOOL',
+                    'EVENTS',
+                    'CONTENT'
+                ],
+                alphabetical: false
+            }
+        ]
     },
     overrides: [
         {

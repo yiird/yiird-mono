@@ -7,7 +7,16 @@ export type DefaultValue = {
 };
 
 export class PropComment extends BasicComment {
+    private _isModel: boolean = false;
     private _type?: TypeComment;
+
+    public get isModel(): boolean {
+        return this._isModel;
+    }
+    public set isModel(value: boolean) {
+        this._isModel = value;
+    }
+
     public get type(): TypeComment | undefined {
         return this._type;
     }

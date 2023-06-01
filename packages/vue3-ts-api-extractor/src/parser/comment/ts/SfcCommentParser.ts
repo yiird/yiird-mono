@@ -1,5 +1,6 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { AttributeNode, DirectiveNode, SimpleExpressionNode } from '@vue/compiler-core';
+import { camelCase, reverse, uniqBy } from 'lodash-es';
 import ts, { Identifier, MethodDeclaration, Node, ReturnStatement } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
@@ -199,7 +200,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
                                 name = (<SimpleExpressionNode>(<DirectiveNode>_arg).arg).content;
                             }
                             const argComment = new PropertyComment();
-                            argComment.name = name;
+                            argComment.name = camelCase(name);
                             const paramTag = name ? paramTags.get(name) : undefined;
                             if (paramTag) {
                                 if (paramTag.typeExpression) {
@@ -277,7 +278,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
             //处理定义引用标识
             props.push(...this._handlePropsByIdentifier(inputNode));
         }
-        return props;
+        return reverse(uniqBy(reverse(props), 'name'));
     }
 
     /**

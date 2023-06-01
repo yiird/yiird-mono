@@ -1,28 +1,26 @@
 <template>
-    <y-theme>
-        <y-tabs
-            ref="tabs"
-            mode="card"
-            :active-key="0"
-            :items="items">
-            <template v-slot:extra-left>
-                <y-btn
-                    mode="empty"
-                    size="md"
-                    @click="go(0)">
-                    Go First
-                </y-btn>
-            </template>
-            <template v-slot:extra-right>
-                <y-btn
-                    mode="empty"
-                    size="md"
-                    @click="go(9)">
-                    Go Last
-                </y-btn>
-            </template>
-        </y-tabs>
-    </y-theme>
+    <y-tabs
+        ref="tabs"
+        mode="card"
+        :active-key="0"
+        :items="items">
+        <template v-slot:extra-left>
+            <y-btn
+                mode="empty"
+                size="md"
+                @click="go(0)">
+                Go First
+            </y-btn>
+        </template>
+        <template v-slot:extra-right>
+            <y-btn
+                mode="empty"
+                size="md"
+                @click="go(9)">
+                Go Last
+            </y-btn>
+        </template>
+    </y-tabs>
 </template>
 
 <script lang="ts" setup>

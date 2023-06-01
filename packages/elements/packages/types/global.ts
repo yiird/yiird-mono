@@ -1,9 +1,21 @@
-import type { Plugin as _Plugin, App } from 'vue';
+import type { IconPrefix } from '@fortawesome/fontawesome-svg-core';
+import type Color from 'color';
+import type { App, EmitsOptions, Ref, SetupContext, Plugin as _Plugin } from 'vue';
 export type TshirtSize = `2xs` | `xs` | `sm` | `md` | `lg` | `xl` | `2xl`;
 export type NumberSize = `1x` | `2x` | `3x` | `4x` | `5x` | `6x` | `7x` | `8x` | `9x` | `10x`;
 export type Size = TshirtSize | NumberSize;
+export type StateColor = `default` | `primary` | `success` | `warn` | `error`;
+export type Placement = 'left' | 'right' | 'top' | 'bottom' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
 
 export interface UserThemeVars extends Record<string, any> {
+    /**
+     * 默认组件尺寸
+     */
+    ye_size?: Size;
+    /**
+     * 默认图标前缀
+     */
+    ye_iconPrefix?: IconPrefix;
     /** 字体 */
     ye_fontFamily?: string;
     /** 字体标准大小 `13` `14` `16` */
@@ -25,6 +37,8 @@ export type BoxShadowLevel = 'high' | 'middle' | 'low';
 export type BoxShadowDirection = 'up' | 'down' | 'left' | 'right';
 
 export interface ThemeConfig extends Record<string, any> {
+    ye_size: Size;
+    ye_iconPrefix: IconPrefix;
     ye_isDark: boolean;
     /** 字体 */
     ye_fontFamily: string;
@@ -67,15 +81,15 @@ export interface ThemeConfig extends Record<string, any> {
     ye_secondaryTextSize: number;
     ye_secondaryTextSizeStr: string;
     //颜色
-    ye_colorHover: string;
-    ye_colorActive: string;
-    ye_colorFocus: string;
-    ye_colorBg: string;
-    ye_colorDivider: string;
-    ye_colorBorder: string;
-    ye_colorDisabled: string;
-    ye_colorSecondaryText: string;
-    ye_colorPrimaryText: string;
+    ye_colorHover: Color;
+    ye_colorActive: Color;
+    ye_colorFocus: Color;
+    ye_colorBg: Color;
+    ye_colorDivider: Color;
+    ye_colorBorder: Color;
+    ye_colorDisabled: Color;
+    ye_colorSecondaryText: Color;
+    ye_colorPrimaryText: Color;
     //行高
     ye_lineHeighTitleText: number;
     ye_lineHeighTitleTextStr: string;
@@ -83,6 +97,9 @@ export interface ThemeConfig extends Record<string, any> {
     ye_lineHeighPrimaryTextStr: string;
     ye_lineHeighSecondaryText: number;
     ye_lineHeighSecondaryTextStr: string;
+    ye_radius_max: number;
+    ye_radius_regular: number;
+    ye_radius_min: number;
     //阴影
     ye_boxshadow: (level: BoxShadowLevel, direction: BoxShadowDirection) => string;
 }
@@ -104,3 +121,25 @@ export type FrameworkConfig = {
     right?: number;
     fixed?: boolean;
 };
+
+export type CommonPrefab = {
+    uid__: number;
+    id__: string;
+    cType__: string;
+    ELEMENT_OPTIONS__: ElementOptions;
+    display__: Ref<boolean>;
+    refresh__: Ref<boolean>;
+    isMounted: Ref<boolean>;
+    setDisplay: (flag: boolean) => void;
+    domRefresh: () => void;
+};
+
+export type InternalSetupContext<P, E extends EmitsOptions = {}> = SetupContext<E> & { props: P; prefab: CommonPrefab };
+
+export interface StateColorGroup {
+    primary: Color;
+    primaryHover: Color;
+    secondary: Color;
+    halfAlpha: Color;
+    text: Color;
+}

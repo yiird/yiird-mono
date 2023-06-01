@@ -50,7 +50,7 @@ export const sinnpetToCustomblockPlugin = async (rawOptions?: Options): Promise<
                     code += `\n<${customBlockTagName}> \n${prettierCode}\n</${customBlockTagName}>;
             `;
                 } else {
-                    return `export default Compont => {
+                    code = `export default Compont => {
                         Compont.${options.injectComponentPropertiesName} = \`${code.replaceAll('`', '\\`').replaceAll('${', '\\${')}\`;
                     }`;
                 }

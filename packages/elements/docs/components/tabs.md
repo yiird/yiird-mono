@@ -69,6 +69,9 @@ Tabs使用
 - 选项：
 	 - `id` { string } : 
 	 - `name` { string } : 
-	 - `icon` { string | IconDefinition } : 
+	 - `icon` { IconNameOrDefinition } : 
 	 - `closeable` { boolean } : 
 	 - `page` { string | Component } : 
+
+- 关联类型：
+	 - [IconNameOrDefinition](#iconnameordefinition)

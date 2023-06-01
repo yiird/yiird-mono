@@ -1,5 +1,3 @@
-import "./chunk-4EOJPDL2.js";
-
 // ../../node_modules/@fortawesome/pro-regular-svg-icons/index.mjs
 var prefix = "far";
 var fa0 = {

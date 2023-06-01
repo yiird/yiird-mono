@@ -10,15 +10,15 @@
                 <slot name="extra-left"></slot>
             </div>
             <div
-                class="tabs__scroll"
-                ref="scrollRef">
+                ref="scrollRef"
+                class="tabs__scroll">
                 <div class="tabs__bar-wrap">
                     <div class="tabs__bar-bottom"></div>
                     <div
                         v-for="(tab, index) in tabs"
-                        :class="['tabs__bar', { 'is-active': index === currentActiveIndex, 'is-disabled': tab.disabled }]"
                         :key="index"
                         :ref="(el) => (barRefs[index] = el)"
+                        :class="['tabs__bar', { 'is-active': index === currentActiveIndex, 'is-disabled': tab.disabled }]"
                         :data-key="index"
                         @click="active(index)">
                         <Icon
@@ -27,8 +27,8 @@
                         <span>{{ tab.name }}</span>
                         <Icon
                             v-if="!tab.disabled && tab.closeable"
-                            @click.stop="close(index)"
-                            :name="faClose"></Icon>
+                            :name="faClose"
+                            @click.stop="close(index)"></Icon>
                     </div>
                 </div>
             </div>
@@ -41,16 +41,16 @@
         <div class="tabs__content-wrap">
             <!-- 默认插槽，呈现标签内容 -->
             <div
-                class="tabs__content"
                 v-for="(tab, index) in tabs"
                 v-show="index === currentActiveIndex"
-                :key="index">
+                :key="index"
+                class="tabs__content">
                 <div
                     v-if="tab.isHtml"
                     v-html="tab.page"></div>
                 <component
-                    v-else
-                    :is="tab.page"></component>
+                    :is="tab.page"
+                    v-else></component>
             </div>
         </div>
     </div>
@@ -67,11 +67,11 @@ import { TabsProps, expose, setupTabs } from './logic';
  */
 export default defineComponent({
     name: 'Tabs',
+    components: { Icon },
     props: TabsProps,
     expose,
-    components: { Icon },
-    setup(props) {
-        const logic = setupTabs(props);
+    setup(props, ctx) {
+        const logic = setupTabs(props, ctx);
         return {
             ...logic
         };

@@ -1,12 +1,11 @@
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faFolder, faFolderOpen, faSquareCheck, faSquareMinus } from '@fortawesome/pro-duotone-svg-icons';
 
 import { faAngleDown, faAngleRight, faSquare } from '@fortawesome/pro-light-svg-icons';
 import { faFile } from '@fortawesome/pro-thin-svg-icons';
 import { difference, intersection } from 'lodash-es';
-import { computed, inject, onBeforeMount, reactive, ref, toRaw, watch, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
+import { computed, inject, onBeforeMount, reactive, ref, toRaw, unref, watch, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { styleValueToNumber } from '../../common/dom-utils';
-import { BaseProps, baseExpose, usePrefab, useTheme, type CommonPrefab } from '../../common/prefab';
+import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import {
     _rawNodeData,
     flatDataToNodeMap,
@@ -21,8 +20,9 @@ import {
     type TreeNode
 } from '../../common/tree-utils';
 import { SCROLL_KEY, sizeToFontSize, sizeToHeight } from '../../config';
-import type { Size, ThemeConfig } from '../../types/global';
-import type { PageBoundary, VirtualPagePluginOptions } from '../../types/scroll';
+import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
+import type { PageBoundary } from '../../types/scroll';
+import type { IconNameOrDefinition } from '../icon/logic';
 
 export const TreeProps = {
     ...BaseProps,
@@ -90,26 +90,26 @@ export const TreeProps = {
      * 主要图标
      */
     icon: {
-        type: [String, Object] as PropType<string | IconDefinition>,
+        type: [String, Object] as PropType<IconNameOrDefinition>,
         default: faFolder
     },
     /**
      * 主要图标
      */
     iconActived: {
-        type: [String, Object] as PropType<string | IconDefinition>,
+        type: [String, Object] as PropType<IconNameOrDefinition>,
         default: faFolderOpen
     },
     /**
      * 叶子结点图标
      */
     leafIcon: {
-        type: [String, Object] as PropType<string | IconDefinition>,
+        type: [String, Object] as PropType<IconNameOrDefinition>,
         default: faFile
     },
     switchIcons: {
-        type: Array as PropType<Array<string | IconDefinition>>,
-        validator(_value: Array<string | IconDefinition>) {
+        type: Array as PropType<Array<IconNameOrDefinition>>,
+        validator(_value: Array<IconNameOrDefinition>) {
             return _value.length >= 2;
         },
         default() {
@@ -150,6 +150,21 @@ export const TreeProps = {
      */
     expandLevel: {
         type: Number as PropType<number>
+    },
+    /**
+     * 触发虚拟渲染的数量，当总节点数超过此值时并且数量大于预渲染的数量时，进行虚拟渲染。
+     * 预渲染的数量=每屏数量*`pre-render-screen-size`,其中`每屏数量`是自动计算的，无法设置。可以通过tree实例上的getBoundary()获取。
+     */
+    triggerCount: {
+        type: Number as PropType<number>,
+        default: 500
+    },
+    /**
+     * 预渲染屏数量，必须为基数
+     */
+    preRenderScreenSize: {
+        type: Number as PropType<number>,
+        default: 5
     }
 } as const;
 export type TreePropsType = Readonly<ExtractPropTypes<typeof TreeProps>>;
@@ -182,9 +197,14 @@ const _eventData = (node: TreeNode, ev: Event): TreeEventData => {
     };
 };
 
-const obtainTheme = (props: TreePropsType, prefab: CommonPrefab) => {
+export const TreeEmits = {
+    select: null
+};
+
+const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>) => {
     const themeConfig = useTheme();
 
+    const { props } = ctx;
     const obtainShowLine = computed(() => props.showLine);
 
     return computed<TreeTheme>(() => {
@@ -210,14 +230,12 @@ const obtainTheme = (props: TreePropsType, prefab: CommonPrefab) => {
     });
 };
 
-export const treeEmits = {
-    select: null
-};
-
-export const setupTree = (props: TreePropsType, { emit }: SetupContext<typeof treeEmits>) => {
+export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmits>) => {
     const prefab = usePrefab(props);
 
-    const theme = obtainTheme(props, prefab);
+    const theme = obtainTheme({ props, prefab, ...ctx });
+
+    const { emit } = ctx;
 
     const checkState = ref<CheckStat>();
     const expandStat = ref<ExpandStat>();
@@ -227,7 +245,8 @@ export const setupTree = (props: TreePropsType, { emit }: SetupContext<typeof tr
 
     const keyConfig = props.keyConfig;
 
-    const scroll = inject(SCROLL_KEY);
+    const scroll = inject(SCROLL_KEY, null);
+
     const mapStructure = reactive(flatDataToNodeMap(props.items, keyConfig));
     const obtainTreeStructure = computed(() => {
         return mapNodesToTreeNodes(mapStructure, Object.keys(mapStructure), keyConfig);
@@ -284,27 +303,26 @@ export const setupTree = (props: TreePropsType, { emit }: SetupContext<typeof tr
 
     const boundary = ref<PageBoundary>({
         start: 0,
-        end: 0
+        end: 0,
+        pageSize: 0
     });
 
     if (scroll) {
-        watch([() => scroll.scrollbar], () => {
-            const pluginOptions: VirtualPagePluginOptions = {
-                itemClass: 'tree__node',
-                boundary,
-                totalCount: totalCount,
-                unitHeight: unitHeight,
-                focusIndex: focusIndex,
-                renderPageCount: 3
-            };
-
-            //禁用过屏效果，否则滚动条总蹦跶
-            scroll.scrollbar?.updatePluginOptions('overscroll', {
-                maxOverscroll: 0
-            });
-            //启用虚拟滚动
-            scroll.scrollbar?.updatePluginOptions('virtualPage', pluginOptions);
+        scroll.setOptions({
+            plugins: {
+                virtualPage: {
+                    itemClass: 'tree__node',
+                    boundary,
+                    totalCount: totalCount,
+                    unitHeight: unitHeight,
+                    focusIndex: focusIndex,
+                    triggerCount: props.triggerCount,
+                    preRenderScreenSize: props.preRenderScreenSize
+                },
+                overscroll: false
+            }
         });
+
         watch(boundary, (_boundary, prev_boundary) => {
             if (prev_boundary && _boundary.start >= 0 && _boundary.end > 0) {
                 const newInViewKeys = obtainData.value.slice(_boundary.start, _boundary.end).map((node) => node[keyConfig.key]);
@@ -488,6 +506,14 @@ export const setupTree = (props: TreePropsType, { emit }: SetupContext<typeof tr
         }
     });
 
+    /**
+     * 获取边界
+     *
+     */
+    const getBoundary = () => {
+        return unref(boundary);
+    };
+
     return {
         ...prefab,
         theme,
@@ -495,7 +521,8 @@ export const setupTree = (props: TreePropsType, { emit }: SetupContext<typeof tr
         doToggleSelected_,
         doClickExpandIcon_,
         selectRange,
-        select
+        select,
+        getBoundary
     };
 };
 

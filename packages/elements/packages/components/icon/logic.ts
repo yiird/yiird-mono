@@ -1,14 +1,18 @@
-import type { IconDefinition, IconPrefix } from '@fortawesome/fontawesome-svg-core';
-import type { PropType } from 'vue';
-import { BaseProps } from '../../common/prefab';
-import type { NumberSize } from '../../types/global';
+import { library, type IconDefinition, type IconPack, type IconName as _IconName } from '@fortawesome/fontawesome-svg-core';
+import { forEach, isString, kebabCase } from 'lodash-es';
+import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
+import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
+import type { NumberSize, Size } from '../../types/global';
 
-/**
- * 图标前缀
- */
-export type IconSize = `2xs` | `xs` | `sm` | `lg` | `xl` | `2xl` | NumberSize;
 export type IconRotation = 90 | 180 | 270 | '90' | '180' | '270';
 export type IconFlip = 'horizontal' | 'vertical' | 'both';
+export type IconDefinitionOrPack = IconDefinition | IconPack;
+export type IconNameOrDefinition = IconDefinition | IconPack | _IconName;
+export type IconSize = `2xs` | `xs` | `sm` | `lg` | `xl` | `2xl` | NumberSize;
+
+export const addIcons = (...icons: IconDefinitionOrPack[]) => {
+    library.add(...icons);
+};
 
 export type IconAnimation = 'beat' | 'fade' | 'beat-fade' | 'bounce' | 'flip' | 'shake' | 'spin' | 'spin-pulse' | 'spin-reverse' | 'spin-pulse-reverse';
 /**
@@ -134,14 +138,6 @@ export interface IconAnimationOptions {
 export const IconProps = {
     ...BaseProps,
     /**
-     * fontawesome 图标风格前缀
-     * 如果icon为`IconDefinition`类型值，则不需要设置此项
-     */
-    prefix: {
-        type: String as PropType<IconPrefix>,
-        default: 'fas'
-    },
-    /**
      * 图标名称
      *
      * 例如：
@@ -160,15 +156,15 @@ export const IconProps = {
      * [查询图标](https://fontawesome.com/search?m=free)
      */
     name: {
-        type: [String, Object] as PropType<string | IconDefinition>,
+        type: [String, Object] as PropType<IconNameOrDefinition>,
         required: true
     },
     /**
      * 图标尺寸
      */
     size: {
-        type: String as PropType<IconSize>,
-        default: 'sm'
+        type: String as PropType<Size>,
+        default: 'md'
     },
     /**
      * 修复图标宽度
@@ -214,3 +210,74 @@ export const IconProps = {
         type: Object as PropType<IconAnimationOptions>
     }
 } as const;
+
+export type IconPropsType = Readonly<ExtractPropTypes<typeof IconProps>>;
+
+export const IconEmits = {} as const;
+
+export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmits>) => {
+    const themeConfig = useTheme();
+    const obtainIcon = computed(() => {
+        const { ye_iconPrefix: prefix } = themeConfig.value;
+        const { name } = props;
+        if (isString(name)) {
+            return [prefix, name];
+        } else {
+            return name;
+        }
+    });
+
+    const obtainSize = computed<IconSize>(() => {
+        return props.size === 'md' ? 'sm' : props.size;
+    });
+
+    const obtainFixedWidth = computed(() => {
+        return props.fixedWidth;
+    });
+
+    const obtainRotation = computed(() => {
+        return props.rotation;
+    });
+
+    const obtainFlip = computed(() => {
+        return props.flip;
+    });
+
+    const obtainFaClasses = computed(() => {
+        let animation;
+        if (props.animation === 'spin-reverse') {
+            animation = ['fa-spin', 'fa-spin-reverse'];
+        } else if (props.animation === 'spin-pulse-reverse') {
+            animation = ['fa-spin-pulse', 'fa-spin-reverse'];
+        } else {
+            animation = [`fa-${props.animation}`];
+        }
+        return animation;
+    });
+
+    const obtainAnimationOptions = computed(() => {
+        const options: Record<string, string> = {};
+        const animation = props.animation;
+        if (animation && props.animationOptions) {
+            forEach(props.animationOptions, (value, name) => {
+                if (value) {
+                    options[`--fa-` + kebabCase(name)] = value;
+                }
+            });
+        }
+        return options;
+    });
+
+    const prefab = usePrefab(props);
+    return {
+        ...prefab,
+        obtainIcon,
+        obtainSize,
+        obtainFixedWidth,
+        obtainRotation,
+        obtainFlip,
+        obtainFaClasses,
+        obtainAnimationOptions
+    };
+};
+export const IconExpose = [...baseExpose];

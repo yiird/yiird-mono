@@ -81,3 +81,6 @@
     --docsearch-primary-color: var(--vp-c-brand) !important;
 }
 
+.vp-doc :not(pre) > code {
+    white-space: nowrap;
+}

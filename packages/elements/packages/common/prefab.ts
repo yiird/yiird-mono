@@ -1,7 +1,7 @@
 import { kebabCase } from 'lodash-es';
-import { getCurrentInstance, inject, nextTick, onMounted, ref, toRef, type Ref } from 'vue';
+import { getCurrentInstance, inject, nextTick, onMounted, ref, toRef, type PropType } from 'vue';
 import { CACHE_INSTANCES, DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
-import type { ElementOptions } from '../types/global';
+import type { BoxShadowDirection, BoxShadowLevel, CommonPrefab, ElementOptions } from '../types/global';
 
 export const baseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted'];
 
@@ -21,22 +21,28 @@ export const BaseProps = {
     }
 };
 
+export const ShadowProps = {
+    /**
+     * 阴影级别
+     */
+    shadowLevel: {
+        type: String as PropType<BoxShadowLevel>,
+        default: 'low'
+    },
+    /**
+     * 阴影方向
+     */
+    shadowDirection: {
+        type: String as PropType<BoxShadowDirection>,
+        default: 'down'
+    }
+};
+
 export const useTheme = () => {
     const options = inject(OPTIONS_KEY, DEFAULT_ELEMENT_OPTIONS);
     return toRef(options!, 'themeConfig');
 };
 
-export type CommonPrefab = {
-    uid__: number;
-    id__: string;
-    cType__: string;
-    ELEMENT_OPTIONS__: ElementOptions;
-    display__: Ref<boolean>;
-    refresh__: Ref<boolean>;
-    isMounted: Ref<boolean>;
-    setDisplay: (flag: boolean) => void;
-    domRefresh: () => void;
-};
 export const usePrefab = (props: any): CommonPrefab => {
     //获取组件对象实例
     const internalInstance = getCurrentInstance();
