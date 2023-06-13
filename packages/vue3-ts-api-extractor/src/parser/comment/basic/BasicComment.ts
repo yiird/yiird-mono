@@ -1,4 +1,15 @@
+export enum BasicCommentKind {
+    BASIC,
+    EVENT,
+    PROP,
+    METHOD,
+    SLOT,
+    SFC
+}
+
 export abstract class BasicComment {
+    public kind: BasicCommentKind = BasicCommentKind.BASIC;
+
     private _name?: string | undefined;
     public get name(): string | undefined {
         return this._name;

@@ -8,8 +8,8 @@ describe('Test Transform', () => {
         extractor({
             root: '/Users/loufei/works/projects/vscode/yiird-mono/packages/elements/packages',
             scanner: {
-                scanDirs: ['components/popover'],
-                extensions: ['.ts', '.vue'],
+                scanDirs: ['components/list'],
+                extensions: ['.ts', '.tsx', '.vue'],
                 externals: ['vue'],
                 watch: true
             },

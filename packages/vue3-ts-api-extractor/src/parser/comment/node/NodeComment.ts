@@ -1,4 +1,12 @@
+export enum NodeCommentKind {
+    NODE,
+    PARAM,
+    PROPERTY,
+    TYPE
+}
+
 export abstract class NodeComment {
+    public kind: NodeCommentKind = NodeCommentKind.NODE;
     private _name?: string | undefined;
     public get name(): string | undefined {
         return this._name;

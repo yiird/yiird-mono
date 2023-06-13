@@ -1,10 +1,11 @@
-import { BasicComment } from './BasicComment';
+import { BasicComment, BasicCommentKind } from './BasicComment';
 import { EventComment } from './EventComment';
 import { MethodComment } from './MethodComment';
 import { PropComment } from './PropComment';
 import { SlotComment } from './SlotComment';
 
 export class SfcComment extends BasicComment {
+    public kind: BasicCommentKind = BasicCommentKind.SFC;
     private _additional?: string[];
     private _vitepress_frontmatter?: string;
     private _author?: string;

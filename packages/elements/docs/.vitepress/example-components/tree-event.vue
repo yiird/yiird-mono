@@ -6,10 +6,10 @@
             :show-icon="false"
             :expand-keys="expands"
             :always-focus="true"
-            @select="onSelect"
             :cascade="true"
             :show-line="false"
-            :default-selected-keys="defaultSelectedKeys"></y-tree>
+            :default-selected-keys="defaultSelectedKeys"
+            @select="onSelect"></y-tree>
     </y-panel>
 </template>
 
@@ -17,7 +17,7 @@
 import { ref } from 'vue';
 
 const response = await fetch('/data/tree.json');
-const data = (await response.json()).data;
+const data = (await response.json());
 
 const expands = ref<string[]>();
 

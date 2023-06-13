@@ -16,7 +16,7 @@ import { debounce, isObject, isString } from 'lodash-es';
 import { computed, onBeforeMount, ref, watch, watchPostEffect, type ComputedRef, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { checkPointInOneRect, isElement, toStyleValue } from '../../common/dom-utils';
 import { BaseProps, ShadowProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { stateColor2 } from '../../config';
+import { stateColor } from '../../config';
 import type { InternalSetupContext, Placement, StateColor, ThemeConfig } from '../../types/global';
 
 export type PoppoverMode = 'border' | 'fill' | 'empty';
@@ -200,7 +200,7 @@ const obtainTheme = (ctx: InternalSetupContext<PopoverPropsType, typeof PopoverE
         const _themeConfig = themeConfig.value;
         const theme: PopoverTheme = {
             ..._themeConfig,
-            color: stateColor2(_themeConfig, props.color).primary,
+            color: stateColor(_themeConfig, props.color).primary,
             textColor: props.textColor,
             arrowSize: toStyleValue(props.arrowSize, '8px'),
             maxWidth: toStyleValue(props.maxWidth),

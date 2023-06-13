@@ -10,7 +10,7 @@
 
 <script lang="ts" setup></script>
 <style scoped>
-.btn {
+.wrap :deep(.btn) {
     margin: 0.5rem;
 }
 </style>

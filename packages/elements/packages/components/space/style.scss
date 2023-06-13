@@ -1,0 +1,13 @@
+@import '../theme/scss/bem';
+
+@include b('space') {
+    display: inline-flex;
+    gap: $gap;
+    align-items: center;
+    @include m('h') {
+        flex-direction: row;
+    }
+    @include m('v') {
+        flex-direction: column;
+    }
+}

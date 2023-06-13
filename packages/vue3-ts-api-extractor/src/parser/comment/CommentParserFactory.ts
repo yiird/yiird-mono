@@ -4,6 +4,7 @@ import { AbstractCommentParser } from './AbstractCommentParser';
 import { EventComment } from './basic/EventComment';
 import { MethodComment } from './basic/MethodComment';
 import { PropComment } from './basic/PropComment';
+import { EmitsCommentParser } from './ts/EmitsCommentParser';
 import { EventCommentParser } from './ts/EventCommentParser';
 import { MethodCommentParser } from './ts/MethodCommentParser';
 import { PropCommentParser } from './ts/PropCommentParser';
@@ -19,6 +20,10 @@ export class CommentParserFactory {
 
     static createEventParser(structure: ScriptStructure, context: Context): AbstractCommentParser<EventComment> {
         return new EventCommentParser(structure, context);
+    }
+
+    static createEmitsParser(structure: ScriptStructure, context: Context): AbstractCommentParser<EventComment> {
+        return new EmitsCommentParser(structure, context);
     }
 
     // static createTypeParser(structure: ScriptStructure, context: Context): AbstractCommentParser<TypeComment> {

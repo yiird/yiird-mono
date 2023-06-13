@@ -47,7 +47,7 @@ export const ButtonProps = {
      * 设置`icon` 为 `IconDefinition`类型
      *
      * <pre>
-     * `import { faCamera } from '@fortawesome/free-solid-svg-icons';`
+     * `import { faCamera } from '@fortawesome/pro-solid-svg-icons';`
      * // faCamera 为`IconDefinition`类型
      * </pre>
      * [查询图标](https://fontawesome.com/search?m=free)

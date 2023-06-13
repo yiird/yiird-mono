@@ -1,0 +1,74 @@
+@import './bem';
+
+@mixin input {
+    display: flex;
+    align-items: center;
+    font-size: $fontSize;
+    width: 100%;
+
+    @include e('content') {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        border: 1px solid $colorBorder;
+        border-radius: 5px;
+        height: $height;
+        position: relative;
+
+        @include e('input') {
+            flex-grow: 1;
+            height: 100%;
+            @include e('input-el') {
+                resize: none;
+                padding: calc((1lh - $fontSize) / 2) 10px;
+                height: 100%;
+                font-size: inherit;
+                color: $colorText;
+                width: 100%;
+                border-radius: 5px;
+            }
+            ::placeholder {
+                color: $colorPlaceholder;
+            }
+        }
+
+        @include e('loading-icon') {
+            color: $colorText;
+            margin-right: 5px;
+        }
+
+        @include e('counter') {
+            color: $colorBorderDefault;
+            margin-right: 5px;
+            user-select: none;
+        }
+    }
+
+    @include m('focus') {
+        @include e('content') {
+            box-shadow: 0 0 0 2px $colorBorderLigher;
+        }
+
+        @include e('input') {
+            @include e('input-el') {
+            }
+        }
+    }
+
+    @include m('readonly') {
+        * {
+            cursor: not-allowed;
+        }
+    }
+    @include m('disabled') {
+        opacity: 0.5;
+        * {
+            cursor: not-allowed;
+        }
+
+        @include e('input-el') {
+            @debug $colorPrefixSuffix;
+            background-color: $colorPrefixSuffix;
+        }
+    }
+}

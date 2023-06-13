@@ -25,7 +25,7 @@ Framework使用
 | :------ | :--------------------------------------------------------------------------------- | :-----: | :----- |
 | id      | 组件id，若不设置会自动生成                                                         |  String |        |
 | display | 显示隐藏<hr>默认值:<br><pre>true</pre>                                             | Boolean |        |
-| fixed   | 固定高度，fixed=`true` 必须在父级元素设置高度后使用<hr>默认值:<br><pre>false</pre> | Boolean |        |
+| fixed   | 固定高度，fixed=`true` 必须在父级元素设置高度后使用<hr>默认值:<br><pre>false</pre> | boolean |        |
 
 </div>
 

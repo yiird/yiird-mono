@@ -13,9 +13,13 @@
             class="btn__loading"
             animation="spin" />
         <Icon
-            v-if="icon"
+            v-if="icon && iconPosition === 'left'"
             :name="icon"></Icon>
         <span class="btn__text"><slot></slot></span>
+
+        <Icon
+            v-if="icon && iconPosition === 'right'"
+            :name="icon"></Icon>
 
         <Popover
             v-if="obtainHasPopover"
@@ -57,9 +61,9 @@ export default defineComponent({
 //字体颜色
 $colorText: v-bind('theme.color.text');
 $colorPrimary: v-bind('theme.color.primary');
-$colorPrimaryHover: v-bind('theme.color.primaryHover');
-$colorSecondary: v-bind('theme.color.secondary');
-$colorHalfAlpha: v-bind('theme.color.halfAlpha');
+$colorPrimaryHover: v-bind('theme.color.darker');
+$colorSecondary: v-bind('theme.color.lighter');
+$colorHalfAlpha: v-bind('theme.color.translucent');
 
 $height: v-bind('theme.height');
 $lineHeight: v-bind('theme.lineHeight');

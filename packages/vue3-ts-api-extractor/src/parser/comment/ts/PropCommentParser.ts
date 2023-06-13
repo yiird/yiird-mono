@@ -109,13 +109,7 @@ export class PropCommentParser extends AbstractCommentParser<PropComment> {
         return comment;
     }
     private _handleType(inputNode: PropertyAssignment) {
-        const comment = this._typeParser.parse(inputNode.initializer);
-        if (comment.name === 'PropType') {
-            if (ts.isAsExpression(inputNode.initializer)) {
-                comment.name = inputNode.initializer.expression.getText();
-            }
-        }
-        return comment;
+        return this._typeParser.parse(inputNode.initializer);
     }
 
     private _handleUnionValues(typeArg: TypeComment) {

@@ -1,6 +1,12 @@
 import { existsSync, readFileSync } from 'fs';
 import path, { extname } from 'path';
 import { ScriptKind } from 'typescript';
+import { BasicComment, BasicCommentKind } from '../parser/comment/basic/BasicComment';
+import { EventComment } from '../parser/comment/basic/EventComment';
+import { MethodComment } from '../parser/comment/basic/MethodComment';
+import { PropComment } from '../parser/comment/basic/PropComment';
+import { SfcComment } from '../parser/comment/basic/SfcComment';
+import { SlotComment } from '../parser/comment/basic/SlotComment';
 
 export enum FileKind {
     JS,
@@ -10,7 +16,7 @@ export enum FileKind {
     VUE
 }
 
-export const BASIC_TYPE = ['string', 'object', 'array', 'boolean', 'number', 'set', 'map', 'any', 'unknow'];
+export const BASIC_TYPE = ['string', 'object', 'boolean', 'number', 'set', 'map', 'any', 'unknow'];
 
 export class Utils {
     static getScriptKind = (lang: string) => {
@@ -97,10 +103,12 @@ export class Utils {
 
     static getAvailablePath(filePath: string, extensions: string[] = []): string | undefined {
         let realPath;
+
         const mybeFiles = [filePath, path.resolve(filePath, `.${path.sep}index`)];
 
         extensions.forEach((ext) => {
-            if (path.extname(filePath) === '') {
+            const __ext = path.extname(filePath);
+            if (__ext === '' || __ext === '.d') {
                 mybeFiles.forEach((mybeFile) => {
                     if (existsSync(mybeFile + ext)) {
                         realPath = mybeFile + ext;
@@ -110,10 +118,47 @@ export class Utils {
                 realPath = filePath;
             }
         });
+
         return realPath;
     }
 
     static getReferPath(baseFilePath: string, filePath: string, extensions?: string[]) {
         return Utils.getAvailablePath(path.resolve(path.dirname(baseFilePath), filePath), extensions);
+
+        /*  if (!realPath) {
+            const root = process.cwd();
+            const module = path.resolve(root, 'node_modules', filePath, 'package.json');
+
+            if (existsSync(module)) {
+                const data = readFileSync(module, 'utf8');
+                const pkg = JSON.parse(data);
+                const typeFile = pkg.types || pkg.typings;
+                if (typeFile) {
+                    const types = path.resolve(root, 'node_modules', filePath, pkg.types || pkg.typings);
+                    realPath = Utils.getAvailablePath(types.substring(0, types.lastIndexOf(path.extname(types))), extensions);
+                } else {
+                    const types = path.resolve(root, 'node_modules', '@types', filePath);
+                    realPath = Utils.getAvailablePath(types, extensions);
+                }
+            }
+        }
+
+        return realPath; */
+    }
+
+    static isPropComment(comment: BasicComment): comment is PropComment {
+        return BasicCommentKind.PROP === comment.kind;
+    }
+    static isMethodComment(comment: BasicComment): comment is MethodComment {
+        return BasicCommentKind.METHOD === comment.kind;
+    }
+    static isEventComment(comment: BasicComment): comment is EventComment {
+        return BasicCommentKind.EVENT === comment.kind;
+    }
+    static isSlotComment(comment: BasicComment): comment is SlotComment {
+        return BasicCommentKind.SLOT === comment.kind;
+    }
+    static isSfcComment(comment: BasicComment): comment is SfcComment {
+        return BasicCommentKind.SFC === comment.kind;
     }
 }

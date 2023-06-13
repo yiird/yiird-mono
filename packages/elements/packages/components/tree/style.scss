@@ -11,6 +11,7 @@
         flex-wrap: nowrap;
         user-select: none;
         outline: none;
+        color: $color;
 
         @include e('indent') {
             display: flex;
@@ -22,13 +23,25 @@
                 display: block;
                 position: relative;
                 height: 100%;
-                &::before {
+                &::before , &::after{
                     position: absolute;
+                    content: '';
+                    opacity: 0.5;
+                }
+                &::before {
                     top: -50%;
                     left: calc(50% - 1px);
-                    border-left: 1px dotted $colorBorder;
+                    border-left: 1px dotted $color;
                     bottom: calc(50% + 1px);
-                    content: '';
+                }
+
+                &:last-child {
+                    &:after {
+                        left: 50%;
+                        right: 0;
+                        bottom: calc(50% + 1px);
+                        border-bottom: 1px dotted $color;
+                    }
                 }
 
                 @include when('hide-line') {
@@ -37,16 +50,6 @@
                     }
                 }
 
-                &:last-child {
-                    &:after {
-                        content: '';
-                        position: absolute;
-                        left: 50%;
-                        right: 0;
-                        bottom: calc(50% + 1px);
-                        border-bottom: 1px dotted $colorBorder;
-                    }
-                }
             }
         }
 

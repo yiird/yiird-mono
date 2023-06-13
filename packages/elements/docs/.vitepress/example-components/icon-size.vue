@@ -55,12 +55,12 @@
 </template>
 
 <script lang="ts" setup>
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera } from '@fortawesome/pro-solid-svg-icons';
 import { addIcons } from '@yiird/elements';
 
 //这里是做演示，添加图标应在程序入口处，vue安装owl插件时进行配置
 /*
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera } from '@fortawesome/pro-solid-svg-icons';
 import {createUI,OwlOptions} from '@yiird/owl';
 const app = Vue.createApp();
 

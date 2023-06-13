@@ -1,4 +1,4 @@
-import { library, type IconDefinition, type IconPack, type IconName as _IconName } from '@fortawesome/fontawesome-svg-core';
+import { library, type IconDefinition, type IconName, type IconPack } from '@fortawesome/fontawesome-svg-core';
 import { forEach, isString, kebabCase } from 'lodash-es';
 import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
@@ -7,7 +7,7 @@ import type { NumberSize, Size } from '../../types/global';
 export type IconRotation = 90 | 180 | 270 | '90' | '180' | '270';
 export type IconFlip = 'horizontal' | 'vertical' | 'both';
 export type IconDefinitionOrPack = IconDefinition | IconPack;
-export type IconNameOrDefinition = IconDefinition | IconPack | _IconName;
+export type IconNameOrDefinition = IconDefinition | IconPack | IconName;
 export type IconSize = `2xs` | `xs` | `sm` | `lg` | `xl` | `2xl` | NumberSize;
 
 export const addIcons = (...icons: IconDefinitionOrPack[]) => {
@@ -151,7 +151,7 @@ export const IconProps = {
      * 不设置 `prefix`
      * 设置`icon` 为 `IconDefinition`类型
      *
-     * `import { faCamera } from '@fortawesome/free-solid-svg-icons';`
+     * `import { faCamera } from '@fortawesome/pro-solid-svg-icons';`
      *
      * [查询图标](https://fontawesome.com/search?m=free)
      */

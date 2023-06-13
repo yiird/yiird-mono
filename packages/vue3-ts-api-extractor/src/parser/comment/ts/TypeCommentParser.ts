@@ -23,7 +23,9 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
                 Utils.assignObject(comment, _comment);
             } else {
                 comment = this.parse(node.typeName);
-                comment.text = node.getText();
+                if (!comment.isFunctionType) {
+                    comment.text = node.getText();
+                }
                 if (node.typeArguments && node.typeArguments.length > 0) {
                     const typeArguments: TypeComment[] = [];
                     node.typeArguments.forEach((arg) => {
@@ -39,8 +41,10 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
             comment = this.parse(node.type);
             comment.text = node.type.getText();
         } else if (ts.isArrayTypeNode(node)) {
+            comment.name = 'Array';
+            comment.text = node.getText();
             const _comment = this.parse(node.elementType);
-            Utils.assignObject(comment, _comment);
+            comment.typeArguments = [_comment];
         } else if (ts.isUnionTypeNode(node) || ts.isIntersectionTypeNode(node)) {
             comment.associationType = ts.isUnionTypeNode(node) ? AssociationType.union : AssociationType.intersection;
             const associations: TypeComment[] = [];
@@ -60,27 +64,44 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         } else if (ts.isInterfaceDeclaration(node) || ts.isClassDeclaration(node)) {
             comment.name = node.name?.text;
             const properties: PropertyComment[] = [];
+
+            if (node.heritageClauses) {
+                node.heritageClauses.forEach((heritageClause) => {
+                    heritageClause.types.forEach((_type) => {
+                        if (ts.isIdentifier(_type.expression)) {
+                            const _comment = this.parse(_type.expression);
+                            if (_comment.properties) {
+                                properties.push(..._comment.properties);
+                            }
+                        }
+                    });
+                });
+            }
+
             node.members.forEach((member) => {
                 if (ts.isPropertySignature(member)) {
                     properties.push(this.parseProperty(member));
                 }
             });
+
             comment.properties = properties;
             comment.text = comment.name;
+        } else if (ts.isFunctionTypeNode(node)) {
+            comment.text = node.getText();
+            comment.isFunctionType = true;
         } else if (ts.isIdentifier(node)) {
             comment.name = node.text;
+            comment.text = node.text;
             if (!Utils.isBasicType(node.text)) {
                 const structure = this.getStructureByNode(node);
                 if (structure) {
                     const targetNode = this.getNodeByName(node.text, structure);
                     if (targetNode) {
-                        const typeNode = targetNode.projection || targetNode.root;
-                        const _comment = this.parse(typeNode);
+                        const _comment = this.parse(targetNode.root);
                         Utils.assignObject(comment, _comment);
                     }
                 }
             }
-            comment.text = node.text;
         } else {
             if (ts.isLiteralTypeNode(node)) {
                 comment.isLiteralType = true;

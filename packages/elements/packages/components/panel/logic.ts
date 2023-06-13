@@ -165,6 +165,7 @@ export interface PanelTheme extends ThemeConfig {
     bemModifiers?: string[];
     height: string;
     width: string;
+    footerHeight: string;
     headerHeight: string;
 }
 

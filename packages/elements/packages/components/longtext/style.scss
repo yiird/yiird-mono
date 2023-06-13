@@ -1,0 +1,12 @@
+@import '../theme/scss/bem';
+@import '../theme/scss/input';
+
+@include b('longtext') {
+    @include input;
+
+    @include e('loading-icon') {
+        position: absolute;
+        top:0;
+        right: 0;
+    }
+}

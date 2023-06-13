@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { fa6, faBasketball, faBell, faCamera, faCoffee, faHome, faSync } from '@fortawesome/free-solid-svg-icons';
+import { fa6, faBasketball, faBell, faCamera, faCoffee, faHome, faSync } from '@fortawesome/pro-solid-svg-icons';
 import { addIcons, type IconAnimationOptions } from '@yiird/elements';
 import { ref, type Ref } from 'vue';
 

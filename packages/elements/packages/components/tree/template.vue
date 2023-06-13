@@ -7,9 +7,8 @@
         <template v-for="node in obtainData">
             <div
                 v-if="node.inView"
-                tabindex="0"
-                :data-level="node.level"
                 :key="node.index"
+                :data-level="node.level"
                 :class="[
                     'tree__node',
                     {
@@ -18,17 +17,18 @@
                         'is-half-check': node.isHalfCheck,
                         'is-focus': node.isFocus
                     }
-                ]">
+                ]"
+                tabindex="0">
                 <div class="tree__indent">
                     <span
+                        v-for="(i, _ii) of node.level"
+                        :key="i"
                         :class="[
                             'tree__indent-space',
                             {
                                 'is-hide-line': node.isLastInBrother ? _ii < node.level - 1 && _ii > 0 : false
                             }
-                        ]"
-                        v-for="(i, _ii) of node.level"
-                        :key="i"></span>
+                        ]"></span>
                 </div>
                 <div class="tree__content">
                     <span
@@ -37,9 +37,9 @@
                         <Icon :name="node.switchIcon"></Icon>
                     </span>
                     <span
+                        v-if="node.icon"
                         class="tree__icon"
-                        @click.stop="doClickExpandIcon_(node, $event)"
-                        v-if="node.icon">
+                        @click.stop="doClickExpandIcon_(node, $event)">
                         <Icon :name="node.icon"></Icon>
                     </span>
 
@@ -63,10 +63,10 @@ import { TreeEmits, TreeProps, setupTree, treeExpose } from './logic';
  */
 export default defineComponent({
     name: 'Tree',
+    components: { Icon },
     props: TreeProps,
     emits: TreeEmits,
     expose: treeExpose,
-    components: { Icon },
     setup(props, ctx) {
         return setupTree(props, ctx);
     }
@@ -80,6 +80,7 @@ $colorSelected: v-bind('theme.ye_colorActive');
 $colorFocus: v-bind('theme.ye_colorFocus');
 $colorHover: v-bind('theme.ye_colorHover');
 $colorBorder: v-bind('theme.ye_colorBorder');
+$color: v-bind('theme.ye_colorPrimaryText');
 $colorBg: v-bind('theme.ye_colorBg');
 @import './style.scss';
 </style>

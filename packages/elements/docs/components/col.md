@@ -21,12 +21,12 @@ Col使用
 
 <div class="props">
 
-| 名称    | 描述                                   |      类型     | 可选值 |
-| :------ | :------------------------------------- | :-----------: | :----- |
-| id      | 组件id，若不设置会自动生成             |     String    |        |
-| display | 显示隐藏<hr>默认值:<br><pre>true</pre> |    Boolean    |        |
-| span    | 跨越列数<hr>默认值:<br><pre>8</pre>    | String,Number |        |
-| offset  | 向右偏移列数                           | String,Number |        |
+| 名称    | 描述                                   |       类型       | 可选值 |
+| :------ | :------------------------------------- | :--------------: | :----- |
+| id      | 组件id，若不设置会自动生成             |      String      |        |
+| display | 显示隐藏<hr>默认值:<br><pre>true</pre> |      Boolean     |        |
+| span    | 跨越列数<hr>默认值:<br><pre>8</pre>    | string \| number |        |
+| offset  | 向右偏移列数                           | string \| number |        |
 
 </div>
 

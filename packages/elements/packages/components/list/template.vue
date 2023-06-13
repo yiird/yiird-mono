@@ -14,6 +14,7 @@ import { ListEmits, ListExpose, ListProps, setupList } from './logic';
  */
 export default defineComponent({
     name: 'List',
+    // components: { Avatar },
     props: ListProps,
     expose: ListExpose,
     emits: ListEmits,
@@ -23,5 +24,11 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+$height: v-bind('theme.height');
+$fontSize: v-bind('theme.fontSize');
+$dividerColor: v-bind('theme.ye_colorDivider');
+$color: v-bind('theme.ye_colorPrimaryText');
+$colorSecondary: v-bind('theme.ye_colorSecondaryText');
+
 @import './style.scss';
 </style>

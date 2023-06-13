@@ -29,7 +29,7 @@ export default defineComponent({
         const styleContent = computed(() => {
             const theme = options?.themeConfig;
             return `
-html{
+html,body{
     font-size: ${theme?.ye_fontSizeStr};
     font-family: ${theme?.ye_fontFamily};
 }
@@ -54,7 +54,7 @@ html{
         });
 
         const updateGlobalVars = (content: string) => {
-            let style = document.querySelector('[data-ye-vars]');
+            let style = document.querySelector('[data-ye-styles]');
             if (style) {
                 style.textContent = content;
             }
@@ -63,7 +63,7 @@ html{
         onMounted(async () => {
             const style = document.createElement('style');
             style.setAttribute('type', 'text/css');
-            style.setAttribute('data-ye-vars', '');
+            style.setAttribute('data-ye-styles', '');
             document.head.append(style);
             updateGlobalVars(styleContent.value);
         });
@@ -71,10 +71,6 @@ html{
         watchEffect(() => {
             updateGlobalVars(styleContent.value);
         });
-
-        return {
-            theme: options!.themeConfig || {}
-        };
     }
 });
 </script>

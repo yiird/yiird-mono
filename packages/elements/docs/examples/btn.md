@@ -1,7 +1,6 @@
 ---
 title: 图标 btn
 ---
-<y-theme>
 
 # Example - `Btn`
 
@@ -31,4 +30,3 @@ title: 图标 btn
 
 <Example name="button-size" ></Example>
 
-</y-theme>

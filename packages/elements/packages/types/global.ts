@@ -7,11 +7,12 @@ export type Size = TshirtSize | NumberSize;
 export type StateColor = `default` | `primary` | `success` | `warn` | `error`;
 export type Placement = 'left' | 'right' | 'top' | 'bottom' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
 
-export interface UserThemeVars extends Record<string, any> {
+export interface UserThemeVars {
     /**
      * 默认组件尺寸
      */
     ye_size?: Size;
+    ye_spaceSize?: number[];
     /**
      * 默认图标前缀
      */
@@ -22,6 +23,10 @@ export interface UserThemeVars extends Record<string, any> {
     ye_fontSize?: number;
     /** 基础行高相对于字体大小的百分比 */
     ye_baseHeightPercentOfFontSize?: number;
+    /** 字重 */
+    fontWeightLight?: number;
+    fontWeightRegular?: number;
+    fontWeightBold?: number;
 
     /** 主色 */
     ye_colorPrimary?: 'red' | 'volcano' | 'orange' | 'gold' | 'yellow' | 'lime' | 'green' | 'cyan' | 'blue' | 'geekblue' | 'purple' | 'magenta' | 'grey' | 'gray';
@@ -36,12 +41,16 @@ export interface UserThemeVars extends Record<string, any> {
 export type BoxShadowLevel = 'high' | 'middle' | 'low';
 export type BoxShadowDirection = 'up' | 'down' | 'left' | 'right';
 
-export interface ThemeConfig extends Record<string, any> {
+export interface ThemeConfig {
     ye_size: Size;
+    ye_spaceSize: number[];
     ye_iconPrefix: IconPrefix;
     ye_isDark: boolean;
     /** 字体 */
     ye_fontFamily: string;
+
+    /** 默认间距 */
+    ye_gutter: number;
 
     ye_fontSize: number;
     ye_fontSizeStr: string;
@@ -71,15 +80,6 @@ export interface ThemeConfig extends Record<string, any> {
     ye_colorGray: string[] & {
         primary?: string | undefined;
     };
-    /** 标题字体大小 */
-    ye_titleTextSize: number;
-    ye_titleTextSizeStr: string;
-    /** 主要字体大小 */
-    ye_primaryTextSize: number;
-    ye_primaryTextSizeStr: string;
-    /** 次要字体大小 */
-    ye_secondaryTextSize: number;
-    ye_secondaryTextSizeStr: string;
     //颜色
     ye_colorHover: Color;
     ye_colorActive: Color;
@@ -90,13 +90,6 @@ export interface ThemeConfig extends Record<string, any> {
     ye_colorDisabled: Color;
     ye_colorSecondaryText: Color;
     ye_colorPrimaryText: Color;
-    //行高
-    ye_lineHeighTitleText: number;
-    ye_lineHeighTitleTextStr: string;
-    ye_lineHeighPrimaryText: number;
-    ye_lineHeighPrimaryTextStr: string;
-    ye_lineHeighSecondaryText: number;
-    ye_lineHeighSecondaryTextStr: string;
     ye_radius_max: number;
     ye_radius_regular: number;
     ye_radius_min: number;
@@ -137,9 +130,33 @@ export type CommonPrefab = {
 export type InternalSetupContext<P, E extends EmitsOptions = {}> = SetupContext<E> & { props: P; prefab: CommonPrefab };
 
 export interface StateColorGroup {
+    /**
+     * 主色
+     */
     primary: Color;
-    primaryHover: Color;
-    secondary: Color;
-    halfAlpha: Color;
+    /**
+     * 以主色为基础，深一点
+     */
+    darker: Color;
+    /**
+     * 以主色为基础，淡一点
+     */
+    lighter: Color;
+    /**
+     * 以主色为基础，半透明
+     */
+    translucent: Color;
+    /**
+     * 对应的文本颜色
+     */
     text: Color;
 }
+
+export type DataStatus = 'default' | 'success' | 'error' | 'warn';
+
+export interface LabelValue {
+    label: string;
+    value: string;
+}
+
+export type Direction = 'h' | 'v';

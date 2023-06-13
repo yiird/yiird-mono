@@ -1,9 +1,10 @@
 import { NodeArray, ParameterDeclaration } from 'typescript';
 import { ParamComment } from '../node/ParamComment';
 import { TypeComment } from '../node/TypeComment';
-import { BasicComment } from './BasicComment';
+import { BasicComment, BasicCommentKind } from './BasicComment';
 
 export class MethodComment extends BasicComment {
+    public kind: BasicCommentKind = BasicCommentKind.METHOD;
     private _parameterNodes?: NodeArray<ParameterDeclaration>;
     private _parameters?: Array<ParamComment>;
     private _returnType?: TypeComment;

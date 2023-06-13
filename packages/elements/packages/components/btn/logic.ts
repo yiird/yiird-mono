@@ -2,7 +2,7 @@ import { faLoader } from '@fortawesome/pro-light-svg-icons';
 import { isObject } from 'lodash-es';
 import { computed, ref, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { sizeToFontSize, sizeToHeight, stateColor2 } from '../../config';
+import { sizeToFontSize, sizeToHeight, stateColor } from '../../config';
 import type { InternalSetupContext, Size, StateColor, StateColorGroup, ThemeConfig } from '../../types/global';
 import type { IconNameOrDefinition } from '../icon/logic';
 
@@ -14,6 +14,13 @@ export const BtnProps = {
     icon: {
         type: [String, Object] as PropType<IconNameOrDefinition>,
         default: ''
+    },
+    /**
+     * 图标位置
+     */
+    iconPosition: {
+        type: String as PropType<'right' | 'left'>,
+        default: 'left'
     },
     /**
      * 尺寸
@@ -90,7 +97,7 @@ const obtainTheme = (ctx: InternalSetupContext<BtnPropsType, typeof BtnEmits>) =
 
         const theme: BtnTheme = {
             ..._themeConfig,
-            color: isObject(props.color) ? props.color : stateColor2(_themeConfig, props.color),
+            color: isObject(props.color) ? props.color : stateColor(_themeConfig, props.color),
             height: `${height}px`,
             lineHeight: `${height - 2}px`,
             fontSize: `${fontSize}px`

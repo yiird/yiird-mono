@@ -1,7 +1,9 @@
 import { PropertyComment } from '../node/PropertyComment';
-import { BasicComment } from './BasicComment';
+import { BasicComment, BasicCommentKind } from './BasicComment';
 
 export class EventComment extends BasicComment {
+    public kind: BasicCommentKind = BasicCommentKind.EVENT;
+
     private _args?: Array<PropertyComment>;
     private _isPriavte?: boolean;
     public get args(): Array<PropertyComment> | undefined {

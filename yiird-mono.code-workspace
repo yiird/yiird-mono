@@ -4,9 +4,6 @@
             "path": "."
         },
         {
-            "path": "packages/owl"
-        },
-        {
             "path": "packages/elements"
         },
         {
@@ -30,19 +27,8 @@
             "*.json": "jsonc"
         },
         "eslint.workingDirectories": [{ "mode": "auto" }],
-        "i18n-ally.localesPaths": ["src/locales"],
-        "i18n-ally.keystyle": "nested",
-        "i18n-ally.sortKeys": true,
-        "i18n-ally.sourceLanguage": "zh",
-        "i18n-ally.displayLanguage": "zh",
-        "i18n-ally.enabledFrameworks": ["vue"],
-        "i18n-ally.extract.ignoredByFiles": {
-            "packages/owl/src/components/calendar/o-calendar.vue": ["OCalendar"],
-            "packages/owl/src/components/popper/o-popper.vue": ["OPopper"]
-        },
         "files.exclude": {
             "**/node_modules": true
-        },
-        "typescript.tsdk": "node_modules/typescript/lib"
+        }
     }
 }

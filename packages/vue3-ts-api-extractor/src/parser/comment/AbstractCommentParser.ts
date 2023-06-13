@@ -43,4 +43,12 @@ export abstract class AbstractCommentParser<C extends BasicComment | NodeComment
     getStructureByNode(node: Node) {
         return this.context.getStructure(node.getSourceFile().fileName);
     }
+
+    getNodeByNameAndStructure(name: string, scope: Node) {
+        const structure = this.getStructureByNode(scope);
+        if (structure) {
+            const targetNode = this.getNodeByName(name, structure);
+            return targetNode?.projection || targetNode?.root;
+        }
+    }
 }

@@ -1,10 +1,11 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { AttributeNode, DirectiveNode, SimpleExpressionNode } from '@vue/compiler-core';
-import { camelCase, reverse, uniqBy } from 'lodash-es';
+import { camelCase, isString, reverse, uniqBy } from 'lodash-es';
 import ts, { Identifier, MethodDeclaration, Node, ReturnStatement } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
 import { SfcFile } from '../../../common/SfcFile';
+import { Utils } from '../../../common/Utils';
 import { ExportNode } from '../../node/ExportNode';
 import { SfcStructure } from '../../node/SfcStructure';
 import { TemplateSlotNode } from '../../node/TemplateSlotNode';
@@ -17,12 +18,14 @@ import { PropComment } from '../basic/PropComment';
 import { SfcComment } from '../basic/SfcComment';
 import { SlotComment } from '../basic/SlotComment';
 import { PropertyComment } from '../node/PropertyComment';
+import { TypeComment } from '../node/TypeComment';
 
 const SpecialAttr = ['is', 'ref', 'key', 'name'];
 
 export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
     private _propPaser = CommentParserFactory.createPropParser(this.structure, this.context);
     private _methodPaser = CommentParserFactory.createMethodParser(this.structure, this.context);
+    private _emitsPaser = CommentParserFactory.createEmitsParser(this.structure, this.context);
     private _eventPaser = CommentParserFactory.createEventParser(this.structure, this.context);
     private _typePaser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 
@@ -54,6 +57,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
             });
 
         const methods = new Array<MethodComment>();
+        const emits = new Array<EventComment>();
 
         if (ts.isCallExpression(sfcNode)) {
             if (ts.isObjectLiteralExpression(sfcNode.arguments[0])) {
@@ -72,6 +76,10 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
                                 methods.push(...this._handleMthods(componentOptionItem.initializer));
                                 break;
                             }
+                            case 'emits': {
+                                emits.push(...this._handleEmits(componentOptionItem.initializer));
+                                break;
+                            }
                         }
                     } else if (ts.isMethodDeclaration(componentOptionItem)) {
                         if ('setup' === componentOptionItem.name.getText()) {
@@ -86,7 +94,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 
         comment.methods = methods;
 
-        comment.events = this._handleEvents();
+        comment.events = this._handleEvents(emits);
 
         comment.slots = this._handleSlots();
 
@@ -105,6 +113,29 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
 
         return comment;
     }
+
+    private _handleEmits(inputNode: Node) {
+        const emits: Array<EventComment> = [];
+        if (ts.isObjectLiteralExpression(inputNode)) {
+            inputNode.properties.forEach((property) => {
+                if (ts.isSpreadAssignment(property)) {
+                    emits.push(...this._handleEmits(property.expression));
+                    this._handleReplaceType(property, emits);
+                } else {
+                    emits.push(this._emitsPaser.parse(property));
+                }
+            });
+        } else if (ts.isArrayLiteralExpression(inputNode)) {
+            inputNode.elements.forEach((element) => {
+                emits.push(this._emitsPaser.parse(element));
+            });
+        } else if (ts.isIdentifier(inputNode)) {
+            //处理定义引用标识
+            emits.push(...this._handleEmitsByIdentifier(inputNode));
+        }
+        return emits;
+    }
+
     private _handleSetupMethod(componentOptionItem: MethodDeclaration): MethodComment[] {
         const body = componentOptionItem.body;
         const methods: MethodComment[] = [];
@@ -154,6 +185,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
                     const targetNode = NodeUtils.getScopeDeclarations(property.expression.getText(), scope, this.context);
                     if (targetNode) {
                         comments.push(...this._findEndReturn(targetNode.projection || targetNode.root, scope));
+                        this._handleReplaceType(property, comments);
                     } else {
                         const structure = this.getStructureByNode(property);
                         if (structure) {
@@ -161,6 +193,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
                             const targetNode = scriptNode?.projection || scriptNode?.root;
                             if (targetNode) {
                                 comments.push(...this._findEndReturn(targetNode, scriptNode.root));
+                                this._handleReplaceType(property, comments);
                             }
                         }
                     }
@@ -218,7 +251,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
         return slots;
     }
 
-    private _handleEvents(): EventComment[] {
+    private _handleEvents(emits: Array<EventComment>): EventComment[] {
         const events: Array<EventComment> = [];
 
         this._searchNodes.forEach((_node) => {
@@ -233,7 +266,18 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
             });
         });
 
-        return events;
+        if (emits) {
+            emits.forEach((emit) => {
+                const comment = events.find((event) => emit.name === event.name);
+                if (comment) {
+                    if (!emit.description) emit.description = comment.description;
+                    if (!emit.args) emit.args = comment.args;
+                }
+            });
+            return emits;
+        } else {
+            return events;
+        }
     }
     private _handleMthods(inputNode: Node): Array<MethodComment> {
         const methods: Array<MethodComment> = [];
@@ -244,6 +288,7 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
                     const _node = targetNode?.projection || targetNode?.root;
                     if (_node) {
                         methods.push(...this._handleMthods(_node));
+                        this._handleReplaceType(property, methods);
                     }
                 } else {
                     this._searchNodes.push(property);
@@ -301,5 +346,66 @@ export class SfcCommentParser extends AbstractCommentParser<SfcComment> {
             }
         }
         return props;
+    }
+    private _handleEmitsByIdentifier(identifier: Identifier) {
+        const props: Array<EventComment> = [];
+        const structure = this.getStructureByNode(identifier);
+        if (structure) {
+            const targetNode = this.getNodeByName(identifier.text, structure);
+            const _node = targetNode?.projection || targetNode?.root;
+            if (_node) {
+                props.push(...this._handleEmits(_node));
+            }
+        }
+        return props;
+    }
+
+    private _handleReplaceType(node: Node, comments: Array<EventComment | MethodComment | SlotComment>) {
+        const replaces: Array<{ oldName: string; newType: TypeComment }> = [];
+
+        const jsdocs = JsdocUtils.getJsDoc(node);
+        const jsdoc = jsdocs[0];
+        if (jsdoc) {
+            const replaceTags = JsdocUtils.getTags('replaceType', jsdoc);
+            if (replaceTags && replaceTags.length > 0) {
+                replaceTags.forEach((tag) => {
+                    if (isString(tag.comment)) {
+                        const identifiers = tag.comment.split(' ');
+
+                        const oldIdentifier = identifiers[0];
+                        const newIdentifier = identifiers[1];
+
+                        if (oldIdentifier && newIdentifier) {
+                            const newNode = this.getNodeByNameAndStructure(newIdentifier, node);
+                            if (newNode) {
+                                replaces.push({
+                                    oldName: oldIdentifier,
+                                    newType: this._typePaser.parse(newNode)
+                                });
+                            } else {
+                                console.error('未找到目标类型:' + newIdentifier);
+                            }
+                        } else {
+                            console.error('类型替换参数不全：@replace oldTypeName newTypeName');
+                        }
+                    }
+                });
+            }
+        }
+        if (replaces.length > 0) {
+            comments.forEach((comment) => {
+                let _comments;
+                if (Utils.isSlotComment(comment) || Utils.isEventComment(comment)) {
+                    _comments = comment.args;
+                } else if (Utils.isMethodComment(comment)) {
+                    _comments = comment.parameters;
+                }
+
+                _comments?.forEach((_comment) => {
+                    const replace = replaces.find((replace) => _comment.type?.name === replace.oldName);
+                    _comment.type = replace?.newType;
+                });
+            });
+        }
     }
 }

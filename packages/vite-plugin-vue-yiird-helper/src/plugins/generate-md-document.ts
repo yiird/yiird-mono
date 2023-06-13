@@ -44,7 +44,7 @@ export const extractCommentsPlugin = (rawOptions: Options = {}): Plugin[] => {
         root: root,
         scanner: {
             scanDirs: scanDirs,
-            extensions: ['.ts', '.vue'],
+            extensions: ['.ts', '.tsx', '.vue'],
             externals: ['vue'],
             watch: true
         },

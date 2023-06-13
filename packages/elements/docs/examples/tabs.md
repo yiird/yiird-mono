@@ -2,7 +2,6 @@
 title: 选项卡 Tabs
 ---
 
-<y-theme>
 
 # Example - `Tabs`
 
@@ -33,5 +32,3 @@ title: 选项卡 Tabs
 ## 动态添加
 
 <Example name="tabs-add"></Example>
-
-</y-theme>

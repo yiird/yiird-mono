@@ -27,33 +27,35 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
 
     if (!isDark) {
         neutral = {
-            colorBg: originalGray[1],
-            colorDivider: originalGray[2],
-            colorBorder: originalGray[3],
-            colorDisabled: originalGray[4],
-            colorSecondaryText: originalGray[8],
-            colorPrimaryText: originalGray[10]
+            colorBg: new Color(originalGray[1]),
+            colorDivider: new Color(originalGray[3]),
+            colorBorder: new Color(originalGray[3]),
+            colorDisabled: new Color(originalGray[4]),
+            colorSecondaryText: new Color(originalGray[6]),
+            colorPrimaryText: new Color(originalGray[10])
         };
     } else {
         neutral = {
-            colorBg: originalGray[1],
-            colorDivider: originalGray[2],
-            colorBorder: originalGray[3],
-            colorDisabled: originalGray[4],
-            colorSecondaryText: originalGray[7],
-            colorPrimaryText: originalGray[6]
+            colorBg: new Color(originalGray[8]),
+            colorDivider: new Color(originalGray[3]),
+            colorBorder: new Color(originalGray[3]),
+            colorDisabled: new Color(originalGray[4]),
+            colorSecondaryText: new Color(originalGray[7]),
+            colorPrimaryText: new Color(originalGray[6])
         };
     }
 
-    const ye_baseHeightPercentOfFontSize = 2.2;
+    const ye_baseHeightPercentOfFontSize = 2.5;
 
     return {
         ye_size: themeVars.ye_size || 'md',
+        ye_spaceSize: themeVars.ye_spaceSize || [5, 10, 20],
         ye_iconPrefix: themeVars.ye_iconPrefix || 'fas',
         ye_isDark: isDark,
         ye_fontFamily:
             themeVars.ye_fontFamily ||
             '-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji',
+        ye_gutter: 5,
         ye_fontSize: themeVars.ye_fontSize || 14,
         ye_baseHeightPercentOfFontSize,
         ye_fontSizeStr: (themeVars.ye_fontSize || 14) + 'px',
@@ -65,12 +67,6 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
         ye_colorError: colorError,
         ye_colorWarn: colorWarn,
         ye_colorGray: originalGray,
-        ye_titleTextSize: (themeVars.ye_fontSize || 14) + 2,
-        ye_titleTextSizeStr: (themeVars.ye_fontSize || 14) + 2 + 'px',
-        ye_primaryTextSize: themeVars.ye_fontSize || 14,
-        ye_primaryTextSizeStr: (themeVars.ye_fontSize || 14) + 'px',
-        ye_secondaryTextSize: (themeVars.ye_fontSize || 14) - 1,
-        ye_secondaryTextSizeStr: (themeVars.ye_fontSize || 14) - 1 + 'px',
         ye_colorHover: new Color(colorPrimary[1]),
         ye_colorActive: new Color(colorPrimary[4]),
         ye_colorFocus: new Color(colorPrimary[5]),
@@ -80,12 +76,6 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
         ye_colorDisabled: neutral.colorDisabled,
         ye_colorSecondaryText: neutral.colorSecondaryText,
         ye_colorPrimaryText: neutral.colorPrimaryText,
-        ye_lineHeighTitleText: themeVars.titleTextSize + 8,
-        ye_lineHeighTitleTextStr: themeVars.titleTextSize + 8 + 'px',
-        ye_lineHeighPrimaryText: themeVars.primaryTextSize + 8,
-        ye_lineHeighPrimaryTextStr: themeVars.primaryTextSize + 8 + 'px',
-        ye_lineHeighSecondaryText: themeVars.secondaryTextSize + 8,
-        ye_lineHeighSecondaryTextStr: themeVars.secondaryTextSize + 8 + 'px',
         ye_radius_max: 10,
         ye_radius_regular: 5,
         ye_radius_min: 3,
@@ -100,10 +90,10 @@ export const DEFAULT_ELEMENT_OPTIONS: ElementOptions = {
 
 const SIZE_MAP = {
     //T-shirt
-    '2xs': 0.6,
-    xs: 0.8,
-    sm: 1,
-    md: 1.2,
+    '2xs': 0.5,
+    xs: 0.6,
+    sm: 0.8,
+    md: 1,
     lg: 1.4,
     xl: 1.8,
     '2xl': 2.2,
@@ -131,25 +121,6 @@ export const sizeToFontSize = (themeConfig: ThemeConfig, size: TshirtSize | Numb
 
 export const STATE_COLOR_NAMES = ['default', 'primary', 'warn', 'success', 'error'];
 
-export const stateColor = (themeConfig: ThemeConfig, color?: string) => {
-    let _color;
-    switch (color) {
-        case 'primary':
-            _color = themeConfig.ye_colorPrimary.primary;
-            break;
-        case 'success':
-            _color = themeConfig.ye_colorSuccess.primary;
-            break;
-        case 'warn':
-            _color = themeConfig.ye_colorWarn.primary;
-            break;
-        case 'error':
-            _color = themeConfig.ye_colorError.primary;
-            break;
-    }
-    return new Color(_color);
-};
-
 export const textStateColor = (themeConfig: ThemeConfig, color: any) => {
     let _color = color;
     if (STATE_COLOR_NAMES.includes(color)) {
@@ -158,7 +129,7 @@ export const textStateColor = (themeConfig: ThemeConfig, color: any) => {
     return new Color(_color).saturationl() > 60 ? new Color('#ffffff') : themeConfig.ye_colorPrimaryText;
 };
 
-export const stateColor2 = (themeConfig: ThemeConfig, color: string): StateColorGroup => {
+export const stateColor = (themeConfig: ThemeConfig, color: string): StateColorGroup => {
     let _color: StateColorGroup;
     if (STATE_COLOR_NAMES.includes(color)) {
         let colors = themeConfig.ye_colorPrimary;
@@ -182,18 +153,18 @@ export const stateColor2 = (themeConfig: ThemeConfig, color: string): StateColor
         const primary = new Color(colors[6]);
         _color = {
             primary: primary,
-            primaryHover: new Color(colors[9]),
-            secondary: new Color(colors[5]),
-            halfAlpha: primary.alpha(0.3),
+            darker: new Color(colors[9]),
+            lighter: new Color(colors[5]),
+            translucent: primary.alpha(0.3),
             text: primary.lightness() > 60 ? themeConfig.ye_colorPrimaryText : new Color('#ffffff')
         };
     } else {
         const primary = new Color(color);
         _color = {
             primary: primary,
-            primaryHover: primary.darken(10),
-            secondary: primary.lightness(85),
-            halfAlpha: primary.alpha(0.5),
+            darker: primary.darken(10),
+            lighter: primary.lightness(85),
+            translucent: primary.alpha(0.5),
             text: primary.lightness() > 90 ? themeConfig.ye_colorPrimaryText : new Color('#ffffff')
         };
     }

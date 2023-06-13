@@ -1,6 +1,5 @@
-import { uniqWith } from 'lodash-es';
 import { Utils } from '../../../common/Utils';
-import { NodeComment } from './NodeComment';
+import { NodeComment, NodeCommentKind } from './NodeComment';
 import { PropertyComment } from './PropertyComment';
 
 export enum AssociationType {
@@ -9,6 +8,7 @@ export enum AssociationType {
 }
 
 export class TypeComment extends NodeComment {
+    public kind: NodeCommentKind = NodeCommentKind.TYPE;
     private _properties?: Array<PropertyComment>;
 
     private _typeArguments?: Array<TypeComment>;
@@ -17,6 +17,7 @@ export class TypeComment extends NodeComment {
 
     private _associations?: Array<TypeComment>;
     private _isLiteralType?: boolean = false;
+    private _isFunctionType?: boolean = false;
 
     private _text?: string | undefined;
     public get text(): string | undefined {
@@ -62,6 +63,14 @@ export class TypeComment extends NodeComment {
         this._isLiteralType = value;
     }
 
+    public get isFunctionType(): boolean {
+        return this._isFunctionType || false;
+    }
+
+    public set isFunctionType(value: boolean) {
+        this._isFunctionType = value;
+    }
+
     public isBasic() {
         if (
             !this.name ||
@@ -77,57 +86,25 @@ export class TypeComment extends NodeComment {
         return this._text;
     }
 
-    public getSpecialTypes(specilTypes: TypeComment[]) {
-        if (this.typeArguments && this.typeArguments.length > 0) {
-            this.typeArguments.forEach((_type) => {
-                if (!this.checkDuplicate(specilTypes, _type)) {
-                    if (_type.name && !Utils.isBasicType(_type.name)) {
-                        specilTypes.push(_type);
-                        if (!this.checkDuplicate(specilTypes, _type)) {
-                            specilTypes.push(..._type.getSpecialTypes(specilTypes));
-                        }
-                    }
-                }
-            });
-        }
-        if (this.associations && this.associations.length > 0) {
-            this.associations.forEach((_type) => {
-                if (_type.name && !_type.isBasic()) {
-                    specilTypes.push(_type);
-                    if (!this.checkDuplicate(specilTypes, _type)) {
-                        specilTypes.push(..._type.getSpecialTypes(specilTypes));
-                    }
-                }
-            });
-        }
-        if (this.properties && this.properties.length > 0) {
-            this.properties.forEach((property) => {
-                if (property.type) {
-                    if (property.type.name && !property.type.isBasic()) {
-                        specilTypes.push(property.type);
-                        if (!this.checkDuplicate(specilTypes, property.type)) {
-                            specilTypes.push(...property.type.getSpecialTypes(specilTypes));
-                        } else {
-                            property.type.properties?.forEach((_type) => {
-                                if (_type.type?.name && !_type.type?.isBasic()) {
-                                    specilTypes.push(_type.type);
-                                    if (!this.checkDuplicate(specilTypes, _type.type)) {
-                                        specilTypes.push(..._type.type.getSpecialTypes(specilTypes));
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
+    public getSpecialTypes(specilTypes: Set<TypeComment>) {
+        if (((!this.name && !this.associationType) || (this.name && Utils.isBasicType(this.name))) && !this.isFunctionType) return;
+        if ('PropType' !== this.name) {
+            specilTypes.add(this);
         }
 
-        return uniqWith(specilTypes, (a, b) => {
-            return a.name === b.name;
-        });
+        this.typeArguments?.forEach((_type) => _type.getSpecialTypes(specilTypes));
+        this.associations?.forEach((_type) => _type.getSpecialTypes(specilTypes));
+        this.properties?.forEach((property) => property.type?.getSpecialTypes(specilTypes));
     }
 
-    checkDuplicate(specilTypes: TypeComment[], type: TypeComment) {
-        return !!specilTypes.find((st) => st.name === type.name);
+    public getAllTypeArgumentsType(specilTypes: Set<TypeComment>) {
+        if (!this.isBasic() || this.name === 'Array' || this.isFunctionType) {
+            if ('PropType' !== this.name) {
+                specilTypes.add(this);
+            }
+            this.typeArguments?.forEach((_type) => _type.getAllTypeArgumentsType(specilTypes));
+        } else if (this.associationType) {
+            this.associations?.forEach((_type) => _type.getAllTypeArgumentsType(specilTypes));
+        }
     }
 }

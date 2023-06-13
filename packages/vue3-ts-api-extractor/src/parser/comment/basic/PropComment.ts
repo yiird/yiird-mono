@@ -1,5 +1,5 @@
 import { TypeComment } from '../node/TypeComment';
-import { BasicComment } from './BasicComment';
+import { BasicComment, BasicCommentKind } from './BasicComment';
 
 export type DefaultValue = {
     condition?: string;
@@ -7,6 +7,7 @@ export type DefaultValue = {
 };
 
 export class PropComment extends BasicComment {
+    public kind: BasicCommentKind = BasicCommentKind.PROP;
     private _isModel: boolean = false;
     private _type?: TypeComment;
 

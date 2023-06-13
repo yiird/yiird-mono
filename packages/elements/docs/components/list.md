@@ -8,12 +8,26 @@ List使用
 
 <div class="props">
 
-| 名称    | 描述                                                              |           类型          | 可选值    |
-| :------ | :---------------------------------------------------------------- | :---------------------: | :-------- |
-| id      | 组件id，若不设置会自动生成                                        |          String         |           |
-| display | 显示隐藏<hr>默认值:<br><pre>true</pre>                            |         Boolean         |           |
-| items   | 列表项<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> | [ListItem](#listitem)[] |           |
-| layout  | 布局<br/>`h`: 横向<br/>`v`: 纵向<hr>默认值:<br><pre>h</pre>       |          String         | `h` , `v` |
+| 名称    | 描述                                   |            类型            | 可选值                                                                                                                  |
+| :------ | :------------------------------------- | :------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id      | 组件id，若不设置会自动生成             |           String           |                                                                                                                         |
+| display | 显示隐藏<hr>默认值:<br><pre>true</pre> |           Boolean          |                                                                                                                         |
+| layout  | 列表项<hr>默认值:<br><pre>h</pre>      | &#39;h&#39; \| &#39;v&#39; | `h` , `v`                                                                                                               |
+| size    | 尺寸<hr>默认值:<br><pre>md</pre>       |      [Size](#linksize)     | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| gap     | <hr>默认值:<br><pre>5</pre>            |           Number           |                                                                                                                         |
+
+</div>
+
+
+
+## Events
+
+
+<div class="events">
+
+| 名称       | 参数                                 | 描述         |
+| :--------- | :----------------------------------- | :----------- |
+| item-click | `arg0` { ListItemEventArg } ：谁是谁 | 选项点击事件 |
 
 </div>
 
@@ -29,14 +43,20 @@ List使用
 ### domRefresh()
 - 用法： 刷新组件
 
+
+
 ## 关联类型
 
 
 
-### ListItem
+### Size {#linksize}
 
-- 描述： 列表项
-- 选项：
-	 - `avatar` { string | IconNameOrDefinition } : 头像
-	 - `title` { string } : 标题
-	 - `description` { string } : 描述
+- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize)
+
+### TshirtSize {#linktshirtsize}
+
+- TshirtSize = 	 `2xs` \| `xs` \| `sm` \| `md` \| `lg` \| `xl` \| `2xl`
+
+### NumberSize {#linknumbersize}
+
+- NumberSize = 	 `1x` \| `2x` \| `3x` \| `4x` \| `5x` \| `6x` \| `7x` \| `8x` \| `9x` \| `10x`

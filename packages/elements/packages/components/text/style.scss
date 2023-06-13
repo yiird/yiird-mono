@@ -1,0 +1,70 @@
+@import '../theme/scss/bem';
+@import '../theme/scss/input';
+
+@include b('text') {
+    @include input;
+
+    @include e('content') {
+        :deep(.btn) {
+            padding: 0;
+            height: 100%;
+            line-height: $lineHeight;
+            border-color: transparent;
+            border-radius: unset;
+            box-shadow: none;
+            .btn__text {
+                font-size: 0.8em;
+            }
+        }
+
+        @include e('input') {
+        }
+
+        @include e('password-icon') {
+            color: $colorText;
+            margin-right: 5px;
+        }
+
+        @include e(('suffix', 'prefix')) {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 10px;
+            color: $colorText;
+            background-color: $colorPrefixSuffix;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        @include e('prefix') {
+            border-radius: 5px 0 0 5px;
+            &::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                border-right: 1px solid $colorBorderDefault;
+            }
+        }
+
+        @include e('suffix') {
+            border-radius: 0 5px 5px 0;
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                border-left: 1px solid $colorBorderDefault;
+            }
+        }
+    }
+
+    @include m('check-password') {
+        @include e('password-icon') {
+            color: $colorActive;
+        }
+    }
+}

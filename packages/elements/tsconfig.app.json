@@ -1,6 +1,6 @@
 {
     "extends": "@vue/tsconfig/tsconfig.web.json",
-    "include": ["packages/**/*.ts", "packages/**/*.vue"],
+    "include": ["packages/**/*.ts","packages/**/*.tsx", "packages/**/*.vue"],
     "exclude": ["src/**/__tests__/*"],
     "compilerOptions": {
         "lib": ["ESNext", "DOM", "DOM.Iterable"],

@@ -1,10 +1,12 @@
 import { BasicComment } from '../../parser/comment/basic/BasicComment';
 import { NodeComment } from '../../parser/comment/node/NodeComment';
+import { TypeComment } from '../../parser/comment/node/TypeComment';
 import { MdOptions } from '../../types';
 import { MdStyles } from './Style';
 
 export abstract class AbstractMdPart<C extends BasicComment | NodeComment> {
     private _options: MdOptions;
+    _linkPrefix = 'link';
 
     public get styles(): typeof MdStyles {
         return this.options.styles!;
@@ -14,7 +16,15 @@ export abstract class AbstractMdPart<C extends BasicComment | NodeComment> {
         this._options = options;
     }
 
-    abstract toMd(comment: C, level: number): string;
+    abstract toMd(
+        comment: C,
+        level?: number
+    ):
+        | {
+              md: string;
+              specialTypes?: Set<TypeComment>;
+          }
+        | undefined;
 
     /**
      * Getter options

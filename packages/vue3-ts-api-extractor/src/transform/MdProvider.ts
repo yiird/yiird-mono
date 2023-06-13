@@ -22,6 +22,6 @@ export class MdProvider extends Provider<string> {
     }
 
     to(comment: SfcComment): string {
-        return this._handle.toMd(comment, this._options.hLevelFrom);
+        return this._handle.toMd(comment, this._options.hLevelFrom)?.md || '';
     }
 }

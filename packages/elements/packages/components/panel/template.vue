@@ -15,11 +15,11 @@
                 <Btn
                     v-for="(operator, index) in obtainOperators"
                     :key="index"
+                    :shape="operator.icon ? 'square' : 'rectangle'"
+                    :icon="operator.icon"
                     size="sm"
                     mode="link"
-                    :shape="operator.icon ? 'square' : 'rectangle'"
                     color="primary"
-                    :icon="operator.icon"
                     @click="operator.action">
                     {{ !operator.icon ? operator.text : undefined }}
                 </Btn>

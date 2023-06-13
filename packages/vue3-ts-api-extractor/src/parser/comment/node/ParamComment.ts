@@ -1,7 +1,8 @@
-import { NodeComment } from './NodeComment';
+import { NodeComment, NodeCommentKind } from './NodeComment';
 import { TypeComment } from './TypeComment';
 
 export class ParamComment extends NodeComment {
+    public kind: NodeCommentKind = NodeCommentKind.PARAM;
     private _type?: TypeComment;
     private _isRequired?: boolean;
 

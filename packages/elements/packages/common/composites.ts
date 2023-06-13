@@ -1,2 +1,2 @@
-export * from './composites-input';
 export * from './composites-scroll';
+export * from './composites-vmodel';

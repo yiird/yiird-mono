@@ -1,3 +1,5 @@
+import "./chunk-4EOJPDL2.js";
+
 // ../../node_modules/@fortawesome/pro-light-svg-icons/index.mjs
 var prefix = "fal";
 var fa0 = {

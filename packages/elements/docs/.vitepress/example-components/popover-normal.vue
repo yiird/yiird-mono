@@ -13,8 +13,7 @@
                 max-width="150px"
                 :reference="reference"
                 text="这是个气泡这是个气泡这是个气泡这是个气泡这是个气泡这是个气泡"
-                :boundary="boundary">
-            </y-popover>
+                :boundary="boundary"></y-popover>
         </div>
     </y-panel>
 </template>

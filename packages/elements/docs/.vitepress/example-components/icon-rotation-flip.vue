@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts" setup>
-import { fa6, faCamera, faCoffee, faHome } from '@fortawesome/free-solid-svg-icons';
+import { fa6, faCamera, faCoffee, faHome } from '@fortawesome/pro-solid-svg-icons';
 import { addIcons } from '@yiird/elements';
 
 addIcons(faCamera, faCoffee, fa6, faHome);

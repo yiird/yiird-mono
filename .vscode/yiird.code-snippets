@@ -74,7 +74,7 @@
     "创建逻辑": {
         "prefix": "ye:logic",
         "body": [
-            "import { computed, type ExtractPropTypes, type PropType, type SetupContext} from 'vue';",
+            "import { computed, type ExtractPropTypes,type EmitsOptions, type PropType, type SetupContext} from 'vue';",
             "import type {  InternalSetupContext, ThemeConfig } from '../../types/global';",
             "import { BaseProps, baseExpose, useTheme, usePrefab } from '../../common/prefab';",
             "export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props = {",
@@ -89,7 +89,7 @@
             "",
             "export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits = {};",
             "",
-            "const obtainTheme = (ctx: InternalSetupContext<${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}PropsType, typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits>) => {",
+            "const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}PropsType, E>) => {",
             "    const themeConfig = useTheme();",
             "    return computed<${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Theme>(() => {",
             "        const _themeConfig = themeConfig.value;",
@@ -107,7 +107,7 @@
        "",
             "export const setup${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} = (props: ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}PropsType, ctx: SetupContext<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits>) => {",
             "    const prefab = usePrefab(props);",
-            "    const theme = obtainTheme({ props, prefab, ...ctx });",
+            "    const theme = obtainTheme<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits>({ props, prefab, ...ctx });",
             "    return {",
             "        ...prefab,",
             "        theme,",
