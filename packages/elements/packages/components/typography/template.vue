@@ -3,7 +3,10 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
-        :class="[cType__, theme.bemModifiers]"></article>
+        ref="el"
+        :class="[cType__, theme.bemModifiers]">
+        <slot></slot>
+    </article>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -23,5 +26,9 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+$fontSize: v-bind('theme.fontSize');
+$color: v-bind('theme.color');
+$colorSecondaryText: v-bind('theme.ye_colorSecondaryText');
+$colorMark: v-bind('theme.colorMark');
 @import './style.scss';
 </style>

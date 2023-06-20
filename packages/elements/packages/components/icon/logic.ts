@@ -2,7 +2,8 @@ import { library, type IconDefinition, type IconName, type IconPack } from '@for
 import { forEach, isString, kebabCase } from 'lodash-es';
 import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import type { NumberSize, Size } from '../../types/global';
+import { sizeToFontSize } from '../../config';
+import type { InternalSetupContext, NumberSize, Size, ThemeConfig } from '../../types/global';
 
 export type IconRotation = 90 | 180 | 270 | '90' | '180' | '270';
 export type IconFlip = 'horizontal' | 'vertical' | 'both';
@@ -213,22 +214,46 @@ export const IconProps = {
 
 export type IconPropsType = Readonly<ExtractPropTypes<typeof IconProps>>;
 
+export interface IconTheme extends ThemeConfig {
+    bemModifiers?: string[];
+    fontSize: string;
+}
+
 export const IconEmits = {} as const;
 
-export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmits>) => {
+const obtainTheme = (ctx: InternalSetupContext<IconPropsType, typeof IconEmits>) => {
+    const { props } = ctx;
+
     const themeConfig = useTheme();
+    return computed<IconTheme>(() => {
+        const _themeConfig = themeConfig.value;
+
+        const fontSize = sizeToFontSize(_themeConfig, props.size);
+
+        const theme: IconTheme = {
+            ..._themeConfig,
+            fontSize: `${fontSize}px`
+        };
+
+        theme.bemModifiers = [];
+
+        return theme;
+    });
+};
+
+export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmits>) => {
+    const prefab = usePrefab(props);
+
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
+
     const obtainIcon = computed(() => {
-        const { ye_iconPrefix: prefix } = themeConfig.value;
+        const { ye_iconPrefix: prefix } = theme.value;
         const { name } = props;
         if (isString(name)) {
             return [prefix, name];
         } else {
             return name;
         }
-    });
-
-    const obtainSize = computed<IconSize>(() => {
-        return props.size === 'md' ? 'sm' : props.size;
     });
 
     const obtainFixedWidth = computed(() => {
@@ -268,11 +293,10 @@ export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmi
         return options;
     });
 
-    const prefab = usePrefab(props);
     return {
         ...prefab,
+        theme,
         obtainIcon,
-        obtainSize,
         obtainFixedWidth,
         obtainRotation,
         obtainFlip,

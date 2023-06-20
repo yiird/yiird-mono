@@ -3,9 +3,9 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
-        :class="[cType__, obtainFaClasses]"
+        ref="el"
+        :class="[cType__, obtainFaClasses, theme.bemModifiers]"
         :icon="obtainIcon"
-        :size="obtainSize"
         :fixed-width="obtainFixedWidth"
         :flip="obtainFlip"
         :rotation="obtainRotation"
@@ -35,5 +35,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+$fontSize: v-bind('theme.fontSize');
+
 @import './style.scss';
 </style>

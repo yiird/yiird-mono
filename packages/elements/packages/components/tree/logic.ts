@@ -19,7 +19,7 @@ import {
     type RawNode,
     type TreeNode
 } from '../../common/tree-utils';
-import { SCROLL_KEY, sizeToFontSize, sizeToHeight } from '../../config';
+import { SCROLL_KEY, sizeToComponentHeight, sizeToFontSize } from '../../config';
 import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
 import type { PageBoundary } from '../../types/scroll';
 import type { IconNameOrDefinition } from '../icon/logic';
@@ -178,7 +178,6 @@ export type DataStructure = {
 export interface TreeTheme extends ThemeConfig {
     bemModifiers?: string[];
     height?: string;
-    lineHeight?: string;
     fontSize?: string;
 }
 
@@ -210,13 +209,12 @@ const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>)
     return computed<TreeTheme>(() => {
         const _themeConfig = themeConfig.value;
 
-        const height = sizeToHeight(themeConfig.value, props.size);
+        const height = sizeToComponentHeight(themeConfig.value, props.size);
         const fontSize = sizeToFontSize(themeConfig.value, props.size);
 
         const theme: TreeTheme = {
             ..._themeConfig,
             height: `${height}px`,
-            lineHeight: `${height - 2}px`,
             fontSize: `${fontSize}px`
         };
 
@@ -233,7 +231,7 @@ const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>)
 export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmits>) => {
     const prefab = usePrefab(props);
 
-    const theme = obtainTheme({ props, prefab, ...ctx });
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
 
     const { emit } = ctx;
 

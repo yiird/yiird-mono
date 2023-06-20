@@ -2,9 +2,9 @@ import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
 import type { Direction, InternalSetupContext, ThemeConfig } from '../../types/global';
 
-export type SpaceSize = 'sm' | 'md' | 'lg';
+export type SpaceGap = 'sm' | 'md' | 'lg';
 
-const getSize = (themeConfig: ThemeConfig, size: SpaceSize | number) => {
+const getSize = (themeConfig: ThemeConfig, size: SpaceGap | number) => {
     let _size: number;
     switch (size) {
         case 'sm': {
@@ -29,8 +29,8 @@ const getSize = (themeConfig: ThemeConfig, size: SpaceSize | number) => {
 
 export const SpaceProps = {
     ...BaseProps,
-    size: {
-        type: [String, Number] as PropType<SpaceSize | number>,
+    gap: {
+        type: [String, Number] as PropType<SpaceGap | number>,
         default: 'md'
     },
     direction: {
@@ -49,10 +49,10 @@ export const SpaceEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<SpacePropsType, E>) => {
     const themeConfig = useTheme();
-    const { props, prefab } = ctx;
+    const { props, commonExposed: prefab } = ctx;
 
     const obtainSize = computed(() => {
-        return getSize(themeConfig.value, props.size);
+        return getSize(themeConfig.value, props.gap);
     });
 
     return computed<SpaceTheme>(() => {
@@ -71,7 +71,7 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<SpaceProp
 
 export const setupSpace = (props: SpacePropsType, ctx: SetupContext<typeof SpaceEmits>) => {
     const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof SpaceEmits>({ props, prefab, ...ctx });
+    const theme = obtainTheme<typeof SpaceEmits>({ props, commonExposed: prefab, ...ctx });
     return {
         ...prefab,
         theme

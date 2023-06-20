@@ -56,7 +56,7 @@ const obtainTheme = (ctx: InternalSetupContext<GridPropsType, typeof GridEmits>)
 
 export const setupGrid = (props: GridPropsType, ctx: SetupContext<typeof GridEmits>) => {
     const prefab = usePrefab(props);
-    const theme = obtainTheme({ props, prefab, ...ctx });
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
     return {
         ...prefab,
         theme

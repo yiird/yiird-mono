@@ -37,7 +37,7 @@ export default ({ mode }: any) => {
         vite: {
             clearScreen: false,
             build: {
-                cssMinify: true
+                cssMinify: true,
             },
             esbuild: {
                 treeShaking: true
@@ -92,102 +92,10 @@ export default ({ mode }: any) => {
     });
 };
 
-function components(baseUrl: string) {
-    const arr: any[] = [
-        {
-            text: '基础组件',
-            items: [
-                { text: '主题', link: `${baseUrl}/theme` },
-                { text: '图标', link: `${baseUrl}/icon` },
-                { text: '按钮', link: `${baseUrl}/btn` },
-                { text: '排版', link: `${baseUrl}/typography` }
-            ]
-        },
-        {
-            text: '数据展示',
-            items: [
-                { text: '头像', link: `${baseUrl}/avatar` },
-                { text: '树', link: `${baseUrl}/tree` },
-                { text: '气泡弹框', link: `${baseUrl}/popover` },
-                { text: '列表', link: `${baseUrl}/list` }
-            ]
-        },
-        {
-            text: '数据录入',
-            items: [
-                { text: '输入框', link: `${baseUrl}/text` },
-                { text: '文本域', link: `${baseUrl}/longtext` }
-            ]
-        }
-    ];
-
-    const normalLayouts = [
-        {
-            text: '选项卡',
-            link: `${baseUrl}/tabs`
-        },
-        {
-            text: '面板',
-            link: `${baseUrl}/panel`
-        },
-        {
-            text: '间距',
-            link: `${baseUrl}/space`
-        },
-        {
-            text: '分割线',
-            link: `${baseUrl}/divider`
-        }]
-
-    if (baseUrl === '/examples') {
-        arr.push({
-            text: '布局',
-            items: [
-                {
-                    text: '栅格',
-                    link: `${baseUrl}/grid`
-                },
-                {
-                    text: '框架',
-                    link: `${baseUrl}/framework`
-                },
-                ...normalLayouts
-            ]
-        });
-    } else {
-        arr.push({
-            text: '布局',
-            items: [
-                {
-                    text: '栅格',
-                    items: [
-                        { text: '行', link: `${baseUrl}/row` },
-                        { text: '列', link: `${baseUrl}/col` }
-                    ]
-                },
-                {
-                    text: '框架',
-                    items: [
-                        { text: '框架', link: `${baseUrl}/framework` },
-                        { text: '头部', link: `${baseUrl}/header` },
-                        { text: '底部', link: `${baseUrl}/footer` },
-                        { text: '侧部', link: `${baseUrl}/sider` },
-                        { text: '中部', link: `${baseUrl}/main` }
-                    ]
-                },
-                ...normalLayouts
-            ]
-        });
-    }
-
-    return arr;
-}
-
 function generateExampleSiderBar() {
-
     const baseUrl = '/examples';
 
-    return  [
+    return [
         {
             text: '基础组件',
             items: [
@@ -209,10 +117,11 @@ function generateExampleSiderBar() {
         {
             text: '数据录入',
             items: [
-                { text: '输入框', link: `${baseUrl}/text` },
-                { text: '文本域', link: `${baseUrl}/longtext` }
+                { text: '输入框', link: `${baseUrl}/input` },
+                { text: '文本域', link: `${baseUrl}/textarea` }
             ]
-        },{
+        },
+        {
             text: '布局',
             items: [
                 {
@@ -242,7 +151,6 @@ function generateExampleSiderBar() {
             ]
         }
     ];
-
 }
 
 function generateComponentSiderBar() {
@@ -269,10 +177,11 @@ function generateComponentSiderBar() {
         {
             text: '数据录入',
             items: [
-                { text: '输入框', link: `${baseUrl}/text` },
-                { text: '文本域', link: `${baseUrl}/longtext` }
+                { text: '输入框', link: `${baseUrl}/input` },
+                { text: '文本域', link: `${baseUrl}/textarea` }
             ]
-        },{
+        },
+        {
             text: '布局',
             items: [
                 {

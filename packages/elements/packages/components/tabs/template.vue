@@ -3,6 +3,7 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
+        ref="el"
         :class="[cType__, theme.bemModifiers]">
         <div class="tabs__header">
             <div class="tabs__extra-left">

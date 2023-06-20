@@ -8,7 +8,6 @@ import './style.scss';
 
 export default {
     ...Theme,
-
     async enhanceApp({ app }: EnhanceAppContext) {
         app.component('Example', Example);
 

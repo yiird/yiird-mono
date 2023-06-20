@@ -5,8 +5,6 @@ export class MdTypeTextPart extends AbstractMdPart<TypeComment> {
     toMd(comment: TypeComment) {
         let md = '';
 
-        console.log(comment.name);
-
         const specialTypes = new Set<TypeComment>();
 
         comment.getAllTypeArgumentsType(specialTypes);

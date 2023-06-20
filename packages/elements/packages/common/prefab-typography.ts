@@ -1,0 +1,80 @@
+import { gold } from '@ant-design/colors';
+import { isString } from 'lodash-es';
+import { computed, type EmitsOptions, type ExtractPropTypes } from 'vue';
+import type { InternalSetupContext, ThemeConfig } from '../types/global';
+import { BaseProps, useTheme } from './prefab';
+
+export const BaseTextProps = {
+    ...BaseProps,
+    /**
+     * 加粗
+     */
+    strong: Boolean,
+    /**
+     * 删除线
+     */
+    delete: Boolean,
+    /**
+     * 下滑线
+     */
+    underline: Boolean,
+    /**
+     * 斜体
+     */
+    italic: Boolean,
+    /**
+     * 标记
+     */
+    mark: [Boolean, String],
+    /**
+     * 是否是次要文本
+     */
+    secondary: Boolean,
+    selected: Boolean
+};
+export type BaseTextPropsType = Readonly<ExtractPropTypes<typeof BaseTextProps>>;
+
+export interface BaseTextTheme extends ThemeConfig {
+    bemModifiers?: string[];
+    color: string;
+    colorMark: string;
+}
+
+export const obtainBaseTextTheme = <E extends EmitsOptions, T extends BaseTextTheme>(ctx: InternalSetupContext<BaseTextPropsType, E>, onFlush?: (_theme: T) => T) => {
+    const themeConfig = useTheme();
+    const { props, commonExposed: prefab } = ctx;
+    return computed<T>(() => {
+        const _themeConfig = themeConfig.value;
+
+        const theme = {
+            ..._themeConfig,
+            color: props.secondary ? _themeConfig.ye_colorSecondaryText.toString() : _themeConfig.ye_colorPrimaryText.toString(),
+            colorMark: isString(props.mark) ? '' : gold[4]
+        } as T;
+
+        theme.bemModifiers = [];
+
+        if (props.delete) {
+            theme.bemModifiers.push(`${prefab.cType__}--delete`);
+        }
+
+        if (props.underline) {
+            theme.bemModifiers.push(`${prefab.cType__}--underline`);
+        }
+        if (props.strong) {
+            theme.bemModifiers.push(`${prefab.cType__}--strong`);
+        }
+        if (props.italic) {
+            theme.bemModifiers.push(`${prefab.cType__}--italic`);
+        }
+        if (props.mark) {
+            theme.bemModifiers.push(`${prefab.cType__}--mark`);
+        }
+
+        return onFlush ? onFlush(theme) : theme;
+    });
+};
+
+export const useBaseText = <E extends EmitsOptions>(ctx: InternalSetupContext<BaseTextPropsType, E>) => {
+    return {};
+};

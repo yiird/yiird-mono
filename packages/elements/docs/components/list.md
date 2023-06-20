@@ -3,18 +3,42 @@
 
 List使用
 
+## Slots
+
+
+<div class="slots">
+
+| 名称  | 参数 | 描述 |
+| :---- | :--- | :--- |
+| item  |      |      |
+| extra |      |      |
+
+</div>
+
+
+
 ## Props
 
 
 <div class="props">
 
-| 名称    | 描述                                   |            类型            | 可选值                                                                                                                  |
-| :------ | :------------------------------------- | :------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id      | 组件id，若不设置会自动生成             |           String           |                                                                                                                         |
-| display | 显示隐藏<hr>默认值:<br><pre>true</pre> |           Boolean          |                                                                                                                         |
-| layout  | 列表项<hr>默认值:<br><pre>h</pre>      | &#39;h&#39; \| &#39;v&#39; | `h` , `v`                                                                                                               |
-| size    | 尺寸<hr>默认值:<br><pre>md</pre>       |      [Size](#linksize)     | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| gap     | <hr>默认值:<br><pre>5</pre>            |           Number           |                                                                                                                         |
+| 名称             | 描述                                                              |                     类型                    | 可选值                                                                                                                  |
+| :--------------- | :---------------------------------------------------------------- | :-----------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id               | 组件id，若不设置会自动生成                                        |                    String                   |                                                                                                                         |
+| display          | 显示隐藏<hr>默认值:<br><pre>true</pre>                            |                   Boolean                   |                                                                                                                         |
+| source           | 数据源<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> | [Array](#linkarray)&lt;object \| string&gt; |                                                                                                                         |
+| size             | <hr>默认值:<br><pre>md</pre>                                      |              [Size](#linksize)              | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| item-style       |                                                                   |           string \| CSSProperties           |                                                                                                                         |
+| actions          | 操作                                                              |       [ListAction](#linklistaction)[]       |                                                                                                                         |
+| actions-position | <hr>默认值:<br><pre>bottom</pre>                                  |          [Position](#linkposition)          | `top` , `bottom` , `left` , `right`                                                                                     |
+| actions-align    | <hr>默认值:<br><pre>center</pre>                                  |             [Align](#linkalign)             | `start` , `center` , `end`                                                                                              |
+| actions-gap      | <hr>默认值:<br><pre>5</pre>                                       |                    Number                   |                                                                                                                         |
+| action-style     |                                                                   |           string \| CSSProperties           |                                                                                                                         |
+| actions-reverse  |                                                                   |                   Boolean                   |                                                                                                                         |
+| extra-style      |                                                                   |           string \| CSSProperties           |                                                                                                                         |
+| extra-position   | <hr>默认值:<br><pre>right</pre>                                   |          [Position](#linkposition)          | `top` , `bottom` , `left` , `right`                                                                                     |
+| extra-align      | <hr>默认值:<br><pre>center</pre>                                  |             [Align](#linkalign)             | `start` , `center` , `end`                                                                                              |
+| hover-color      |                                                                   |                    String                   |                                                                                                                         |
 
 </div>
 
@@ -49,9 +73,28 @@ List使用
 
 
 
+### Array {#linkarray}
+
+
 ### Size {#linksize}
 
 - Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize)
+
+### ListAction {#linklistaction}
+
+- 选项：
+	 - `icon` { IconDefinition \| IconPack \| IconName } : 
+	 - `text` { string } : 
+	 - `size` { [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) } : 
+	 - `opperator` { (...args: any[]) =&gt; any } : 
+
+### Position {#linkposition}
+
+- Position = 	 `top` \| `bottom` \| `left` \| `right`
+
+### Align {#linkalign}
+
+- Align = 	 `start` \| `center` \| `end`
 
 ### TshirtSize {#linktshirtsize}
 

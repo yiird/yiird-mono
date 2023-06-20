@@ -1,35 +1,24 @@
-import { computed, type EmitsOptions, type ExtractPropTypes, type SetupContext } from 'vue';
-import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
-import type { InternalSetupContext, ThemeConfig } from '../../types/global';
+import type { ExtractPropTypes, SetupContext } from 'vue';
+import { baseExpose, usePrefab } from '../../common/prefab';
+import { BaseTextProps, obtainBaseTextTheme, type BaseTextTheme } from '../../common/prefab-typography';
+import { sizeToFontSize } from '../../config';
 export const TypographyProps = {
-    ...BaseProps
+    ...BaseTextProps
 } as const;
 export type TypographyPropsType = Readonly<ExtractPropTypes<typeof TypographyProps>>;
 
-export interface TypographyTheme extends ThemeConfig {
-    bemModifiers?: string[];
+export interface TypographyTheme extends BaseTextTheme {
+    fontSize: string;
 }
 
 export const TypographyEmits = {};
 
-const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<TypographyPropsType, E>) => {
-    const themeConfig = useTheme();
-    return computed<TypographyTheme>(() => {
-        const _themeConfig = themeConfig.value;
-
-        const theme: TypographyTheme = {
-            ..._themeConfig
-        };
-
-        theme.bemModifiers = [];
-
-        return theme;
-    });
-};
-
 export const setupTypography = (props: TypographyPropsType, ctx: SetupContext<typeof TypographyEmits>) => {
     const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof TypographyEmits>({ props, prefab, ...ctx });
+    const theme = obtainBaseTextTheme<typeof TypographyEmits, TypographyTheme>({ props, commonExposed: prefab, ...ctx }, (_theme) => {
+        const fontSize = sizeToFontSize(_theme, 'md');
+        return { ..._theme, fontSize: `${fontSize}px` };
+    });
     return {
         ...prefab,
         theme

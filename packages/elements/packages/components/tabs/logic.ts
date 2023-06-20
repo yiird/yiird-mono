@@ -21,7 +21,7 @@ import {
 } from 'vue';
 import { useScroll } from '../../common/composites';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { sizeToFontSize, sizeToHeight } from '../../config';
+import { sizeToComponentHeight, sizeToFontSize } from '../../config';
 import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
 import type { Scroll, ScrollOptions } from '../../types/scroll';
 import type { IconNameOrDefinition } from '../icon/logic';
@@ -148,7 +148,7 @@ const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: Unwra
     return computed<TabsTheme>(() => {
         const _themeConfig = themeConfig.value;
 
-        const height = sizeToHeight(themeConfig.value, props.size);
+        const height = sizeToComponentHeight(themeConfig.value, props.size);
         const fontSize = sizeToFontSize(themeConfig.value, props.size);
 
         const theme: TabsTheme = {
@@ -338,7 +338,7 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
         active(activeIndex);
     };
 
-    const theme = obtainTheme({ props, prefab, ...ctx }, tabsConfig, barRefs, scroll);
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx }, tabsConfig, barRefs, scroll);
 
     onMounted(() => {
         const activeIndex = _findNearAvaliableIndex(_findItemIndex(props.activeKey));

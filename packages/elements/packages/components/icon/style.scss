@@ -1,4 +1,5 @@
-@import '../theme/scss/bem';
+@import '../theme/scss/reset';
 
 @include b(icon) {
+    font-size: $fontSize;
 }

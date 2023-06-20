@@ -1,47 +1,39 @@
 <template>
     <div>
         <y-list
-            size="md"
-            :gutter="5"
-            @item-click="doItemClick"
-            :items="items">
-            <template #operators>
-                <y-icon
-                    size="lg"
-                    :name="faStars"></y-icon>
-                <span>12</span>
-                &nbsp;&nbsp;
-                <y-icon
-                    size="lg"
-                    :name="faThumbsUp"></y-icon>
-                <span>33</span>
+            :gap="0"
+            :actions="actions"
+            actions-position="right"
+            hover-color="red"
+            :item-style="{ padding: '5px' }"
+            :source="data">
+            <template #item="{ item }">
+                <span>{{ item.title }}</span>
             </template>
         </y-list>
     </div>
 </template>
 
 <script setup lang="ts">
-import { faStars, faThumbsUp } from '@fortawesome/pro-light-svg-icons';
-const items = [
+import { faHeart, faHome } from '@fortawesome/pro-light-svg-icons';
+const response = await fetch('/data/list.json');
+const data = await response.json();
+
+const actions = [
     {
-        label: '选项一',
-        value: '1'
+        icon: faHome,
+        text: '点赞',
+        opperator() {
+            console.log('aaaa');
+        }
     },
     {
-        label: '选项二',
-        value: '2'
-    },
-    {
-        label: '选项三',
-        value: '3'
-    },
-    {
-        label: '选项四',
-        value: '4'
+        icon: faHeart,
+        text: '收藏'
     }
 ];
 
-const doItemClick = (arg:any) => {
+const doItemClick = (arg: any) => {
     console.log(arg);
 };
 </script>

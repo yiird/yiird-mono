@@ -3,7 +3,7 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
-        ref="buttonRef"
+        ref="el"
         :class="[cType__, theme.bemModifiers]"
         :disabled="disabled">
         <!-- 默认插槽 -->
@@ -25,7 +25,7 @@
             v-if="obtainHasPopover"
             :allow-placement="['bottom']"
             :offset="10"
-            :reference="buttonRef"
+            :reference="el"
             default-placement="bottom"
             shadow-direction="down"
             mode="empty">

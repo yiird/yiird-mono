@@ -3,7 +3,7 @@
         <div
             v-if="refresh__"
             :id="id__"
-            ref="floatingRef"
+            ref="el"
             :style="floatingStyles"
             :class="[cType__, theme.bemModifiers]">
             <div

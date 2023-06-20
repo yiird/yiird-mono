@@ -1,0 +1,12 @@
+@import '../theme/scss/reset';
+@import '../theme/scss/input';
+
+@include b('textarea') {
+    @include input;
+
+    @include e('loading-icon') {
+        position: absolute;
+        top:0;
+        right: 0;
+    }
+}

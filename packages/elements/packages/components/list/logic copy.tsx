@@ -2,7 +2,7 @@ import type Color from 'color';
 import { isObject as _isObject, isArray, isFunction } from 'lodash-es';
 import { computed, isVNode, type ExtractPropTypes, type PropType, type SetupContext, type VNode } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { sizeToFontSize, sizeToHeight } from '../../config';
+import { sizeToComponentHeight, sizeToFontSize } from '../../config';
 import type { InternalSetupContext, LabelValue, Size, ThemeConfig } from '../../types/global';
 import { Icon, type IconNameOrDefinition } from '../icon';
 
@@ -127,7 +127,7 @@ const obtainTheme = (ctx: InternalSetupContext<ListPropsType, typeof ListEmits>)
     return computed<ListTheme>(() => {
         const _themeConfig = themeConfig.value;
 
-        const height = sizeToHeight(_themeConfig, props.size);
+        const height = sizeToComponentHeight(_themeConfig, props.size);
         const fontSize = sizeToFontSize(_themeConfig, props.size);
 
         const theme: ListTheme = {
@@ -186,7 +186,7 @@ const renderOperators = (data: any, operators: ListOperatorObject[] | ListOperat
 export const setupList = (props: ListPropsType, ctx: SetupContext<typeof ListEmits>) => {
     const { slots, emit } = ctx;
     const prefab = usePrefab(props);
-    const theme = obtainTheme({ props, prefab, ...ctx });
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
 
     const obtainHasLeft = computed(() => {
         return !!slots.left;

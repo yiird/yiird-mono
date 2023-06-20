@@ -23,16 +23,24 @@
     </y-tabs>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { faCamera, faHome } from '@fortawesome/pro-light-svg-icons';
 import { ref } from 'vue';
 
 const tabs = ref();
 
+const page1 = ()=>{
+    return (<>
+    <div>aaaa</div>
+    <div>bbbb</div>
+    </>)
+}
+
+
 const items = [
     {
         name: 'TAB1',
-        page: 'Page1',
+        page: page1,
         icon: faHome
     },
     {

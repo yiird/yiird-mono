@@ -29,7 +29,7 @@ Avatar使用
 | size      | 尺寸<hr>默认值:<br><pre>md</pre>       |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 | icon-size | 图标尺寸<hr>默认值:<br><pre>md</pre>   |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 | icon      | 图标                                   | [IconNameOrDefinition](#linkiconnameordefinition) |                                                                                                                         |
-| src       | 资源地址                               |                       string                      |                                                                                                                         |
+| src       | url                                    |                       string                      |                                                                                                                         |
 
 </div>
 

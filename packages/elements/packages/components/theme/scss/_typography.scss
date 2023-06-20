@@ -1,0 +1,22 @@
+@import './bem';
+
+@mixin typography {
+    color: $color;
+    
+    @include m('delete') {
+        text-decoration:line-through;
+    }
+    @include m('underline') {
+        text-decoration: underline;
+    }
+    @include m('strong') {
+        font-weight: bold;
+    }
+    @include m('italic') {
+        font-style: italic;
+    }
+    @include m('mark') {
+        background-color: $colorMark;
+    }
+  
+}

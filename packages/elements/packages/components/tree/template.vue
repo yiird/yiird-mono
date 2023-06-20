@@ -3,6 +3,7 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
+        ref="el"
         :class="[cType__, theme.bemModifiers]">
         <template v-for="node in obtainData">
             <div
@@ -75,7 +76,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 $fontSize: v-bind('theme.fontSize');
 $height: v-bind('theme.height');
-$lineHeight: v-bind('theme.lineHeight');
 $colorSelected: v-bind('theme.ye_colorActive');
 $colorFocus: v-bind('theme.ye_colorFocus');
 $colorHover: v-bind('theme.ye_colorHover');

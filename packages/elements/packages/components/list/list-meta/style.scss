@@ -1,0 +1,33 @@
+@import '../../theme/scss/reset';
+
+@include b('list-meta') {
+
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+
+    font-size: $fontSize;
+
+    @include e('top') {
+        display: flex;
+        gap: $gap;
+
+        :deep(.avatar) {
+            flex: 0 0 auto;
+        }
+        
+        @include e('summary') {
+            display: flex;
+            flex-direction: column;
+            gap: $gap;
+
+            :deep(.title) {
+                margin: 0;
+            }
+        }
+    }
+
+    :deep(.paragraph) {
+        margin: 0;
+    }
+}

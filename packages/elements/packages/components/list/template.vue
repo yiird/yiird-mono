@@ -3,9 +3,39 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
-        :class="[cType__, theme.bemModifiers]"></div>
+        ref="el"
+        :class="[cType__, theme.bemModifiers]">
+        <div
+            v-for="(item, index) in source"
+            :key="index"
+            :style="itemStyle"
+            :class="`${cType__}__item`">
+            <div :class="`${cType__}__content`">
+                <slot
+                    :item="item"
+                    :no="index"
+                    name="item"></slot>
+
+                <div
+                    v-if="obtainHasExtra"
+                    :class="`${cType__}__extra`"
+                    :style="extraStyle">
+                    <slot
+                        :item="item"
+                        :no="index"
+                        name="extra"></slot>
+                </div>
+            </div>
+
+            <div
+                :class="`${cType__}__actions`"
+                :style="actionStyle">
+                <component :is="obtainActions"></component>
+            </div>
+        </div>
+    </div>
 </template>
-<script lang="ts">
+<script lang="tsx">
 import { defineComponent } from 'vue';
 import { ListEmits, ListExpose, ListProps, setupList } from './logic';
 /**
@@ -24,11 +54,14 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-$height: v-bind('theme.height');
 $fontSize: v-bind('theme.fontSize');
-$dividerColor: v-bind('theme.ye_colorDivider');
-$color: v-bind('theme.ye_colorPrimaryText');
-$colorSecondary: v-bind('theme.ye_colorSecondaryText');
+$gap: v-bind('theme.gap');
+$hoverColor: v-bind('theme.hoverColor');
+$actionsAlign: v-bind('theme.actionsAlign');
+$extraAlign: v-bind('theme.extraAlign');
+$itemDirection: v-bind('theme.itemDirection');
+$contentDirection: v-bind('theme.contentDirection');
+$contentJustifyContent: v-bind('theme.contentJustifyContent');
 
 @import './style.scss';
 </style>

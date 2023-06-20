@@ -1,4 +1,4 @@
-@import '../../theme/scss/bem';
+@import '../../theme/scss/reset';
 
 @include b('main') {
     width: calc(100% - $left - $right);

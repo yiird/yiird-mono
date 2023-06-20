@@ -1,10 +1,10 @@
-@import '../theme/scss/bem';
+@import '../theme/scss/reset';
 
 @include b(tree) {
     @include e('node') {
         font-size: $fontSize;
         height: $height;
-        line-height: $lineHeight;
+        line-height: $height;
 
         display: flex;
         align-items: center;

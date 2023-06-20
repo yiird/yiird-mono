@@ -37,19 +37,20 @@ Theme 用于配置主题
 ### UserThemeVars {#linkuserthemevars}
 
 - 选项：
-	 - `ye_size` { [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) } : 默认组件尺寸
-	 - `ye_spaceSize` { number } : 
-	 - `ye_iconPrefix` { IconPrefix } : 默认图标前缀
-	 - `ye_fontFamily` { string } : 字体
-	 - `ye_fontSize` { number } : 字体标准大小 `13` `14` `16`
-	 - `ye_baseHeightPercentOfFontSize` { number } : 基础行高相对于字体大小的百分比
+	 - `componentSize` { [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) } : 默认组件尺寸
+	 - `spaceSize` { number } : 
+	 - `iconPrefix` { IconPrefix } : 默认图标前缀
+	 - `fontFamily` { string } : 字体
+	 - `fontSize` { number } : 字体标准大小 `13` `14` `16`
+	 - `ratioOfComponentHeightToFontSize` { number } : 组件高度与字体的比值
+	 - `ratioOfTextLineHeightToFontSize` { number } : 文本行高与字体的比值
 	 - `fontWeightLight` { number } : 字重
 	 - `fontWeightRegular` { number } : 
 	 - `fontWeightBold` { number } : 
-	 - `ye_colorPrimary` { `red` \| `volcano` \| `orange` \| `gold` \| `yellow` \| `lime` \| `green` \| `cyan` \| `blue` \| `geekblue` \| `purple` \| `magenta` \| `grey` \| `gray` } : 主色
-	 - `ye_colorSuccess` { `lime` \| `green` } : 辅助色-成功
-	 - `ye_colorError` { `red` \| `volcano` } : 辅助色-失败
-	 - `ye_colorWarn` { `orange` \| `gold` } : 辅助色-警告
+	 - `colorPrimary` { `red` \| `volcano` \| `orange` \| `gold` \| `yellow` \| `lime` \| `green` \| `cyan` \| `blue` \| `geekblue` \| `purple` \| `magenta` \| `grey` \| `gray` } : 主色
+	 - `colorSuccess` { `lime` \| `green` } : 辅助色-成功
+	 - `colorError` { `red` \| `volcano` } : 辅助色-失败
+	 - `colorWarn` { `orange` \| `gold` } : 辅助色-警告
 
 ### TshirtSize {#linktshirtsize}
 

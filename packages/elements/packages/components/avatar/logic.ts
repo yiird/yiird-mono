@@ -2,7 +2,7 @@ import Color from 'color';
 import { computed, getCurrentInstance, onMounted, ref, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { toStyleValue } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { sizeToFontSize, sizeToHeight } from '../../config';
+import { sizeToComponentHeight, sizeToFontSize } from '../../config';
 import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
 import type { IconNameOrDefinition } from '../icon';
 export const AvatarProps = {
@@ -36,7 +36,7 @@ export const AvatarProps = {
         default: ''
     },
     /**
-     * 资源地址
+     * url
      */
     src: {
         type: String as PropType<string>
@@ -55,7 +55,7 @@ export interface AvatarTheme extends ThemeConfig {
 export const AvatarEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<AvatarPropsType, E>) => {
-    const { props, prefab } = ctx;
+    const { props, commonExposed: prefab } = ctx;
     const themeConfig = useTheme();
 
     const isBgLighter = ref(false);
@@ -68,7 +68,7 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<AvatarPro
     return computed<AvatarTheme>(() => {
         const _themeConfig = themeConfig.value;
 
-        const size = sizeToHeight(_themeConfig, props.size);
+        const size = sizeToComponentHeight(_themeConfig, props.size);
         const fontSize = sizeToFontSize(_themeConfig, props.size);
 
         const theme: AvatarTheme = {
@@ -91,7 +91,8 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<AvatarPro
 
 export const setupAvatar = (props: AvatarPropsType, ctx: SetupContext<typeof AvatarEmits>) => {
     const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof AvatarEmits>({ props, prefab, ...ctx });
+    const theme = obtainTheme<typeof AvatarEmits>({ props, commonExposed: prefab, ...ctx });
+
     return {
         ...prefab,
         theme

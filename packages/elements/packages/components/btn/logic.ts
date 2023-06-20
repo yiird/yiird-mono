@@ -1,8 +1,8 @@
 import { faLoader } from '@fortawesome/pro-light-svg-icons';
 import { isObject } from 'lodash-es';
-import { computed, ref, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
-import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { sizeToFontSize, sizeToHeight, stateColor } from '../../config';
+import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
+import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
+import { sizeToComponentHeight, sizeToFontSize, stateColor } from '../../config';
 import type { InternalSetupContext, Size, StateColor, StateColorGroup, ThemeConfig } from '../../types/global';
 import type { IconNameOrDefinition } from '../icon/logic';
 
@@ -92,7 +92,7 @@ const obtainTheme = (ctx: InternalSetupContext<BtnPropsType, typeof BtnEmits>) =
     return computed<BtnTheme>(() => {
         const _themeConfig = themeConfig.value;
 
-        const height = sizeToHeight(themeConfig.value, props.size);
+        const height = sizeToComponentHeight(themeConfig.value, props.size);
         const fontSize = sizeToFontSize(themeConfig.value, props.size);
 
         const theme: BtnTheme = {
@@ -127,9 +127,7 @@ const obtainTheme = (ctx: InternalSetupContext<BtnPropsType, typeof BtnEmits>) =
 
 export const setupBtn = (props: BtnPropsType, ctx: SetupContext<typeof BtnEmits>) => {
     const prefab = usePrefab(props);
-    const theme = obtainTheme({ props, prefab, ...ctx });
-
-    const buttonRef = ref();
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
 
     const { slots } = ctx;
 
@@ -138,7 +136,6 @@ export const setupBtn = (props: BtnPropsType, ctx: SetupContext<typeof BtnEmits>
         ...prefab,
         theme,
         faLoader,
-        buttonRef,
         obtainHasPopover
     };
 };

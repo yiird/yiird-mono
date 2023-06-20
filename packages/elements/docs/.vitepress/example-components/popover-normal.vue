@@ -10,10 +10,10 @@
                 ref="reference"></div>
 
             <y-popover
+                display
                 max-width="150px"
                 :reference="reference"
-                text="这是个气泡这是个气泡这是个气泡这是个气泡这是个气泡这是个气泡"
-                :boundary="boundary"></y-popover>
+                text="这是个气泡这是个气泡这是个气泡这是个气泡这是个气泡这是个气泡"></y-popover>
         </div>
     </y-panel>
 </template>
@@ -23,7 +23,6 @@ import type { PanelType } from '@yiird/elements';
 import { onMounted, ref } from 'vue';
 
 const reference = ref();
-const boundary = ref();
 const panel = ref<PanelType>();
 
 onMounted(() => {

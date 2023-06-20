@@ -29,7 +29,7 @@ export const DividerEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPropsType, E>) => {
     const themeConfig = useTheme();
-    const { props, prefab, slots } = ctx;
+    const { props, commonExposed: prefab, slots } = ctx;
     return computed<DividerTheme>(() => {
         const _themeConfig = themeConfig.value;
 
@@ -50,7 +50,7 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPr
 
 export const setupDivider = (props: DividerPropsType, ctx: SetupContext<typeof DividerEmits>) => {
     const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof DividerEmits>({ props, prefab, ...ctx });
+    const theme = obtainTheme<typeof DividerEmits>({ props, commonExposed: prefab, ...ctx });
     const { slots } = ctx;
     const obtainHasTitle = computed(() => {
         return !!slots.default;

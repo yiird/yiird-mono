@@ -126,6 +126,7 @@
         "@fortawesome/vue-fontawesome": "^3.0.3",
         "animate.css": "^4.1.1",
         "color": "^4.2.3",
+        "resize-observer": "^1.0.4",
         "smooth-scrollbar": "^8.8.3",
         "vue": "^3.3.4"
     },

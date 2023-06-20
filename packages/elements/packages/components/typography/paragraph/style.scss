@@ -1,0 +1,25 @@
+@import '../../theme/scss/reset';
+@import '../../theme/scss/typography';
+
+@include b('paragraph') {
+    @include typography;
+
+    $margin-block: calc($fontSize * 0.8);
+    
+    white-space: pre-wrap;
+
+    margin: 0;
+    margin-block: $margin-block;
+    font-size: $fontSize;
+    line-height: $lineHeight;
+    text-indent: calc($fontSize * $indent);
+    position: relative;
+
+    overflow: hidden;
+
+    img{
+        float: left;
+    }
+
+
+}

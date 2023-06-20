@@ -1,4 +1,5 @@
-import { reactive, type App, type Plugin } from 'vue';
+import { nextTick, reactive, type App, type Plugin } from 'vue';
+import { checkReady, rootStyleVariables, updateRootStyle } from './common/dom-utils';
 import * as components from './components';
 import { DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from './config';
 import type { ElementOptions } from './types/global';
@@ -18,6 +19,29 @@ const YE: Plugin = {
             .forEach((plugin: any) => {
                 plugin._register(app, options);
             });
+
+        nextTick(() => {
+            checkReady(app, () => {
+                const theme = options?.themeConfig;
+                if (theme) {
+                    updateRootStyle('ye-root-variables', rootStyleVariables(theme));
+                    updateRootStyle(
+                        'root-styles',
+                        `
+html,body{
+    font-size: var(--ye-font-size);
+    font-family: var(--ye-font-family);
+}
+*, ::before, ::after {
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+                        `
+                    );
+                }
+            });
+        });
     }
 };
 export { Util } from './common';

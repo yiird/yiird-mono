@@ -1,4 +1,4 @@
-@import '../theme/scss/bem';
+@import '../theme/scss/reset';
 
 @include b('divider') {
     @include m('h') {
@@ -14,11 +14,12 @@
         position: relative;
         margin: 0 8px;
         vertical-align: middle;
-        display: inline-block;
+        align-self: stretch;
         &::before {
-            position: relative;
-            content: '';
-            top: 0.02em;
+            position: absolute;
+            content: "";
+            bottom: 0.5em;
+            top: 0.5em;
             border-top: 0;
             min-height: 1rem;
             border-inline-start: 1px solid $divider;

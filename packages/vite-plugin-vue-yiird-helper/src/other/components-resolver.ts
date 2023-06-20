@@ -1,4 +1,4 @@
-import { capitalize, isString, kebabCase } from 'lodash';
+import { isString, kebabCase } from 'lodash';
 import type { ComponentResolver } from 'unplugin-vue-components';
 
 type ResolverOptions = {
@@ -27,7 +27,6 @@ export function componentsResolver(options: ResolverOptions = {}): ComponentReso
         type: 'component',
         resolve: (name: string) => {
             const { prefix = 'y' } = options;
-            name = kebabCase(name);
             // if (ignorePartialNames.includes(name)) {
             //     if (options.debug) {
             //         console.log(`忽略:${name}`);
@@ -37,9 +36,8 @@ export function componentsResolver(options: ResolverOptions = {}): ComponentReso
             if (options.debug) {
                 console.log(`组件:${name},前缀:${prefix}`);
             }
-            if (name.startsWith(prefix)) {
-                const compName = name.slice(prefix.length + 1);
-                const partialName = capitalize(compName);
+            if (kebabCase(name).startsWith(`${prefix}-`)) {
+                const partialName = name.slice(prefix.length);
                 if (options.debug) {
                     console.log(`原始组件:${partialName}`);
                 }

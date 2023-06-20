@@ -1,6 +1,7 @@
 @import './bem';
 
 @mixin input {
+    position: relative;
     display: flex;
     align-items: center;
     font-size: $fontSize;
@@ -17,11 +18,18 @@
 
         @include e('input') {
             flex-grow: 1;
+            position: relative;
             height: 100%;
             @include e('input-el') {
+                position: absolute;
+                line-height: $lineHeight;
+                padding: calc(($perHeight - 2px - $fontSize) / 2) 10px;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 resize: none;
-                padding: calc((1lh - $fontSize) / 2) 10px;
-                height: 100%;
+                vertical-align: middle;
                 font-size: inherit;
                 color: $colorText;
                 width: 100%;

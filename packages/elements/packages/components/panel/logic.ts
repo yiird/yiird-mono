@@ -250,7 +250,7 @@ export const setupPanel = (props: PanelPropsType, ctx: SetupContext<typeof Panel
 
     const obtainOperators = computed(() => props.operators);
 
-    const theme = obtainTheme({ props, prefab, ...ctx }, obtainHeaderFooterState);
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx }, obtainHeaderFooterState);
 
     /**
      * 将目标dom节点移动到可视区域

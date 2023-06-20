@@ -1,4 +1,31 @@
-@import '../theme/scss/bem';
+@import '../theme/scss/reset';
 
 @include b('typography') {
+    // writing-mode: vertical-rl;
+    $margin-block: calc($fontSize * 0.8);
+
+    /* :deep(blockquote) {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+        margin-block: $margin-block;
+        padding-block: 0.4em;
+        padding-inline-start: 1em;
+        padding-inline-end: 0.6em;
+        background-color: $colorBg;
+        border: none;
+        border-inline-start: 4px solid $colorBorder;
+    }
+
+    :deep(pre) {
+        margin-block: $margin-block;
+        padding-block: 0.4em;
+        padding-inline: 0.6em;
+        white-space: pre-wrap;
+        text-indent: 0;
+        word-wrap: break-word;
+        background-color: $colorBg;
+        border: 1px solid $colorBorder;
+        border-radius: 3px;
+    } */
 }

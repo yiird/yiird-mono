@@ -1,4 +1,58 @@
-@import '../theme/scss/bem';
+@import '../theme/scss/reset';
 
 @include b('list') {
+
+    @include e('item') {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: $itemDirection;
+        gap: calc($gap / 2);
+
+        font-size: $fontSize;
+
+        @include e('content') {
+            display: flex;
+            align-items: center;
+            flex-direction: $contentDirection;
+            gap: calc($gap / 2);
+            flex: 1 0 auto;
+            justify-content: $contentJustifyContent;
+
+            @include e('extra') {
+                display: flex;
+                flex: 0 0 auto;
+                align-self: $extraAlign;
+                // justify-self: $extraJustifySelf;
+            }
+        }
+
+        @include e('actions') {
+            display: flex;
+            flex: 0 0 auto;
+            align-self: $actionsAlign;
+            // justify-self: $actionsJustifySelf;
+        }
+
+        &:hover{
+            background-color: $hoverColor;
+        }
+    }
+/* 
+    @include m('h') {
+        @include e('item') {
+
+            @include e('content'){
+                justify-content: $inlineRevertJustifyContent;
+   
+
+                @include e('extra') {
+                    flex: 0 0 auto;
+                }
+            }
+
+            @include e('actions'){
+                flex: 0 0 auto;
+            }
+        }
+    } */
 }

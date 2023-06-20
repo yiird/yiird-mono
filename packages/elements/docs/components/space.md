@@ -21,12 +21,12 @@ Space使用
 
 <div class="props">
 
-| 名称      | 描述                                   |                  类型                 | 可选值             |
-| :-------- | :------------------------------------- | :-----------------------------------: | :----------------- |
-| id        | 组件id，若不设置会自动生成             |                 String                |                    |
-| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |                Boolean                |                    |
-| size      | <hr>默认值:<br><pre>md</pre>           | [SpaceSize](#linkspacesize) \| number | `sm` , `md` , `lg` |
-| direction | <hr>默认值:<br><pre>h</pre>            |      [Direction](#linkdirection)      | `h` , `v`          |
+| 名称      | 描述                                   |                 类型                | 可选值             |
+| :-------- | :------------------------------------- | :---------------------------------: | :----------------- |
+| id        | 组件id，若不设置会自动生成             |                String               |                    |
+| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |               Boolean               |                    |
+| gap       | <hr>默认值:<br><pre>md</pre>           | [SpaceGap](#linkspacegap) \| number | `sm` , `md` , `lg` |
+| direction | <hr>默认值:<br><pre>h</pre>            |     [Direction](#linkdirection)     | `h` , `v`          |
 
 </div>
 
@@ -46,9 +46,9 @@ Space使用
 
 
 
-### SpaceSize {#linkspacesize}
+### SpaceGap {#linkspacegap}
 
-- SpaceSize = 	 `sm` \| `md` \| `lg`
+- SpaceGap = 	 `sm` \| `md` \| `lg`
 
 ### Direction {#linkdirection}
 

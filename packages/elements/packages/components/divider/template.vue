@@ -3,6 +3,7 @@
         v-show="display__"
         v-if="refresh__"
         :id="id__"
+        ref="el"
         :class="[cType__, theme.bemModifiers]">
         <span v-if="obtainHasTitle"><slot></slot></span>
     </div>

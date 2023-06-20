@@ -13,14 +13,26 @@ import {
 } from '@floating-ui/vue';
 import type Color from 'color';
 import { debounce, isObject, isString } from 'lodash-es';
-import { computed, onBeforeMount, ref, watch, watchPostEffect, type ComputedRef, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
+import {
+    computed,
+    getCurrentInstance,
+    onBeforeMount,
+    ref,
+    watch,
+    watchEffect,
+    watchPostEffect,
+    type ComputedRef,
+    type ExtractPropTypes,
+    type PropType,
+    type SetupContext
+} from 'vue';
 import { checkPointInOneRect, isElement, toStyleValue } from '../../common/dom-utils';
 import { BaseProps, ShadowProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { stateColor } from '../../config';
-import type { InternalSetupContext, Placement, StateColor, ThemeConfig } from '../../types/global';
+import type { CommonExposed, InternalSetupContext, Placement, StateColor, ThemeConfig } from '../../types/global';
 
 export type PoppoverMode = 'border' | 'fill' | 'empty';
-export type PoppoverHideMode = 'click' | 'hover' | 'click-out' | 'click-leave';
+export type PoppoverHideMode = 'manual' | 'click' | 'hover' | 'click-out' | 'click-leave';
 
 /**
  * 挂载元素
@@ -62,7 +74,7 @@ export const PopoverProps = {
      * 挂载元素或挂载元素的ID
      */
     reference: {
-        type: [String, Object] as PropType<string | ReferenceElement>
+        type: [String, Object] as PropType<string | ReferenceElement | CommonExposed>
     },
     /**
      * 边界
@@ -143,7 +155,7 @@ export const PopoverProps = {
      */
     hideMode: {
         type: String as PropType<PoppoverHideMode>,
-        default: 'click'
+        default: 'manual'
     },
     /**
      * 隐藏时是否考虑pop区域，如果为true时，隐藏的时候会考虑是否在pop区域内，如果不在pop区域才会隐藏
@@ -168,11 +180,11 @@ export interface PopoverTheme extends ThemeConfig {
 
 export const PopoverEmits = {};
 
-export const isVirtualElement = (ve: VirtualElement): ve is VirtualElement => {
+export const isVirtualElement = (ve: any): ve is VirtualElement => {
     return !!ve.getBoundingClientRect;
 };
 
-export const extractDom = (propReference?: ReferenceElement | string) => {
+export const extractDom = (propReference?: ReferenceElement | CommonExposed | string) => {
     let reference: ReferenceElement | undefined;
     if (isString(propReference)) {
         const _reference = document.querySelector(propReference);
@@ -185,8 +197,9 @@ export const extractDom = (propReference?: ReferenceElement | string) => {
         if (isVirtualElement(propReference)) {
             reference = propReference;
         } else {
-            const el = Object.getOwnPropertyDescriptor(propReference, '$el');
-            reference = el?.get?.apply(propReference);
+            const $el = Object.getOwnPropertyDescriptor(propReference, '$el');
+            const el = Object.getOwnPropertyDescriptor(propReference, 'el');
+            reference = ($el || el)?.get?.apply(propReference);
         }
     }
 
@@ -222,24 +235,29 @@ const obtainTheme = (ctx: InternalSetupContext<PopoverPropsType, typeof PopoverE
 
 export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof PopoverEmits>) => {
     const prefab = usePrefab(props);
-
     const arrowRef = ref();
-    const floatingRef = ref();
+    const { el } = prefab;
 
     const obtainReference = computed(() => {
         return extractDom(props.reference);
     });
 
+    getCurrentInstance();
+
     const _display = ref(props.display);
 
-    const { floatingStyles, middlewareData, placement, x, y } = useFloating(obtainReference, floatingRef, {
+    watchEffect(() => {
+        _display.value = props.display;
+    });
+
+    const { floatingStyles, middlewareData, placement, x, y } = useFloating(obtainReference, el, {
         placement: props.defaultPlacement,
         middleware: [
             hide(),
             offset(props.offset),
             autoPlacement({
                 allowedPlacements: props.allowPlacement,
-                boundary: floatingRef.value?.getBoundingClientRect(),
+                boundary: el.value?.getBoundingClientRect(),
                 rootBoundary: document.querySelector('#container')?.getBoundingClientRect()
             }),
             shift({
@@ -269,7 +287,7 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
         const _middlewareData = middlewareData.value;
         const _arrowRef = arrowRef.value;
         const _side = obtainArrowSide.value;
-        const _floatingRef = floatingRef.value;
+        const _floatingRef = el.value;
         const { referenceHidden } = _middlewareData.hide || {};
         const { x: arrowX, y: arrowY } = _middlewareData.arrow || {};
 
@@ -288,7 +306,7 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
         });
     });
 
-    const theme = obtainTheme({ props, prefab, ...ctx }, obtainArrowSide);
+    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx }, obtainArrowSide);
 
     /**
      * @private
@@ -326,7 +344,7 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
      */
     const _debounceHide = debounce((_event) => {
         const reference = obtainReference.value;
-        const floating = floatingRef.value;
+        const floating = el.value;
         const hideThinkOverPop = props.hideThinkOverPop;
         if (floating && reference) {
             const { x, y } = _event;
@@ -371,7 +389,7 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
         ...prefab,
         theme,
         arrowRef,
-        floatingRef,
+        floatingRef: el,
         floatingStyles,
         obtainSide: obtainArrowSide,
         isOpen: _display

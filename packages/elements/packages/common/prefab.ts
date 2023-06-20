@@ -1,9 +1,9 @@
 import { kebabCase } from 'lodash-es';
-import { getCurrentInstance, inject, nextTick, onMounted, ref, toRef, type PropType } from 'vue';
+import { getCurrentInstance, inject, nextTick, onBeforeMount, onMounted, ref, toRef, type PropType } from 'vue';
 import { CACHE_INSTANCES, DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
-import type { BoxShadowDirection, BoxShadowLevel, CommonPrefab, ElementOptions } from '../types/global';
+import type { BoxShadowDirection, BoxShadowLevel, CommonExposed, ElementOptions } from '../types/global';
 
-export const baseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted'];
+export const baseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted', 'el'] as const;
 
 export const BaseProps = {
     /**
@@ -43,12 +43,12 @@ export const useTheme = () => {
     return toRef(options!, 'themeConfig');
 };
 
-export const usePrefab = (props: any): CommonPrefab => {
+export const usePrefab = (props: any): CommonExposed => {
     //获取组件对象实例
     const internalInstance = getCurrentInstance();
 
     if (!internalInstance || !internalInstance.type.name) {
-        return {} as CommonPrefab;
+        return {} as CommonExposed;
     }
 
     //生成组件主要样式类名
@@ -90,6 +90,13 @@ export const usePrefab = (props: any): CommonPrefab => {
 
     const isMounted = ref(false);
 
+    const el = ref();
+    const proxy = ref();
+
+    onBeforeMount(() => {
+        proxy.value = internalInstance.proxy;
+    });
+
     onMounted(() => {
         isMounted.value = true;
     });
@@ -101,6 +108,7 @@ export const usePrefab = (props: any): CommonPrefab => {
         cType__,
         display__,
         refresh__,
+        el,
         isMounted,
         setDisplay,
         domRefresh

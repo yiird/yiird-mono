@@ -11,31 +11,33 @@ export interface UserThemeVars {
     /**
      * 默认组件尺寸
      */
-    ye_size?: Size;
-    ye_spaceSize?: number[];
+    componentSize?: Size;
+    spaceSize?: number[];
     /**
      * 默认图标前缀
      */
-    ye_iconPrefix?: IconPrefix;
+    iconPrefix?: IconPrefix;
     /** 字体 */
-    ye_fontFamily?: string;
+    fontFamily?: string;
     /** 字体标准大小 `13` `14` `16` */
-    ye_fontSize?: number;
-    /** 基础行高相对于字体大小的百分比 */
-    ye_baseHeightPercentOfFontSize?: number;
+    fontSize?: number;
+    /** 组件高度与字体的比值 */
+    ratioOfComponentHeightToFontSize?: number;
+    /** 文本行高与字体的比值 */
+    ratioOfTextLineHeightToFontSize?: number;
     /** 字重 */
     fontWeightLight?: number;
     fontWeightRegular?: number;
     fontWeightBold?: number;
 
     /** 主色 */
-    ye_colorPrimary?: 'red' | 'volcano' | 'orange' | 'gold' | 'yellow' | 'lime' | 'green' | 'cyan' | 'blue' | 'geekblue' | 'purple' | 'magenta' | 'grey' | 'gray';
+    colorPrimary?: 'red' | 'volcano' | 'orange' | 'gold' | 'yellow' | 'lime' | 'green' | 'cyan' | 'blue' | 'geekblue' | 'purple' | 'magenta' | 'grey' | 'gray';
     /** 辅助色-成功 */
-    ye_colorSuccess?: 'lime' | 'green';
+    colorSuccess?: 'lime' | 'green';
     /** 辅助色-失败 */
-    ye_colorError?: 'red' | 'volcano';
+    colorError?: 'red' | 'volcano';
     /** 辅助色-警告 */
-    ye_colorWarn?: 'orange' | 'gold';
+    colorWarn?: 'orange' | 'gold';
 }
 
 export type BoxShadowLevel = 'high' | 'middle' | 'low';
@@ -50,11 +52,11 @@ export interface ThemeConfig {
     ye_fontFamily: string;
 
     /** 默认间距 */
-    ye_gutter: number;
+    ye_gap: number;
 
     ye_fontSize: number;
-    ye_fontSizeStr: string;
-    ye_baseHeightPercentOfFontSize: number;
+    ye_ratioOfComponentHeightToFontSize: number;
+    ye_ratioOfTextLineHeightToFontSize: number;
 
     ye_fontWeightLight: number;
     ye_fontWeightRegular: number;
@@ -88,8 +90,8 @@ export interface ThemeConfig {
     ye_colorDivider: Color;
     ye_colorBorder: Color;
     ye_colorDisabled: Color;
-    ye_colorSecondaryText: Color;
     ye_colorPrimaryText: Color;
+    ye_colorSecondaryText: Color;
     ye_radius_max: number;
     ye_radius_regular: number;
     ye_radius_min: number;
@@ -115,19 +117,22 @@ export type FrameworkConfig = {
     fixed?: boolean;
 };
 
-export type CommonPrefab = {
+export interface CommonExposed {
     uid__: number;
     id__: string;
     cType__: string;
     ELEMENT_OPTIONS__: ElementOptions;
     display__: Ref<boolean>;
     refresh__: Ref<boolean>;
+    el: Ref<HTMLElement>;
     isMounted: Ref<boolean>;
     setDisplay: (flag: boolean) => void;
     domRefresh: () => void;
-};
+}
 
-export type InternalSetupContext<P, E extends EmitsOptions = {}> = SetupContext<E> & { props: P; prefab: CommonPrefab };
+export type ComponentType<I extends abstract new (...args: any) => any, E extends keyof InstanceType<I>> = Pick<InstanceType<I>, E> & CommonExposed;
+
+export type InternalSetupContext<P, E extends EmitsOptions = {}> = SetupContext<E> & { props: P; commonExposed: CommonExposed };
 
 export interface StateColorGroup {
     /**
@@ -160,3 +165,30 @@ export interface LabelValue {
 }
 
 export type Direction = 'h' | 'v';
+export type Align = 'start' | 'center' | 'end';
+export type Position = 'top' | 'bottom' | 'left' | 'right';
+/**
+ * 单行文本溢出配置
+ */
+export interface SingleLineEllipsis {
+    length?: number;
+    suffix?: string;
+}
+
+export const isSingleLineEllipsis = (object: any): object is SingleLineEllipsis => {
+    return !('rows' in object);
+};
+
+/**
+ * 多行文本溢出配置
+ */
+export interface MultiLineEllipsis {
+    rows: number;
+    suffix?: string;
+    expandText?: string;
+    collapseText?: string;
+}
+
+export const isMultiLineEllipsis = (object: any): object is MultiLineEllipsis => {
+    return 'rows' in object;
+};

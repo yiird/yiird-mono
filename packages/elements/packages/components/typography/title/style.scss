@@ -1,4 +1,15 @@
-@import '../../theme/scss/bem';
+@import '../../theme/scss/reset';
+@import '../../theme/scss/typography';
 
 @include b('title') {
+    @include typography;
+    
+    $margin-block: calc($fontSize * 0.8);
+
+    font-size: $fontSize;
+    margin: 0;
+    padding: 0;
+    line-height: $lineHeight;
+    text-align: $align;
+    margin-block: $margin-block;
 }

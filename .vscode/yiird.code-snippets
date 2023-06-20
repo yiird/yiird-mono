@@ -65,7 +65,7 @@
         "prefix": "ye:style",
 		"description": "创建建",
         "body": [
-           "@import '../theme/scss/bem';",
+           "@import '../theme/scss/reset';",
            "",
            "@include b('${1:${TM_DIRECTORY/.*\\/(.+)/${1:/camelcase}/}}') {",
            "}"
