@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { PanelExposeType } from './logic';
 import Panel from './template.vue';
 
 const PanelPlugin: Plugin = {
@@ -17,4 +18,4 @@ const PanelPlugin: Plugin = {
 export type * from './logic';
 export { Panel, PanelPlugin };
 export type { ElementOptions };
-export type PanelType = InstanceType<typeof Panel>;
+export type PanelType = ComponentType<typeof Panel, PanelExposeType>;

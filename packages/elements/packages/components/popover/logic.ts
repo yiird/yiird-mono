@@ -234,9 +234,9 @@ const obtainTheme = (ctx: InternalSetupContext<PopoverPropsType, typeof PopoverE
 };
 
 export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof PopoverEmits>) => {
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
     const arrowRef = ref();
-    const { el } = prefab;
+    const { el } = commonExposed;
 
     const obtainReference = computed(() => {
         return extractDom(props.reference);
@@ -306,7 +306,7 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
         });
     });
 
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx }, obtainArrowSide);
+    const theme = obtainTheme({ props, commonExposed, ...ctx }, obtainArrowSide);
 
     /**
      * @private
@@ -386,7 +386,7 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         arrowRef,
         floatingRef: el,
@@ -395,4 +395,6 @@ export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof P
         isOpen: _display
     };
 };
-export const popoverExpose = [...baseExpose];
+
+export const PopoverExpose = [...baseExpose, ...([] as const)];
+export type PopoverExposeType = (typeof PopoverExpose)[number];

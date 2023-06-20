@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { TitleExposeType } from './logic';
 import Title from './template.vue';
 
 const TitlePlugin: Plugin = {
@@ -17,4 +18,4 @@ const TitlePlugin: Plugin = {
 export type * from './logic';
 export { Title, TitlePlugin };
 export type { ElementOptions };
-export type TitleType = InstanceType<typeof Title>;
+export type TitleType = ComponentType<typeof Title, TitleExposeType>;

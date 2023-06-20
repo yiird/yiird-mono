@@ -42,7 +42,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Btn } from '../btn';
-import { PanelProps, panelExpose, setupPanel } from './logic';
+import { PanelExpose, PanelProps, setupPanel } from './logic';
 
 /**
  * Panel使用
@@ -54,7 +54,7 @@ export default defineComponent({
         Btn
     },
     props: PanelProps,
-    expose: panelExpose,
+    expose: PanelExpose,
     setup(props, ctx) {
         return setupPanel(props, ctx);
     }

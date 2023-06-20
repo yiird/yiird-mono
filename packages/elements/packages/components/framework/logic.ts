@@ -1,5 +1,5 @@
 import { computed, type ExtractPropTypes, type PropType, type UnwrapNestedRefs } from 'vue';
-import { BaseProps } from '../../common/prefab';
+import { baseExpose, BaseProps } from '../../common/prefab';
 import type { FrameworkConfig } from '../../types/global';
 export const FrameworkProps = {
     ...BaseProps,
@@ -35,3 +35,6 @@ export const useFrameworkTheme = (props: Readonly<ExtractPropTypes<typeof Framew
         return theme;
     });
 };
+
+export const FrameworkExpose = [...baseExpose, ...([] as const)];
+export type FrameworkExposeType = (typeof FrameworkExpose)[number];

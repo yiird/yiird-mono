@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { ColExposeType } from './logic';
 import Col from './template.vue';
 
 const GridColPlugin: Plugin = {
@@ -17,4 +18,4 @@ const GridColPlugin: Plugin = {
 export type * from './logic';
 export { Col, GridColPlugin };
 export type { ElementOptions };
-export type ColType = InstanceType<typeof Col>;
+export type ColType = ComponentType<typeof Col, ColExposeType>;

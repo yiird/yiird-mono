@@ -43,7 +43,7 @@
 			"const prefab = usePrefab<${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}Variables, ${1:${TM_FILENAME_BASE/^o-(\\w+)/${1:/capitalize}/}}BemKeys>(props);",
 			"",
 			"return {",
-			"...prefab,",
+			"...commonExposed,",
 			"};",
 			"",
 			"}",

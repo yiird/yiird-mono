@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { AvatarExposeType } from './logic';
 import Avatar from './template.vue';
 
 const AvatarPlugin: Plugin = {
@@ -17,4 +18,4 @@ const AvatarPlugin: Plugin = {
 export type * from './logic';
 export { Avatar, AvatarPlugin };
 export type { ElementOptions };
-export type AvatarType = InstanceType<typeof Avatar>;
+export type AvatarType = ComponentType<typeof Avatar, AvatarExposeType>;

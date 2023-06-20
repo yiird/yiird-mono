@@ -1,5 +1,5 @@
 import { computed, inject, type ExtractPropTypes } from 'vue';
-import { BaseProps } from '../../../common/prefab';
+import { BaseProps, baseExpose } from '../../../common/prefab';
 import { FRAMEWORK_CONFIG_KEY } from '../../../config';
 
 export const MainProps = {
@@ -35,3 +35,6 @@ export const useMainTheme = (props: Readonly<ExtractPropTypes<typeof MainProps>>
         return theme;
     });
 };
+
+export const MainExpose = [...baseExpose, ...([] as const)];
+export type MainExposeType = (typeof MainExpose)[number];

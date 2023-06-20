@@ -1,5 +1,5 @@
 import { computed, inject, type ExtractPropTypes, type PropType } from 'vue';
-import { BaseProps } from '../../../common/prefab';
+import { BaseProps, baseExpose } from '../../../common/prefab';
 import { FRAMEWORK_CONFIG_KEY } from '../../../config';
 export const FooterProps = {
     ...BaseProps,
@@ -33,3 +33,6 @@ export const useFooterTheme = (props: FooterPropsType) => {
         return theme;
     });
 };
+
+export const FooterExpose = [...baseExpose, ...([] as const)];
+export type FooterExposeType = (typeof FooterExpose)[number];

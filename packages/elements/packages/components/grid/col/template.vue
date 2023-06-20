@@ -24,10 +24,10 @@ export default defineComponent({
         if (!checkParentType('row')) {
             throw new Error('Col的父组件只能是Row');
         }
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useColTheme(props);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

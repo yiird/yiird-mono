@@ -219,7 +219,7 @@ const obtainTheme = (ctx: InternalSetupContext<PanelPropsType>, headerFooterStat
 };
 
 export const setupPanel = (props: PanelPropsType, ctx: SetupContext<typeof PanelEmits>) => {
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
     const obtainHeaderFooterState = computed(() => headerFooterState(props, ctx.slots));
     const obtainHasHeader = computed(() => 'both' === obtainHeaderFooterState.value || 'header' === obtainHeaderFooterState.value);
     const obtainHasFooter = computed(() => 'both' === obtainHeaderFooterState.value || 'footer' === obtainHeaderFooterState.value);
@@ -250,7 +250,7 @@ export const setupPanel = (props: PanelPropsType, ctx: SetupContext<typeof Panel
 
     const obtainOperators = computed(() => props.operators);
 
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx }, obtainHeaderFooterState);
+    const theme = obtainTheme({ props, commonExposed, ...ctx }, obtainHeaderFooterState);
 
     /**
      * 将目标dom节点移动到可视区域
@@ -299,7 +299,7 @@ export const setupPanel = (props: PanelPropsType, ctx: SetupContext<typeof Panel
     };
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         container,
         obtainOperators,
@@ -308,4 +308,6 @@ export const setupPanel = (props: PanelPropsType, ctx: SetupContext<typeof Panel
         intoView
     };
 };
-export const panelExpose = [...baseExpose, 'intoView'];
+
+export const PanelExpose = [...baseExpose, ...(['intoView'] as const)];
+export type PanelExposeType = (typeof PanelExpose)[number];

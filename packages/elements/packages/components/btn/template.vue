@@ -42,7 +42,7 @@
 import { defineComponent } from 'vue';
 import { Icon } from '../icon';
 import { Popover } from '../popover';
-import { BtnProps, setupBtn } from './logic';
+import { BtnEmits, BtnExpose, BtnProps, setupBtn } from './logic';
 /**
  * Button使用
  * @name Btn
@@ -51,6 +51,8 @@ export default defineComponent({
     name: 'Btn',
     components: { Icon, Popover },
     props: BtnProps,
+    emits: BtnEmits,
+    expose: BtnExpose,
     setup(props, ctx) {
         return setupBtn(props, ctx);
     }

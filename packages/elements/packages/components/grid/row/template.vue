@@ -24,10 +24,10 @@ export default defineComponent({
         if (!checkChidrenTypeIn('col')) {
             throw new Error('Row的子组件只能是Col');
         }
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useRowTheme(props);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

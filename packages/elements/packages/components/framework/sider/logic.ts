@@ -1,5 +1,5 @@
 import { computed, inject, type ExtractPropTypes, type PropType } from 'vue';
-import { BaseProps } from '../../../common/prefab';
+import { BaseProps, baseExpose } from '../../../common/prefab';
 import { FRAMEWORK_CONFIG_KEY } from '../../../config';
 export const SiderProps = {
     ...BaseProps,
@@ -48,3 +48,6 @@ export const useSiderTheme = (props: Readonly<ExtractPropTypes<typeof SiderProps
         return theme;
     });
 };
+
+export const SiderExpose = [...baseExpose, ...([] as const)];
+export type SiderExposeType = (typeof SiderExpose)[number];

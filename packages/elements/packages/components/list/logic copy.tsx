@@ -185,8 +185,8 @@ const renderOperators = (data: any, operators: ListOperatorObject[] | ListOperat
 
 export const setupList = (props: ListPropsType, ctx: SetupContext<typeof ListEmits>) => {
     const { slots, emit } = ctx;
-    const prefab = usePrefab(props);
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme({ props, commonExposed, ...ctx });
 
     const obtainHasLeft = computed(() => {
         return !!slots.left;
@@ -231,7 +231,7 @@ export const setupList = (props: ListPropsType, ctx: SetupContext<typeof ListEmi
     };
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         obtainItems,
         obtainHasLeft,

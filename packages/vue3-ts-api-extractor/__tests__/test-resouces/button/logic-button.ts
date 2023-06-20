@@ -14,22 +14,22 @@ export const withButton = (options: OButtonPrefabOptionsDefine): OButtonPrefabDe
 
     //尺寸样式
     const obtainSizeClass = computed(() => {
-        return !props.size || prefab.cType__ + '--' + props.size;
+        return !props.size || commonExposed.cType__ + '--' + props.size;
     });
 
     const obtainShapeClass = computed(() => {
-        return !props.shape || prefab.cType__ + '--' + props.shape;
+        return !props.shape || commonExposed.cType__ + '--' + props.shape;
     });
 
     const obtainColorAndModeClass = computed(() => {
-        return !props.color || prefab.cType__ + '--' + props.color + (props.mode ? '--' + props.mode : '');
+        return !props.color || commonExposed.cType__ + '--' + props.color + (props.mode ? '--' + props.mode : '');
     });
 
     const obtainDisabledClass = computed(() => {
-        return !props.disabled || prefab.cType__ + '--disabled';
+        return !props.disabled || commonExposed.cType__ + '--disabled';
     });
 
-    prefab.addClass([obtainColorAndModeClass, obtainSizeClass, obtainShapeClass, obtainDisabledClass]);
+    commonExposed.addClass([obtainColorAndModeClass, obtainSizeClass, obtainShapeClass, obtainDisabledClass]);
 
     const rootRef = ref<HTMLButtonElement | null>(null);
     const obtainText = ref<string>();
@@ -39,7 +39,7 @@ export const withButton = (options: OButtonPrefabOptionsDefine): OButtonPrefabDe
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         rootRef,
         obtainText
     };

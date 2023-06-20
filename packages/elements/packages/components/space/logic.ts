@@ -49,7 +49,7 @@ export const SpaceEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<SpacePropsType, E>) => {
     const themeConfig = useTheme();
-    const { props, commonExposed: prefab } = ctx;
+    const { props, commonExposed } = ctx;
 
     const obtainSize = computed(() => {
         return getSize(themeConfig.value, props.gap);
@@ -63,18 +63,20 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<SpaceProp
             gap: `${obtainSize.value}px`
         };
 
-        theme.bemModifiers = [`${prefab.cType__}--${props.direction}`];
+        theme.bemModifiers = [`${commonExposed.cType__}--${props.direction}`];
 
         return theme;
     });
 };
 
 export const setupSpace = (props: SpacePropsType, ctx: SetupContext<typeof SpaceEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof SpaceEmits>({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme<typeof SpaceEmits>({ props, commonExposed, ...ctx });
     return {
-        ...prefab,
+        ...commonExposed,
         theme
     };
 };
-export const SpaceExpose = [...baseExpose];
+
+export const SpaceExpose = [...baseExpose, ...([] as const)];
+export type SpaceExposeType = (typeof SpaceExpose)[number];

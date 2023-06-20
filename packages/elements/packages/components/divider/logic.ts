@@ -29,7 +29,7 @@ export const DividerEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPropsType, E>) => {
     const themeConfig = useTheme();
-    const { props, commonExposed: prefab, slots } = ctx;
+    const { props, commonExposed, slots } = ctx;
     return computed<DividerTheme>(() => {
         const _themeConfig = themeConfig.value;
 
@@ -38,7 +38,7 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPr
             margin: `${props.margin}px`
         };
 
-        theme.bemModifiers = [`${prefab.cType__}--${props.direction}`];
+        theme.bemModifiers = [`${commonExposed.cType__}--${props.direction}`];
 
         if (slots.default) {
             theme.bemModifiers = [`is-has-title`];
@@ -49,17 +49,18 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPr
 };
 
 export const setupDivider = (props: DividerPropsType, ctx: SetupContext<typeof DividerEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof DividerEmits>({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme<typeof DividerEmits>({ props, commonExposed, ...ctx });
     const { slots } = ctx;
     const obtainHasTitle = computed(() => {
         return !!slots.default;
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         obtainHasTitle
     };
 };
-export const DividerExpose = [...baseExpose];
+export const DividerExpose = [...baseExpose, ...([] as const)];
+export type DividerExposeType = (typeof DividerExpose)[number];

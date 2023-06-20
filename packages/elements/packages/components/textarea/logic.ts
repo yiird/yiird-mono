@@ -40,14 +40,14 @@ export const TextareaEmits = {
 export const setupTextarea = (props: TextareaPropsType, ctx: SetupContext<typeof TextareaEmits>) => {
     const { emit } = ctx;
 
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
 
     const { modelValueRef } = useVModel(emit, {
         model: 'modelValue',
         modifiers: props.modelModifiers
     });
 
-    const internalCtx = { props, prefab, ...ctx };
+    const internalCtx = { props, commonExposed, ...ctx };
     const inputPrefab = useBaseInput<typeof TextareaEmits>(internalCtx);
     const { state } = inputPrefab;
     const theme = obtainBaseInputTheme<typeof TextareaEmits>(internalCtx, state, (_theme) => {
@@ -59,11 +59,13 @@ export const setupTextarea = (props: TextareaPropsType, ctx: SetupContext<typeof
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         ...inputPrefab,
         theme,
         modelValueRef,
         faLoader
     };
 };
-export const TextareaExpose = [...baseExpose];
+
+export const TextareaExpose = [...baseExpose, ...([] as const)];
+export type TextareaExposeType = (typeof TextareaExpose)[number];

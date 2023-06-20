@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { ListExposeType } from './logic';
 import List from './template.vue';
 
 const ListPlugin: Plugin = {
@@ -17,4 +18,4 @@ const ListPlugin: Plugin = {
 export type * from './logic';
 export { List, ListPlugin };
 export type { ElementOptions };
-export type ListType = InstanceType<typeof List>;
+export type ListType = ComponentType<typeof List, ListExposeType>;

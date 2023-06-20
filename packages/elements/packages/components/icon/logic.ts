@@ -242,9 +242,9 @@ const obtainTheme = (ctx: InternalSetupContext<IconPropsType, typeof IconEmits>)
 };
 
 export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmits>) => {
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
 
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
+    const theme = obtainTheme({ props, commonExposed, ...ctx });
 
     const obtainIcon = computed(() => {
         const { ye_iconPrefix: prefix } = theme.value;
@@ -294,7 +294,7 @@ export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmi
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         obtainIcon,
         obtainFixedWidth,
@@ -304,4 +304,6 @@ export const setupIcon = (props: IconPropsType, ctx: SetupContext<typeof IconEmi
         obtainAnimationOptions
     };
 };
-export const IconExpose = [...baseExpose];
+
+export const IconExpose = [...baseExpose, ...([] as const)];
+export type IconExposeType = (typeof IconExpose)[number];

@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { TextExposeType } from './logic';
 import Text from './template.vue';
 
 const TextPlugin: Plugin = {
@@ -17,4 +18,4 @@ const TextPlugin: Plugin = {
 export type * from './logic';
 export { Text, TextPlugin };
 export type { ElementOptions };
-export type TextType = InstanceType<typeof Text>;
+export type TextType = ComponentType<typeof Text, TextExposeType>;

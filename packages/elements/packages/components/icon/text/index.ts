@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { IconTextExposeType } from './logic';
 import IconText from './template.vue';
 
 const IconTextPlugin: Plugin = {
@@ -17,4 +18,4 @@ const IconTextPlugin: Plugin = {
 export type * from './logic';
 export { IconText, IconTextPlugin };
 export type { ElementOptions };
-export type IconTextType = InstanceType<typeof IconText>;
+export type IconTextType = ComponentType<typeof IconText, IconTextExposeType>;

@@ -20,10 +20,10 @@ export default defineComponent({
     name: 'Sider',
     props: SiderProps,
     setup(props) {
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useSiderTheme(props);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

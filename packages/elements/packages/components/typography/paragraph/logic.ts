@@ -32,8 +32,8 @@ export interface ParagraphTheme extends BaseTextTheme {
 export const ParagraphEmits = {};
 
 export const setupParagraph = (props: ParagraphPropsType, ctx: SetupContext<typeof ParagraphEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainBaseTextTheme<typeof ParagraphEmits, ParagraphTheme>({ props, commonExposed: prefab, ...ctx }, (_theme) => {
+    const commonExposed = usePrefab(props);
+    const theme = obtainBaseTextTheme<typeof ParagraphEmits, ParagraphTheme>({ props, commonExposed, ...ctx }, (_theme) => {
         const fontSize = sizeToFontSize(_theme, props.size);
 
         return {
@@ -44,8 +44,10 @@ export const setupParagraph = (props: ParagraphPropsType, ctx: SetupContext<type
         };
     });
     return {
-        ...prefab,
+        ...commonExposed,
         theme
     };
 };
-export const ParagraphExpose = [...baseExpose];
+
+export const ParagraphExpose = [...baseExpose, ...([] as const)];
+export type ParagraphExposeType = (typeof ParagraphExpose)[number];

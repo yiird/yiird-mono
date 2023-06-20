@@ -169,8 +169,8 @@ export const obtainBaseInputTheme = <E extends EmitsOptions>(
     onFlush?: (_theme: BaseInputTheme) => BaseInputTheme
 ) => {
     const themeConfig = useTheme();
-    const { props, commonExposed: prefab } = ctx;
-    const { cType__ } = prefab;
+    const { props, commonExposed } = ctx;
+    const { cType__ } = commonExposed;
     const { focus, status, disabled, readonly } = toRefs(state);
 
     const bemModifiers = computed(() => {

@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { SpaceExposeType } from './logic';
 import Space from './template.vue';
 
 const SpacePlugin: Plugin = {
@@ -17,4 +18,4 @@ const SpacePlugin: Plugin = {
 export type * from './logic';
 export { Space, SpacePlugin };
 export type { ElementOptions };
-export type SpaceType = InstanceType<typeof Space>;
+export type SpaceType = ComponentType<typeof Space, SpaceExposeType>;

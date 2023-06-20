@@ -28,10 +28,10 @@ export default defineComponent({
         }
         const framework = reactive<FrameworkConfig>({});
         provide(FRAMEWORK_CONFIG_KEY, framework);
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useFrameworkTheme(props, framework);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { HeaderExposeType } from './logic';
 import Header from './template.vue';
 
 const HeaderPlugin: Plugin = {
@@ -18,4 +19,4 @@ export type * from './logic';
 export { Header, HeaderPlugin };
 export type { ElementOptions };
 
-export type HeaderType = InstanceType<typeof Header>;
+export type HeaderType = ComponentType<typeof Header, HeaderExposeType>;

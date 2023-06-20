@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { TypographyExposeType } from './logic';
 import Typography from './template.vue';
 
 const TypographyPlugin: Plugin = {
@@ -17,4 +18,4 @@ const TypographyPlugin: Plugin = {
 export type * from './logic';
 export { Typography, TypographyPlugin };
 export type { ElementOptions };
-export type TypographyType = InstanceType<typeof Typography>;
+export type TypographyType = ComponentType<typeof Typography, TypographyExposeType>;

@@ -20,10 +20,10 @@ export default defineComponent({
     name: 'Footer',
     props: FooterProps,
     setup(props) {
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useFooterTheme(props);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

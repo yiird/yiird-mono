@@ -19,7 +19,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { PopoverEmits, PopoverProps, popoverExpose, setupPopover } from './logic';
+import { PopoverEmits, PopoverExpose, PopoverProps, setupPopover } from './logic';
 /**
  * Popover使用
  * @name Popover
@@ -27,7 +27,7 @@ import { PopoverEmits, PopoverProps, popoverExpose, setupPopover } from './logic
 export default defineComponent({
     name: 'Popover',
     props: PopoverProps,
-    expose: popoverExpose,
+    expose: PopoverExpose,
     emits: PopoverEmits,
     setup(props, ctx) {
         return setupPopover(props, ctx);

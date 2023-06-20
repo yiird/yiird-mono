@@ -40,7 +40,8 @@
         "body": [
            "import { capitalize, type App } from 'vue';",
 		   "import { DEFAULT_ELEMENT_OPTIONS } from '../../config';",
-           "import type { ElementOptions, Plugin } from '../../types/global';",
+           "import type { ElementOptions, Plugin, ComponentType } from '../../types/global';",
+           "import type { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}ExposeType } from './logic';",
            "import ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} from './template.vue';",
            "",
            "const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Plugin: Plugin = {",
@@ -58,7 +59,7 @@
            "export type * from './logic';",
            "export { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}, ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Plugin };",
            "export type { ElementOptions };",
-           "export type ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Type = InstanceType<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}>;",
+           "export type ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Type = ComponentType<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}, ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}ExposeType>;",
         ]
     },
     "创建样式":{
@@ -106,14 +107,15 @@
             "};",
        "",
             "export const setup${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} = (props: ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}PropsType, ctx: SetupContext<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits>) => {",
-            "    const prefab = usePrefab(props);",
-            "    const theme = obtainTheme<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits>({ props, prefab, ...ctx });",
+            "    const commonExposed = usePrefab(props);",
+            "    const theme = obtainTheme<typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Emits>({ props, commonExposed, ...ctx });",
             "    return {",
-            "        ...prefab,",
+            "        ...commonExposed,",
             "        theme,",
             "    };",
             "}",
-            "export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Expose = [...baseExpose];",
+            "export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Expose = [...baseExpose, ...([] as const)];",
+            "export type ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}ExposeType = (typeof ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Expose)[number];",
         ]
     }
 }

@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { SiderExposeType } from './logic';
 import Sider from './template.vue';
 
 const SiderPlugin: Plugin = {
@@ -17,4 +18,4 @@ const SiderPlugin: Plugin = {
 export type * from './logic';
 export { Sider, SiderPlugin };
 export type { ElementOptions };
-export type SiderType = InstanceType<typeof Sider>;
+export type SiderType = ComponentType<typeof Sider, SiderExposeType>;

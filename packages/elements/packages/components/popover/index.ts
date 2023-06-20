@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { PopoverExposeType } from './logic';
 import Popover from './template.vue';
 
 const PopoverPlugin: Plugin = {
@@ -17,4 +18,4 @@ const PopoverPlugin: Plugin = {
 export type * from './logic';
 export { Popover, PopoverPlugin };
 export type { ElementOptions };
-export type PopoverType = InstanceType<typeof Popover>;
+export type PopoverType = ComponentType<typeof Popover, PopoverExposeType>;

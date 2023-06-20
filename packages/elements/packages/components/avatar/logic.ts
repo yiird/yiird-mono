@@ -55,7 +55,7 @@ export interface AvatarTheme extends ThemeConfig {
 export const AvatarEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<AvatarPropsType, E>) => {
-    const { props, commonExposed: prefab } = ctx;
+    const { props, commonExposed } = ctx;
     const themeConfig = useTheme();
 
     const isBgLighter = ref(false);
@@ -82,7 +82,7 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<AvatarPro
         theme.bemModifiers = [];
 
         if (props.shape) {
-            theme.bemModifiers.push(`${prefab.cType__}--${props.shape}`);
+            theme.bemModifiers.push(`${commonExposed.cType__}--${props.shape}`);
         }
 
         return theme;
@@ -90,12 +90,14 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<AvatarPro
 };
 
 export const setupAvatar = (props: AvatarPropsType, ctx: SetupContext<typeof AvatarEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof AvatarEmits>({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme<typeof AvatarEmits>({ props, commonExposed, ...ctx });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme
     };
 };
-export const AvatarExpose = [...baseExpose];
+
+export const AvatarExpose = [...baseExpose, ...([] as const)];
+export type AvatarExposeType = (typeof AvatarExpose)[number];

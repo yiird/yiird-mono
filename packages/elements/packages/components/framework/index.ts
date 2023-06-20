@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { FrameworkExposeType } from './logic';
 import Framework from './template.vue';
 
 const FrameworkPlugin: Plugin = {
@@ -17,4 +18,4 @@ const FrameworkPlugin: Plugin = {
 export type * from './logic';
 export { Framework, FrameworkPlugin };
 export type { ElementOptions };
-export type FrameworkType = InstanceType<typeof Framework>;
+export type FrameworkType = ComponentType<typeof Framework, FrameworkExposeType>;

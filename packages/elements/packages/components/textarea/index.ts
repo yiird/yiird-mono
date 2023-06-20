@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { TextareaExposeType } from './logic';
 import Textarea from './template.vue';
 
 const TextareaPlugin: Plugin = {
@@ -17,4 +18,4 @@ const TextareaPlugin: Plugin = {
 export type * from './logic';
 export { Textarea, TextareaPlugin };
 export type { ElementOptions };
-export type TextareaType = InstanceType<typeof Textarea>;
+export type TextareaType = ComponentType<typeof Textarea, TextareaExposeType>;

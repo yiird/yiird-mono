@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { RowExposeType } from './logic';
 import Row from './template.vue';
 
 const RowPlugin: Plugin = {
@@ -17,4 +18,4 @@ const RowPlugin: Plugin = {
 export type * from './logic';
 export { Row, RowPlugin };
 export type { ElementOptions };
-export type RowType = InstanceType<typeof Row>;
+export type RowType = ComponentType<typeof Row, RowExposeType>;

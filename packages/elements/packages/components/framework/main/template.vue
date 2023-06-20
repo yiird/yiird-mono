@@ -20,10 +20,10 @@ export default defineComponent({
     name: 'Main',
     props: MainProps,
     setup(props) {
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useMainTheme(props);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

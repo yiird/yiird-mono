@@ -1,5 +1,5 @@
 import { computed, inject, type ExtractPropTypes, type PropType } from 'vue';
-import { BaseProps } from '../../../common/prefab';
+import { BaseProps, baseExpose } from '../../../common/prefab';
 import { FRAMEWORK_CONFIG_KEY } from '../../../config';
 export const HeaderProps = {
     ...BaseProps,
@@ -30,3 +30,6 @@ export const useHeaderTheme = (props: Readonly<ExtractPropTypes<typeof HeaderPro
         return theme;
     });
 };
+
+export const HeaderExpose = [...baseExpose, ...([] as const)];
+export type HeaderExposeType = (typeof HeaderExpose)[number];

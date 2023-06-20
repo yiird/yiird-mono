@@ -126,17 +126,18 @@ const obtainTheme = (ctx: InternalSetupContext<BtnPropsType, typeof BtnEmits>) =
 };
 
 export const setupBtn = (props: BtnPropsType, ctx: SetupContext<typeof BtnEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme({ props, commonExposed, ...ctx });
 
     const { slots } = ctx;
 
     const obtainHasPopover = computed(() => !!slots.drop);
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         faLoader,
         obtainHasPopover
     };
 };
-export const btnExpose = [...baseExpose];
+export const BtnExpose = [...baseExpose, ...([] as const)];
+export type BtnExposeType = (typeof BtnExpose)[number];

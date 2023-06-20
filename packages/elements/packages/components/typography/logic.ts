@@ -14,14 +14,16 @@ export interface TypographyTheme extends BaseTextTheme {
 export const TypographyEmits = {};
 
 export const setupTypography = (props: TypographyPropsType, ctx: SetupContext<typeof TypographyEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainBaseTextTheme<typeof TypographyEmits, TypographyTheme>({ props, commonExposed: prefab, ...ctx }, (_theme) => {
+    const commonExposed = usePrefab(props);
+    const theme = obtainBaseTextTheme<typeof TypographyEmits, TypographyTheme>({ props, commonExposed, ...ctx }, (_theme) => {
         const fontSize = sizeToFontSize(_theme, 'md');
         return { ..._theme, fontSize: `${fontSize}px` };
     });
     return {
-        ...prefab,
+        ...commonExposed,
         theme
     };
 };
-export const TypographyExpose = [...baseExpose];
+
+export const TypographyExpose = [...baseExpose, ...([] as const)];
+export type TypographyExposeType = (typeof TypographyExpose)[number];

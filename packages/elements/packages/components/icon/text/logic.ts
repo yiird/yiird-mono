@@ -52,11 +52,13 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<IconTextP
 };
 
 export const setupIconText = (props: IconTextPropsType, ctx: SetupContext<typeof IconTextEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof IconTextEmits>({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme<typeof IconTextEmits>({ props, commonExposed, ...ctx });
     return {
-        ...prefab,
+        ...commonExposed,
         theme
     };
 };
-export const IconTextExpose = [...baseExpose];
+
+export const IconTextExpose = [...baseExpose, ...([] as const)];
+export type IconTextExposeType = (typeof IconTextExpose)[number];

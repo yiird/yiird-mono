@@ -13,18 +13,20 @@ export interface TextTheme extends BaseTextTheme {}
 export const TextEmits = {};
 
 export const setupText = (props: TextPropsType, ctx: SetupContext<typeof TextEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainBaseTextTheme<typeof TextEmits, TextTheme>({ props, commonExposed: prefab, ...ctx }, (_theme) => {
+    const commonExposed = usePrefab(props);
+    const theme = obtainBaseTextTheme<typeof TextEmits, TextTheme>({ props, commonExposed, ...ctx }, (_theme) => {
         if (props.code) {
-            _theme.bemModifiers?.push(`${prefab.cType__}--code`);
+            _theme.bemModifiers?.push(`${commonExposed.cType__}--code`);
         }
         return _theme;
     });
-    const textPrefab = useBaseText<typeof TextEmits>({ props, commonExposed: prefab, ...ctx });
+    const textPrefab = useBaseText<typeof TextEmits>({ props, commonExposed, ...ctx });
     return {
-        ...prefab,
+        ...commonExposed,
         ...textPrefab,
         theme
     };
 };
-export const TextExpose = [...baseExpose];
+
+export const TextExpose = [...baseExpose, ...([] as const)];
+export type TextExposeType = (typeof TextExpose)[number];

@@ -1,6 +1,6 @@
 import { isArray } from 'lodash-es';
 import { computed, getCurrentInstance, type ExtractPropTypes, type PropType } from 'vue';
-import { BaseProps } from '../../../common/prefab';
+import { BaseProps, baseExpose } from '../../../common/prefab';
 import type { RowProps } from '../row';
 export const ColProps = {
     ...BaseProps,
@@ -47,3 +47,6 @@ export const useColTheme = (props: Readonly<ExtractPropTypes<typeof ColProps>>) 
         return theme;
     });
 };
+
+export const ColExpose = [...baseExpose, ...([] as const)];
+export type ColExposeType = (typeof ColExpose)[number];

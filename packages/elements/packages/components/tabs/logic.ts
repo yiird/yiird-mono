@@ -200,7 +200,7 @@ const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: Unwra
 };
 
 export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
 
     const barRefs: VNodeRef = ref({});
     const scrollRef = ref<HTMLElement>();
@@ -216,7 +216,7 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
         const items = props.items.map((item, index) => {
             return {
                 ...item,
-                id: item.id ? item.id : `${prefab.id__}-${index}`,
+                id: item.id ? item.id : `${commonExposed.id__}-${index}`,
                 name: item.name.trim(),
                 closeable: item.closeable,
                 page: !item.page ? item.page : isString(item.page) ? item.page : shallowRef(item.page),
@@ -338,7 +338,7 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
         active(activeIndex);
     };
 
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx }, tabsConfig, barRefs, scroll);
+    const theme = obtainTheme({ props, commonExposed, ...ctx }, tabsConfig, barRefs, scroll);
 
     onMounted(() => {
         const activeIndex = _findNearAvaliableIndex(_findItemIndex(props.activeKey));
@@ -346,7 +346,7 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         tabs: items,
         barRefs,
@@ -359,4 +359,5 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
     };
 };
 
-export const expose = [...baseExpose, 'active', 'close'];
+export const TabsExpose = [...baseExpose, ...(['active', 'close'] as const)];
+export type TabsExposeType = (typeof TabsExpose)[number];

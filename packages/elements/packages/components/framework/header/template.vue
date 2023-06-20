@@ -20,10 +20,10 @@ export default defineComponent({
     name: 'Header',
     props: HeaderProps,
     setup(props) {
-        const prefab = usePrefab(props);
+        const commonExposed = usePrefab(props);
         const theme = useHeaderTheme(props);
         return {
-            ...prefab,
+            ...commonExposed,
             theme
         };
     }

@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { ListMetaExposeType } from './logic';
 import ListMeta from './template.vue';
 
 const ListMetaPlugin: Plugin = {
@@ -17,4 +18,4 @@ const ListMetaPlugin: Plugin = {
 export type * from './logic';
 export { ListMeta, ListMetaPlugin };
 export type { ElementOptions };
-export type ListMetaType = InstanceType<typeof ListMeta>;
+export type ListMetaType = ComponentType<typeof ListMeta, ListMetaExposeType>;

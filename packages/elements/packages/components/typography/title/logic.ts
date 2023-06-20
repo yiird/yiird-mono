@@ -37,9 +37,9 @@ export interface TitleTheme extends BaseTextTheme {
 export const TitleEmits = {};
 
 export const setupTitle = (props: TitlePropsType, ctx: SetupContext<typeof TitleEmits>) => {
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
 
-    const theme = obtainBaseTextTheme<typeof TitleEmits, TitleTheme>({ props, commonExposed: prefab, ...ctx }, (_theme) => {
+    const theme = obtainBaseTextTheme<typeof TitleEmits, TitleTheme>({ props, commonExposed, ...ctx }, (_theme) => {
         let size = _theme.ye_fontSize;
         const nsize = props.size || (`${5 - props.level}x` as NumberSize);
         if (props.level < 5) {
@@ -55,8 +55,10 @@ export const setupTitle = (props: TitlePropsType, ctx: SetupContext<typeof Title
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme
     };
 };
-export const TitleExpose = [...baseExpose];
+
+export const TitleExpose = [...baseExpose, ...([] as const)];
+export type TitleExposeType = (typeof TitleExpose)[number];

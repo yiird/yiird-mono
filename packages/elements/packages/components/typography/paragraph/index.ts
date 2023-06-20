@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { ParagraphExposeType } from './logic';
 import Paragraph from './template.vue';
 
 const ParagraphPlugin: Plugin = {
@@ -17,4 +18,4 @@ const ParagraphPlugin: Plugin = {
 export type * from './logic';
 export { Paragraph, ParagraphPlugin };
 export type { ElementOptions };
-export type ParagraphType = InstanceType<typeof Paragraph>;
+export type ParagraphType = ComponentType<typeof Paragraph, ParagraphExposeType>;

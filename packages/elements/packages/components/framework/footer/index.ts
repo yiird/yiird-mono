@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { FooterExposeType } from './logic';
 import Footer from './template.vue';
 
 const FooterPlugin: Plugin = {
@@ -17,4 +18,4 @@ const FooterPlugin: Plugin = {
 export type * from './logic';
 export { Footer, FooterPlugin };
 export type { ElementOptions };
-export type FooterType = InstanceType<typeof Footer>;
+export type FooterType = ComponentType<typeof Footer, FooterExposeType>;

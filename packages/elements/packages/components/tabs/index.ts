@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { TabsExposeType } from './logic';
 import Tabs from './template.vue';
 
 const TabsPlugin: Plugin = {
@@ -17,4 +18,4 @@ const TabsPlugin: Plugin = {
 export type * from './logic';
 export { Tabs, TabsPlugin };
 export type { ElementOptions };
-export type TabsType = InstanceType<typeof Tabs>;
+export type TabsType = ComponentType<typeof Tabs, TabsExposeType>;

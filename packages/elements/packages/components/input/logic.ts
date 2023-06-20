@@ -133,7 +133,7 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
     const prefix = ref<Element>();
     const suffix = ref<Element>();
 
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
 
     const _opperatorArg = (inputValue: any, trim: boolean) => {
         const _suffix = suffix.value;
@@ -165,7 +165,7 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
         }
     );
 
-    const internalCtx = { props, prefab, ...ctx };
+    const internalCtx = { props, commonExposed, ...ctx };
 
     const inputPrefab = useBaseInput<typeof InputEmits>(internalCtx, _opperatorArg);
     const { state } = inputPrefab;
@@ -243,7 +243,7 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
     };
 
     return {
-        ...prefab,
+        ...commonExposed,
         ...inputPrefab,
         theme,
         modelValueRef,

@@ -60,7 +60,7 @@
 import 'animate.css';
 import { defineComponent } from 'vue';
 import { Icon } from '../icon';
-import { TabsProps, expose, setupTabs } from './logic';
+import { TabsExpose, TabsProps, setupTabs } from './logic';
 
 /**
  * Tabs使用
@@ -70,7 +70,7 @@ export default defineComponent({
     name: 'Tabs',
     components: { Icon },
     props: TabsProps,
-    expose,
+    expose: TabsExpose,
     setup(props, ctx) {
         const logic = setupTabs(props, ctx);
         return {

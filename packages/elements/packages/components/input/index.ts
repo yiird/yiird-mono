@@ -1,9 +1,8 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
 import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
-import { InputExpose, type InputExposeType } from './logic';
+import type { InputExposeType } from './logic';
 import Input from './template.vue';
-console.log(InputExpose);
 
 const InputPlugin: Plugin = {
     _register(app: App, optinos?: ElementOptions) {

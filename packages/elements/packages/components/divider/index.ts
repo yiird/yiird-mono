@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { DividerExposeType } from './logic';
 import Divider from './template.vue';
 
 const DividerPlugin: Plugin = {
@@ -17,4 +18,4 @@ const DividerPlugin: Plugin = {
 export type * from './logic';
 export { Divider, DividerPlugin };
 export type { ElementOptions };
-export type DividerType = InstanceType<typeof Divider>;
+export type DividerType = ComponentType<typeof Divider, DividerExposeType>;

@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ElementOptions, Plugin } from '../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { BtnExposeType } from './logic';
 import Btn from './template.vue';
 
 const BtnPlugin: Plugin = {
@@ -16,4 +17,4 @@ const BtnPlugin: Plugin = {
 export type { BtnMode, BtnShape } from './logic';
 export { Btn, BtnPlugin };
 export type { ElementOptions };
-export type BtnType = InstanceType<typeof Btn>;
+export type BtnType = ComponentType<typeof Btn, BtnExposeType>;

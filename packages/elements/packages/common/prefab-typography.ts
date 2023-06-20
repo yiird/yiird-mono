@@ -42,7 +42,7 @@ export interface BaseTextTheme extends ThemeConfig {
 
 export const obtainBaseTextTheme = <E extends EmitsOptions, T extends BaseTextTheme>(ctx: InternalSetupContext<BaseTextPropsType, E>, onFlush?: (_theme: T) => T) => {
     const themeConfig = useTheme();
-    const { props, commonExposed: prefab } = ctx;
+    const { props, commonExposed } = ctx;
     return computed<T>(() => {
         const _themeConfig = themeConfig.value;
 
@@ -55,20 +55,20 @@ export const obtainBaseTextTheme = <E extends EmitsOptions, T extends BaseTextTh
         theme.bemModifiers = [];
 
         if (props.delete) {
-            theme.bemModifiers.push(`${prefab.cType__}--delete`);
+            theme.bemModifiers.push(`${commonExposed.cType__}--delete`);
         }
 
         if (props.underline) {
-            theme.bemModifiers.push(`${prefab.cType__}--underline`);
+            theme.bemModifiers.push(`${commonExposed.cType__}--underline`);
         }
         if (props.strong) {
-            theme.bemModifiers.push(`${prefab.cType__}--strong`);
+            theme.bemModifiers.push(`${commonExposed.cType__}--strong`);
         }
         if (props.italic) {
-            theme.bemModifiers.push(`${prefab.cType__}--italic`);
+            theme.bemModifiers.push(`${commonExposed.cType__}--italic`);
         }
         if (props.mark) {
-            theme.bemModifiers.push(`${prefab.cType__}--mark`);
+            theme.bemModifiers.push(`${commonExposed.cType__}--mark`);
         }
 
         return onFlush ? onFlush(theme) : theme;

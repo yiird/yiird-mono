@@ -96,7 +96,7 @@ export const ListEmits = {
 };
 
 const obtainTheme = (ctx: InternalSetupContext<ListPropsType, typeof ListEmits>) => {
-    const { props, commonExposed: prefab } = ctx;
+    const { props, commonExposed } = ctx;
 
     const themeConfig = useTheme();
     return computed<ListTheme>(() => {
@@ -156,8 +156,8 @@ const obtainTheme = (ctx: InternalSetupContext<ListPropsType, typeof ListEmits>)
 
 export const setupList = (props: ListPropsType, ctx: SetupContext<typeof ListEmits>) => {
     const { slots, emit } = ctx;
-    const prefab = usePrefab(props);
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme({ props, commonExposed, ...ctx });
 
     const obtainHasExtra = computed(() => {
         return !!slots.extra;
@@ -199,11 +199,13 @@ export const setupList = (props: ListPropsType, ctx: SetupContext<typeof ListEmi
     };
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         obtainActions,
         obtainHasExtra,
         doItemClick__
     };
 };
-export const ListExpose = [...baseExpose];
+
+export const ListExpose = [...baseExpose, ...([] as const)];
+export type ListExposeType = (typeof ListExpose)[number];

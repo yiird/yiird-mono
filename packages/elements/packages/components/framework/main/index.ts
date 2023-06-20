@@ -1,6 +1,7 @@
 import { capitalize, type App } from 'vue';
 import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ElementOptions, Plugin } from '../../../types/global';
+import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { MainExposeType } from './logic';
 import Main from './template.vue';
 
 const MainPlugin: Plugin = {
@@ -17,4 +18,4 @@ const MainPlugin: Plugin = {
 export type * from './logic';
 export { Main, MainPlugin };
 export type { ElementOptions };
-export type MainType = InstanceType<typeof Main>;
+export type MainType = ComponentType<typeof Main, MainExposeType>;

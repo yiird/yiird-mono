@@ -72,8 +72,8 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<ListMetaP
 };
 
 export const setupListMeta = (props: ListMetaPropsType, ctx: SetupContext<typeof ListMetaEmits>) => {
-    const prefab = usePrefab(props);
-    const theme = obtainTheme<typeof ListMetaEmits>({ props, commonExposed: prefab, ...ctx });
+    const commonExposed = usePrefab(props);
+    const theme = obtainTheme<typeof ListMetaEmits>({ props, commonExposed, ...ctx });
 
     const obtainTitle = computed(() => {
         if (isObject(props.title)) {
@@ -146,7 +146,7 @@ export const setupListMeta = (props: ListMetaPropsType, ctx: SetupContext<typeof
     });
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         obtainTitle,
         obtainTitleEllipsis,
@@ -159,4 +159,6 @@ export const setupListMeta = (props: ListMetaPropsType, ctx: SetupContext<typeof
         obtainDescriptionEllipsis
     };
 };
-export const ListMetaExpose = [...baseExpose];
+
+export const ListMetaExpose = [...baseExpose, ...([] as const)];
+export type ListMetaExposeType = (typeof ListMetaExpose)[number];

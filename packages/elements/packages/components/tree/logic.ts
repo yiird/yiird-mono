@@ -229,9 +229,9 @@ const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>)
 };
 
 export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmits>) => {
-    const prefab = usePrefab(props);
+    const commonExposed = usePrefab(props);
 
-    const theme = obtainTheme({ props, commonExposed: prefab, ...ctx });
+    const theme = obtainTheme({ props, commonExposed, ...ctx });
 
     const { emit } = ctx;
 
@@ -513,7 +513,7 @@ export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmi
     };
 
     return {
-        ...prefab,
+        ...commonExposed,
         theme,
         obtainData,
         doToggleSelected_,
@@ -524,4 +524,5 @@ export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmi
     };
 };
 
-export const treeExpose = [...baseExpose];
+export const TreeExpose = [...baseExpose, ...([] as const)];
+export type TreeExposeType = (typeof TreeExpose)[number];
