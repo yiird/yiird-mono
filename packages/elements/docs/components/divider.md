@@ -53,4 +53,5 @@ Divider使用
 
 ### Direction {#linkdirection}
 
-- Direction = 	 `h` \| `v`
+- 描述： 方向<br/>`v` : 垂直方向<br/>`h` : 水平方向
+- Direction = 	 `h` \| `v` \| (string &amp; { fromT?: any })

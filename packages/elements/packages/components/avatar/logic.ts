@@ -3,8 +3,9 @@ import { computed, getCurrentInstance, onMounted, ref, type EmitsOptions, type E
 import { toStyleValue } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToComponentHeight, sizeToFontSize } from '../../config';
-import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
-import type { IconNameOrDefinition } from '../icon';
+import type { IconNameOrDefinition } from '../../types/icon';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { Size, ThemeConfig } from '../../types/theme';
 export const AvatarProps = {
     ...BaseProps,
     /**

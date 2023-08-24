@@ -1,14 +1,17 @@
 import { isString, kebabCase } from 'lodash';
 import type { ComponentResolver } from 'unplugin-vue-components';
 
-type ResolverOptions = {
-    prefix?: string;
+type ComponentResolverOptions = {
     debug?: boolean;
+    prefix?: string;
     from?: string | ((args: FromCallArg) => string);
-    exportName?: string;
 };
 
-const getSideEffects = (partialName: string, optinos: ResolverOptions) => {
+type DirectiveResolverOptions = {
+    from?: string | ((args: string) => string);
+};
+
+const getSideEffects = (partialName: string, optinos: ComponentResolverOptions) => {
     return [];
 };
 
@@ -22,7 +25,7 @@ const ignorePartialNames = ['font-awesome-icon'];
  * @param options
  * @returns
  */
-export function componentsResolver(options: ResolverOptions = {}): ComponentResolver {
+export function componentsResolver(options: ComponentResolverOptions = {}): ComponentResolver {
     return {
         type: 'component',
         resolve: (name: string) => {
@@ -47,11 +50,28 @@ export function componentsResolver(options: ResolverOptions = {}): ComponentReso
                 }
 
                 return {
-                    name: `${options.exportName ? options.exportName : partialName}`,
+                    name: partialName,
                     from: `${from ? from : '@yiird/elements'}`,
                     sideEffects: getSideEffects(partialName, options)
                 };
             }
+        }
+    };
+}
+
+export function directivesResolver(options: DirectiveResolverOptions): ComponentResolver {
+    return {
+        type: 'directive',
+        resolve: (name: string) => {
+            let from;
+            if (options.from) {
+                from = isString(options.from) ? options.from : options.from(name);
+            }
+
+            return {
+                name: name,
+                from: `${from ? from : '@yiird/elements'}`
+            };
         }
     };
 }

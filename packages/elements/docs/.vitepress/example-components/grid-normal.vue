@@ -165,10 +165,11 @@ const gutter = ref<number | number[]>(5);
 </script>
 
 <style scoped>
-.row-inner {
+:deep(.row-inner) {
     border: 1px solid red;
 }
-.col-inner {
+:deep(.col-inner) 
+{
     background-color: #1677ff;
     color: white;
     text-align: center;

@@ -1,0 +1,6 @@
+@import '../theme/scss/reset';
+
+@include b('scroll') {
+    height: $height;
+    width: $width;
+}

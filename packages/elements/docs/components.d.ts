@@ -10,22 +10,28 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     YAvatar: typeof import('./../packages/index.ts')['Avatar']
-    YBtn: typeof import('./../packages/index.ts')['Btn']
+    YButton: typeof import('./../packages/index.ts')['Button']
+    YCheckbox: typeof import('./../packages/index.ts')['Checkbox']
     YCol: typeof import('./../packages/index.ts')['Col']
     YDivider: typeof import('./../packages/index.ts')['Divider']
+    YDrop: typeof import('./../packages/index.ts')['Drop']
     YFooter: typeof import('./../packages/index.ts')['Footer']
     YFramework: typeof import('./../packages/index.ts')['Framework']
+    YGroup: typeof import('./../packages/index.ts')['Group']
     YHeader: typeof import('./../packages/index.ts')['Header']
     YIcon: typeof import('./../packages/index.ts')['Icon']
+    YIconText: typeof import('./../packages/index.ts')['IconText']
     YInput: typeof import('./../packages/index.ts')['Input']
     YList: typeof import('./../packages/index.ts')['List']
-    YListItem: typeof import('./../packages/index.ts')['ListItem']
     YListMeta: typeof import('./../packages/index.ts')['ListMeta']
     YMain: typeof import('./../packages/index.ts')['Main']
+    YMenu: typeof import('./../packages/index.ts')['Menu']
     YPanel: typeof import('./../packages/index.ts')['Panel']
     YParagraph: typeof import('./../packages/index.ts')['Paragraph']
     YPopover: typeof import('./../packages/index.ts')['Popover']
     YRow: typeof import('./../packages/index.ts')['Row']
+    YScroll: typeof import('./../packages/index.ts')['Scroll']
+    YSelect: typeof import('./../packages/index.ts')['Select']
     YSider: typeof import('./../packages/index.ts')['Sider']
     YSpace: typeof import('./../packages/index.ts')['Space']
     YTabs: typeof import('./../packages/index.ts')['Tabs']
@@ -35,5 +41,10 @@ declare module '@vue/runtime-core' {
     YTitle: typeof import('./../packages/index.ts')['Title']
     YTree: typeof import('./../packages/index.ts')['Tree']
     YTypography: typeof import('./../packages/index.ts')['Typography']
+    YVscroll: typeof import('./../packages/index.ts')['Vscroll']
+  }
+  export interface ComponentCustomProperties {
+    vEllipsis: typeof import('./../packages/index.ts')['Ellipsis']
+    vTooltip: typeof import('./../packages/index.ts')['Tooltip']
   }
 }

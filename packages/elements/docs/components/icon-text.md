@@ -44,6 +44,9 @@ IconText使用
 ### domRefresh()
 - 用法： 刷新组件
 
+### doClick()
+- 用法： 
+
 ## 关联类型
 
 
@@ -54,7 +57,7 @@ IconText使用
 
 ### Size {#linksize}
 
-- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize)
+- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) \| number \| (string &amp; { fromT?: any })
 
 ### TshirtSize {#linktshirtsize}
 

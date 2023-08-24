@@ -21,21 +21,20 @@ Title使用
 
 <div class="props">
 
-| 名称      | 描述                                   |                      类型                     | 可选值                                                                                                                  |
-| :-------- | :------------------------------------- | :-------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id        | 组件id，若不设置会自动生成             |                     String                    |                                                                                                                         |
-| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |                    Boolean                    |                                                                                                                         |
-| strong    | 加粗                                   |                    Boolean                    |                                                                                                                         |
-| delete    | 删除线                                 |                    Boolean                    |                                                                                                                         |
-| underline | 下滑线                                 |                    Boolean                    |                                                                                                                         |
-| italic    | 斜体                                   |                    Boolean                    |                                                                                                                         |
-| mark      | 标记                                   |                                               |                                                                                                                         |
-| secondary | 是否是次要文本                         |                    Boolean                    |                                                                                                                         |
-| selected  |                                        |                    Boolean                    |                                                                                                                         |
-| level     | <hr>默认值:<br><pre>1</pre>            |         [TitleLevel](#linktitlelevel)         | `1` , `2` , `3` , `4`                                                                                                   |
-| align     | <hr>默认值:<br><pre>start</pre>        |              [Align](#linkalign)              | `start` , `center` , `end`                                                                                              |
-| ellipsis  | 文本溢出配置                           | [SingleLineEllipsis](#linksinglelineellipsis) |                                                                                                                         |
-| size      |                                        |               [Size](#linksize)               | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| 名称       | 描述                                     |                      类型                     | 可选值                     |
+| :--------- | :--------------------------------------- | :-------------------------------------------: | :------------------------- |
+| id         | 组件id，若不设置会自动生成               |                     String                    |                            |
+| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   |                    Boolean                    |                            |
+| strong     | 加粗                                     |                    Boolean                    |                            |
+| delete     | 删除线                                   |                    Boolean                    |                            |
+| underline  | 下滑线                                   |                    Boolean                    |                            |
+| italic     | 斜体                                     |                    Boolean                    |                            |
+| mark       | 标记                                     |                                               |                            |
+| secondary  | 是否是次要文本                           |                    Boolean                    |                            |
+| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> |                    Boolean                    |                            |
+| level      | <hr>默认值:<br><pre>1</pre>              |         [TitleLevel](#linktitlelevel)         | `1` , `2` , `3` , `4`      |
+| align      | <hr>默认值:<br><pre>start</pre>          |              [Align](#linkalign)              | `start` , `center` , `end` |
+| ellipsis   | 文本溢出配置                             | [SingleLineEllipsis](#linksinglelineellipsis) |                            |
 
 </div>
 
@@ -61,23 +60,10 @@ Title使用
 
 ### Align {#linkalign}
 
+- 描述： 对齐方式<br/>`start` : 开始位置<br/>`center` : 中间位置<br/>`end` : 结束位置
 - Align = 	 `start` \| `center` \| `end`
 
 ### SingleLineEllipsis {#linksinglelineellipsis}
 
 - 描述： 单行文本溢出配置
 - 选项：
-	 - `length` { number } : 
-	 - `suffix` { string } : 
-
-### Size {#linksize}
-
-- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize)
-
-### TshirtSize {#linktshirtsize}
-
-- TshirtSize = 	 `2xs` \| `xs` \| `sm` \| `md` \| `lg` \| `xl` \| `2xl`
-
-### NumberSize {#linknumbersize}
-
-- NumberSize = 	 `1x` \| `2x` \| `3x` \| `4x` \| `5x` \| `6x` \| `7x` \| `8x` \| `9x` \| `10x`

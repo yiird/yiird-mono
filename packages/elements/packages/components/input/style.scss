@@ -1,23 +1,13 @@
 @import '../theme/scss/reset';
-@import '../theme/scss/input';
+@import '../theme/scss/form-text';
 
 @include b('input') {
     @include input;
 
     @include e('content') {
-        :deep(.btn) {
-            padding: 0;
-            height: 100%;
-            line-height: $lineHeight;
+        :deep(.button) {
             border-color: transparent;
-            border-radius: unset;
-            box-shadow: none;
-            .btn__text {
-                font-size: 0.8em;
-            }
-        }
-
-        @include e('input') {
+            padding: 5px;
         }
 
         @include e('password-icon') {
@@ -30,9 +20,6 @@
             display: flex;
             align-items: center;
             height: 100%;
-            padding: 0 10px;
-            color: $colorText;
-            background-color: $colorPrefixSuffix;
             user-select: none;
             cursor: pointer;
         }
@@ -45,7 +32,6 @@
                 right: 0;
                 top: 0;
                 bottom: 0;
-                border-right: 1px solid $colorBorderDefault;
             }
         }
 
@@ -57,14 +43,14 @@
                 left: 0;
                 top: 0;
                 bottom: 0;
-                border-left: 1px solid $colorBorderDefault;
             }
         }
     }
 
     @include m('check-password') {
         @include e('password-icon') {
-            color: $colorActive;
+            color: $colorText;
         }
     }
+
 }

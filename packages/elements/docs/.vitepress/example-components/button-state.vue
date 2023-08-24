@@ -1,76 +1,76 @@
 <template>
     <div class="wrap">
         <div>
-            <y-btn disabled>禁用</y-btn>
-            <y-btn
+            <y-button disabled>禁用</y-button>
+            <y-button
                 disabled
                 color="primary">
                 禁用
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 disabled
                 mode="empty"
                 color="primary">
                 禁用
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 disabled
                 mode="half"
                 color="primary">
                 禁用
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 disabled
                 mode="dashed"
                 color="primary">
                 禁用
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 disabled
                 mode="link"
                 color="primary">
                 禁用
-            </y-btn>
+            </y-button>
         </div>
         <div>
-            <y-btn loading>
+            <y-button loading>
                 <y-icon name="heart"></y-icon>
                 &nbsp;loading
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 loading
                 color="primary">
                 <y-icon name="heart"></y-icon>
                 &nbsp;loading
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 loading
                 mode="half"
                 color="primary">
                 <y-icon name="heart"></y-icon>
                 &nbsp;loading
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 loading
                 mode="empty"
                 color="primary">
                 <y-icon name="heart"></y-icon>
                 &nbsp;loading
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 loading
                 mode="link"
                 color="primary">
                 <y-icon name="heart"></y-icon>
                 &nbsp;loading
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 loading
                 mode="dashed"
                 color="primary">
                 <y-icon name="heart"></y-icon>
                 &nbsp;loading
-            </y-btn>
+            </y-button>
         </div>
     </div>
 </template>
@@ -82,7 +82,7 @@ addIcons(faHeart);
 </script>
 
 <style scoped>
-.wrap .btn {
+.wrap .button {
     margin: 0.5rem;
 }
 </style>

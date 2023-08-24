@@ -4,16 +4,19 @@
             v-if="refresh__"
             :id="id__"
             ref="el"
+            v-bind="$attrs"
             :style="floatingStyles"
             :class="[cType__, theme.bemModifiers]">
             <div
                 ref="arrowRef"
-                class="popover__arrow"></div>
-            <span class="popover__text">{{ text }}</span>
+                :class="`${cType__}__arrow`"></div>
+            <span :class="`${cType__}__text`">{{ text }}</span>
 
-            <!-- 气泡内容 -->
-            <!-- @param {Boolean} is-open 打开状态 -->
-            <slot :is-open="isOpen"></slot>
+            <div :class="`${cType__}__content`">
+                <!-- 气泡内容 -->
+                <!-- @param {Boolean} is-open 打开状态 -->
+                <slot :is-open="isOpen"></slot>
+            </div>
         </div>
     </Teleport>
 </template>
@@ -38,8 +41,14 @@ export default defineComponent({
 $bgColor: v-bind('theme.color');
 $color: v-bind('theme.textColor');
 $arrowSize: v-bind('theme.arrowSize');
-$maxWidth: v-bind('theme.maxWidth');
 $radius: v-bind('theme.radius');
 $shadow: v-bind('theme.shadow');
+$padding: v-bind('theme.padding');
+
+$minWidth: v-bind('theme.minWidth');
+$maxWidth: v-bind('theme.maxWidth');
+$minHeight: v-bind('theme.minHeight');
+$maxHeight: v-bind('theme.maxHeight');
+
 @import './style.scss';
 </style>

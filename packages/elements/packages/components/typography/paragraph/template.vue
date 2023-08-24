@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { ellipsis } from '../../../directives';
+import { Ellipsis } from '../../../directives';
 import { ParagraphEmits, ParagraphExpose, ParagraphProps, setupParagraph } from './logic';
 /**
  * Paragraph使用
@@ -20,7 +20,7 @@ import { ParagraphEmits, ParagraphExpose, ParagraphProps, setupParagraph } from 
 export default defineComponent({
     name: 'Paragraph',
     directives: {
-        ellipsis
+        ellipsis: Ellipsis
     },
     props: ParagraphProps,
     expose: ParagraphExpose,

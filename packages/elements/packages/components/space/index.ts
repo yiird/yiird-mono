@@ -1,21 +1,17 @@
-import { capitalize, type App } from 'vue';
-import { DEFAULT_ELEMENT_OPTIONS } from '../../config';
-import type { ComponentType, ElementOptions, Plugin } from '../../types/global';
+import type { App, Plugin } from 'vue';
+import { _register } from '../../common/prefab';
+import type { PlatformOptions } from '../../types/options';
+import type { ComponentType } from '../../types/prefab';
 import type { SpaceExposeType } from './logic';
 import Space from './template.vue';
 
 const SpacePlugin: Plugin = {
-    _register(app: App, optinos?: ElementOptions) {
-        const { prefix = DEFAULT_ELEMENT_OPTIONS } = optinos || {};
-        app.component(capitalize(`${prefix}${Space.name}`), Space);
-    },
-
-    install(app: App, optinos: ElementOptions) {
-        this._register(app, optinos);
+    install(app: App, optinos: PlatformOptions) {
+        _register(app, Space, optinos);
     }
 };
 
 export type * from './logic';
 export { Space, SpacePlugin };
-export type { ElementOptions };
+export type { PlatformOptions as ElementOptions };
 export type SpaceType = ComponentType<typeof Space, SpaceExposeType>;

@@ -1,21 +1,17 @@
-import { capitalize, type App } from 'vue';
-import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { App, Plugin } from 'vue';
+import { _register } from '../../../common/prefab';
+import type { PlatformOptions } from '../../../types/options';
+import type { ComponentType } from '../../../types/prefab';
 import type { IconTextExposeType } from './logic';
 import IconText from './template.vue';
 
 const IconTextPlugin: Plugin = {
-    _register(app: App, optinos?: ElementOptions) {
-        const { prefix = DEFAULT_ELEMENT_OPTIONS } = optinos || {};
-        app.component(capitalize(`${prefix}${IconText.name}`), IconText);
-    },
-
-    install(app: App, optinos: ElementOptions) {
-        this._register(app, optinos);
+    install(app: App, optinos: PlatformOptions) {
+        _register(app, IconText, optinos);
     }
 };
 
 export type * from './logic';
 export { IconText, IconTextPlugin };
-export type { ElementOptions };
+export type { PlatformOptions as ElementOptions };
 export type IconTextType = ComponentType<typeof IconText, IconTextExposeType>;

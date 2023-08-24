@@ -1,28 +1,32 @@
 import { forEach } from 'lodash-es';
-import type { EnhanceAppContext } from 'vitepress';
-import Theme from 'vitepress/theme';
-import type { App } from 'vue';
+import { useData, type EnhanceAppContext } from 'vitepress';
+import { default as ViteTheme } from 'vitepress/theme';
+import { watch, type App } from 'vue';
 import Example from './build-in/Example.vue';
 
 import './style.scss';
 
 export default {
-    ...Theme,
+    ...ViteTheme,
     async enhanceApp({ app }: EnhanceAppContext) {
         app.component('Example', Example);
 
-        const examples: Record<string, Object> = import.meta.glob('../example-components/*.vue', { eager: true, import: 'default' });
+        const examples: Record<string, Object> = import.meta.glob(['../example-components/*.vue', '../template-components/*.vue'], { eager: true, import: 'default' });
         forEach(examples, (example, path) => {
             app.component(basename(path, '.vue'), example);
         });
 
+        const { YE, Util } = await import(import.meta.env.PROD ? '@yiird/elements' : '../../../packages');
+        (app as App).use(YE, {
+            prefix: 'Y',
+            documentReady() {
+                const { isDark } = useData();
+                watch(isDark, Util.setDark);
+            }
+        });
+
         if (import.meta.env.PROD) {
-            const { YE } = await import('@yiird/elements');
-            (app as App).use(YE, { prefix: 'Y' });
             import('@yiird/elements/style.css');
-        } else {
-            const { YE } = await import('../../../packages');
-            (app as App).use(YE, { prefix: 'Y' });
         }
     }
 };

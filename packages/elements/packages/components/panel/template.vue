@@ -13,7 +13,7 @@
             </div>
             <div class="panel__header-right">
                 <slot name="header-right"></slot>
-                <Btn
+                <Button
                     v-for="(operator, index) in obtainOperators"
                     :key="index"
                     :shape="operator.icon ? 'square' : 'rectangle'"
@@ -23,14 +23,16 @@
                     color="primary"
                     @click="operator.action">
                     {{ !operator.icon ? operator.text : undefined }}
-                </Btn>
+                </Button>
             </div>
         </div>
-        <div
-            ref="container"
-            class="panel__container">
-            <slot></slot>
+
+        <div class="panel__container">
+            <Scroll ref="scroll">
+                <slot></slot>
+            </Scroll>
         </div>
+
         <div
             v-if="obtainHasFooter"
             class="panel__footer">
@@ -41,7 +43,8 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Btn } from '../btn';
+import { Button } from '../button';
+import { Scroll } from '../scroll';
 import { PanelExpose, PanelProps, setupPanel } from './logic';
 
 /**
@@ -51,7 +54,8 @@ import { PanelExpose, PanelProps, setupPanel } from './logic';
 export default defineComponent({
     name: 'Panel',
     components: {
-        Btn
+        Button,
+        Scroll
     },
     props: PanelProps,
     expose: PanelExpose,
@@ -61,6 +65,7 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+$padding: v-bind('theme.padding');
 $height: v-bind('theme.height');
 $width: v-bind('theme.width');
 $footerHeight: v-bind('theme.footerHeight');

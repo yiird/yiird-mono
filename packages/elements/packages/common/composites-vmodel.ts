@@ -2,25 +2,68 @@ import { forEach, groupBy } from 'lodash-es';
 
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue';
 
-type DataBinder = {
+type InputModelDataBinder = {
+    /**
+     * modeName
+     */
     model: string;
+    /**
+     * 关联的 model 名称
+     * 比如：隐藏域根据输入内容进行双向绑定，择`reference`为输入项的 modelName
+     */
     reference?: string;
-    modifiers: { lazy: boolean; trim: boolean };
-    opperator?: <V>(v: V, b?: DataBinder) => any;
+    /**
+     * v-model修饰符
+     */
+    modifiers?: { lazy: boolean; trim: boolean };
+    /**
+     * 数据自定义处理
+     *
+     * @param v 数据值
+     * @param b 当前Binder
+     * @returns 处理后的数据
+     */
+    opperator?: <V>(v: V, b?: InputModelDataBinder) => any;
 };
 
-const getEventType = (dom: Element, lazy: boolean) => {
+type CheckModelDataBinder = {
+    model: string;
+    /**
+     * 数据自定义处理
+     *
+     * @param v 数据值
+     * @param b 当前Binder
+     * @returns 处理后的数据
+     */
+    opperator?: <V>(v: V, b?: CheckModelDataBinder) => any;
+};
+
+const isSelectElement = (dom: any): dom is HTMLInputElement => {
+    return 'checkbox' === dom.type || 'radio' === dom.type;
+};
+
+const isTextElement = (dom: any): dom is HTMLInputElement => {
+    return 'text' === dom.type || 'password' === dom.type;
+};
+
+const isTextareaElement = (dom: any): dom is HTMLTextAreaElement => {
+    return 'textarea' === dom.type;
+};
+
+const getEventType = (dom: Element, lazy?: boolean) => {
     let eventType = 'change';
     if (dom instanceof HTMLInputElement || dom instanceof HTMLTextAreaElement) {
-        if ('textarea' === dom.type || 'text' === dom.type || 'password' === dom.type) {
+        if (isTextElement(dom) || isTextareaElement(dom)) {
             eventType = lazy ? 'change' : 'input';
+        } else if (isSelectElement(dom)) {
+            eventType = 'change';
         }
     }
     return eventType;
 };
 
-export const useVModel = (emit: Function, ...binders: DataBinder[]) => {
-    const refs: Record<string, Ref<Element | undefined>> = {};
+export const useInputVModel = (emit: Function, ...binders: InputModelDataBinder[]) => {
+    const refs: Record<string, Ref<HTMLElement | undefined>> = {};
     const dataBindEventHandlers: Record<string, (ev: Event) => any> = {};
 
     const instance = getCurrentInstance();
@@ -41,7 +84,17 @@ export const useVModel = (emit: Function, ...binders: DataBinder[]) => {
         );
 
         dataBindEventHandlers[groupModelName] = (ev: Event) => {
-            const value = (ev.target as HTMLInputElement).value;
+            const { target } = ev;
+            let value: any;
+
+            if (isSelectElement(target)) {
+                value = target.checked;
+            } else if (isTextElement(target)) {
+                value = target.value;
+            } else if (isTextareaElement(target)) {
+                value = target.value;
+            }
+
             _binders.forEach((_binder) => {
                 if (!_binder.reference) {
                     emit(`update:${_binder.model}`, _binder.opperator ? _binder.opperator(value, _binder) : value);
@@ -57,7 +110,7 @@ export const useVModel = (emit: Function, ...binders: DataBinder[]) => {
             const groupModelName = binder.model;
             const dom = refs[`${groupModelName}Ref`].value;
             if (dom) {
-                const { lazy } = binder.modifiers;
+                const { lazy } = binder.modifiers || {};
                 const eventType = getEventType(dom, lazy);
                 dom.addEventListener(eventType, dataBindEventHandlers[groupModelName]);
             }
@@ -69,7 +122,7 @@ export const useVModel = (emit: Function, ...binders: DataBinder[]) => {
             const groupModelName = binder.model;
             const dom = refs[`${groupModelName}Ref`].value;
             if (dom) {
-                const { lazy } = binder.modifiers;
+                const { lazy } = binder.modifiers || {};
                 const eventType = getEventType(dom, lazy);
                 dom.removeEventListener(eventType, dataBindEventHandlers[groupModelName]);
             }

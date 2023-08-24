@@ -9,12 +9,8 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, provide, reactive } from 'vue';
-import { usePrefab } from '../../common/prefab';
-import { checkChidrenTypeIn } from '../../common/vnode-utils';
-import { FRAMEWORK_CONFIG_KEY } from '../../config';
-import type { FrameworkConfig } from '../../types/global';
-import { FrameworkProps, useFrameworkTheme } from './logic';
+import { defineComponent } from 'vue';
+import { FrameworkEmits, FrameworkExpose, FrameworkProps, setupFramework } from './logic';
 /**
  * Framework使用
  * @name Framework
@@ -22,18 +18,10 @@ import { FrameworkProps, useFrameworkTheme } from './logic';
 export default defineComponent({
     name: 'Framework',
     props: FrameworkProps,
-    setup(props) {
-        if (!checkChidrenTypeIn('header', 'footer', 'main', 'sider')) {
-            throw new Error('Framework的子组件只能是Header,Footer,Main,Sider');
-        }
-        const framework = reactive<FrameworkConfig>({});
-        provide(FRAMEWORK_CONFIG_KEY, framework);
-        const commonExposed = usePrefab(props);
-        const theme = useFrameworkTheme(props, framework);
-        return {
-            ...commonExposed,
-            theme
-        };
+    expose: FrameworkExpose,
+    emits: FrameworkEmits,
+    setup(props, ctx) {
+        return setupFramework(props, ctx);
     }
 });
 </script>

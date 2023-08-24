@@ -1,32 +1,31 @@
 <template>
-    <y-theme>
 
         <y-space>
-        <y-btn mode="link">Default</y-btn>
+        <y-button mode="link">Default</y-button>
         <y-divider direction="v"></y-divider>
-        <y-btn
+        <y-button
             mode="link"
             color="primary">
             Primary
-        </y-btn>
+        </y-button>
         <y-divider direction="v"></y-divider>
-        <y-btn
+        <y-button
             mode="link"
             color="success">
             Success
-        </y-btn>
+        </y-button>
         <y-divider direction="v"></y-divider>
-        <y-btn
+        <y-button
             mode="link"
             color="warn">
             Warning
-        </y-btn>
+        </y-button>
         <y-divider direction="v"></y-divider>
-        <y-btn
+        <y-button
             mode="link"
             color="error">
             Danger
-        </y-btn>
+        </y-button>
     </y-space>
 
     <div>
@@ -37,8 +36,6 @@
             <y-divider></y-divider>
         </p>
     </div>
-
-    </y-theme>
 </template>
 
 <script setup lang="ts"></script>

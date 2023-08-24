@@ -1,0 +1,6 @@
+@import '../theme/scss/reset';
+
+@include b('menu') {
+    width: 100%;
+    height: 100%;
+}

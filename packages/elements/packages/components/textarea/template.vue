@@ -23,18 +23,25 @@
                     @focus="doFoucs_($event)"></textarea>
             </div>
 
-            <div
-                v-if="loading"
-                :class="`${cType__}__loading-icon`">
-                <Icon
-                    :name="faLoader"
-                    :size="size"
-                    animation="spin"></Icon>
-            </div>
-            <div
-                v-if="obtainCounter"
-                :class="`${cType__}__counter`">
-                <span>{{ obtainCounter }}</span>
+            <div :class="`${cType__}__suffix`">
+                <Space
+                    v-if="obtainPrefabAffixies"
+                    :style="{
+                        margin: '0px 5px'
+                    }"
+                    cross-axis="center">
+                    <Icon
+                        v-if="loading"
+                        :class="`${cType__}__loading-icon`"
+                        :name="faLoader"
+                        :size="size"
+                        animation="spin"></Icon>
+                    <span
+                        v-if="obtainCounter"
+                        :class="`${cType__}__counter`">
+                        {{ obtainCounter }}
+                    </span>
+                </Space>
             </div>
         </div>
     </div>
@@ -42,6 +49,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Icon } from '../icon';
+import { Space } from '../space';
 import { TextareaEmits, TextareaExpose, TextareaProps, setupTextarea } from './logic';
 /**
  * Textarea 使用
@@ -49,7 +57,7 @@ import { TextareaEmits, TextareaExpose, TextareaProps, setupTextarea } from './l
  */
 export default defineComponent({
     name: 'Textarea',
-    components: { Icon },
+    components: { Icon, Space },
     props: TextareaProps,
     expose: TextareaExpose,
     emits: TextareaEmits,
@@ -61,17 +69,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 $colorText: v-bind('theme.colors.text');
 $colorBorder: v-bind('theme.colors.border');
-$colorBorderLigher: v-bind('theme.colors.borderLigher');
-$colorBorderDefault: v-bind('theme.colors.defaultBorder');
-
-$colorPrefixSuffix: v-bind('theme.ye_colorBg');
-$colorPlaceholder: v-bind('theme.colors.defaultBorder');
-$colorActive: v-bind('theme.colors.active');
+$colorPlaceholder: v-bind('theme.colors.placeholder');
+$colorShadow: v-bind('theme.colors.shadow');
+$colorDisabled: v-bind('theme.ye_colorDisabled');
+$colorFocus: v-bind('theme.colors.primary');
 
 $height: v-bind('theme.size.height');
-$perHeight: v-bind('theme.size.perHeight');
 $lineHeight: v-bind('theme.size.lineHeight');
+$borderWidth: v-bind('theme.size.borderWidth');
 $fontSize: v-bind('theme.size.fontSize');
-$shadow: v-bind('theme.shadow');
 @import './style.scss';
 </style>

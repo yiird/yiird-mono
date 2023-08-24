@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { defineComponent } from 'vue';
 import { IconEmits, IconExpose, IconProps, setupIcon } from './logic';
 /**
- * Button使用
+ * 图标
  */
 export default defineComponent({
     name: 'Icon',

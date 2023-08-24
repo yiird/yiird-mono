@@ -1,8 +1,9 @@
 import type { ExtractPropTypes, PropType, SetupContext } from 'vue';
 import { baseExpose, usePrefab } from '../../../common/prefab';
 import { BaseTextProps, obtainBaseTextTheme, type BaseTextTheme } from '../../../common/prefab-typography';
-import { fontSizeToTextLineHeight, sizeToFontSize } from '../../../config';
-import type { MultiLineEllipsis, Size } from '../../../types/global';
+import { sizeToFontSize, sizeToTextLineHeight } from '../../../config';
+import type { MultiLineEllipsis } from '../../../types/global';
+import type { Size } from '../../../types/theme';
 export const ParagraphProps = {
     ...BaseTextProps,
     indent: {
@@ -35,11 +36,12 @@ export const setupParagraph = (props: ParagraphPropsType, ctx: SetupContext<type
     const commonExposed = usePrefab(props);
     const theme = obtainBaseTextTheme<typeof ParagraphEmits, ParagraphTheme>({ props, commonExposed, ...ctx }, (_theme) => {
         const fontSize = sizeToFontSize(_theme, props.size);
+        const lineHeight = sizeToTextLineHeight(_theme, props.size);
 
         return {
             ..._theme,
             fontSize: `${fontSize}px`,
-            lineHeight: `${fontSizeToTextLineHeight(_theme, fontSize)}px`,
+            lineHeight: `${lineHeight}px`,
             indent: props.indent
         };
     });

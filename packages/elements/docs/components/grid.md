@@ -8,14 +8,14 @@ Grid使用
 
 <div class="props">
 
-| 名称      | 描述                                              |                                                                 类型                                                                | 可选值                                                                         |
-| :-------- | :------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------- |
-| id        | 组件id，若不设置会自动生成                        |                                                                String                                                               |                                                                                |
-| display   | 显示隐藏<hr>默认值:<br><pre>true</pre>            |                                                               Boolean                                                               |                                                                                |
-| gutter    | 间距尺寸<hr>默认值:<br><pre>5</pre>               |                                               number \| number[] \| string \| string[]                                              |                                                                                |
-| justify   | 水平方向的对齐方式<hr>默认值:<br><pre>start</pre> | &#39;start&#39; \| &#39;end&#39; \| &#39;center&#39; \| &#39;space-between&#39; \| &#39;space-around&#39; \| &#39;space-evenly&#39; | `start` , `end` , `center` , `space-between` , `space-around` , `space-evenly` |
-| align     | 垂直方向对齐方式<hr>默认值:<br><pre>stretch</pre> |                              &#39;start&#39; \| &#39;end&#39; \| &#39;center&#39; \| &#39;stretch&#39;                              | `start` , `end` , `center` , `stretch`                                         |
-| col-count | 列数                                              |                                                                number                                                               |                                                                                |
+| 名称      | 描述                                              |                                   类型                                  | 可选值                                                                         |
+| :-------- | :------------------------------------------------ | :---------------------------------------------------------------------: | :----------------------------------------------------------------------------- |
+| id        | 组件id，若不设置会自动生成                        |                                  String                                 |                                                                                |
+| display   | 显示隐藏<hr>默认值:<br><pre>true</pre>            |                                 Boolean                                 |                                                                                |
+| gutter    | 间距尺寸<hr>默认值:<br><pre>5</pre>               |      number \| Array&lt;number&gt; \| string \| Array&lt;string&gt;     |                                                                                |
+| justify   | 水平方向的对齐方式<hr>默认值:<br><pre>start</pre> | start \| end \| center \| space-between \| space-around \| space-evenly | `start` , `end` , `center` , `space-between` , `space-around` , `space-evenly` |
+| align     | 垂直方向对齐方式<hr>默认值:<br><pre>stretch</pre> |                    start \| end \| center \| stretch                    | `start` , `end` , `center` , `stretch`                                         |
+| col-count | 列数                                              |                                  number                                 |                                                                                |
 
 </div>
 
@@ -30,9 +30,3 @@ Grid使用
 
 ### domRefresh()
 - 用法： 刷新组件
-
-## 关联类型
-
-
-
-### Array {#linkarray}

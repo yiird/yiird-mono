@@ -1,10 +1,12 @@
 @import '../theme/scss/reset';
 
 @include b(tree) {
+    width: 100%;
+    height: $height;
     @include e('node') {
         font-size: $fontSize;
-        height: $height;
-        line-height: $height;
+        height: $nodeHeight;
+        line-height: $nodeHeight;
 
         display: flex;
         align-items: center;
@@ -12,56 +14,100 @@
         user-select: none;
         outline: none;
         color: $color;
+        white-space: nowrap;
 
-        @include e('indent') {
+        :deep(.icon) {
+            vertical-align: baseline;
+        }
+
+
+        @include when('drop-in'){
+            background-color: $colorHover;
+        }
+        @include when('drop-after'){
+            border-bottom: 2px solid $colorHover;
+        }
+
+
+
+        @include e('node-indent') {
             display: flex;
             align-items: stretch;
             flex-wrap: nowrap;
             height: 100%;
-            @include e('indent-space') {
+            @include e('node-indent-space') {
                 width: calc($fontSize * 1.5);
                 display: block;
                 position: relative;
                 height: 100%;
-                &::before , &::after{
+                &::before,
+                &::after {
                     position: absolute;
                     content: '';
                     opacity: 0.5;
                 }
                 &::before {
-                    top: -50%;
-                    left: calc(50% - 1px);
-                    border-left: 1px dotted $color;
-                    bottom: calc(50% + 1px);
+                    border-inline-start: 1px dotted $color;
+                    inset-inline-start: calc(50% - 2px);
+                    height: 100%; //calc(50% + 1px);
+                }
+
+                &:first-child {
+                    &::before {
+                        // border-inline-start-color: transparent;
+                    }
                 }
 
                 &:last-child {
+                    &::before {
+                        border-inline-start-color: $color;
+                    }
                     &:after {
                         left: 50%;
                         right: 0;
-                        bottom: calc(50% + 1px);
+                        bottom: calc(50% - 1px);
                         border-bottom: 1px dotted $color;
                     }
                 }
 
                 @include when('hide-line') {
                     &::before {
-                        border-left: 1px solid transparent;
+                        border-inline-start-color: transparent;
                     }
                 }
-
             }
         }
 
-        @include e('content') {
+        @include when('has-only-child') {
+            @include e('node-indent-space') {
+                &:last-child {
+                    &::before {
+                    }
+                }
+            }
+        }
+
+        @include when('last-brother') {
+            @include e('node-indent-space') {
+                &:last-child {
+                    &::before {
+                        height: calc(50% + 1px);
+                    }
+                }
+            }
+        }
+
+        @include e('node-content') {
             display: flex;
             align-items: center;
             column-gap: 0.25rem;
 
-            @include e('icon') {
+          
+
+            @include e('node-icon') {
                 font-size: 1.3em;
             }
-            @include e('text') {
+            @include e('node-text') {
                 cursor: pointer;
                 padding: 0 0.25rem;
                 box-sizing: border-box;
@@ -75,20 +121,13 @@
         }
 
         @include when('first-brother') {
-            @include e('indent-space') {
-                &:last-child {
-                    &::before {
-                        top: 0;
-                    }
-                }
-            }
         }
 
         @include when('selected') {
-            @include e('icon') {
+            @include e('node-icon') {
                 color: $colorFocus;
             }
-            @include e('text') {
+            @include e('node-text') {
                 color: $colorSelected;
             }
         }
@@ -101,7 +140,7 @@
     }
 
     @include m('no-line') {
-        @include e('indent-space') {
+        @include e('no-lineindent-space') {
             &::before {
                 border-color: transparent;
             }

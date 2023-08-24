@@ -1,0 +1,12 @@
+@import '../theme/scss/reset';
+@import '../theme/scss/input';
+
+@include b('select') {
+    width: 100%;
+
+    @include e('search'){
+        box-shadow: none;
+        padding: 5px;
+    }
+
+}

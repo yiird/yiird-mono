@@ -1,7 +1,8 @@
 import { gold } from '@ant-design/colors';
 import { isString } from 'lodash-es';
 import { computed, type EmitsOptions, type ExtractPropTypes } from 'vue';
-import type { InternalSetupContext, ThemeConfig } from '../types/global';
+import type { InternalSetupContext } from '../types/prefab';
+import type { ThemeConfig } from '../types/theme';
 import { BaseProps, useTheme } from './prefab';
 
 export const BaseTextProps = {
@@ -30,7 +31,13 @@ export const BaseTextProps = {
      * 是否是次要文本
      */
     secondary: Boolean,
-    selected: Boolean
+    /**
+     * 是否可选择
+     */
+    selectable: {
+        type: Boolean,
+        default: true
+    }
 };
 export type BaseTextPropsType = Readonly<ExtractPropTypes<typeof BaseTextProps>>;
 
@@ -69,6 +76,10 @@ export const obtainBaseTextTheme = <E extends EmitsOptions, T extends BaseTextTh
         }
         if (props.mark) {
             theme.bemModifiers.push(`${commonExposed.cType__}--mark`);
+        }
+
+        if (props.selectable) {
+            theme.bemModifiers.push(`${commonExposed.cType__}--selectable`);
         }
 
         return onFlush ? onFlush(theme) : theme;

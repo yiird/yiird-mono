@@ -1,5 +1,5 @@
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { componentsResolver, extractCommentsPlugin, sinnpetToCustomblockPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
+import { componentsResolver, directivesResolver, extractCommentsPlugin, sinnpetToCustomblockPlugin } from '@yiird/vite-plugin-vue-yiird-helper';
 import { isArray, kebabCase } from 'lodash';
 import { resolve } from 'path';
 import Components from 'unplugin-vue-components/vite';
@@ -18,9 +18,10 @@ export default ({ mode }: any) => {
         themeConfig: {
             // https://vitepress.dev/reference/default-theme-config
             nav: [
-                { text: 'Home', link: '/' },
+                { text: '首页', link: '/' },
                 { text: '组件', link: '/components/', activeMatch: '/components/' },
-                { text: 'Examples', link: '/examples/', activeMatch: '/examples/' }
+                { text: '样例', link: '/examples/', activeMatch: '/examples/' },
+                { text: '模版', link: '/templates/', activeMatch: '/templates/' }
             ],
             outline: {
                 level: 'deep',
@@ -35,9 +36,12 @@ export default ({ mode }: any) => {
             socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
         },
         vite: {
+            optimizeDeps: {
+                include: ['smooth-scrollbar']
+            },
             clearScreen: false,
             build: {
-                cssMinify: true,
+                cssMinify: true
             },
             esbuild: {
                 treeShaking: true
@@ -80,9 +84,10 @@ export default ({ mode }: any) => {
                           resolvers: [
                               componentsResolver({
                                   prefix: 'y',
-                                  from: ({ partialName }) => {
-                                      return resolve(__dirname, `../../packages/index.ts`);
-                                  }
+                                  from: resolve(__dirname, `../../packages/index.ts`)
+                              }),
+                              directivesResolver({
+                                  from: resolve(__dirname, `../../packages/index.ts`)
                               })
                           ]
                       })
@@ -99,10 +104,11 @@ function generateExampleSiderBar() {
         {
             text: '基础组件',
             items: [
-                { text: '主题', link: `${baseUrl}/theme` },
                 { text: '图标', link: `${baseUrl}/icon` },
-                { text: '按钮', link: `${baseUrl}/btn` },
-                { text: '排版', link: `${baseUrl}/typography` }
+                { text: '按钮', link: `${baseUrl}/button` },
+                { text: '虚拟滚动', link: `${baseUrl}/vscroll` },
+                { text: '排版', link: `${baseUrl}/typography` },
+                { text: '分组', link: `${baseUrl}/group` }
             ]
         },
         {
@@ -111,14 +117,26 @@ function generateExampleSiderBar() {
                 { text: '头像', link: `${baseUrl}/avatar` },
                 { text: '树', link: `${baseUrl}/tree` },
                 { text: '气泡弹框', link: `${baseUrl}/popover` },
-                { text: '列表', link: `${baseUrl}/list` }
+                { text: '列表', link: `${baseUrl}/list` },
+                { text: '下拉选择', link: `${baseUrl}/drop` }
             ]
         },
         {
             text: '数据录入',
             items: [
                 { text: '输入框', link: `${baseUrl}/input` },
+                { text: '复选框', link: `${baseUrl}/checkbox` },
+                { text: '选择', link: `${baseUrl}/select` },
                 { text: '文本域', link: `${baseUrl}/textarea` }
+            ]
+        },
+        {
+            text: '导航',
+            items: [
+                {
+                    text: '菜单',
+                    link: `${baseUrl}/menu`
+                }
             ]
         },
         {
@@ -159,10 +177,11 @@ function generateComponentSiderBar() {
         {
             text: '基础组件',
             items: [
-                { text: '主题', link: `${baseUrl}/theme` },
                 { text: '图标', link: `${baseUrl}/icon` },
-                { text: '按钮', link: `${baseUrl}/btn` },
-                { text: '排版', link: `${baseUrl}/typography` }
+                { text: '按钮', link: `${baseUrl}/button` },
+                { text: '虚拟滚动', link: `${baseUrl}/vscroll` },
+                { text: '排版', link: `${baseUrl}/typography` },
+                { text: '分组', link: `${baseUrl}/group` }
             ]
         },
         {
@@ -171,13 +190,16 @@ function generateComponentSiderBar() {
                 { text: '头像', link: `${baseUrl}/avatar` },
                 { text: '树', link: `${baseUrl}/tree` },
                 { text: '气泡弹框', link: `${baseUrl}/popover` },
-                { text: '列表', link: `${baseUrl}/list` }
+                { text: '列表', link: `${baseUrl}/list` },
+                { text: '下拉选择', link: `${baseUrl}/drop` }
             ]
         },
         {
             text: '数据录入',
             items: [
                 { text: '输入框', link: `${baseUrl}/input` },
+                { text: '复选框', link: `${baseUrl}/checkbox` },
+                { text: '选择', link: `${baseUrl}/select` },
                 { text: '文本域', link: `${baseUrl}/textarea` }
             ]
         },

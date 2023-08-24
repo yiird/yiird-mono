@@ -1,21 +1,16 @@
-import { library, type IconDefinition, type IconName, type IconPack } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { forEach, isString, kebabCase } from 'lodash-es';
 import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToFontSize } from '../../config';
-import type { InternalSetupContext, NumberSize, Size, ThemeConfig } from '../../types/global';
-
-export type IconRotation = 90 | 180 | 270 | '90' | '180' | '270';
-export type IconFlip = 'horizontal' | 'vertical' | 'both';
-export type IconDefinitionOrPack = IconDefinition | IconPack;
-export type IconNameOrDefinition = IconDefinition | IconPack | IconName;
-export type IconSize = `2xs` | `xs` | `sm` | `lg` | `xl` | `2xl` | NumberSize;
+import type { IconAnimation, IconDefinitionOrPack, IconFlip, IconNameOrDefinition, IconRotation } from '../../types/icon';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { Size, ThemeConfig } from '../../types/theme';
 
 export const addIcons = (...icons: IconDefinitionOrPack[]) => {
     library.add(...icons);
 };
 
-export type IconAnimation = 'beat' | 'fade' | 'beat-fade' | 'bounce' | 'flip' | 'shake' | 'spin' | 'spin-pulse' | 'spin-reverse' | 'spin-pulse-reverse';
 /**
  * 动画配置选项
  */
@@ -172,7 +167,7 @@ export const IconProps = {
      */
     fixedWidth: {
         type: Boolean as PropType<boolean>,
-        default: true
+        default: false
     },
     /**
      * 旋转

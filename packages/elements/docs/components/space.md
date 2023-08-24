@@ -21,12 +21,14 @@ Space使用
 
 <div class="props">
 
-| 名称      | 描述                                   |                 类型                | 可选值             |
-| :-------- | :------------------------------------- | :---------------------------------: | :----------------- |
-| id        | 组件id，若不设置会自动生成             |                String               |                    |
-| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |               Boolean               |                    |
-| gap       | <hr>默认值:<br><pre>md</pre>           | [SpaceGap](#linkspacegap) \| number | `sm` , `md` , `lg` |
-| direction | <hr>默认值:<br><pre>h</pre>            |     [Direction](#linkdirection)     | `h` , `v`          |
+| 名称       | 描述                                                  |             类型            | 可选值                                                                                                                  |
+| :--------- | :---------------------------------------------------- | :-------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id         | 组件id，若不设置会自动生成                            |            String           |                                                                                                                         |
+| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>                |           Boolean           |                                                                                                                         |
+| gap        | <hr>默认值:<br><pre>md</pre>                          |      [Size](#linksize)      | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| direction  | 排列方向<hr>默认值:<br><pre>h</pre>                   | [Direction](#linkdirection) | `h` , `v`                                                                                                               |
+| main-axis  | 主轴方向上的排列方式<hr>默认值:<br><pre>start</pre>   | [FlexAlgin](#linkflexalgin) | `start` , `center` , `end` , `space-between` , `space-around`                                                           |
+| cross-axis | 交叉轴方向上的排列方式<hr>默认值:<br><pre>start</pre> | [FlexAlgin](#linkflexalgin) | `start` , `center` , `end` , `space-between` , `space-around`                                                           |
 
 </div>
 
@@ -46,10 +48,29 @@ Space使用
 
 
 
-### SpaceGap {#linkspacegap}
+### Size {#linksize}
 
-- SpaceGap = 	 `sm` \| `md` \| `lg`
+- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) \| number \| (string &amp; { fromT?: any })
 
 ### Direction {#linkdirection}
 
-- Direction = 	 `h` \| `v`
+- 描述： 方向<br/>`v` : 垂直方向<br/>`h` : 水平方向
+- Direction = 	 `h` \| `v` \| (string &amp; { fromT?: any })
+
+### FlexAlgin {#linkflexalgin}
+
+- 描述： flex对齐方式
+- FlexAlgin = 	 [Align](#linkalign) \| `space-between` \| `space-around`
+
+### TshirtSize {#linktshirtsize}
+
+- TshirtSize = 	 `2xs` \| `xs` \| `sm` \| `md` \| `lg` \| `xl` \| `2xl`
+
+### NumberSize {#linknumbersize}
+
+- NumberSize = 	 `1x` \| `2x` \| `3x` \| `4x` \| `5x` \| `6x` \| `7x` \| `8x` \| `9x` \| `10x`
+
+### Align {#linkalign}
+
+- 描述： 对齐方式<br/>`start` : 开始位置<br/>`center` : 中间位置<br/>`end` : 结束位置
+- Align = 	 `start` \| `center` \| `end`

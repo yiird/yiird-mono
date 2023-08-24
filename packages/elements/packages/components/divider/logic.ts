@@ -1,6 +1,8 @@
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
-import type { Direction, InternalSetupContext, ThemeConfig } from '../../types/global';
+import type { Direction } from '../../types/global';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { ThemeConfig } from '../../types/theme';
 
 export type DividerMode = 'dashed' | 'double' | 'single';
 export const DividerProps = {
@@ -29,7 +31,7 @@ export const DividerEmits = {};
 
 const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPropsType, E>) => {
     const themeConfig = useTheme();
-    const { props, commonExposed, slots } = ctx;
+    const { props, commonExposed } = ctx;
     return computed<DividerTheme>(() => {
         const _themeConfig = themeConfig.value;
 
@@ -39,11 +41,11 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<DividerPr
         };
 
         theme.bemModifiers = [`${commonExposed.cType__}--${props.direction}`];
-
+        /* 
         if (slots.default) {
             theme.bemModifiers = [`is-has-title`];
         }
-
+ */
         return theme;
     });
 };

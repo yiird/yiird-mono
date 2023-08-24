@@ -3,13 +3,20 @@
 @include b('popover') {
     position: absolute;
     background-color: $bgColor;
-    padding: 5px;
-    border-radius: $radius;
+    padding: $padding;
     border: 1px solid $bgColor;
-    max-width: $maxWidth;
     visibility: hidden;
     box-shadow: $shadow;
+    border-radius: $radius;
 
+    z-index: 2;
+
+    max-width: $maxWidth;
+    min-width: $minWidth;
+    max-height: $maxHeight;
+    min-height: $minHeight;
+
+ 
     @include e('text'){
         color: $color;
     }
@@ -22,48 +29,13 @@
         height: $arrowSize;
         transform: rotate(45deg);
         border: 1px solid $bgColor;
+        z-index: -1;
     }
 
-    @include m('border') {
-        background-color: #ffffff;
-        @include e('text'){
-            color: $bgColor;
-        }
-        @include e('arrow') {
-            background: #ffffff;
-        }
+    @include e('content'){
+        overflow: hidden;
+        border-radius: $radius;
     }
-
-    @include m('empty') {
-        background-color: transparent;
-        border-color: transparent;
-        @include e('arrow') {
-            border-color: transparent;
-            background: #ffffff;
-        }
-    }
-
-   /*  @include m('arrow-border') {
-        background-color: transparent;
-        border-color: transparent;
-        @include e('arrow') {
-            background-color: transparent;
-        }
-    }
-
-    @include m('arrow-fill') {
-        background-color: transparent;
-        border-color: transparent;
-        @include e('arrow') {
-            background-color: transparent;
-            position: absolute;
-            width: 0px;
-            height: 0px;
-            border: calc($arrowSize / 2) solid;
-            border-color: $bgColor;
-        }
-    } */
-
 
     @include m('arrow-top') {
         @include e('arrow') {

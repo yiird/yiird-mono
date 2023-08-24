@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs';
+import { writeFile } from 'fs';
 import EventEmitter from 'node:events';
 import { basename, extname, isAbsolute, join, resolve } from 'path';
 import { Scanner } from './Scanner';
@@ -58,10 +58,15 @@ export class Extractor extends EventEmitter {
             } else {
                 let outfilename = join(this._options.output.dir, basename(sfc.filename, extname(sfc.filename)) + '.md');
                 outfilename = this._options.output.filename({ outfilename, outDir: this._options.output.dir, info: rs });
-                writeFileSync(outfilename, value + '', {
-                    encoding: 'utf-8',
-                    flag: 'w+'
-                });
+                writeFile(
+                    outfilename,
+                    value + '',
+                    {
+                        encoding: 'utf-8',
+                        flag: 'w+'
+                    },
+                    () => {}
+                );
             }
         });
 
@@ -69,7 +74,15 @@ export class Extractor extends EventEmitter {
         if (allValue.length > 0 && this._options.output.filename) {
             let outfilename = join(this._options.output.dir, 'README.md');
             outfilename = this._options.output.filename({ outfilename, outDir: this._options.output.dir, info: results });
-            writeFileSync(outfilename, allValue.join('\n\n'));
+            writeFile(
+                outfilename,
+                allValue.join('\n\n'),
+                {
+                    encoding: 'utf-8',
+                    flag: 'w+'
+                },
+                () => {}
+            );
         }
         return this;
     }

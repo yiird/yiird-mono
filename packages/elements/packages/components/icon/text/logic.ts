@@ -1,8 +1,9 @@
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../../common/prefab';
 import { sizeToFontSize } from '../../../config';
-import type { InternalSetupContext, Size, ThemeConfig } from '../../../types/global';
-import type { IconNameOrDefinition } from '../logic';
+import type { IconNameOrDefinition } from '../../../types/icon';
+import type { InternalSetupContext } from '../../../types/prefab';
+import type { Size, ThemeConfig } from '../../../types/theme';
 export const IconTextProps = {
     ...BaseProps,
     icon: {
@@ -54,9 +55,17 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<IconTextP
 export const setupIconText = (props: IconTextPropsType, ctx: SetupContext<typeof IconTextEmits>) => {
     const commonExposed = usePrefab(props);
     const theme = obtainTheme<typeof IconTextEmits>({ props, commonExposed, ...ctx });
+
+    const { emit } = ctx;
+
+    const doClick = (ev: Event) => {
+        emit('click');
+    };
+
     return {
         ...commonExposed,
-        theme
+        theme,
+        doClick
     };
 };
 

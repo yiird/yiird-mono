@@ -1,35 +1,22 @@
-import { faFolder, faFolderOpen, faSquareCheck, faSquareMinus } from '@fortawesome/pro-duotone-svg-icons';
-
+import { faFolder, faLeaf, faSquareCheck, faSquareMinus } from '@fortawesome/pro-duotone-svg-icons';
 import { faAngleDown, faAngleRight, faSquare } from '@fortawesome/pro-light-svg-icons';
-import { faFile } from '@fortawesome/pro-thin-svg-icons';
-import { difference, intersection } from 'lodash-es';
-import { computed, inject, onBeforeMount, reactive, ref, toRaw, unref, watch, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
-import { styleValueToNumber } from '../../common/dom-utils';
+import { isObject } from 'lodash-es';
+import { computed, nextTick, onBeforeMount, onBeforeUpdate, unref, type CSSProperties, type ExtractPropTypes, type PropType, type Ref, type SetupContext } from 'vue';
+import { findElementFromEventByClass, styleValueToNumber } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import {
-    _rawNodeData,
-    flatDataToNodeMap,
-    mapNodesToTreeNodes,
-    operatorCheck,
-    operatorExpand,
-    treeNodesToFlatNodesData,
-    type CheckStat,
-    type ExpandStat,
-    type KeyConfig,
-    type RawNode,
-    type TreeNode
-} from '../../common/tree-utils';
-import { SCROLL_KEY, sizeToComponentHeight, sizeToFontSize } from '../../config';
-import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
-import type { PageBoundary } from '../../types/scroll';
-import type { IconNameOrDefinition } from '../icon/logic';
-
+import { FlatTreeSource } from '../../common/source';
+import { sizeToComponentHeight, sizeToFontSize } from '../../config';
+import type { TreeEventArgs } from '../../types/event';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { Size, ThemeConfig } from '../../types/theme';
+import type { InternalTreeNode, TreeKeyConfig, TreeNodeIcons, TreeNodeKey, TreeNodeSelectIcons, TreeNodeSwitchIcons } from '../../types/tree';
+import { isNumberStr } from './../../common/common-util';
 export const TreeProps = {
     ...BaseProps,
     /**
      * 数据，此数据为标准树形结构数据或者能构成标准树形结构的扁平数据
      */
-    items: {
+    source: {
         type: Array as PropType<object[]>,
         default() {
             return [];
@@ -40,17 +27,17 @@ export const TreeProps = {
      *
      * 告知组件主键、父主键、显示文本、子节点分别对应数据中的字段
      *
-     * @default {key: 'id',pkey: 'pid',ckey: 'children',ikey:'icon',tkey: 'name'}
+     * @default {key: 'key',pkey: 'parentKey',ckey: 'children',ikey:'icon',tkey: 'text'}
      */
     keyConfig: {
-        type: Object as PropType<KeyConfig>,
+        type: Object as PropType<TreeKeyConfig>,
         default() {
             return {
-                key: 'id',
-                pkey: 'pid',
+                key: 'key',
+                pkey: 'parentKey',
                 ckey: 'children',
                 ikey: 'icon',
-                tkey: 'name'
+                tkey: 'text'
             };
         }
     },
@@ -61,6 +48,9 @@ export const TreeProps = {
         type: [String, Object] as PropType<Size>,
         default: 'md'
     },
+    itemStyle: {
+        type: [String, Object] as PropType<string | CSSProperties>
+    },
     /**
      * 是否级联选中父级、子集
      */
@@ -68,67 +58,69 @@ export const TreeProps = {
         type: Boolean as PropType<boolean>,
         default: true
     },
-    dragable: {
+    /**
+     * 是否可以被拖拽
+     */
+    draggable: {
         type: Boolean as PropType<boolean>,
         default: false
     },
     /**
      * 是否显示图标
      */
-    showIcon: {
+    hideIcon: {
         type: Boolean,
-        default: true
+        default: false
+    },
+    hideSelectIcon: {
+        type: Boolean,
+        default: false
+    },
+    hideSwitchIcon: {
+        type: Boolean,
+        default: false
     },
     /**
      * 是否显示辅助线
      */
-    showLine: {
+    hideLine: {
         type: Boolean,
-        default: true
+        default: false
     },
-    /**
-     * 主要图标
-     */
-    icon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: faFolder
-    },
-    /**
-     * 主要图标
-     */
-    iconActived: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: faFolderOpen
-    },
-    /**
-     * 叶子结点图标
-     */
-    leafIcon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: faFile
-    },
-    switchIcons: {
-        type: Array as PropType<Array<IconNameOrDefinition>>,
-        validator(_value: Array<IconNameOrDefinition>) {
-            return _value.length >= 2;
-        },
+    icons: {
+        type: [Object, Function, String] as PropType<TreeNodeIcons>,
         default() {
-            return [faSquareCheck, faSquare, faSquareMinus];
+            return {
+                folder: faFolder,
+                leaf: faLeaf
+            };
         }
     },
-    /**
-     * 是否一直保持关注状态
-     */
-    alwaysFocus: {
-        type: Boolean,
-        default: true
+    selectIcons: {
+        type: Object as PropType<TreeNodeSelectIcons>,
+        default() {
+            return {
+                checked: faSquareCheck,
+                halfChecked: faSquareMinus,
+                notChecked: faSquare
+            };
+        }
     },
-    multiSelect: {
+    switchIcons: {
+        type: Object as PropType<TreeNodeSwitchIcons>,
+        default() {
+            return {
+                open: faAngleDown,
+                close: faAngleRight
+            };
+        }
+    },
+    multi: {
         type: Boolean,
-        default: true
+        default: false
     },
     /**
-     * 展开并设置为焦点节点
+     * 默认选中
      */
     defaultSelectedKeys: {
         type: Array as PropType<Array<string | number>>,
@@ -137,9 +129,9 @@ export const TreeProps = {
         }
     },
     /**
-     * 展开配置
+     * 默认展开
      */
-    expandKeys: {
+    defaultExpandKeys: {
         type: Array as PropType<Array<string | number>>,
         default() {
             return [];
@@ -148,73 +140,82 @@ export const TreeProps = {
     /**
      * 展开配置,默认展开到第几级
      */
-    expandLevel: {
+    defaultExpandLevel: {
         type: Number as PropType<number>
     },
     /**
-     * 触发虚拟渲染的数量，当总节点数超过此值时并且数量大于预渲染的数量时，进行虚拟渲染。
-     * 预渲染的数量=每屏数量*`pre-render-screen-size`,其中`每屏数量`是自动计算的，无法设置。可以通过tree实例上的getBoundary()获取。
+     * 触发虚拟渲染的数量，当需要渲染的总节点数超过此值时，进行虚拟化渲染。
      */
     triggerCount: {
         type: Number as PropType<number>,
         default: 500
     },
     /**
-     * 预渲染屏数量，必须为基数
+     * 每屏显示数量
      */
-    preRenderScreenSize: {
+    screenSize: {
         type: Number as PropType<number>,
-        default: 5
+        default: 30
     }
 } as const;
 export type TreePropsType = Readonly<ExtractPropTypes<typeof TreeProps>>;
 
-export type DataStructure = {
-    mapStructure: Record<string | number, TreeNode>;
-    treeStructure: TreeNode[];
-    flatStructure: TreeNode[];
-};
-
 export interface TreeTheme extends ThemeConfig {
     bemModifiers?: string[];
     height?: string;
+    nodeHeight?: string;
     fontSize?: string;
 }
 
-/**
- * 实践参数类型
- */
-export interface TreeEventData {
-    node: RawNode;
-    ev: Event;
-}
-
-const _eventData = (node: TreeNode, ev: Event): TreeEventData => {
-    return {
-        node: _rawNodeData(node),
-        ev
-    };
-};
-
 export const TreeEmits = {
-    select: null
+    /**
+     * 选中事件
+     * @param {TreeEventArgs} args
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    select(args: TreeEventArgs) {
+        return true;
+    },
+    /**
+     * 多选事件
+     * @param {TreeEventArgs} args
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    multiSelect(args: TreeEventArgs) {
+        return true;
+    },
+    /**
+     * 渲染完成事件
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    rendered(args: TreeEventArgs) {
+        return true;
+    },
+    /**
+     * 渲染之前
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    beforeRender() {
+        return true;
+    }
 };
 
-const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>) => {
+const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>, dataCount: Ref<number>) => {
     const themeConfig = useTheme();
 
     const { props } = ctx;
-    const obtainShowLine = computed(() => props.showLine);
+    const obtainShowLine = computed(() => !props.hideLine);
 
     return computed<TreeTheme>(() => {
         const _themeConfig = themeConfig.value;
 
-        const height = sizeToComponentHeight(themeConfig.value, props.size);
+        const nodeHeight = sizeToComponentHeight(themeConfig.value, props.size);
         const fontSize = sizeToFontSize(themeConfig.value, props.size);
 
         const theme: TreeTheme = {
             ..._themeConfig,
-            height: `${height}px`,
+            height: props.screenSize ? (dataCount.value <= props.screenSize ? 'unset' : `${nodeHeight * props.screenSize}px`) : '100%',
+            nodeHeight: `${nodeHeight}px`,
             fontSize: `${fontSize}px`
         };
 
@@ -230,299 +231,300 @@ const obtainTheme = (ctx: InternalSetupContext<TreePropsType, typeof TreeEmits>)
 
 export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmits>) => {
     const commonExposed = usePrefab(props);
+    const { cType__, el } = commonExposed;
+    const { emit, slots } = ctx;
 
-    const theme = obtainTheme({ props, commonExposed, ...ctx });
+    const obtainShowSelectIcon = computed(() => !props.hideSelectIcon);
+    const obtainShowSwitchIcon = computed(() => !props.hideSwitchIcon);
+    const obtainShowIcon = computed(() => !props.hideIcon);
 
-    const { emit } = ctx;
-
-    const checkState = ref<CheckStat>();
-    const expandStat = ref<ExpandStat>();
-    const focusIndex = ref();
+    const obtainHasStructure = computed(() => !!slots['structure']);
 
     let shiftSelectFirstKey: string | number | undefined;
 
-    const keyConfig = props.keyConfig;
+    const { icons, selectIcons, switchIcons, keyConfig } = props;
 
-    const scroll = inject(SCROLL_KEY, null);
-
-    const mapStructure = reactive(flatDataToNodeMap(props.items, keyConfig));
-    const obtainTreeStructure = computed(() => {
-        return mapNodesToTreeNodes(mapStructure, Object.keys(mapStructure), keyConfig);
+    const source = new FlatTreeSource(props.source, keyConfig, {
+        icons,
+        selectIcons: {
+            checked: selectIcons.checked || selectIcons.notChecked,
+            notChecked: selectIcons.notChecked,
+            halfChecked: selectIcons.halfChecked || selectIcons.checked || selectIcons.notChecked
+        },
+        switchIcons: {
+            open: switchIcons.open,
+            close: switchIcons.close || switchIcons.open
+        },
+        defaultExpandFlag: true,
+        defaultExpandKeys: props.defaultExpandKeys,
+        defaultExpandLevel: (props.defaultExpandLevel || 0) - 1,
+        defaultCheckedKeys: props.defaultSelectedKeys,
+        cascade: props.cascade,
+        multi: props.multi
     });
 
-    const obtainflatStructure = computed(() => {
-        return treeNodesToFlatNodesData(obtainTreeStructure.value, keyConfig);
+    const operatorState = source.operatorState;
+    const obtainData = source.getFlatData();
+
+    const obtainRowHeight = computed(() => (theme.value.nodeHeight ? styleValueToNumber(theme.value.nodeHeight) : 0));
+
+    const obtainDataCount = computed(() => {
+        return obtainData.value.length;
     });
-
-    const obtainData = computed(() => {
-        const flatData = obtainflatStructure.value;
-        const _expandStat = expandStat.value;
-
-        const _checkState = checkState.value;
-
-        flatData.forEach((node) => {
-            node.isChecked = _checkState?.checkedKeys.includes(node[keyConfig.key]) ?? false;
-            node.isHalfCheck = (node.isChecked && _checkState?.halfCheckKeys.includes(node[keyConfig.key])) ?? false;
-            const isOpen = _expandStat?.opened.includes(node[keyConfig.key]);
-
-            if (node.isChecked) {
-                if (node.isHalfCheck) {
-                    node.switchIcon = props.switchIcons[props.switchIcons.length - 1];
-                } else {
-                    node.switchIcon = props.switchIcons[0];
-                }
-            } else {
-                node.switchIcon = props.switchIcons[1];
-            }
-
-            node.icon = props.showIcon
-                ? node.isFolder
-                    ? isOpen
-                        ? props.iconActived
-                        : props.icon
-                    : props.leafIcon
-                : node.isFolder
-                ? isOpen
-                    ? faAngleDown
-                    : faAngleRight
-                : undefined;
-            node.isOpen = isOpen;
-
-            const parent = node.parent;
-            if (parent) {
-                node.isShow = parent.isShow ? parent.isOpen ?? true : false;
-            }
-        });
-        return flatData.filter((node) => node.isShow);
-    });
-
-    const totalCount = computed(() => obtainData.value.length);
-    const unitHeight = computed(() => (theme.value.height ? styleValueToNumber(theme.value.height) : 0));
-
-    const boundary = ref<PageBoundary>({
-        start: 0,
-        end: 0,
-        pageSize: 0
-    });
-
-    if (scroll) {
-        scroll.setOptions({
-            plugins: {
-                virtualPage: {
-                    itemClass: 'tree__node',
-                    boundary,
-                    totalCount: totalCount,
-                    unitHeight: unitHeight,
-                    focusIndex: focusIndex,
-                    triggerCount: props.triggerCount,
-                    preRenderScreenSize: props.preRenderScreenSize
-                },
-                overscroll: false
-            }
-        });
-
-        watch(boundary, (_boundary, prev_boundary) => {
-            if (prev_boundary && _boundary.start >= 0 && _boundary.end > 0) {
-                const newInViewKeys = obtainData.value.slice(_boundary.start, _boundary.end).map((node) => node[keyConfig.key]);
-                // console.log(obtainData.value.findIndex((n) => n[keyConfig.key] === newInViewKeys[0]));
-                const oldInViewKeys = Object.values(mapStructure)
-                    .filter((node) => node.inView)
-                    .map((node) => node[keyConfig.key]);
-                const common = intersection(newInViewKeys, oldInViewKeys);
-                difference(newInViewKeys, common).forEach((key) => {
-                    mapStructure[key].inView = true;
-                });
-                difference(oldInViewKeys, common).forEach((key) => {
-                    mapStructure[key].inView = false;
-                });
-            }
-        });
-    }
+    const theme = obtainTheme({ props, commonExposed, ...ctx }, obtainDataCount);
 
     /**
-     * @private
+     * 展开/收起
+     * @param {InternalTreeNode|TreeNodeKey} node 目标节点对象或者Key
      */
-    const _toggleOpen = (node: TreeNode) => {
-        if (!node.isFolder) return;
-        expandStat.value = operatorExpand({
-            keyConfig,
-            flag: !node.isOpen,
-            target: node,
-            orignalState: expandStat.value
-        });
+    const toggleExpand = (node: InternalTreeNode | TreeNodeKey) => {
+        if (!isObject(node)) {
+            const target = source.getMapData().get(node);
+            if (target) {
+                source.expand(target, !target.isOpen);
+            }
+        } else {
+            source.expand(node, !node.isOpen);
+        }
+    };
+
+    /**
+     * 过滤显示节点
+     *
+     * @param query 模糊匹配内容
+     */
+    const filter = (query: string) => {
+        source.filter(query);
     };
 
     /**
      * @private
-     * @param node
      */
-    const doFocusNode_ = (target: TreeNode) => {
-        const prevKey = focusIndex.value;
-        const index = obtainData.value.findIndex((node) => target[keyConfig.key] === node[keyConfig.key]);
-        if (prevKey !== index) focusIndex.value = index;
+    const _eventArgs = (target?: InternalTreeNode | InternalTreeNode[]): TreeEventArgs => {
+        const checkedKeys = Array.from(operatorState.checkState?.checkedKeys || []);
+        const map = source.getMapData();
+        const checked = checkedKeys.filter((key) => map.has(key)).map((key) => map.get(key)!);
+        return {
+            el: unref(el),
+            target,
+            checked,
+            checkedKeys,
+            shouldRenderCount: obtainDataCount.value
+        };
     };
 
     /**
      * 给定开始标识和结束标识(选中/取消)选中节点
-     * @param startKey 开始标识
-     * @param endKey 结束标识
-     * @param flag true 选中，false 取消选中
-     * @param cascade [可选] 级联选中父级、子集
+     * @param {TreeNodeKey} startKey 开始标识
+     * @param {TreeNodeKey} endKey 结束标识
+     * @param {Boolean} flag true 选中，false 取消选中
      */
-    const selectRange = (startKey: string | number, endKey: string | number, flag: boolean, cascade: boolean = true) => {
-        const flatData = obtainflatStructure.value;
-        const startIndex = mapStructure[startKey].index;
-        const endIndex = mapStructure[endKey].index;
+    const selectRange = (startKey: TreeNodeKey, endKey: TreeNodeKey, flag: boolean) => {
+        const flatData = obtainData.value;
+        const startIndex = flatData.findIndex((node) => startKey === node.key);
+        const endIndex = flatData.findIndex((node) => endKey === node.key);
         let nodes;
-        if (startIndex <= endIndex) {
-            nodes = flatData.slice(startIndex, endIndex + 1);
-        } else {
-            nodes = flatData.slice(endIndex, startIndex + 1);
+        if (startIndex !== undefined && startIndex >= 0) {
+            if (endIndex && startIndex <= endIndex) {
+                nodes = flatData.slice(startIndex, endIndex + 1);
+            } else {
+                nodes = flatData.slice(endIndex, startIndex + 1);
+            }
         }
-        if (nodes.length > 1) {
-            selectMulti(
-                nodes.filter((node) => !node.isFolder),
-                flag,
-                cascade
-            );
-        }
-    };
 
-    const selectMulti = (nodes: Array<TreeNode>, flag: boolean, cascade: boolean) => {
-        const _checkState = checkState.value;
-        const state = operatorCheck({
-            target: nodes,
-            flag,
-            cascade,
-            keyConfig,
-            orignalState: _checkState
-        });
-        checkState.value = state;
+        if (nodes && nodes.length > 1) {
+            select(nodes, flag);
+            /**
+             * 选中事件
+             *
+             * @param {TreeEventArgs} arg0 参数
+             */
+            emit('multiSelect', _eventArgs(nodes));
+        }
     };
 
     /**
      * 给定节点标识，(选中/取消)选中节点
      *
-     * @param key 节点标识
-     * @param flag true 选中，false 取消选中
-     * @param cascade [可选] 级联选中父级、子集
+     * @param {InternalTreeNode | InternalTreeNode[]} node 节点标识
+     * @param {boolean} flag true 选中，false 取消选中
      */
-    const select = (key: string | number, flag: boolean, cascade: boolean = true) => {
-        const _checkState = checkState.value;
-        const state = operatorCheck({
-            target: toRaw(mapStructure)[key],
-            flag,
-            cascade,
-            keyConfig,
-            orignalState: _checkState
-        });
-        checkState.value = state;
+    const select = (node: InternalTreeNode | InternalTreeNode[], flag: boolean) => {
+        source.select(node, flag);
     };
 
     /**
      * @private
      */
-    const doToggleSelected_ = (node: TreeNode, ev: Event) => {
-        if (ev instanceof MouseEvent) {
+    const doClickNode_ = (ev: Event, node: InternalTreeNode) => {
+        if (ev instanceof MouseEvent || ev instanceof TouchEvent) {
             //按住shift多选
             if (ev.shiftKey) {
-                if (shiftSelectFirstKey) {
-                    const flagNode = mapStructure[shiftSelectFirstKey];
-                    const flag = flagNode.isChecked;
-                    selectRange(shiftSelectFirstKey, node[keyConfig.key], flag, props.cascade);
+                if (shiftSelectFirstKey && shiftSelectFirstKey !== node.key) {
+                    const mapStructure = source.getMapData();
+                    const flagNode = mapStructure.get(shiftSelectFirstKey);
+                    if (flagNode) {
+                        const flag = flagNode.isChecked;
+                        selectRange(shiftSelectFirstKey, node.key, flag);
+                    }
+                } else {
+                    select(node, !node.isChecked);
                 }
-                shiftSelectFirstKey = node[keyConfig.key];
-                return;
+                shiftSelectFirstKey = node.key;
+            } else {
+                shiftSelectFirstKey = undefined;
+                select(node, !node.isChecked);
+
+                /**
+                 * 选中事件
+                 *
+                 * @param {TreeEventArgs} arg0 参数
+                 */
+                emit('select', _eventArgs(node));
             }
         }
-        shiftSelectFirstKey = node[keyConfig.key];
+    };
 
-        select(node[keyConfig.key], !node.isChecked, props.cascade);
+    /**
+     * 将节点挂载到目标节点子节点中
+     * @param moveKey 被移动的节点
+     * @param targetKey 目标节点
+     */
+    const move = (moveKey: TreeNodeKey, targetKey: TreeNodeKey) => {
+        source.move(moveKey, targetKey);
+    };
 
-        /**
-         * 选中事件
-         *
-         * @param {TreeEventData} arg0 参数
-         */
-        emit('select', _eventData(node, ev));
+    /**
+     * 将节点挂载到目标节点的下方
+     * @param moveKey 被移动的节点
+     * @param targetKey 目标节点
+     */
+    const moveAfter = (moveKey: TreeNodeKey, targetKey: TreeNodeKey) => {
+        source.moveAfter(moveKey, targetKey);
+    };
 
-        if (props.alwaysFocus) {
-            doFocusNode_(node);
-        }
+    /**
+     * 目前支持节点移动撤销
+     */
+    const revoke = () => {
+        source.revoke();
+    };
+
+    const getNodeByKey = (key: TreeNodeKey) => {
+        const map = source.getMapData();
+        return map.get(key);
+    };
+
+    /**
+     * 撤销,目前只支持拖拽撤销
+     */
+
+    /**
+     * @private
+     */
+    const doClickExpandIcon_ = (ev: Event, node: InternalTreeNode) => {
+        toggleExpand(node);
     };
 
     /**
      * @private
      */
-    const doClickExpandIcon_ = (node: TreeNode, ev: Event) => {
-        _toggleOpen(node);
-
-        if (props.alwaysFocus) {
-            doFocusNode_(node);
-        }
-    };
-
-    onBeforeMount(() => {
-        const initExpands = [];
-        const expandLevel = props.expandLevel;
-        const expandKeys = props.expandKeys;
-        const defaultSelectedKeys = props.defaultSelectedKeys;
-        const flatData = obtainflatStructure.value;
-        if (expandKeys && expandKeys.length > 0) {
-            initExpands.push(...expandKeys.map((key) => mapStructure[key]));
-        }
-
-        if (defaultSelectedKeys && defaultSelectedKeys.length > 0) {
-            const expands = defaultSelectedKeys.map((key) => mapStructure[key].parent).filter((node) => !!node);
-            initExpands.push(...(expands as TreeNode[]));
-        }
-
-        if (expandLevel) {
-            initExpands.push(...flatData.filter((node) => node.level <= props.expandLevel! - 1));
-        }
-
-        if (0 === initExpands.length) {
-            initExpands.push(...flatData.filter((node) => node.isFolder));
-        }
-
-        expandStat.value = operatorExpand({
-            target: initExpands,
-            keyConfig,
-            flag: true
+    const doOnScrollRendered_ = () => {
+        nextTick(() => {
+            emit('rendered', _eventArgs());
         });
-
-        selectMulti(
-            defaultSelectedKeys.map((key) => mapStructure[key]),
-            true,
-            props.cascade
-        );
-
-        if (props.alwaysFocus && defaultSelectedKeys && defaultSelectedKeys.length > 0) {
-            const focusKey = defaultSelectedKeys[defaultSelectedKeys.length - 1];
-            const index = obtainData.value.findIndex((node) => focusKey === node[keyConfig.key]);
-            focusIndex.value = index;
-        }
-    });
+    };
 
     /**
-     * 获取边界
-     *
+     * @private
      */
-    const getBoundary = () => {
-        return unref(boundary);
+    const _findElementFromEvent = (ev: DragEvent) => {
+        return findElementFromEventByClass(ev, `${cType__}__node`);
     };
 
+    /**
+     * @private
+     */
+    const doDragStart_ = (ev: DragEvent, node: InternalTreeNode) => {
+        ev.dataTransfer?.setData('text/plain', node.key + '');
+    };
+
+    /**
+     * @private
+     */
+    const doDrop_ = (ev: DragEvent, node: InternalTreeNode) => {
+        const dataTransfer = ev.dataTransfer;
+        let key: TreeNodeKey | undefined = dataTransfer?.getData('text/plain');
+        const nodeContentClassList = _findElementFromEvent(ev)?.classList;
+        if (key) {
+            if (isNumberStr(key)) {
+                key = Number(key);
+            }
+
+            if (nodeContentClassList?.contains('is-drop-in')) {
+                move(key, node.key);
+            } else if (nodeContentClassList?.contains('is-drop-after')) {
+                moveAfter(key, node.key);
+            }
+        }
+        nodeContentClassList?.remove('is-drop-in', 'is-drop-after');
+    };
+
+    /**
+     * @private
+     */
+    const doDragOver_ = (ev: DragEvent) => {
+        const classList = _findElementFromEvent(ev)?.classList;
+        if (ev.offsetY * 2 <= obtainRowHeight.value) {
+            classList?.add('is-drop-in');
+            classList?.remove('is-drop-after');
+        } else {
+            classList?.add('is-drop-after');
+            classList?.remove('is-drop-in');
+        }
+        ev.preventDefault();
+    };
+
+    /**
+     * @private
+     */
+    const doDragLeave_ = (ev: DragEvent) => {
+        _findElementFromEvent(ev)?.classList.remove('is-drop-in', 'is-drop-after');
+    };
+
+    onBeforeUpdate(() => {
+        emit('beforeRender');
+    });
+
+    onBeforeMount(() => {
+        emit('beforeRender');
+    });
     return {
         ...commonExposed,
         theme,
+        obtainHasStructure,
         obtainData,
-        doToggleSelected_,
+        obtainRowHeight,
+        obtainShowSelectIcon,
+        obtainShowSwitchIcon,
+        obtainShowIcon,
+        doClickNode_,
         doClickExpandIcon_,
+        doOnScrollRendered_,
+        doDragStart_,
+        doDragOver_,
+        doDragLeave_,
+        doDrop_,
+        toggleExpand,
+        filter,
         selectRange,
         select,
-        getBoundary
+        move,
+        moveAfter,
+        revoke,
+        getNodeByKey
     };
 };
 
-export const TreeExpose = [...baseExpose, ...([] as const)];
+export const TreeExpose = [...baseExpose, ...(['filter', 'selectRange', 'select', 'toggleExpand', 'move', 'moveAfter', 'revoke', 'getNodeByKey'] as const)];
 export type TreeExposeType = (typeof TreeExpose)[number];

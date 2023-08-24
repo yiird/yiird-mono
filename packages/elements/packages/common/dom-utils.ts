@@ -1,12 +1,14 @@
-import type { ClientRectObject } from '@floating-ui/vue';
-import { isElement as _isElement, isNumber } from 'lodash-es';
-import type { ThemeConfig } from 'packages/types/global';
-import type { App } from 'vue';
+import type { ClientRectObject, VirtualElement } from '@floating-ui/vue';
+import { isElement as _isElement, isNumber, isString } from 'lodash-es';
+import type { YComponentInstance } from 'packages/types';
+import type { PopoverReference } from 'packages/types/popover';
+import type { ComponentPublicInstance } from 'vue';
+import type { ThemeConfig } from '../types/theme';
 
 export const getElementById = (id: string) => document.getElementById(id);
 
-export const styleValueToNumber = (value: string) => {
-    return parseFloat(value);
+export const styleValueToNumber = (value: string | number) => {
+    return isNumber(value) ? value : parseFloat(value);
 };
 
 export const getTargetHeight = (target: Element) => {
@@ -21,6 +23,38 @@ export const getTargetHeightById = (targetId: string) => {
 
 export const isElement = (it: any): it is Element => {
     return _isElement(it);
+};
+
+export const findElementFromEventByClass = <E extends Element | undefined>(ev: Event, clazz: string) => {
+    return <E>ev.composedPath().find((it) => (it as Element).classList.contains(clazz));
+};
+
+export const isVirtualElement = (ve: any): ve is VirtualElement => {
+    return !!ve.getBoundingClientRect;
+};
+
+export const isComponentInstance = (it: any): it is ComponentPublicInstance => {
+    return it.$ && it.$props && it.$data && it.$root;
+};
+
+export const isYComponentInstance = (it: any): it is YComponentInstance => {
+    return it.cType__;
+};
+
+export const extractEl = (reference?: PopoverReference) => {
+    let el: Element | null | undefined;
+
+    if (isString(reference)) {
+        el = document.querySelector(reference);
+    } else if (isElement(reference)) {
+        el = reference as Element;
+    } else if (isComponentInstance(reference)) {
+        el = reference.$el;
+    } else {
+        el = reference?.el.value;
+    }
+
+    return el;
 };
 
 export const toStyleValue = (value: any, defaultValue: any = 'unset', unit: string = 'px') => {
@@ -63,7 +97,7 @@ export const checkPointInOneRect = (point: { x: number; y: number }, ...rects: (
     return !!rects.find((rect) => checkPointInRect(point, rect));
 };
 
-export const updateRootStyle = (key: string, content: string, before = false) => {
+export const updateRootStyle = (key: string, content: string) => {
     const style = document.querySelector(`[${key}]`);
     if (style) {
         style.textContent = content;
@@ -73,14 +107,6 @@ export const updateRootStyle = (key: string, content: string, before = false) =>
         insertStyle.setAttribute(key, '');
         insertStyle.textContent = content;
         document.head.append(insertStyle);
-    }
-};
-
-export const checkReady = (app: App, callback: () => void) => {
-    if (!app || !app._instance || !app._instance.isMounted) {
-        requestAnimationFrame(() => checkReady(app, callback));
-    } else {
-        callback();
     }
 };
 

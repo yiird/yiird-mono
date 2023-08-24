@@ -26,7 +26,7 @@
         @include e('header-right') {
             padding: 0 calc($headerHeight * 0.35);
             display: flex;
-            :deep(.btn) {
+            :deep(.button) {
                 padding: 0;
                 font-weight: $titleFontWeight;
             }
@@ -35,10 +35,13 @@
 
     @include e('container') {
         height: calc(100% - $headerHeight - $footerHeight);
-        padding: 0 calc($headerHeight * 0.25);
         :deep(.scrollbar-track){
             background-color: $borderColor;
         }
+    }
+
+    @include e('footer') {
+        height: $footerHeight;
     }
 
     @include m('no-header') {
@@ -66,7 +69,12 @@
         }
     }
 
-    @include e('footer') {
-        height: $footerHeight;
+
+
+    @include m('no-padding') {
+        @include e('container') {
+            padding: 0;
+        }
     }
+    
 }

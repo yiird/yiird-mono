@@ -1,10 +1,10 @@
 <template>
     <y-space>
-        <y-btn>Default</y-btn>
-        <y-btn color="primary">Primary</y-btn>
-        <y-btn color="success">Success</y-btn>
-        <y-btn color="warn">Warning</y-btn>
-        <y-btn color="error">Danger</y-btn>
+        <y-button>Default</y-button>
+        <y-button color="primary">Primary</y-button>
+        <y-button color="success">Success</y-button>
+        <y-button color="warn">Warning</y-button>
+        <y-button color="error">Danger</y-button>
     </y-space>
 </template>
 

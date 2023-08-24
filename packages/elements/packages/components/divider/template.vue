@@ -5,7 +5,13 @@
         :id="id__"
         ref="el"
         :class="[cType__, theme.bemModifiers]">
-        <span v-if="obtainHasTitle"><slot></slot></span>
+        <div
+            v-if="obtainHasTitle"
+            :class="`${cType__}__title`">
+            <span>
+                <slot></slot>
+            </span>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -28,5 +34,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 $divider: v-bind('theme.ye_colorDivider');
 $margin: v-bind('theme.margin');
+$textColor: v-bind('theme.ye_colorSecondaryText');
 @import './style.scss';
 </style>

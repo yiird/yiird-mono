@@ -15,6 +15,7 @@
         border-radius: 5px;
         height: $height;
         position: relative;
+        outline: none;
 
         @include e('input') {
             flex-grow: 1;
@@ -23,7 +24,7 @@
             @include e('input-el') {
                 position: absolute;
                 line-height: $lineHeight;
-                padding: calc(($perHeight - 2px - $fontSize) / 2) 10px;
+                padding: calc(($perHeight - 2px - $fontSize) / 2) 5px;
                 top: 0;
                 left: 0;
                 right: 0;
@@ -65,7 +66,7 @@
 
     @include m('readonly') {
         * {
-            cursor: not-allowed;
+            cursor: default;
         }
     }
     @include m('disabled') {
@@ -75,7 +76,6 @@
         }
 
         @include e('input-el') {
-            @debug $colorPrefixSuffix;
             background-color: $colorPrefixSuffix;
         }
     }

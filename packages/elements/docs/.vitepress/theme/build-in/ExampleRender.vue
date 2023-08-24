@@ -1,28 +1,34 @@
 <template>
     <div :class="{ demo: true, 'demo--transparent': transparent }">
+        <slot></slot>
         <div class="demo__display">
             <component
                 ref="com"
                 :is="name"></component>
         </div>
-        <div :class="['demo__code', { 'demo__code--open': handleFlag }]">
-            <div v-html="prettierCode"></div>
-        </div>
         <div class="demo__handle">
             <span @click="toggleHandle">{{ handleFlag ? '收起代码' : '查看代码' }}</span>
+        </div>
+        <div :class="['demo__code', { 'demo__code--open': handleFlag }]">
+            <div v-html="prettierCode"></div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, type ComponentPublicInstance } from 'vue';
+import { computed, ref, watchEffect, type ComponentPublicInstance } from 'vue';
 interface Props {
     //样例
     name: string;
     transparent?: boolean;
+    inline?: boolean;
+    width?: string;
 }
-withDefaults(defineProps<Props>(), {
-    transparent: false
+
+const props = withDefaults(defineProps<Props>(), {
+    transparent: false,
+    inline: false,
+    width: '100%'
 });
 
 const prettierCode = ref();
@@ -32,6 +38,8 @@ const handleFlag = ref(false);
 const toggleHandle = () => {
     handleFlag.value = !handleFlag.value;
 };
+
+const inlineStyle = computed(() => (props.inline ? 'inline-block' : 'unset'));
 
 watchEffect(() => {
     if (com.value) {
@@ -43,6 +51,9 @@ watchEffect(() => {
 <style lang="scss" scoped>
 .demo {
     color: initial;
+    width: v-bind(width);
+    display: v-bind(inlineStyle);
+    vertical-align: top;
     .demo__display {
         padding: 10px;
         background-color: transparent;
@@ -69,5 +80,4 @@ watchEffect(() => {
         }
     }
 }
-
 </style>

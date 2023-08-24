@@ -1,18 +1,24 @@
 import { blue, green, orange, presetDarkPalettes, presetPalettes, red } from '@ant-design/colors';
 import Color from 'color';
-import type { ComponentInternalInstance, InjectionKey, UnwrapNestedRefs } from 'vue';
-import type { ElementOptions, FrameworkConfig, Size, StateColorGroup, ThemeConfig, UserThemeVars } from './types/global';
-import type { Scroll } from './types/scroll';
+import { isString } from 'lodash-es';
+import { ref, type ComponentInternalInstance, type InjectionKey, type UnwrapNestedRefs } from 'vue';
+import { styleValueToNumber } from './common/dom-utils';
+import type { FrameworkConfig, StateColor } from './types/global';
+import type { PlatformOptions } from './types/options';
+import type { BoxShadowDirection, BoxShadowLevel, Size, StateColorGroup, ThemeConfig, UserThemeVars } from './types/theme';
 
 export const DEFAULT_PREFIX = 'y';
-export const OPTIONS_KEY = Symbol('options-key') as InjectionKey<UnwrapNestedRefs<ElementOptions>>;
+export const OPTIONS_KEY = Symbol('options-key') as InjectionKey<UnwrapNestedRefs<PlatformOptions>>;
 export const FRAMEWORK_CONFIG_KEY = Symbol('framework-key') as InjectionKey<FrameworkConfig>;
-export const SCROLL_KEY = Symbol('scroll-key') as InjectionKey<Scroll>;
 
 export const CACHE_INSTANCES = new Map<string, Map<string, ComponentInternalInstance>>();
 
+export const IS_DARK = ref(false);
+export const USER_THEME_VARS = ref({});
+
 export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVars = {}): ThemeConfig => {
     const palettes = isDark ? presetDarkPalettes : presetPalettes;
+
     const colorPrimary = themeVars.colorPrimary ? palettes[themeVars.colorPrimary] : blue;
     const colorSuccess = themeVars.colorSuccess ? palettes[themeVars.colorSuccess] : green;
     const colorError = themeVars.colorError ? palettes[themeVars.colorError] : red;
@@ -45,23 +51,23 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
         };
     }
 
-    const ratioOfTextLineHeightToFontSize = themeVars.ratioOfTextLineHeightToFontSize || 1.5;
-    const ratioOfComponentHeightToFontSize = themeVars.ratioOfComponentHeightToFontSize || 2;
-
     const fontSize = themeVars.fontSize || 13;
 
+    const textLineHeightMultiplesOfFontSize = themeVars.textLineHeightMultiplesOfFontSize || 1.5;
+    const componentHeightMultiplesOfFontSize = themeVars.componentHeightMultiplesOfFontSize || 2;
+    const gapMultiplesOfFontSize = themeVars.gapMultiplesOfFontSize || 0.5;
+
     return {
-        ye_size: themeVars.componentSize || 'md',
-        ye_spaceSize: themeVars.spaceSize || [5, 10, 20],
+        ye_size: themeVars.size || 'md',
         ye_iconPrefix: themeVars.iconPrefix || 'fas',
         ye_isDark: isDark,
         ye_fontFamily:
             themeVars.fontFamily ||
             '-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji',
-        ye_gap: 5,
         ye_fontSize: fontSize,
-        ye_ratioOfComponentHeightToFontSize: ratioOfComponentHeightToFontSize,
-        ye_ratioOfTextLineHeightToFontSize: ratioOfTextLineHeightToFontSize,
+        ye_componentHeightMultiplesOfFontSize: componentHeightMultiplesOfFontSize,
+        ye_textLineHeightMultiplesOfFontSize: textLineHeightMultiplesOfFontSize,
+        ye_gapMultiplesOfFontSize: gapMultiplesOfFontSize,
         ye_fontWeightLight: themeVars.fontWeightLight || 400,
         ye_fontWeightRegular: themeVars.fontWeightRegular || 500,
         ye_fontWeightBold: themeVars.fontWeightBold || 600,
@@ -82,16 +88,17 @@ export const generThemeConfig = (isDark: boolean = false, themeVars: UserThemeVa
         ye_radius_max: 10,
         ye_radius_regular: 5,
         ye_radius_min: 3,
-        ye_boxshadow: (level, direction) => `var(--ye-boxshadow-${level}-${direction})`
+        ye_boxshadow: (level: BoxShadowLevel, direction: BoxShadowDirection) => `var(--ye-boxshadow-${level}-${direction})`
     };
 };
 
-export const DEFAULT_ELEMENT_OPTIONS: ElementOptions = {
+export const DEFAULT_ELEMENT_OPTIONS: PlatformOptions = {
     prefix: DEFAULT_PREFIX,
-    themeConfig: generThemeConfig()
+    themeConfig: generThemeConfig(),
+    ssr: false
 };
 
-const SIZE_MAP = {
+const SIZE_MAP: Record<string, number> = {
     //T-shirt
     '2xs': 0.5,
     xs: 0.6,
@@ -114,13 +121,14 @@ const SIZE_MAP = {
 };
 
 /**
- * 字体尺寸转文本行间距
+ * 标准支持转间距
  *
  * @param themeConfig 主题配置
- * @param fontSize 字体尺寸（px）
+ * @param {Size} size 标准尺寸
+ * @returns 换算后的尺寸
  */
-export const fontSizeToTextLineHeight = (themeConfig: ThemeConfig, fontSize: number) => {
-    return fontSize * themeConfig.ye_ratioOfTextLineHeightToFontSize;
+export const sizeToGap = (themeConfig: ThemeConfig, size: Size) => {
+    return sizeToFontSize(themeConfig, size) * themeConfig.ye_gapMultiplesOfFontSize;
 };
 
 /**
@@ -130,29 +138,29 @@ export const fontSizeToTextLineHeight = (themeConfig: ThemeConfig, fontSize: num
  * @param size 标准尺寸
  */
 export const sizeToTextLineHeight = (themeConfig: ThemeConfig, size: Size) => {
-    return fontSizeToTextLineHeight(themeConfig, sizeToFontSize(themeConfig, size));
-};
-
-export const fontSizeToComponentHeight = (themeConfig: ThemeConfig, fontSize: number) => {
-    return fontSize * themeConfig.ye_ratioOfComponentHeightToFontSize;
+    return sizeToFontSize(themeConfig, size) * themeConfig.ye_textLineHeightMultiplesOfFontSize;
 };
 
 export const sizeToComponentHeight = (themeConfig: ThemeConfig, size: Size) => {
-    return fontSizeToComponentHeight(themeConfig, sizeToFontSize(themeConfig, size));
+    return sizeToFontSize(themeConfig, size) * themeConfig.ye_componentHeightMultiplesOfFontSize;
 };
 
 export const sizeToFontSize = (themeConfig: ThemeConfig, size: Size) => {
-    return themeConfig.ye_fontSize * SIZE_MAP[size];
+    if (SIZE_MAP[size]) {
+        return themeConfig.ye_fontSize * SIZE_MAP[size];
+    } else {
+        return styleValueToNumber(size);
+    }
 };
 
 export const STATE_COLOR_NAMES = ['default', 'primary', 'warn', 'success', 'error'];
 
 export const textStateColor = (themeConfig: ThemeConfig, color: any) => {
-    let _color = color;
     if (STATE_COLOR_NAMES.includes(color)) {
-        _color = stateColor(themeConfig, color);
+        return stateColor(themeConfig, color).text;
+    } else {
+        return new Color(color).saturationl() > 60 ? new Color('#ffffff') : themeConfig.ye_colorPrimaryText;
     }
-    return new Color(_color).saturationl() > 60 ? new Color('#ffffff') : themeConfig.ye_colorPrimaryText;
 };
 
 export const stateColor = (themeConfig: ThemeConfig, color: string): StateColorGroup => {
@@ -177,9 +185,10 @@ export const stateColor = (themeConfig: ThemeConfig, color: string): StateColorG
                 break;
         }
         const primary = new Color(colors[6]);
+
         _color = {
             primary: primary,
-            darker: new Color(colors[9]),
+            darker: new Color(colors[8]),
             lighter: new Color(colors[5]),
             translucent: primary.alpha(0.3),
             text: primary.lightness() > 60 ? themeConfig.ye_colorPrimaryText : new Color('#ffffff')
@@ -196,4 +205,8 @@ export const stateColor = (themeConfig: ThemeConfig, color: string): StateColorG
     }
 
     return _color;
+};
+
+export const createColorGroup = (themeConfig: ThemeConfig, color: StateColor | StateColorGroup | string) => {
+    return isString(color) ? stateColor(themeConfig, color) : color;
 };

@@ -1,0 +1,5 @@
+@import '../theme/scss/reset';
+
+@include b('vscroll') {
+    height: $height;
+}

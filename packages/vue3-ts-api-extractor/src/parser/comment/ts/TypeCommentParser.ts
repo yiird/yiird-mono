@@ -1,18 +1,16 @@
-import ts, { Node, PropertySignature } from 'typescript';
+import ts, { Node, NodeArray, ParameterDeclaration, PropertySignature } from 'typescript';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { NodeUtils } from '../../../common/NodeUtils';
 import { Utils } from '../../../common/Utils';
 import { AbstractCommentParser } from '../AbstractCommentParser';
+import { NodeCommentParserFactory } from '../NodeCommentParserFactory';
+import { ParamComment } from '../node/ParamComment';
 import { PropertyComment } from '../node/PropertyComment';
 import { AssociationType, TypeComment } from '../node/TypeComment';
 
 export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
-    recursionTimes: Record<string, Record<string, number>> = {};
-    types: Record<string, Record<string, TypeComment>> = {};
-    init() {
-        this.recursionTimes = {};
-        this.types = {};
-    }
+    static types: Record<string, Record<string, TypeComment>> = {};
+
     parse(node: Node): TypeComment {
         const jsdocs = JsdocUtils.getJsDoc(node);
         const jsdoc = jsdocs[0];
@@ -89,6 +87,8 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         } else if (ts.isFunctionTypeNode(node)) {
             comment.text = node.getText();
             comment.isFunctionType = true;
+            comment.functionParams = this._handleParam(node.parameters);
+            comment.functionReturnType = this.parse(node.type);
         } else if (ts.isIdentifier(node)) {
             comment.name = node.text;
             comment.text = node.text;
@@ -109,12 +109,39 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
             comment.name = NodeUtils.getText(node);
             comment.text = comment.name;
         }
-
         if (jsdoc) {
             comment.description = JsdocUtils.getDescription(jsdoc);
         }
 
+        const filename = this.structure.filename;
+        if (!TypeCommentParser.types[filename]) {
+            TypeCommentParser.types[filename] = {};
+        }
+
+        this.cacheType(comment, comment.name === 'Array');
+
+        comment.properties?.forEach((property) => {
+            if (property.typeName?.includes('Array') || property.typeName?.includes('[]')) {
+                if (TypeCommentParser.types[filename][property.typeName]) {
+                    property.type = TypeCommentParser.types[filename][property.typeName];
+                }
+            } else if (property.isIgnore) {
+                if (property.typeName && TypeCommentParser.types[filename][property.typeName]) {
+                    property.type = TypeCommentParser.types[filename][property.typeName];
+                }
+            }
+        });
         return comment;
+    }
+
+    private _handleParam(parameters: NodeArray<ParameterDeclaration>) {
+        const params: ParamComment[] = [];
+
+        const _paramParser = NodeCommentParserFactory.createParamParser(this.structure, this.context);
+        parameters.forEach((param) => {
+            params.push(_paramParser.parse(param));
+        });
+        return params;
     }
 
     parseProperty(node: PropertySignature): PropertyComment {
@@ -122,48 +149,37 @@ export class TypeCommentParser extends AbstractCommentParser<TypeComment> {
         const jsdoc = jsdocs[0];
         const comment = new PropertyComment();
         comment.name = node.name.getText();
+        comment.isRequired = !node.questionToken;
         const typeName = node.type?.getText();
-        const _recursionTimes = typeName ? this.getRecursionTimes(node, typeName) : 0;
-        const filename = node.getSourceFile().fileName;
-        if (_recursionTimes < 20 && typeName) {
-            if (!comment.type && node.type) {
+
+        comment.isIgnore = false;
+
+        if (jsdoc) {
+            const isPrivate = JsdocUtils.getTag('private', jsdoc);
+            comment.isPrivate = !!isPrivate;
+            comment.description = JsdocUtils.getDescription(jsdoc);
+            const isIgnore = JsdocUtils.getTag('ignore', jsdoc);
+            comment.isIgnore = !!isIgnore;
+            if (!isIgnore && node.type) {
                 comment.type = this.parse(node.type);
             } else {
-                comment.type = this.types[filename][typeName];
+                comment.typeName = typeName;
             }
         }
 
-        if (jsdoc) {
-            comment.description = JsdocUtils.getDescription(jsdoc);
-        }
-        if (comment.name && typeName) {
-            if (!this.recursionTimes[filename]) {
-                this.recursionTimes[filename] = {};
-            }
-            if (!this.types[filename]) {
-                this.types[filename] = {};
-            }
-            const times = this.recursionTimes[filename][typeName];
-            if (comment.type && !Utils.isBasicType(typeName)) {
-                this.recursionTimes[filename][typeName] = times ? times + 1 : 0;
-                this.types[filename][typeName] = comment.type;
-            }
-        }
         return comment;
     }
 
-    getRecursionTimes(node: Node, name: string) {
-        const filename = node.getSourceFile().fileName;
-        let times = 0;
-        if (this.recursionTimes[filename]) {
-            if (!this.recursionTimes[filename][name]) {
-                this.recursionTimes[filename][name] = 0;
-            }
-            if (!Utils.isBasicType(name)) {
-                times = this.recursionTimes[filename][name]++;
+    cacheType(comment: TypeComment, isArray: boolean) {
+        const filename = this.structure.filename;
+        if (comment.name) {
+            if (isArray) {
+                const name = comment.typeArguments?.map((typeArg) => typeArg.name).join(',');
+                TypeCommentParser.types[filename][`Array<${name}>`] = comment;
+                TypeCommentParser.types[filename][`${name}[]`] = comment;
+            } else {
+                TypeCommentParser.types[filename][comment.name] = comment;
             }
         }
-
-        return times;
     }
 }

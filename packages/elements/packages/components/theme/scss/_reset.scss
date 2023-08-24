@@ -1,2 +1,6 @@
 // @import './normalize';
 @import './bem';
+
+[role=abc]{
+    z-index: 1;
+}

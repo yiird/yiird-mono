@@ -1,0 +1,9 @@
+@import '../theme/scss/reset';
+
+@include b('checkbox') {
+
+    @include e('input'){
+        display: none;
+    }
+
+}

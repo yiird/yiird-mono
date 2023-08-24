@@ -17,7 +17,6 @@
         "editor.codeActionsOnSave": ["source.sortImports", "source.organizeImports", "source.fixAll.eslint", "source.formatDocument"],
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.fontSize": 14,
-        "typescript.enablePromptUseWorkspaceTsdk": true,
         "search.exclude": {
             "node_modules": false
         },
@@ -29,6 +28,9 @@
         "eslint.workingDirectories": [{ "mode": "auto" }],
         "files.exclude": {
             "**/node_modules": true
-        }
+        },
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "vue-syntactic-server.trace.server": "verbose",
+        "vue-semantic-server.trace.server": "verbose"
     }
 }

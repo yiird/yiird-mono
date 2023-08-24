@@ -10,9 +10,18 @@
                 <!-- 左侧辅助插槽 -->
                 <slot name="extra-left"></slot>
             </div>
-            <div
-                ref="scrollRef"
-                class="tabs__scroll">
+            <Scroll
+                ref="scroll"
+                :hide-track="{
+                    x: true,
+                    y: true
+                }"
+                :track-aux="{
+                    scopeId: scopeId__,
+                    elClasses: ['tabs__aux-left', 'tabs__aux-right']
+                }"
+                class="tabs__scroll"
+                @overflow="doOnScrollOverflow_">
                 <div class="tabs__bar-wrap">
                     <div class="tabs__bar-bottom"></div>
                     <div
@@ -32,7 +41,7 @@
                             @click.stop="close(index)"></Icon>
                     </div>
                 </div>
-            </div>
+            </Scroll>
             <div class="tabs__extra-right">
                 <!-- 右侧辅助插槽 -->
                 <slot name="extra-right"></slot>
@@ -60,6 +69,7 @@
 import 'animate.css';
 import { defineComponent } from 'vue';
 import { Icon } from '../icon';
+import { Scroll } from '../scroll';
 import { TabsExpose, TabsProps, setupTabs } from './logic';
 
 /**
@@ -68,7 +78,7 @@ import { TabsExpose, TabsProps, setupTabs } from './logic';
  */
 export default defineComponent({
     name: 'Tabs',
-    components: { Icon },
+    components: { Icon, Scroll },
     props: TabsProps,
     expose: TabsExpose,
     setup(props, ctx) {

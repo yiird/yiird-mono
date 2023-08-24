@@ -2,9 +2,10 @@
 
 @mixin typography {
     color: $color;
-    
+    user-select: none;
+
     @include m('delete') {
-        text-decoration:line-through;
+        text-decoration: line-through;
     }
     @include m('underline') {
         text-decoration: underline;
@@ -17,6 +18,10 @@
     }
     @include m('mark') {
         background-color: $colorMark;
+        padding: 0 2px;
     }
-  
+
+    @include m('selectable') {
+        user-select: auto;
+    }
 }

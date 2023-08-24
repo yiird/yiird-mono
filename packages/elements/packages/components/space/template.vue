@@ -26,6 +26,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+$mainAxis: v-bind('theme.mainAxis');
+$crossAxis: v-bind('theme.crossAxis');
 $gap: v-bind('theme.gap');
 
 @import './style.scss';

@@ -9,9 +9,9 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, getCurrentInstance } from 'vue';
 import { usePrefab } from '../../../common/prefab';
-import { checkChidrenTypeIn } from '../../../common/vnode-utils';
+import { checkChidrenIsRightTypes } from '../../../common/vnode-utils';
 import { RowProps, useRowTheme } from './logic';
 /**
  * Row使用
@@ -21,7 +21,8 @@ export default defineComponent({
     name: 'Row',
     props: RowProps,
     setup(props) {
-        if (!checkChidrenTypeIn('col')) {
+        const children = getCurrentInstance()?.slots.default?.call(null) || [];
+        if (!checkChidrenIsRightTypes(children, 'Col')) {
             throw new Error('Row的子组件只能是Col');
         }
         const commonExposed = usePrefab(props);

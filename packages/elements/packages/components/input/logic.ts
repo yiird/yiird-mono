@@ -1,190 +1,226 @@
 import { faEye, faEyeSlash, faLoader } from '@fortawesome/pro-light-svg-icons';
-import { computed, reactive, ref, toRef, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
-import { useVModel } from '../../common/composites-vmodel';
+import { computed, h, reactive, ref, toRef, unref, type ExtractPropTypes, type PropType, type SetupContext, type VNode } from 'vue';
+import { isAffix } from '../../common/check-type';
+import { FormItemTextProps, obtainFormItemTheme, useFormItemText, type FormItemState } from '../../common/common-form';
+import type { Action, Affix } from '../../common/common-source';
+import { useInputVModel } from '../../common/composites-vmodel';
 import { baseExpose, usePrefab } from '../../common/prefab';
-import { BaseInputEmits, BaseInputProps, obtainBaseInputTheme, useBaseInput, type BaseInputState, type EventArgs } from '../../common/prefab-input';
-import type { IconNameOrDefinition } from '../icon';
+import { vnodeRef } from '../../common/vnode-utils';
+import { sizeToGap } from '../../config';
+import type { FormItemEventArgs } from '../../types/event';
+import type { Size, ThemeConfig } from '../../types/theme';
+import { Button } from '../button';
+import { Group } from '../group';
+import { IconText } from '../icon/text';
 
-export type InputType = 'text' | 'password' | 'number';
+export type InputMode = 'text' | 'password' | 'number';
 
-export interface InputAction {
-    text?: string;
-    icon?: IconNameOrDefinition;
-}
+/**
+ * 附加物
+ */
+export type InputExtra = Action | Affix;
 
 export const InputProps = {
-    ...BaseInputProps,
+    ...FormItemTextProps,
     /**
      * 类型
      */
-    type: {
-        type: String as PropType<InputType>,
+    mode: {
+        type: String as PropType<InputMode>,
         default: 'text'
     },
-    /**
-     * @name data
-     * @model
-     */
-    data: {
-        type: Object as PropType<object>
+    prefixes: {
+        type: Array as PropType<Array<InputExtra>>,
+        default() {
+            return [];
+        }
     },
-    /**
-     * @private
-     */
-    dataModifiers: {
-        type: Object as PropType<{ lazy: boolean; number: boolean; trim: boolean }>,
-        default: () => ({})
+    suffixes: {
+        type: Array as PropType<Array<InputExtra>>,
+        default() {
+            return [];
+        }
     },
-    /**
-     * 前缀
-     */
-    prefixIcon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: ''
-    },
-    /**
-     * 前缀
-     */
-    prefixText: {
-        type: String as PropType<string>
-    },
-    /**
-     * 后缀
-     */
-    suffixIcon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: ''
-    },
-    /**
-     * 后缀
-     */
-    suffixText: {
-        type: String as PropType<string>
-    },
-    /**
-     * 右侧扩展
-     */
-    rightAction: {
-        type: Object as PropType<InputAction>
-    },
-    /**
-     * 左侧扩展
-     */
-    leftAction: {
-        type: Object as PropType<InputAction>
+    whole: {
+        type: Boolean as PropType<boolean>,
+        default: false
     }
 } as const;
 export type InputPropsType = Readonly<ExtractPropTypes<typeof InputProps>>;
-
-/**
- * 事件参数
- */
-export interface InputEventArgs extends EventArgs {
-    /**
-     * 包括前后缀完整数据
-     */
-    whole: any;
-    /**
-     * 前缀DOM元素
-     */
-    prefix?: Element;
-    /**
-     * 后缀DOM元素
-     */
-    suffix?: Element;
-    /**
-     * 前缀文本
-     */
-    prefixText?: string | null;
-    /**
-     * 后缀文本
-     */
-    suffixText?: string | null;
-}
 
 export const InputEmits = {
     /**
      * @private
      */
-    'update:data': null,
+    'update:modelValue': null,
     /**
-     * @replaceType EventArgs InputEventArgs
+     * Change事件
+     * @param args
      */
-    ...BaseInputEmits,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    change(args: FormItemEventArgs) {
+        return true;
+    },
+    /**
+     * 焦点事件
+     * @param args
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    focus(args: FormItemEventArgs) {
+        return true;
+    },
+    /**
+     * 失去事件
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    blur(args: FormItemEventArgs) {
+        return true;
+    },
+    /**
+     * Input事件
+     * @param args 参数
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    input(args: FormItemEventArgs) {
+        return true;
+    },
     rightAction: null,
     leftAction: null,
     prefixAction: null,
-    suffixAction: null
+    suffixAction: null,
+    tabKeyDown: null
 };
 
-export interface InputState extends BaseInputState {
-    type: InputType;
+export interface InputState extends FormItemState {
+    type: InputMode;
     checkPassword: boolean;
 }
 
+const __renderAffixies = (cType: string, themeConfig: ThemeConfig, size: Size, preOrSuffixies: Array<Action | Affix>, reverse: boolean = false) => {
+    const actions: Action[] = [];
+    const affixies: Affix[] = [];
+
+    const gap = sizeToGap(themeConfig, size);
+
+    preOrSuffixies.forEach((it) => {
+        if (isAffix(it)) {
+            affixies.push(it);
+        } else {
+            actions.push(it);
+        }
+    });
+
+    const slots: VNode[] = [];
+
+    if (affixies.length > 0) {
+        slots.push(
+            h(
+                Group,
+                {
+                    style: {
+                        padding: `0px ${gap}px`,
+                        backgroundColor: themeConfig.ye_colorBorder
+                    },
+                    gap
+                },
+                () =>
+                    affixies.map((affix) => {
+                        const { text, icon } = affix;
+                        return h(IconText, {
+                            style: {
+                                color: themeConfig.ye_colorSecondaryText
+                            },
+                            size,
+                            icon,
+                            text
+                        });
+                    })
+            )
+        );
+    }
+
+    if (actions.length > 0) {
+        slots.push(
+            h(Group, { after: !reverse, before: reverse, divider: true }, () =>
+                actions.map((action) => {
+                    const { text, icon, fn } = action;
+                    return h(
+                        Button,
+                        {
+                            size,
+                            color: 'primary',
+                            icon,
+                            onClick: fn
+                        },
+                        () => text
+                    );
+                })
+            )
+        );
+    }
+
+    return () => (reverse ? slots.reverse() : slots);
+};
+
 export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof InputEmits>) => {
-    const { emit, slots } = ctx;
+    const { emit } = ctx;
+
+    const state = reactive<FormItemState>({
+        status: props.status,
+        readonly: props.readonly,
+        disabled: props.disabled
+    });
 
     const selfState = reactive({
-        type: props.type,
+        mode: props.mode,
         checkPassword: false
     });
 
-    const prefix = ref<Element>();
-    const suffix = ref<Element>();
+    const content = ref<Element>();
 
     const commonExposed = usePrefab(props);
+    const { cType__ } = commonExposed;
 
-    const _opperatorArg = (inputValue: any, trim: boolean) => {
-        const _suffix = suffix.value;
-        const _prefix = prefix.value;
-        const suffixText = _suffix?.textContent;
-        const prefixText = _prefix?.textContent;
-        let whole;
-        if (trim) {
-            whole = (prefixText || '').trim() + (inputValue ? inputValue + '' : '').trim() + (suffixText || '').trim();
-        } else {
-            whole = `${prefixText || ''}${inputValue}${suffixText || ''}`;
-        }
-        return { whole, prefix: _prefix, suffix: _suffix, prefixText, suffixText };
+    /**
+     * @private
+     */
+    const _eventArgs = (inputValue: any) => {
+        return { el: unref(commonExposed.el), value: inputValue };
     };
 
-    const { modelValueRef } = useVModel(
-        emit,
-        {
-            model: 'modelValue',
-            modifiers: props.modelModifiers
-        },
-        {
-            model: 'data',
-            reference: 'modelValue',
-            modifiers: props.dataModifiers,
-            opperator(input, binder) {
-                return _opperatorArg(input, !!(binder && binder?.modifiers.trim));
-            }
-        }
-    );
+    const { modelValueRef } = useInputVModel(emit, {
+        model: 'modelValue',
+        modifiers: props.modelModifiers
+    });
 
     const internalCtx = { props, commonExposed, ...ctx };
 
-    const inputPrefab = useBaseInput<typeof InputEmits>(internalCtx, _opperatorArg);
-    const { state } = inputPrefab;
-    const theme = obtainBaseInputTheme<typeof InputEmits>(internalCtx, state);
+    const inputPrefab = useFormItemText(internalCtx, state);
+
+    const theme = obtainFormItemTheme(internalCtx, state, (_theme) => {
+        return _theme;
+    });
 
     const obtainIsPassword = computed(() => {
-        return selfState.type === 'password' || selfState.checkPassword;
+        return selfState.mode === 'password' || selfState.checkPassword;
     });
 
     const obtainPasswordIcon = computed(() => {
         return selfState.checkPassword ? faEye : faEyeSlash;
     });
 
-    const obtainHasPrefix = computed(() => {
-        return slots.prefix || props.prefixIcon || props.prefixText;
+    const obtainPrefixies = vnodeRef(() => {
+        const { size, prefixes } = props;
+        return __renderAffixies(cType__, theme.value, size, prefixes, true);
     });
 
-    const obtainHasSuffix = computed(() => {
-        return slots.suffix || props.suffixIcon || props.suffixText;
+    const obtainSuffixies = vnodeRef(() => {
+        const { size, suffixes } = props;
+        return __renderAffixies(cType__, theme.value, size, suffixes);
+    });
+
+    const obtainPrefabAffixies = computed(() => {
+        return props.loading || props.showCounter || props.mode === 'password';
     });
 
     /**
@@ -198,11 +234,11 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
         const modifier = 'input--check-password';
         if (flag) {
             bemModifiers.push(modifier);
-            selfState.type = 'text';
+            selfState.mode = 'text';
         } else {
             const index = bemModifiers.findIndex((_modifier) => _modifier === modifier);
             bemModifiers.splice(index, 1);
-            selfState.type = 'password';
+            selfState.mode = 'password';
         }
     };
 
@@ -218,28 +254,72 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
     /**
      * @private
      */
-    const doAction_ = (position: 'right' | 'left' | 'prefix' | 'suffix') => {
-        if ('right' === position) {
+    const doFoucs_ = (ev: Event) => {
+        const target = ev.target;
+        if (target instanceof HTMLInputElement) {
             /**
-             * 右侧action点击事件
+             * focus 事件
+             *
+             * @param {InputEventArgs} arg0 事件参数
+             *
              */
-            emit('rightAction');
-        } else if ('left' === position) {
-            /**
-             * 左侧action点击事件
-             */
-            emit('leftAction');
-        } else if ('prefix' === position) {
-            /**
-             * 前缀点击事件
-             */
-            emit('rightAction');
-        } else if ('suffix' === position) {
-            /**
-             * 后缀点击事件
-             */
-            emit('leftAction');
+            emit('focus', _eventArgs(target.value));
         }
+    };
+
+    /**
+     * @private
+     */
+    const doBlur_ = (ev: Event) => {
+        const target = ev.target;
+        if (target instanceof HTMLInputElement) {
+            /**
+             * blur 事件
+             *
+             * @param {InputEventArgs} arg0 事件参数
+             *
+             */
+            emit('blur', _eventArgs(target.value));
+        }
+    };
+
+    /**
+     * @private
+     */
+    const doChange_ = (ev: Event) => {
+        const target = ev.target;
+        if (target instanceof HTMLInputElement) {
+            /**
+             * change 事件
+             *
+             * @param {InputEventArgs} arg0 事件参数
+             *
+             */
+            emit('change', _eventArgs(target.value));
+        }
+    };
+
+    /**
+     * @private
+     */
+    const doInput_ = (ev: Event) => {
+        const target = ev.target;
+        if (target instanceof HTMLInputElement) {
+            /**
+             * input 事件
+             *
+             * @param {InputEventArgs} arg0 事件参数
+             *
+             */
+            emit('input', _eventArgs(target.value));
+        }
+    };
+
+    /**
+     * @private
+     */
+    const doTabKeyDown_ = () => {
+        emit('tabKeyDown');
     };
 
     return {
@@ -249,16 +329,20 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
         modelValueRef,
         obtainPasswordIcon,
         faLoader,
-        doAction_,
+        doFoucs_,
+        doBlur_,
+        doChange_,
+        doInput_,
         toggleCheckPassword_,
         doCheckPassword,
-        type_: toRef(selfState, 'type'),
-        prefix,
-        suffix,
-        obtainHasPrefix,
-        obtainHasSuffix,
+        doTabKeyDown_,
+        type_: toRef(selfState, 'mode'),
+        content,
+        obtainPrefabAffixies,
+        obtainPrefixies,
+        obtainSuffixies,
         obtainIsPassword
     };
 };
-export const InputExpose = [...baseExpose, ...([] as const)];
+export const InputExpose = [...baseExpose, ...(['content'] as const)];
 export type InputExposeType = (typeof InputExpose)[number];

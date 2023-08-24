@@ -7,13 +7,12 @@
         :class="[cType__, theme.bemModifiers]">
         <div :class="`${cType__}__top`">
             <Avatar
-                :size="size"
+                :size="avatarSize"
                 :icon-size="size"
                 :icon="avatarIcon"
                 :src="avatarSrc"></Avatar>
             <div :class="`${cType__}__summary`">
                 <Title
-                    :size="size"
                     :ellipsis="obtainTitleEllipsis"
                     :level="obtainTitleLevel">
                     {{ obtainTitle }}

@@ -2,19 +2,15 @@
     <span class="tip">未对齐</span>
     <br />
     <y-icon
-        :fixed-width="false"
         name="camera"
         size="2x"></y-icon>
     <y-icon
-        :fixed-width="false"
         name="coffee"
         size="2x"></y-icon>
     <y-icon
-        :fixed-width="false"
         name="6"
         size="2x"></y-icon>
     <y-icon
-        :fixed-width="false"
         name="home"
         size="2x"></y-icon>
     <br />
@@ -22,15 +18,19 @@
     <span class="tip">对齐</span>
     <br />
     <y-icon
+        fixed-width
         name="camera"
         size="2x"></y-icon>
     <y-icon
+        fixed-width
         name="coffee"
         size="2x"></y-icon>
     <y-icon
+        fixed-width
         name="6"
         size="2x"></y-icon>
     <y-icon
+        fixed-width
         name="home"
         size="2x"></y-icon>
     <br />

@@ -1,9 +1,11 @@
 @import '../theme/scss/reset';
 
 @include b('space') {
-    display: inline-flex;
+    display: flex;
     gap: $gap;
-    align-items: center;
+    justify-content: $mainAxis;
+    align-items: $crossAxis;
+    flex: 1 1 0;
     @include m('h') {
         flex-direction: row;
     }

@@ -30,7 +30,7 @@ const ExpandText = defineComponent({
     }
 });
 
-export const ellipsis: Directive<HTMLElement, SingleLineEllipsis | MultiLineEllipsis> = {
+export const Ellipsis: Directive<HTMLElement, SingleLineEllipsis | MultiLineEllipsis> = {
     updated(el, binding, vnode) {
         const { children } = vnode;
         const { value, instance } = binding;

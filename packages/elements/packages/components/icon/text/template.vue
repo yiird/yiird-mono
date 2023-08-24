@@ -5,7 +5,7 @@
         :id="id__"
         ref="el"
         :class="[cType__, theme.bemModifiers]"
-        @click="$emit('click')">
+        @click="doClick($event)">
         <template v-if="revert">
             <span
                 v-if="text"

@@ -1,34 +1,42 @@
-import { ScrollbarPlugin } from 'smooth-scrollbar';
+import pkg from 'smooth-scrollbar';
 import type { Data2d, ScrollListener, ScrollStatus } from 'smooth-scrollbar/interfaces';
-import { isRef, nextTick, watch, type UnwrapNestedRefs } from 'vue';
-import type { AuxElPluginOptions, DisableScrollBarPluginOptions, HideTrackPluginOptions, LifecirclePluginOptions, PageBoundary, VirtualPage } from '../types/scroll';
+import { nextTick, watch } from 'vue';
+import type {
+    ScrollDisableTrackPluginOptions,
+    ScrollHideTrackPluginOptions,
+    ScrollLifecirclePluginOptions,
+    ScrollState,
+    ScrollTrackAuxPluginOptions,
+    ScrollVirtualPage,
+    VScrollPluginOptions
+} from '../types/scroll';
+import { styleValueToNumber } from './dom-utils';
+const { ScrollbarPlugin } = pkg;
 
-export class HideTrackPlugin extends ScrollbarPlugin {
+export class ScrollHideTrackPlugin extends ScrollbarPlugin {
     static pluginName = 'hideTrack';
 
-    static defaultOptions: HideTrackPluginOptions = {
-        track: 'none'
+    static defaultOptions: ScrollHideTrackPluginOptions = {
+        x: false,
+        y: false
     };
 
     onInit() {
-        const track = this.options.track;
-        if (track) {
-            if (track === 'both') {
-                this.scrollbar.containerEl.querySelectorAll('.scrollbar-track')?.forEach((el) => el.remove());
-            } else if (track === 'x') {
-                this.scrollbar.containerEl.querySelector('.scrollbar-track-x')?.remove();
-            } else if (track === 'y') {
-                this.scrollbar.containerEl.querySelector('.scrollbar-track-y')?.remove();
-            }
+        const { x, y } = this.options as ScrollHideTrackPluginOptions;
+        if (x) {
+            this.scrollbar.containerEl.querySelector('.scrollbar-track-x')?.remove();
+        }
+        if (y) {
+            this.scrollbar.containerEl.querySelector('.scrollbar-track-y')?.remove();
         }
     }
 }
 
-export class AuxElPlugin extends ScrollbarPlugin {
-    static pluginName = 'auxEl';
+export class ScrollTrackAuxPlugin extends ScrollbarPlugin {
+    static pluginName = 'trackAux';
 
-    static defaultOptions: AuxElPluginOptions = {
-        auxPosition: []
+    static defaultOptions: ScrollTrackAuxPluginOptions = {
+        elClasses: []
     };
 
     createEl(className: string, scopeId?: string) {
@@ -42,18 +50,18 @@ export class AuxElPlugin extends ScrollbarPlugin {
     }
 
     onInit() {
-        if (this.options.auxPosition && this.options.auxPosition.length > 0) {
-            this.options.auxPosition.forEach((aux: string) => {
+        if (this.options.elClasses && this.options.elClasses.length > 0) {
+            this.options.elClasses.forEach((aux: string) => {
                 this.createEl(aux, this.options.scopeId);
             });
         }
     }
 }
 
-export class DisableScrollBarPlugin extends ScrollbarPlugin {
-    static pluginName = 'disableScrollBar';
+export class ScrollDisableTrackPlugin extends ScrollbarPlugin {
+    static pluginName = 'disableTrack';
 
-    static defaultOptions: DisableScrollBarPluginOptions = {
+    static defaultOptions: ScrollDisableTrackPluginOptions = {
         x: false,
         y: false
     };
@@ -71,9 +79,9 @@ export class DisableScrollBarPlugin extends ScrollbarPlugin {
     }
 }
 
-export class LifecirclePlugin extends ScrollbarPlugin {
+export class ScrollLifecirclePlugin extends ScrollbarPlugin {
     static pluginName = 'lifecircle';
-    static defaultOptions: LifecirclePluginOptions = {};
+    static defaultOptions: ScrollLifecirclePluginOptions = {};
 
     onInit() {
         if (this.options.onInit) {
@@ -92,126 +100,82 @@ export class LifecirclePlugin extends ScrollbarPlugin {
     }
 }
 
-export class VirtualPagePlugin extends ScrollbarPlugin {
-    static pluginName = 'virtualPage';
+export class ScrollVirtualPlugin extends ScrollbarPlugin {
+    static pluginName = 'virtual';
 
-    boundary?: UnwrapNestedRefs<PageBoundary>;
-
-    virtualPage: VirtualPage = {
-        page: 0,
-        firstPage: 0,
-        lastPage: 0,
+    private _virtualPage: ScrollVirtualPage = {
+        page: 1,
         pageSize: 0,
-        totalPage: 0,
-        lastCount: 0,
-        offsetRenderPageCount: 1
+        pageCount: 0,
+        remainderCount: 0
     };
+    private _renderState: ScrollState = 'none';
 
-    positionState?: 'scrolling-top' | 'scrolling-bottom' | 'top' | 'bottom';
+    private _direction: 'up' | 'down' | 'none' = 'none';
 
-    unitHeight?: number;
-    totalCount?: number;
-    itemClass?: string;
-    triggerCount = 500;
-    preRenderScreenSize = 3;
+    private _morePageCount = 2;
 
-    scrollListener?: ScrollListener;
+    private _virtual = false;
+    private _callback?: (state: ScrollState) => void;
+
+    private _onScroll?: ScrollListener;
 
     onInit() {
-        if (!this.options.itemClass) {
-            throw new Error('[VirtualPagePlugin] 缺少配置:itemClass');
+        const { rowHeight, boundary, prepareScreenCount, triggerCount, total, callback } = this.options as VScrollPluginOptions;
+        if (!rowHeight) {
+            throw new Error('缺少:rowHeight！');
         }
-        if (!this.options.unitHeight) {
-            throw new Error('[VirtualPagePlugin] 缺少配置:unitHeight');
+        if (!boundary) {
+            throw new Error('缺少:boundary！');
         }
-        if (!this.options.totalCount) {
-            throw new Error('[VirtualPagePlugin] 缺少配置:totalCount');
+        if (!prepareScreenCount) {
+            throw new Error('缺少:prepareScreenCount！');
         }
-        this.itemClass = this.options.itemClass;
-        this.triggerCount = this.options.triggerCount || 500;
-        this.preRenderScreenSize = this.options.preRenderScreenSize || 5;
-
-        this._initVirtualPage();
-
-        this.scrollListener = this.gescrollListener();
-
-        this.scrollbar.addListener(this.scrollListener);
-    }
-
-    onDestroy(): void {
-        if (this.scrollListener) {
-            this.scrollbar.removeListener(this.scrollListener);
+        if (!triggerCount) {
+            throw new Error('缺少:triggerCount！');
         }
-    }
+        if (!total) {
+            throw new Error('缺少:total！');
+        }
+        this._callback = callback;
 
-    gescrollListener() {
-        const positionState = () => {
-            return this.positionState;
-        };
-        const setPositionState = (state: 'scrolling-top' | 'scrolling-bottom' | 'top' | 'bottom') => {
-            this.positionState = state;
-        };
-        const virtualPage = this.virtualPage;
-        const scorlling = this._scorlling;
-        const that = this;
-        return ({ limit, offset }: ScrollStatus) => {
-            if (virtualPage) {
-                const { firstPage, lastPage } = virtualPage;
-                const state = positionState();
-                if (!state) {
-                    const offsetY = offset.y;
-                    const limitY = limit.y;
-                    if (limitY - offsetY === 0) {
-                        if (virtualPage.page < lastPage) {
-                            setPositionState('scrolling-bottom');
-                            scorlling.call(that);
-                        }
-                    } else if (offsetY === 0) {
-                        if (virtualPage.page > firstPage) {
-                            setPositionState('scrolling-top');
-                            scorlling.call(that);
-                        }
-                    }
-                }
-            }
-        };
-    }
+        this.setState('init');
 
-    _initVirtualPage() {
-        const { totalCount, unitHeight, focusIndex } = this.options;
-        this.boundary = this.options.boundary;
         watch(
-            [focusIndex, totalCount, unitHeight],
-            ([_focusIndex, _totalCount, _unitHeight], [prev_focusIndex]) => {
-                if (_totalCount > 0 && _unitHeight > 0) {
-                    this.unitHeight = _unitHeight;
-                    this.totalCount = _totalCount;
-
-                    const containerHeight = this.scrollbar.size.container.height;
-                    const pageSize = Math.round(containerHeight / _unitHeight);
-
-                    if (_totalCount > this.triggerCount && _totalCount > pageSize * this.preRenderScreenSize) {
-                        const lastCount = _totalCount % pageSize;
-                        const totalPage = Math.floor(_totalCount / pageSize);
-                        const offsetRenderPageCount = (this.preRenderScreenSize - 1) / 2;
-                        const firstPage = offsetRenderPageCount;
-                        const lastPage = lastCount > 0 ? totalPage - offsetRenderPageCount - 1 : totalPage - offsetRenderPageCount;
-                        this.virtualPage.totalPage = totalPage;
-                        this.virtualPage.pageSize = pageSize;
-                        this.virtualPage.firstPage = firstPage;
-                        this.virtualPage.lastPage = lastPage;
-                        this.virtualPage.page = this.virtualPage.page || firstPage;
-                        this.virtualPage.lastCount = lastCount;
-                        this.virtualPage.offsetRenderPageCount = offsetRenderPageCount;
-
-                        prev_focusIndex = prev_focusIndex || 0;
-                        if (prev_focusIndex !== _focusIndex) {
-                            this._computedBoundary(_focusIndex, prev_focusIndex === undefined ? 0 : _focusIndex - prev_focusIndex);
-                        } else {
-                            this._computedBoundary();
-                        }
-                    }
+            [total, rowHeight, triggerCount],
+            ([_total, _rowHeight, _triggerCount]) => {
+                if (this._renderState !== 'init') {
+                    this.setState('reset');
                 }
+                nextTick(() => {
+                    this._virtual = _total > _triggerCount;
+                    if (this._virtual) {
+                        if (_total && _rowHeight) {
+                            if (this._onScroll) {
+                                this.scrollbar.removeListener(this._onScroll);
+                            }
+
+                            const pageSize = Math.floor(styleValueToNumber(getComputedStyle(this.scrollbar.containerEl).height) / _rowHeight);
+
+                            this._virtualPage.pageSize = pageSize;
+                            this._virtualPage.pageCount = Math.floor(_total / pageSize);
+                            this._virtualPage.remainderCount = _total % pageSize;
+
+                            this._onScroll = this.createScrollListener();
+                            this.scrollbar.addListener(this._onScroll);
+                            this.computedBoundary();
+                        }
+                    } else {
+                        if (this._onScroll) {
+                            this.scrollbar.removeListener(this._onScroll);
+                        }
+                        boundary.value = { start: 0, end: _total };
+                    }
+                    nextTick(() => {
+                        this.scrollbar.update();
+                        this.setState('none');
+                    });
+                });
             },
             {
                 immediate: true
@@ -219,83 +183,74 @@ export class VirtualPagePlugin extends ScrollbarPlugin {
         );
     }
 
-    _scorlling() {
-        const boundary = this.options.boundary as PageBoundary;
-        if (boundary && isRef(boundary) && this.itemClass) {
-            if (this.positionState === 'scrolling-top' || this.positionState === 'scrolling-bottom') {
-                let needComputedBoundary = false;
-                if (this.positionState === 'scrolling-top') {
-                    this.virtualPage.page -= 1;
-                    needComputedBoundary = true;
-                } else if (this.positionState === 'scrolling-bottom') {
-                    this.virtualPage.page += 1;
-                    needComputedBoundary = true;
-                } else {
-                    this.positionState = undefined;
-                }
-
-                if (needComputedBoundary) {
-                    this._computedBoundary();
-
-                    nextTick(() => {
-                        this.positionState = undefined;
-                    });
-                }
-            }
+    onDestroy(): void {
+        if (this._onScroll) {
+            this.scrollbar.removeListener(this._onScroll);
         }
     }
 
-    _computedBoundary(focusIndex?: number, focusAsc?: number) {
-        const { page, firstPage, lastPage, pageSize, totalPage, offsetRenderPageCount, lastCount } = this.virtualPage;
-        if (!this.totalCount || !this.unitHeight) return;
-
-        const boundary = this.options.boundary as PageBoundary;
-
-        if (pageSize > 0 && boundary && isRef(boundary)) {
-            let currentPage = page;
-            let offsetUnis;
-
-            if (focusIndex && focusAsc) {
-                const floorPage = Math.floor(focusIndex / pageSize);
-                currentPage = floorPage;
-
-                if (currentPage <= firstPage) {
-                    if (focusIndex === pageSize / 2) {
-                        offsetUnis = -1;
-                    } else {
-                        offsetUnis = focusIndex - pageSize / 2;
-                    }
-                } else if (currentPage >= lastPage) {
-                    currentPage = lastPage;
-                    offsetUnis = pageSize * (this.preRenderScreenSize / 2) + (focusIndex - currentPage * pageSize) - pageSize;
-                } else {
-                    offsetUnis = pageSize * offsetRenderPageCount + (focusIndex % pageSize) - pageSize / 2;
-                }
-            } else {
-                if (this.positionState === 'scrolling-bottom') {
-                    offsetUnis = pageSize * (offsetRenderPageCount + 1);
-                } else if (this.positionState === 'scrolling-top') {
-                    offsetUnis = pageSize;
-                }
-            }
-
-            //计算边界
-            const startPage = currentPage - offsetRenderPageCount;
-
-            const start = pageSize * startPage;
-            let end = start + pageSize * this.preRenderScreenSize;
-
-            if (lastCount > 0 && currentPage >= totalPage - offsetRenderPageCount - 1) {
-                end += lastCount;
-            }
-
-            boundary.value = { start, end, pageSize };
-
-            //滚动条偏移
-            if (offsetUnis) {
-                this.scrollbar.setPosition(this.scrollbar.scrollLeft, this.unitHeight! * offsetUnis);
-            }
-            this.virtualPage.page = currentPage;
+    transformDelta(delta: Data2d): Data2d {
+        const { y } = delta;
+        if (y > 0) {
+            this._direction = 'down';
+        } else if (y < 0) {
+            this._direction = 'up';
+        } else {
+            this._direction = 'none';
         }
+        return delta;
+    }
+
+    private setState(state: ScrollState) {
+        this._renderState = state;
+        if (this._callback) {
+            this._callback(state);
+        }
+    }
+
+    private createScrollListener() {
+        const that = this;
+        return ({ limit, offset }: ScrollStatus) => {
+            const { prepareScreenCount } = that.options;
+            const { _direction, _renderState, _virtualPage } = that;
+            const { pageCount, page } = _virtualPage;
+            const offsetY = offset.y;
+            const limitY = limit.y;
+            if ((_renderState === 'none' || _renderState === 'init' || _renderState === 'reset') && _direction !== 'none') {
+                if (limitY - offsetY === 0 && _direction === 'down') {
+                    if (page < pageCount - prepareScreenCount) {
+                        _virtualPage.page += that._morePageCount;
+                        that.setState('next-page');
+                        that.computedBoundary();
+                    }
+                } else if (offsetY === 0 && _direction === 'up') {
+                    if (page >= 2) {
+                        _virtualPage.page -= that._morePageCount;
+                        that.setState('prev-page');
+                        that.computedBoundary();
+                    }
+                }
+            }
+        };
+    }
+
+    private computedBoundary() {
+        const { rowHeight, boundary, prepareScreenCount } = this.options as VScrollPluginOptions;
+        const { pageSize, page, pageCount, remainderCount } = this._virtualPage;
+        const startPage = page - 1;
+        const endPage = page + prepareScreenCount;
+
+        boundary.value = {
+            start: pageSize * startPage,
+            end: pageSize * endPage + (endPage === pageCount ? remainderCount : 0)
+        };
+        if (this._renderState === 'next-page') {
+            this.scrollbar.setPosition(this.scrollbar.scrollLeft, rowHeight.value * pageSize);
+        } else if (this._renderState === 'prev-page') {
+            this.scrollbar.setPosition(this.scrollbar.scrollLeft, rowHeight.value * pageSize * this._morePageCount);
+        }
+        nextTick(() => {
+            this.setState('none');
+        });
     }
 }

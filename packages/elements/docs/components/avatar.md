@@ -25,7 +25,7 @@ Avatar使用
 | :-------- | :------------------------------------- | :-----------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
 | id        | 组件id，若不设置会自动生成             |                       String                      |                                                                                                                         |
 | display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |                      Boolean                      |                                                                                                                         |
-| shape     | 形状<hr>默认值:<br><pre>circle</pre>   |                `circle` \| `square`               | `circle` , `square`                                                                                                     |
+| shape     | 形状<hr>默认值:<br><pre>circle</pre>   |                  circle \| square                 | `circle` , `square`                                                                                                     |
 | size      | 尺寸<hr>默认值:<br><pre>md</pre>       |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 | icon-size | 图标尺寸<hr>默认值:<br><pre>md</pre>   |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 | icon      | 图标                                   | [IconNameOrDefinition](#linkiconnameordefinition) |                                                                                                                         |
@@ -51,7 +51,7 @@ Avatar使用
 
 ### Size {#linksize}
 
-- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize)
+- Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) \| number \| (string &amp; { fromT?: any })
 
 ### IconNameOrDefinition {#linkiconnameordefinition}
 

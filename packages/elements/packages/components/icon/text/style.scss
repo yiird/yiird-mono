@@ -1,6 +1,7 @@
 @import '../../theme/scss/reset';
 
 @include b('icon-text') {
+    display: inline;
     font-size: $fontSize;
     user-select: none;
     cursor: pointer;

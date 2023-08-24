@@ -4,56 +4,36 @@ import type { Scrollbar } from 'smooth-scrollbar/scrollbar';
 import type { Ref } from 'vue';
 
 export interface ScrollOptions extends Partial<ScrollbarOptions> {
+    maxHeight?: number;
     plugins?: {
-        auxEl?: AuxElPluginOptions | boolean;
-        hideTrack?: HideTrackPluginOptions | boolean;
-        lifecircle?: LifecirclePluginOptions | boolean;
-        disableScrollBar?: DisableScrollBarPluginOptions | boolean;
-        virtualPage?: VirtualPagePluginOptions | boolean;
-        overscroll?: OverscrollOptions | boolean;
+        lifecircle?: ScrollLifecirclePluginOptions | false;
+        virtual?: VScrollPluginOptions | false;
+        trackAux?: ScrollTrackAuxPluginOptions | false;
+        hideTrack?: ScrollHideTrackPluginOptions | false;
+        disableTrack?: ScrollDisableTrackPluginOptions | false;
+        overscroll?: Partial<OverscrollOptions> | false;
     };
 }
 
-export interface OverflowBoundsState {
+export interface ScrollOverflowState {
     x: 'none' | 'left' | 'right' | 'both';
     y: 'none' | 'top' | 'bottom' | 'both';
 }
 
-export interface PageBoundary {
-    start: number;
-    end: number;
-    pageSize: number;
-}
-
-export interface VirtualPage {
-    pageSize: number;
-    totalPage: number;
-    page: number;
-    firstPage: number;
-    lastPage: number;
-    offsetRenderPageCount: number;
-    lastCount: number;
-}
-
-export interface Scroll {
-    scrollbar?: Scrollbar;
-    overflowState: OverflowBoundsState;
-    setOptions: (_options?: ScrollOptions) => void;
-}
-
-export type HideTrackPluginOptions = {
-    track?: 'none' | 'x' | 'y' | 'both';
+export type ScrollHideTrackPluginOptions = {
+    x: boolean;
+    y: boolean;
 };
 
-export type AuxElPluginOptions = {
+export type ScrollTrackAuxPluginOptions = {
     scopeId?: string;
-    auxPosition?: string[];
+    elClasses?: string[];
 };
 
 /**
  * 禁用滚动条
  */
-export type DisableScrollBarPluginOptions = {
+export type ScrollDisableTrackPluginOptions = {
     /**
      * 是否禁用x轴
      */
@@ -67,7 +47,7 @@ export type DisableScrollBarPluginOptions = {
 /**
  * 滚动条声明周期
  */
-export type LifecirclePluginOptions = {
+export type ScrollLifecirclePluginOptions = {
     /**
      * 初始化
      */
@@ -86,12 +66,32 @@ export type LifecirclePluginOptions = {
     onRender?: (_remainMomentum: Data2d, scrollbar: Scrollbar) => void;
 };
 
-export type VirtualPagePluginOptions = {
+export type ScrollVirtualPluginOptions = {
     itemClass: string;
-    unitHeight: Ref<number>;
-    totalCount: Ref<number>;
-    focusIndex?: Ref<number>;
+    rowHeight: number;
+    pageSize: number;
     triggerCount?: number;
-    preRenderScreenSize?: number;
-    boundary?: Ref<PageBoundary>;
+};
+
+export type VScrollBoundary = {
+    start: number;
+    end: number;
+};
+
+export type ScrollState = 'init' | 'reset' | 'prev-page' | 'next-page' | 'none';
+
+export type VScrollPluginOptions = {
+    rowHeight: Ref<number>;
+    boundary: Ref<VScrollBoundary>;
+    total: Ref<number>;
+    prepareScreenCount: number;
+    triggerCount: Ref<number>;
+    callback?: (state: ScrollState) => void;
+};
+
+export type ScrollVirtualPage = {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    remainderCount: number;
 };

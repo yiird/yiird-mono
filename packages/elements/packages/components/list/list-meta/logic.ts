@@ -2,39 +2,91 @@ import { isObject } from 'lodash-es';
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../../common/prefab';
 import { sizeToFontSize } from '../../../config';
-import type { InternalSetupContext, MultiLineEllipsis, SingleLineEllipsis, Size, ThemeConfig } from '../../../types/global';
-import type { IconNameOrDefinition } from '../../icon';
+import type { MultiLineEllipsis, SingleLineEllipsis } from '../../../types/global';
+import type { IconNameOrDefinition } from '../../../types/icon';
+import type { InternalSetupContext } from '../../../types/prefab';
+import type { Size, ThemeConfig } from '../../../types/theme';
 import type { TitleLevel } from '../../typography/title';
 
+/**
+ * 标题配置
+ */
 export interface ListTitle {
+    /**
+     * 文本内容
+     */
     text: string;
+    /**
+     * 级别
+     */
     level?: TitleLevel;
+    /**
+     * 省略配置
+     */
     ellipsis?: SingleLineEllipsis;
 }
+
+/**
+ * 文本内容配置
+ */
 export interface ListText {
+    /**
+     * 文本内容
+     */
     text: string;
+    /**
+     * 缩进
+     */
     indent: number;
+    /**
+     * 省略配置
+     */
     ellipsis?: MultiLineEllipsis;
 }
 
 export const ListMetaProps = {
     ...BaseProps,
+    /**
+     * 标题
+     */
     title: {
         type: [String, Object] as PropType<string | ListTitle>
     },
+    /**
+     * 图标头像
+     */
     avatarIcon: {
         type: [String, Object] as PropType<IconNameOrDefinition>,
         default: ''
     },
+    /**
+     * 头像访问链接
+     */
     avatarSrc: {
         type: String
     },
+    /**
+     * 头像尺寸
+     */
+    avatarSize: {
+        type: String as PropType<Size>,
+        default: 'md'
+    },
+    /**
+     * 摘要配置
+     */
     summary: {
         type: [String, Object] as PropType<string | ListText>
     },
+    /**
+     * 描述配置
+     */
     description: {
         type: [String, Object] as PropType<string | ListText>
     },
+    /**
+     * 主要内容文本尺寸（除了标题外其他文本）
+     */
     size: {
         type: String as PropType<Size>,
         default: 'md'
@@ -144,7 +196,7 @@ export const setupListMeta = (props: ListMetaPropsType, ctx: SetupContext<typeof
             return { rows: 0 };
         }
     });
-
+    console.log(obtainTitleLevel);
     return {
         ...commonExposed,
         theme,

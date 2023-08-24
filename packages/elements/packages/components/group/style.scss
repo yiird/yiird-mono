@@ -1,0 +1,73 @@
+@import '../theme/scss/reset';
+
+@include b('group') {
+
+    :deep(.divider) {
+        margin: 0;
+        z-index: 1;
+    }
+
+    @include m('direction-h'){
+        :deep(.button) {
+
+            &:first-of-type:not(:only-of-type) {
+                border-top-right-radius: unset;
+                border-bottom-right-radius: unset;
+            }
+
+            &:last-of-type:not(:only-of-type) {
+                border-top-left-radius: unset;
+                border-bottom-left-radius: unset;
+            }
+
+            &:not(:first-of-type, :last-of-type) {
+                border-radius: unset;
+            }
+        }
+
+        :deep(.avatar) {
+            margin-inline-end: $compact;
+        }
+    }
+
+    @include m('direction-v'){
+        :deep(.button) {
+            &:first-of-type:not(:only-of-type) {
+                border-bottom-right-radius: unset;
+                border-bottom-left-radius: unset;
+            }
+
+            &:last-of-type:not(:only-of-type) {
+                border-top-left-radius: unset;
+                border-top-right-radius: unset;
+            }
+
+            &:not(:first-of-type, :last-of-type) {
+                border-radius: unset;
+            }
+        }
+        
+
+        :deep(.avatar) {
+            margin-block-end: $compact;
+        }
+    }
+
+    @include m('after'){
+        :deep(.button) {
+            &:first-of-type {
+                border-top-left-radius: unset;
+                border-bottom-left-radius: unset;
+            }
+        }
+    }
+
+    @include m('before'){
+        :deep(.button) {
+            &:first-of-type {
+                border-top-right-radius: unset;
+                border-bottom-right-radius: unset;
+            }
+        }
+    }
+}

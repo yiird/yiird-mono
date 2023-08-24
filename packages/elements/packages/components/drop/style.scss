@@ -1,0 +1,14 @@
+@import '../theme/scss/reset';
+
+@include b('drop') {
+
+    @include e('search'){
+        box-shadow: none;
+        padding: 5px;
+    }
+
+    @include e('content'){
+        overflow: hidden;
+        box-shadow: none;
+    }
+}

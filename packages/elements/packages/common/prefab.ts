@@ -1,9 +1,16 @@
 import { kebabCase } from 'lodash-es';
-import { getCurrentInstance, inject, nextTick, onBeforeMount, onMounted, ref, toRef, type PropType } from 'vue';
+import { getCurrentInstance, inject, nextTick, onBeforeMount, onMounted, ref, toRef, type App, type Component, type PropType } from 'vue';
 import { CACHE_INSTANCES, DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
-import type { BoxShadowDirection, BoxShadowLevel, CommonExposed, ElementOptions } from '../types/global';
+import type { PlatformOptions } from '../types/options';
+import type { CommonExposed } from '../types/prefab';
+import type { BoxShadowDirection, BoxShadowLevel } from '../types/theme';
 
-export const baseExpose = ['display__', 'id__', 'cType__', 'ELEMENT_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted', 'el'] as const;
+export const _register = (app: App, component: Component, optinos?: PlatformOptions) => {
+    const { prefix = DEFAULT_ELEMENT_OPTIONS } = optinos || {};
+    app.component(kebabCase(`${prefix}${component.name}`), component);
+};
+
+export const baseExpose = ['$', 'id__', 'cType__', 'PLATFORM_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted', 'el', 'scopeId__'] as const;
 
 export const BaseProps = {
     /**
@@ -75,6 +82,7 @@ export const usePrefab = (props: any): CommonExposed => {
 
     //刷新状态
     const refresh__ = ref(true);
+    const scopeId__ = ref();
 
     /**
      * 刷新组件
@@ -95,6 +103,7 @@ export const usePrefab = (props: any): CommonExposed => {
 
     onBeforeMount(() => {
         proxy.value = internalInstance.proxy;
+        scopeId__.value = (internalInstance.type as any).__scopeId;
     });
 
     onMounted(() => {
@@ -102,12 +111,13 @@ export const usePrefab = (props: any): CommonExposed => {
     });
 
     return {
-        ELEMENT_OPTIONS__: inject<ElementOptions>(OPTIONS_KEY, {} as ElementOptions),
+        PLATFORM_OPTIONS__: inject<PlatformOptions>(OPTIONS_KEY, {} as PlatformOptions),
         uid__: internalInstance.uid,
         id__,
         cType__,
         display__,
         refresh__,
+        scopeId__,
         el,
         isMounted,
         setDisplay,

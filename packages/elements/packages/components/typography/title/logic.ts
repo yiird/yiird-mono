@@ -2,7 +2,8 @@ import type { ExtractPropTypes, PropType, SetupContext } from 'vue';
 import { baseExpose, usePrefab } from '../../../common/prefab';
 import { BaseTextProps, obtainBaseTextTheme, type BaseTextTheme } from '../../../common/prefab-typography';
 import { sizeToFontSize, sizeToTextLineHeight } from '../../../config';
-import type { Align, NumberSize, SingleLineEllipsis, Size } from '../../../types/global';
+import type { Align, SingleLineEllipsis } from '../../../types/global';
+import type { NumberSize } from '../../../types/theme';
 
 export type TitleLevel = 1 | 2 | 3 | 4;
 
@@ -21,9 +22,6 @@ export const TitleProps = {
      */
     ellipsis: {
         type: Object as PropType<SingleLineEllipsis>
-    },
-    size: {
-        type: String as PropType<Size>
     }
 } as const;
 export type TitlePropsType = Readonly<ExtractPropTypes<typeof TitleProps>>;
@@ -38,10 +36,9 @@ export const TitleEmits = {};
 
 export const setupTitle = (props: TitlePropsType, ctx: SetupContext<typeof TitleEmits>) => {
     const commonExposed = usePrefab(props);
-
     const theme = obtainBaseTextTheme<typeof TitleEmits, TitleTheme>({ props, commonExposed, ...ctx }, (_theme) => {
         let size = _theme.ye_fontSize;
-        const nsize = props.size || (`${5 - props.level}x` as NumberSize);
+        const nsize = `${5 - props.level}x` as NumberSize;
         if (props.level < 5) {
             size = sizeToFontSize(_theme, nsize);
         }

@@ -1,4 +1,4 @@
-import { getCurrentInstance, type ConcreteComponent } from 'vue';
+import { getCurrentInstance, ref, watchPostEffect, type ComponentPublicInstance, type ConcreteComponent, type VNode } from 'vue';
 
 /**
  * 判断父组件是否是指定的类型
@@ -14,11 +14,9 @@ export const checkParentType = (typeName: string) => {
  * @param typeNames 类型名
  * @returns
  */
-export const checkChidrenTypeIn = (...typeNames: string[]) => {
-    typeNames = typeNames.map((name) => name.toLowerCase());
-    const slots = getCurrentInstance()?.slots.default?.call(null);
-    const notTarget = slots?.find((slot) => {
-        const name = (slot.type as ConcreteComponent).name?.toLowerCase();
+export const checkChidrenIsRightTypes = (children: VNode[], ...typeNames: string[]) => {
+    const notTarget = children.find((child) => {
+        const name = (child.type as ConcreteComponent).name;
         if (name) {
             return !typeNames.includes(name);
         } else {
@@ -26,6 +24,17 @@ export const checkChidrenTypeIn = (...typeNames: string[]) => {
         }
     });
     return !notTarget;
+};
+
+/**
+ * 判断子组件是否为同一类型，如果是同一类型则返回类型名
+ *
+ * @returns 返回类型名称
+ */
+export const checkChildrenIsSameType = () => {
+    const slots = getCurrentInstance()?.slots.default?.call(null);
+    const names = new Set(slots?.map((slot) => (slot.type as ConcreteComponent).name));
+    return names.size === 1 ? Array.from(names)[0] : null;
 };
 
 /**
@@ -47,4 +56,18 @@ export const findBrotherVNodes = (...typeNames: string[]) => {
             return name && typeNames.includes(name);
         });
     }
+};
+
+export const injectInDirective = <T>(instance: ComponentPublicInstance, name: string | symbol) => {
+    return instance.$.appContext.provides[name] as T;
+};
+
+export const vnodeRef = (getter: () => VNode | (() => VNode[])) => {
+    const vnode = ref<VNode | (() => VNode[])>();
+
+    watchPostEffect(() => {
+        vnode.value = getter();
+    });
+
+    return vnode;
 };

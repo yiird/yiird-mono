@@ -2,7 +2,7 @@ import { faClose } from '@fortawesome/pro-light-svg-icons';
 import { isNumber, isString } from 'lodash-es';
 import {
     computed,
-    getCurrentInstance,
+    nextTick,
     onMounted,
     reactive,
     ref,
@@ -16,15 +16,15 @@ import {
     type SetupContext,
     type ShallowRef,
     type UnwrapNestedRefs,
-    type UnwrapRef,
     type VNodeRef
 } from 'vue';
-import { useScroll } from '../../common/composites';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToComponentHeight, sizeToFontSize } from '../../config';
-import type { InternalSetupContext, Size, ThemeConfig } from '../../types/global';
-import type { Scroll, ScrollOptions } from '../../types/scroll';
-import type { IconNameOrDefinition } from '../icon/logic';
+import type { IconNameOrDefinition } from '../../types/icon';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { ScrollOverflowState } from '../../types/scroll';
+import type { Size, ThemeConfig } from '../../types/theme';
+import type { ScrollType } from '../scroll';
 
 /**
  * 标签对象
@@ -135,7 +135,7 @@ export interface TabsTheme extends ThemeConfig {
     auxRightShadow?: string;
 }
 
-const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: UnwrapNestedRefs<TabsConfig>, barRefs: Ref<Element[]>, scroll: UnwrapRef<Scroll>) => {
+const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: UnwrapNestedRefs<TabsConfig>, barRefs: Ref<Element[]>, overflowState: Ref<ScrollOverflowState>) => {
     const themeConfig = useTheme();
     const isMounted = ref(false);
 
@@ -188,8 +188,8 @@ const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: Unwra
             theme.bemModifiers.push(`tabs--${props.mode}`);
         }
 
-        if (scroll.overflowState.x) {
-            theme.bemModifiers.push(`tabs--overflow-${scroll.overflowState.x}`);
+        if (overflowState.value.x) {
+            theme.bemModifiers.push(`tabs--overflow-${overflowState.value.x}`);
         }
 
         theme.auxLeftShadow = theme.ye_boxshadow('low', 'right');
@@ -202,8 +202,9 @@ const obtainTheme = (ctx: InternalSetupContext<TabsPropsType>, tabsConfig: Unwra
 export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
     const commonExposed = usePrefab(props);
 
+    const scroll = ref<ScrollType>();
+
     const barRefs: VNodeRef = ref({});
-    const scrollRef = ref<HTMLElement>();
 
     const tabsConfig = reactive<TabsConfig>({
         disabledIndexes: [],
@@ -232,27 +233,18 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
     const items = toRef(tabsConfig, 'items');
     const currentActiveIndex = toRef(tabsConfig, 'currentActiveIndex');
     const disabledIndexes = toRef(tabsConfig, 'disabledIndexes');
-    const scopeId = (getCurrentInstance()?.type as any).__scopeId;
-    const scrollOptions: ScrollOptions = {
-        plugins: {
-            hideTrack: { track: 'both' },
-            auxEl: {
-                scopeId: scopeId,
-                auxPosition: ['tabs__aux-left', 'tabs__aux-right']
-            },
-            lifecircle: {
-                onInit() {
-                    moveInView(tabsConfig.currentActiveIndex);
-                }
-            },
-            disableScrollBar: {
-                y: true
-            },
-            overscroll: false
-        }
-    };
 
-    const scroll = useScroll(scrollRef, scrollOptions);
+    const overflowState = ref<ScrollOverflowState>({
+        x: 'none',
+        y: 'none'
+    });
+
+    /**
+     * @private
+     */
+    const doOnScrollOverflow_ = (state: ScrollOverflowState) => {
+        overflowState.value = state;
+    };
 
     /**
      * @private
@@ -265,17 +257,20 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
      * @private
      * @param key 序号|或Item ID
      */
-    const moveInView = (key: number | string) => {
-        const index = _findItemIndex(key);
-        const activeBar = scrollRef.value?.querySelector<HTMLElement>(`[data-key="${index}"]`);
-        if (activeBar) {
-            const isVisible = scroll.scrollbar?.isVisible(activeBar);
-            if (!isVisible) {
-                scroll.scrollbar?.scrollIntoView(activeBar, {
-                    offsetLeft: 30
-                });
+    const moveTo = (key: number | string) => {
+        nextTick(() => {
+            const index = _findItemIndex(key);
+            const _scroll = scroll.value;
+            const activeBar = _scroll?.el.querySelector<HTMLElement>(`[data-key="${index}"]`);
+            if (activeBar) {
+                const isVisible = _scroll?.isVisible(activeBar);
+                if (!isVisible) {
+                    _scroll?.scrollIntoView(activeBar, {
+                        offsetLeft: 30
+                    });
+                }
             }
-        }
+        });
     };
 
     /**
@@ -291,7 +286,7 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
             const index = _findItemIndex(activeKey);
             if (disabledIndexes.value.includes(index)) return;
             tabsConfig.currentActiveIndex = index;
-            if (inView) moveInView(index);
+            if (inView) moveTo(index);
         }
     };
 
@@ -311,10 +306,6 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
         }
         return target;
     };
-
-    // const add = (item: TabItem) => {
-
-    // };
 
     /**
      * 关闭指定Tab
@@ -338,26 +329,28 @@ export const setupTabs = (props: TabsPropsType, ctx: SetupContext) => {
         active(activeIndex);
     };
 
-    const theme = obtainTheme({ props, commonExposed, ...ctx }, tabsConfig, barRefs, scroll);
+    const theme = obtainTheme({ props, commonExposed, ...ctx }, tabsConfig, barRefs, overflowState);
 
     onMounted(() => {
         const activeIndex = _findNearAvaliableIndex(_findItemIndex(props.activeKey));
-        active(activeIndex, false);
+        active(activeIndex, true);
     });
 
     return {
         ...commonExposed,
         theme,
+        scroll,
         tabs: items,
         barRefs,
-        scrollRef,
         currentActiveIndex,
         disabledIndexes,
         faClose,
+        doOnScrollOverflow_,
+        moveTo,
         active,
         close
     };
 };
 
-export const TabsExpose = [...baseExpose, ...(['active', 'close'] as const)];
+export const TabsExpose = [...baseExpose, ...(['active', 'close', 'moveTo'] as const)];
 export type TabsExposeType = (typeof TabsExpose)[number];

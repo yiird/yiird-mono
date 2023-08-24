@@ -6,13 +6,12 @@ title: 输入框
 
 ## 状态
 
-<Example name="input-normal" ></Example>
+<Example name="example-input-status" ></Example>
 
 ## 前缀&后缀
 
-<Example name="input-suffix" ></Example>
+<Example name="example-input-subprefix" ></Example>
 
+## 动作
 
-## 左右辅助操作
-
-<Example name="input-action" ></Example>
+<Example name="example-input-actions" ></Example>

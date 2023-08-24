@@ -1,30 +1,52 @@
-import { TypeComment } from '../../parser/comment/node/TypeComment';
+import { AssociationType, TypeComment } from '../../parser/comment/node/TypeComment';
 import { AbstractMdPart } from './AbstractMdPart';
 
 export class MdTypeTextPart extends AbstractMdPart<TypeComment> {
     toMd(comment: TypeComment) {
-        let md = '';
-
         const specialTypes = new Set<TypeComment>();
 
-        comment.getAllTypeArgumentsType(specialTypes);
-
-        if (comment.name && comment.name === comment.text) {
-            md = comment.name;
-        } else if (comment.typeArguments) {
-            md = comment.typeArguments.map((_type) => _type.text).join(',');
-        } else if (comment.isFunctionType) {
-            md = comment.text || '';
-        }
-        specialTypes.forEach((_type) => {
-            if (_type.name) {
-                md = md.replaceAll(_type.name, `[${_type.name}](#${this._linkPrefix}${_type.name.toLocaleLowerCase()})`);
-            }
-        });
-
         return {
-            md: this.styles.html(md),
+            md: this.styles.html(this.nestedReplaceName(specialTypes, comment, 0)),
             specialTypes
         };
+    }
+
+    private nestedReplaceName = (specialTypes: Set<TypeComment>, type: TypeComment, deep: number) => {
+        type.getAllTypeArgumentsType(specialTypes);
+        let md = '';
+        if (type.name && type.name === type.text) {
+            md = this.replaceLink(specialTypes, type.name);
+        } else if (type.isFunctionType) {
+            if (deep === 0) {
+                if (type.functionReturnType && type.functionParams) {
+                    deep++;
+                    md = `(${type.functionParams
+                        ?.map((_type) => `${_type.name}:${this.nestedReplaceName(specialTypes, _type.type, deep)}`)
+                        .join(' , ')}) => ${this.nestedReplaceName(specialTypes, type.functionReturnType, deep)}`;
+                }
+            } else if (type.name) {
+                md = this.replaceLink(specialTypes, type.name);
+            }
+        } else if (type.typeArguments) {
+            const typeArguments = type.typeArguments.map((_type) => this.nestedReplaceName(specialTypes, _type, deep++)).join(',');
+            if (type.name === 'PropType') {
+                md = typeArguments;
+            } else {
+                md = `${type.name}<${typeArguments}>`;
+            }
+        } else if (type.associationType) {
+            md = type.associations?.map((_type) => this.nestedReplaceName(specialTypes, _type, deep++)).join(AssociationType.union ? ' | ' : ' & ') || '';
+        }
+        return md;
+    };
+
+    private replaceLink(specialTypes: Set<TypeComment>, typeName: string) {
+        const targetType = Array.from(specialTypes).find((type) => type.name === typeName);
+
+        if (targetType?.name) {
+            typeName = typeName.replaceAll(targetType.name, `[${targetType.name}](#${this._linkPrefix}${targetType.name.toLocaleLowerCase()})`);
+        }
+
+        return typeName;
     }
 }

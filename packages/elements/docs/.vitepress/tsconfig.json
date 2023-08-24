@@ -1,6 +1,6 @@
 {
     "extends": "@vue/tsconfig/tsconfig.web.json",
-    "include": ["**/*.*", "../components.d.ts", "env.d.ts"],
+    "include": ["**/*.*", "../components.d.ts","../../packages/**/*.vue", "env.d.ts"],
     "compilerOptions": {
         "jsx": "preserve",
         "ignoreDeprecations": "5.0"

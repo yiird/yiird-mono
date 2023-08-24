@@ -1,4 +1,4 @@
-import ts, { Node } from 'typescript';
+import { ParameterDeclaration } from 'typescript';
 import { Context } from '../../../common/Context';
 import { JsdocUtils } from '../../../common/JsdocUtils';
 import { ScriptStructure } from '../../node/ScriptStructure';
@@ -12,21 +12,14 @@ export class ParamCommentParser extends AbstractCommentParser<ParamComment> {
         super(structure, context);
         this._typeParser = typeParser;
     }
-    //private _typeParser = NodeCommentParserFactory.createTypeParser(this.structure, this.context);
 
-    parse(node: Node): ParamComment {
+    parse(node: ParameterDeclaration): ParamComment {
         this._typeParser.init();
 
         const jsdocs = JsdocUtils.getJsDoc(node);
         const jsdoc = jsdocs[0];
-        const comment = new ParamComment();
-        if (ts.isParameter(node)) {
-            comment.name = node.name.getText();
-            comment.isRequired = !node.questionToken;
-            if (node.type) {
-                comment.type = this._typeParser.parse(node.type);
-            }
-        }
+
+        const comment = new ParamComment(node.name.getText(), node.type ? this._typeParser.parse(node.type) : TypeComment.anyType, !node.questionToken);
 
         if (jsdoc) {
             comment.description = JsdocUtils.getDescription(jsdoc);

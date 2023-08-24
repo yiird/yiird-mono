@@ -1,10 +1,11 @@
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
-import type { Direction, InternalSetupContext, ThemeConfig } from '../../types/global';
+import { sizeToGap } from '../../config';
+import type { Direction, FlexAlgin } from '../../types/global';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { Size, ThemeConfig } from '../../types/theme';
 
-export type SpaceGap = 'sm' | 'md' | 'lg';
-
-const getSize = (themeConfig: ThemeConfig, size: SpaceGap | number) => {
+/* const getSize = (themeConfig: ThemeConfig, size: SpaceGap | number) => {
     let _size: number;
     switch (size) {
         case 'sm': {
@@ -25,17 +26,34 @@ const getSize = (themeConfig: ThemeConfig, size: SpaceGap | number) => {
     }
 
     return _size;
-};
+}; */
 
 export const SpaceProps = {
     ...BaseProps,
     gap: {
-        type: [String, Number] as PropType<SpaceGap | number>,
+        type: [String, Number] as PropType<Size>,
         default: 'md'
     },
+    /**
+     * 排列方向
+     */
     direction: {
         type: String as PropType<Direction>,
         default: 'h'
+    },
+    /**
+     * 主轴方向上的排列方式
+     */
+    mainAxis: {
+        type: String as PropType<FlexAlgin>,
+        default: 'start'
+    },
+    /**
+     * 交叉轴方向上的排列方式
+     */
+    crossAxis: {
+        type: String as PropType<FlexAlgin>,
+        default: 'start'
     }
 } as const;
 export type SpacePropsType = Readonly<ExtractPropTypes<typeof SpaceProps>>;
@@ -43,6 +61,8 @@ export type SpacePropsType = Readonly<ExtractPropTypes<typeof SpaceProps>>;
 export interface SpaceTheme extends ThemeConfig {
     bemModifiers?: string[];
     gap: string;
+    mainAxis: string;
+    crossAxis: string;
 }
 
 export const SpaceEmits = {};
@@ -52,15 +72,16 @@ const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<SpaceProp
     const { props, commonExposed } = ctx;
 
     const obtainSize = computed(() => {
-        return getSize(themeConfig.value, props.gap);
+        return sizeToGap(themeConfig.value, props.gap);
     });
 
     return computed<SpaceTheme>(() => {
         const _themeConfig = themeConfig.value;
-
         const theme: SpaceTheme = {
             ..._themeConfig,
-            gap: `${obtainSize.value}px`
+            gap: `${obtainSize.value}px`,
+            mainAxis: props.mainAxis,
+            crossAxis: props.crossAxis
         };
 
         theme.bemModifiers = [`${commonExposed.cType__}--${props.direction}`];

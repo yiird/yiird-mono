@@ -47,7 +47,7 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
                 doc += styles.t(0, `- 选项：`);
                 comment.properties.forEach((property) => {
                     const type = property.type;
-                    if (type) {
+                    if (type && !property.isPrivate) {
                         doc += styles.line();
                         let resolved;
                         if (type.associationType) {
@@ -57,7 +57,11 @@ export class MdTypePart extends AbstractMdPart<TypeComment> {
                         }
 
                         resolved.specialTypes.forEach((_type) => specialTypes.add(_type));
-                        doc += styles.t(1, `- \`${property.name}\` { ${resolved.md} } : ${styles.html(property.description || '')}`);
+                        if (property.isRequired) {
+                            doc += styles.t(1, `- \`${property.name}\` { ${resolved.md} } : ${styles.html(property.description || '')}`);
+                        } else {
+                            doc += styles.t(1, `- [\`${property.name}\`] { ${resolved.md} } : ${styles.html(property.description || '')}`);
+                        }
                     }
                 });
             }

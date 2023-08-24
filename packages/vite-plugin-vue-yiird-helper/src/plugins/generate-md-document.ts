@@ -72,7 +72,10 @@ export const extractCommentsPlugin = (rawOptions: Options = {}): Plugin[] => {
                 const extractorobj = extractor(options);
                 extractorobj.extractor();
                 extractorobj.on('filechange', (path) => {
+                    console.log('extractor:', path);
+                    console.time('extractor');
                     extractorobj.extractor(path);
+                    console.timeEnd('extractor');
                 });
             }
         },

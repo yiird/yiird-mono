@@ -1,13 +1,11 @@
 <template>
-    <y-theme >
-        <y-panel
-            title="这是panel标题"
-            :height="200"
-            :operators="operators"
-            :border="true">
-            <div v-html="content"></div>
-        </y-panel>
-    </y-theme>
+    <y-panel
+        title="这是panel标题"
+        :height="200"
+        :operators="operators"
+        :border="true">
+        <div v-html="content"></div>
+    </y-panel>
 </template>
 
 <script setup lang="ts">

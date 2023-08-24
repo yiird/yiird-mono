@@ -1,6 +1,10 @@
-import { computed, type ExtractPropTypes, type PropType, type UnwrapNestedRefs } from 'vue';
-import { baseExpose, BaseProps } from '../../common/prefab';
+import { computed, getCurrentInstance, provide, reactive, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext, type UnwrapNestedRefs } from 'vue';
+import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
+import { checkChidrenIsRightTypes } from '../../common/vnode-utils';
+import { FRAMEWORK_CONFIG_KEY } from '../../config';
 import type { FrameworkConfig } from '../../types/global';
+import type { InternalSetupContext } from '../../types/prefab';
+import type { ThemeConfig } from '../../types/theme';
 export const FrameworkProps = {
     ...BaseProps,
     /**
@@ -11,7 +15,9 @@ export const FrameworkProps = {
         default: false
     }
 } as const;
-export interface FrameworkTheme {
+export type FrameworkPropsType = Readonly<ExtractPropTypes<typeof FrameworkProps>>;
+
+export interface FrameworkTheme extends ThemeConfig {
     bemModifiers?: string[];
     header?: string;
     footer?: string;
@@ -19,16 +25,24 @@ export interface FrameworkTheme {
     right?: string;
     height?: string;
 }
-export const useFrameworkTheme = (props: Readonly<ExtractPropTypes<typeof FrameworkProps>>, framework: UnwrapNestedRefs<FrameworkConfig>) => {
+
+export const FrameworkEmits = {};
+
+const obtainTheme = <E extends EmitsOptions>(ctx: InternalSetupContext<FrameworkPropsType, E>, framework: UnwrapNestedRefs<FrameworkConfig>) => {
+    const themeConfig = useTheme();
+    const { props } = ctx;
     framework.fixed = props.fixed;
     return computed<FrameworkTheme>(() => {
-        const theme: FrameworkTheme = {};
+        const _themeConfig = themeConfig.value;
 
-        theme.header = (framework?.header || 0) + 'px';
-        theme.footer = (framework?.footer || 0) + 'px';
-        theme.left = (framework?.left || 0) + 'px';
-        theme.right = (framework?.right || 0) + 'px';
-        theme.height = props.fixed ? '100%' : 'auto';
+        const theme: FrameworkTheme = {
+            ..._themeConfig,
+            header: (framework?.header || 0) + 'px',
+            footer: (framework?.footer || 0) + 'px',
+            left: (framework?.left || 0) + 'px',
+            right: (framework?.right || 0) + 'px',
+            height: props.fixed ? '100%' : 'auto'
+        };
 
         theme.bemModifiers = [];
 
@@ -36,5 +50,20 @@ export const useFrameworkTheme = (props: Readonly<ExtractPropTypes<typeof Framew
     });
 };
 
+export const setupFramework = (props: FrameworkPropsType, ctx: SetupContext<typeof FrameworkEmits>) => {
+    const children = getCurrentInstance()?.slots.default?.call(null) || [];
+    if (!checkChidrenIsRightTypes(children, 'Header', 'Footer', 'Main', 'Sider')) {
+        throw new Error('Framework的子组件只能是Header,Footer,Main,Sider');
+    }
+    const framework = reactive<FrameworkConfig>({});
+    provide(FRAMEWORK_CONFIG_KEY, framework);
+    const commonExposed = usePrefab(props);
+
+    const theme = obtainTheme<typeof FrameworkEmits>({ props, commonExposed, ...ctx }, framework);
+    return {
+        ...commonExposed,
+        theme
+    };
+};
 export const FrameworkExpose = [...baseExpose, ...([] as const)];
 export type FrameworkExposeType = (typeof FrameworkExpose)[number];

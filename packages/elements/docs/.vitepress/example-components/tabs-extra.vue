@@ -2,23 +2,23 @@
     <y-tabs
         ref="tabs"
         mode="card"
-        :active-key="0"
+        :active-key="8"
         :items="items">
         <template v-slot:extra-left>
-            <y-btn
+            <y-button
                 mode="empty"
                 size="md"
                 @click="go(0)">
                 Go First
-            </y-btn>
+            </y-button>
         </template>
         <template v-slot:extra-right>
-            <y-btn
+            <y-button
                 mode="empty"
                 size="md"
                 @click="go(9)">
                 Go Last
-            </y-btn>
+            </y-button>
         </template>
     </y-tabs>
 </template>

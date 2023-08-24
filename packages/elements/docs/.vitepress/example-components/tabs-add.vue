@@ -4,25 +4,25 @@
         :gutter="15"
         :items="items">
         <template v-slot:extra-left>
-            <y-btn
+            <y-button
                 mode="empty"
                 size="md"
                 @click="go(0)">
                 Go First
-            </y-btn>
+            </y-button>
         </template>
         <template v-slot:extra-right>
-            <y-btn
+            <y-button
                 mode="empty"
                 size="md"
                 @click="goLast()">
                 Go Last
-            </y-btn>
-            <y-btn
+            </y-button>
+            <y-button
                 mode="empty"
                 size="md"
                 :icon="faPlus"
-                @click="plus()"></y-btn>
+                @click="plus()"></y-button>
         </template>
     </y-tabs>
 </template>

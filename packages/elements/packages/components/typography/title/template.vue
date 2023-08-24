@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { ellipsis } from '../../../directives';
+import { Ellipsis } from '../../../directives';
 import { TitleEmits, TitleExpose, TitleProps, setupTitle } from './logic';
 /**
  * Title使用
@@ -20,7 +20,7 @@ import { TitleEmits, TitleExpose, TitleProps, setupTitle } from './logic';
 export default defineComponent({
     name: 'Title',
     directives: {
-        ellipsis
+        ellipsis: Ellipsis
     },
     props: TitleProps,
     expose: TitleExpose,

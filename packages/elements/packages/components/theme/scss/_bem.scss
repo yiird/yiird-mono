@@ -48,14 +48,12 @@ $state-prefix: 'is-';
 @mixin b($block) {
     @if $namespace == ''{
         $B: $block !global;
-        .#{$B} {
-            @content;
-        }
     } @else {
         $B: $namespace + '-' + $block !global;
-        .#{$B} {
-            @content;
-        }
+    }
+
+    .#{$B} {
+        @content;
     }
 }
 

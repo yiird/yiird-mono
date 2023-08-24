@@ -1,54 +1,54 @@
 <template>
     <div class="wrap">
-        <y-btn shape="circle">
+        <y-button shape="circle">
             <y-icon name="heart"></y-icon>
-        </y-btn>
-        <y-btn shape="square">
+        </y-button>
+        <y-button shape="square">
             <y-icon name="heart"></y-icon>
-        </y-btn>
-        <y-btn shape="ellipse">
+        </y-button>
+        <y-button shape="ellipse">
             <y-icon name="heart"></y-icon>
             &nbsp;椭圆形
-        </y-btn>
-        <y-btn shape="rectangle">
+        </y-button>
+        <y-button shape="rectangle">
             <y-icon name="heart"></y-icon>
             &nbsp;矩形
-        </y-btn>
-        <y-btn :shape="shapeRef">
+        </y-button>
+        <y-button :shape="shapeRef">
             <y-icon name="heart"></y-icon>
-        </y-btn>
+        </y-button>
         <br />
-        <y-btn
+        <y-button
             shape="circle"
             color="primary">
             <y-icon name="heart"></y-icon>
-        </y-btn>
-        <y-btn
+        </y-button>
+        <y-button
             shape="square"
             color="primary"
             mode="link">
             <y-icon name="heart"></y-icon>
-        </y-btn>
-        <y-btn
+        </y-button>
+        <y-button
             shape="ellipse"
             color="primary"
             mode="dashed">
             <y-icon name="heart"></y-icon>
             &nbsp;椭圆形
-        </y-btn>
-        <y-btn
+        </y-button>
+        <y-button
             shape="rectangle"
             color="primary"
             mode="half">
             <y-icon name="heart"></y-icon>
             &nbsp;矩形
-        </y-btn>
-        <y-btn
+        </y-button>
+        <y-button
             :shape="shapeRef"
             color="primary"
             mode="empty">
             <y-icon name="heart"></y-icon>
-        </y-btn>
+        </y-button>
     </div>
 </template>
 
@@ -66,7 +66,7 @@ setInterval(() => {
 </script>
 
 <style scoped>
-.wrap :deep(.btn) {
+.wrap :deep(.button) {
     margin: 0.5rem;
 }
 </style>

@@ -1,58 +1,78 @@
 @import '../theme/scss/reset';
 
 @include b('list') {
-
     @include e('item') {
         display: flex;
-        align-items: flex-start;
-        flex-direction: $itemDirection;
         gap: calc($gap / 2);
-
         font-size: $fontSize;
 
         @include e('content') {
-            display: flex;
-            align-items: center;
-            flex-direction: $contentDirection;
             gap: calc($gap / 2);
-            flex: 1 0 auto;
-            justify-content: $contentJustifyContent;
+            display: flex;
+        }
 
-            @include e('extra') {
-                display: flex;
-                flex: 0 0 auto;
-                align-self: $extraAlign;
-                // justify-self: $extraJustifySelf;
-            }
+        @include e('extra'){
+            align-self: $extraAlign;
+            flex: 1 0 auto;
         }
 
         @include e('actions') {
             display: flex;
             flex: 0 0 auto;
             align-self: $actionsAlign;
-            // justify-self: $actionsJustifySelf;
         }
 
-        &:hover{
+        &:hover {
+            color: $hoverTextColor !important;
             background-color: $hoverColor;
         }
     }
-/* 
+
+    @include m('v') {
+        @include e('item') {
+            flex-direction: column;
+        }
+    }
+
+    @include m('v-reverse') {
+        @include e('item') {
+            flex-direction: column-reverse;
+        }
+    }
+
     @include m('h') {
         @include e('item') {
-
-            @include e('content'){
-                justify-content: $inlineRevertJustifyContent;
-   
-
-                @include e('extra') {
-                    flex: 0 0 auto;
-                }
-            }
-
-            @include e('actions'){
-                flex: 0 0 auto;
-            }
+            flex-direction: row;
         }
-    } */
+    }
+
+    @include m('h-reverse') {
+        @include e('item') {
+            flex-direction: row-reverse;
+        }
+    }
+
+    @include m('content-v'){
+        @include e('content') {
+            flex-direction: column;
+        }
+    }
+
+    @include m('content-v-reverse'){
+        @include e('content') {
+            flex-direction: column-reverse;
+        }
+    }
+
+    @include m('content-h'){
+        @include e('content') {
+            flex-direction: row;
+        }
+    }
+
+    @include m('content-h-reverse'){
+        @include e('content') {
+            flex-direction: row-reverse;
+        }
+    }
 }

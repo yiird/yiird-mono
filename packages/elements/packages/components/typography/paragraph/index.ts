@@ -1,21 +1,17 @@
-import { capitalize, type App } from 'vue';
-import { DEFAULT_ELEMENT_OPTIONS } from '../../../config';
-import type { ComponentType, ElementOptions, Plugin } from '../../../types/global';
+import type { App, Plugin } from 'vue';
+import { _register } from '../../../common/prefab';
+import type { PlatformOptions } from '../../../types/options';
+import type { ComponentType } from '../../../types/prefab';
 import type { ParagraphExposeType } from './logic';
 import Paragraph from './template.vue';
 
 const ParagraphPlugin: Plugin = {
-    _register(app: App, optinos?: ElementOptions) {
-        const { prefix = DEFAULT_ELEMENT_OPTIONS } = optinos || {};
-        app.component(capitalize(`${prefix}${Paragraph.name}`), Paragraph);
-    },
-
-    install(app: App, optinos: ElementOptions) {
-        this._register(app, optinos);
+    install(app: App, optinos: PlatformOptions) {
+        _register(app, Paragraph, optinos);
     }
 };
 
 export type * from './logic';
 export { Paragraph, ParagraphPlugin };
-export type { ElementOptions };
+export type { PlatformOptions as ElementOptions };
 export type ParagraphType = ComponentType<typeof Paragraph, ParagraphExposeType>;

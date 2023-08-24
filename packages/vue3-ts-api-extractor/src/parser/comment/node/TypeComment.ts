@@ -1,5 +1,6 @@
 import { Utils } from '../../../common/Utils';
 import { NodeComment, NodeCommentKind } from './NodeComment';
+import { ParamComment } from './ParamComment';
 import { PropertyComment } from './PropertyComment';
 
 export enum AssociationType {
@@ -8,6 +9,8 @@ export enum AssociationType {
 }
 
 export class TypeComment extends NodeComment {
+    static anyType = new TypeComment('any');
+    static voidType = new TypeComment('void');
     public kind: NodeCommentKind = NodeCommentKind.TYPE;
     private _properties?: Array<PropertyComment>;
 
@@ -18,6 +21,8 @@ export class TypeComment extends NodeComment {
     private _associations?: Array<TypeComment>;
     private _isLiteralType?: boolean = false;
     private _isFunctionType?: boolean = false;
+    private _functionParams?: ParamComment[];
+    private _functionReturnType?: TypeComment;
 
     private _text?: string | undefined;
     public get text(): string | undefined {
@@ -71,6 +76,22 @@ export class TypeComment extends NodeComment {
         this._isFunctionType = value;
     }
 
+    public get functionParams(): ParamComment[] | undefined {
+        return this._functionParams;
+    }
+
+    public set functionParams(value: ParamComment[] | undefined) {
+        this._functionParams = value;
+    }
+
+    public get functionReturnType(): TypeComment | undefined {
+        return this._functionReturnType;
+    }
+
+    public set functionReturnType(value: TypeComment | undefined) {
+        this._functionReturnType = value;
+    }
+
     public isBasic() {
         if (
             !this.name ||
@@ -88,7 +109,7 @@ export class TypeComment extends NodeComment {
 
     public getSpecialTypes(specilTypes: Set<TypeComment>) {
         if (((!this.name && !this.associationType) || (this.name && Utils.isBasicType(this.name))) && !this.isFunctionType) return;
-        if ('PropType' !== this.name) {
+        if ('PropType' !== this.name && 'Array' !== this.name) {
             specilTypes.add(this);
         }
 
@@ -99,12 +120,16 @@ export class TypeComment extends NodeComment {
 
     public getAllTypeArgumentsType(specilTypes: Set<TypeComment>) {
         if (!this.isBasic() || this.name === 'Array' || this.isFunctionType) {
-            if ('PropType' !== this.name) {
+            if ('PropType' !== this.name && 'Array' !== this.name) {
                 specilTypes.add(this);
             }
             this.typeArguments?.forEach((_type) => _type.getAllTypeArgumentsType(specilTypes));
         } else if (this.associationType) {
             this.associations?.forEach((_type) => _type.getAllTypeArgumentsType(specilTypes));
+        } else if (this.functionParams) {
+            this.functionParams.forEach((_param) => _param.type.getAllTypeArgumentsType(specilTypes));
+        } else if (this.functionReturnType) {
+            this.functionReturnType.getAllTypeArgumentsType(specilTypes);
         }
     }
 }

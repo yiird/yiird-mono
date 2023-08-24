@@ -22,20 +22,30 @@ export class EmitsCommentParser extends AbstractCommentParser<EventComment> {
         if (ts.isMethodDeclaration(node)) {
             const _comment = this._methodPaser.parse(node, node.body);
             comment.name = _comment?.name;
-            comment.args = _comment?.parameters?.map((param, index) => {
-                return {
-                    kind: NodeCommentKind.PROPERTY,
-                    name: `arg${index}`,
-                    type: param.type,
-                    description: param.description
-                };
-            });
+            if (_comment?.parameters) {
+                comment.args = _comment.parameters.map((param, index) => {
+                    return {
+                        isIgnore: false,
+                        typeName: param.type?.name,
+                        isPrivate: false,
+                        isRequired: false,
+                        kind: NodeCommentKind.PROPERTY,
+                        name: `arg${index}`,
+                        type: param.type,
+                        description: param.description
+                    };
+                });
+            }
         } else if (ts.isPropertyAssignment(node)) {
             comment.name = node.name.getText();
             if (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer)) {
                 const _comment = this._methodPaser.parse(node, node.initializer.body);
                 comment.args = _comment?.parameters?.map((param) => {
                     return {
+                        isIgnore: false,
+                        typeName: param.type?.name,
+                        isPrivate: false,
+                        isRequired: false,
                         kind: NodeCommentKind.PROPERTY,
                         name: param.name,
                         type: param.type,

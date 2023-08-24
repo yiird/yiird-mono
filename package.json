@@ -8,6 +8,7 @@
     "bootstrap": "bash scripts/bootstrap.sh",
     "test": "vitest",
     "build": "lerna run build",
+    "docs:build": "lerna run docs:build",
     "commit:owl": "lerna exec --scope @yiird/owl -- git add . && cz",
     "commit:extractor": "lerna exec --scope @yiird/vue3-ts-api-extractor -- git add . && cz",
     "commit:helper": "lerna exec --scope @yiird/vite-plugin-vue-yiird-helper -- git add . && cz",
