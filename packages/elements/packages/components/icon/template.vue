@@ -4,6 +4,7 @@
         v-if="refresh__"
         :id="id__"
         ref="el"
+        :title="text"
         :class="[cType__, obtainFaClasses, theme.bemModifiers]"
         :icon="obtainIcon"
         :fixed-width="obtainFixedWidth"

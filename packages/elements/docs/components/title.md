@@ -21,20 +21,21 @@ Title使用
 
 <div class="props">
 
-| 名称       | 描述                                     |                      类型                     | 可选值                     |
-| :--------- | :--------------------------------------- | :-------------------------------------------: | :------------------------- |
-| id         | 组件id，若不设置会自动生成               |                     String                    |                            |
-| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   |                    Boolean                    |                            |
-| strong     | 加粗                                     |                    Boolean                    |                            |
-| delete     | 删除线                                   |                    Boolean                    |                            |
-| underline  | 下滑线                                   |                    Boolean                    |                            |
-| italic     | 斜体                                     |                    Boolean                    |                            |
-| mark       | 标记                                     |                                               |                            |
-| secondary  | 是否是次要文本                           |                    Boolean                    |                            |
-| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> |                    Boolean                    |                            |
-| level      | <hr>默认值:<br><pre>1</pre>              |         [TitleLevel](#linktitlelevel)         | `1` , `2` , `3` , `4`      |
-| align      | <hr>默认值:<br><pre>start</pre>          |              [Align](#linkalign)              | `start` , `center` , `end` |
-| ellipsis   | 文本溢出配置                             | [SingleLineEllipsis](#linksinglelineellipsis) |                            |
+| 名称       | 描述                                     |                           类型                          | 可选值                     |
+| :--------- | :--------------------------------------- | :-----------------------------------------------------: | :------------------------- |
+| id         | 组件id，若不设置会自动生成               |                          String                         |                            |
+| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   |                         Boolean                         |                            |
+| rendered   | 组件渲染完后的回调                       | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                            |
+| strong     | 加粗                                     |                         Boolean                         |                            |
+| delete     | 删除线                                   |                         Boolean                         |                            |
+| underline  | 下滑线                                   |                         Boolean                         |                            |
+| italic     | 斜体                                     |                         Boolean                         |                            |
+| mark       | 标记                                     |                                                         |                            |
+| secondary  | 是否是次要文本                           |                         Boolean                         |                            |
+| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> |                         Boolean                         |                            |
+| level      | <hr>默认值:<br><pre>1</pre>              |              [TitleLevel](#linktitlelevel)              | `1` , `2` , `3` , `4`      |
+| align      | <hr>默认值:<br><pre>start</pre>          |                   [Align](#linkalign)                   | `start` , `center` , `end` |
+| ellipsis   | 文本溢出配置                             |      [SingleLineEllipsis](#linksinglelineellipsis)      |                            |
 
 </div>
 
@@ -53,6 +54,10 @@ Title使用
 ## 关联类型
 
 
+
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
 
 ### TitleLevel {#linktitlelevel}
 

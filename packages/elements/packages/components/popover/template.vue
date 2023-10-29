@@ -1,21 +1,25 @@
 <template>
-    <Teleport to="body">
+    <Teleport
+        v-if="refresh__"
+        :id="id__"
+        to="body">
         <div
-            v-if="refresh__"
+            v-show="visibility"
             :id="id__"
             ref="el"
             v-bind="$attrs"
             :style="floatingStyles"
             :class="[cType__, theme.bemModifiers]">
             <div
-                ref="arrowRef"
+                ref="arrow"
                 :class="`${cType__}__arrow`"></div>
+
             <span :class="`${cType__}__text`">{{ text }}</span>
 
             <div :class="`${cType__}__content`">
                 <!-- 气泡内容 -->
                 <!-- @param {Boolean} is-open 打开状态 -->
-                <slot :is-open="isOpen"></slot>
+                <slot :is-open="visibility"></slot>
             </div>
         </div>
     </Teleport>

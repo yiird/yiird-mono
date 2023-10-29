@@ -1,89 +1,95 @@
 {
   "hash": "84d5cb57",
-  "browserHash": "ca6ab25c",
+  "browserHash": "8eab1a67",
   "optimized": {
     "vue": {
       "src": "../../../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "c65de090",
+      "fileHash": "e94f874d",
       "needsInterop": false
     },
     "smooth-scrollbar": {
       "src": "../../../../../../node_modules/smooth-scrollbar/index.js",
       "file": "smooth-scrollbar.js",
-      "fileHash": "151ae103",
+      "fileHash": "86d68966",
       "needsInterop": false
     },
     "lodash-es": {
       "src": "../../../../../../node_modules/lodash-es/lodash.js",
       "file": "lodash-es.js",
-      "fileHash": "aa7c6a97",
+      "fileHash": "7a884517",
       "needsInterop": false
     },
     "@fortawesome/pro-solid-svg-icons": {
       "src": "../../../../../../node_modules/@fortawesome/pro-solid-svg-icons/index.mjs",
       "file": "@fortawesome_pro-solid-svg-icons.js",
-      "fileHash": "28ea347b",
+      "fileHash": "149a1094",
       "needsInterop": false
     },
     "@fortawesome/pro-light-svg-icons": {
       "src": "../../../../../../node_modules/@fortawesome/pro-light-svg-icons/index.mjs",
       "file": "@fortawesome_pro-light-svg-icons.js",
-      "fileHash": "4ac22630",
+      "fileHash": "925de640",
       "needsInterop": false
     },
     "@fortawesome/pro-duotone-svg-icons": {
       "src": "../../../../../../node_modules/@fortawesome/pro-duotone-svg-icons/index.mjs",
       "file": "@fortawesome_pro-duotone-svg-icons.js",
-      "fileHash": "b68f0270",
+      "fileHash": "b85133c9",
       "needsInterop": false
     },
     "@fortawesome/pro-regular-svg-icons": {
       "src": "../../../../../../node_modules/@fortawesome/pro-regular-svg-icons/index.mjs",
       "file": "@fortawesome_pro-regular-svg-icons.js",
-      "fileHash": "c688deb3",
+      "fileHash": "44932b20",
       "needsInterop": false
     },
     "smooth-scrollbar/plugins/overscroll": {
       "src": "../../../../../../node_modules/smooth-scrollbar/plugins/overscroll/index.js",
       "file": "smooth-scrollbar_plugins_overscroll.js",
-      "fileHash": "b5fc224f",
+      "fileHash": "7c12f4ad",
       "needsInterop": false
     },
     "@ant-design/colors": {
       "src": "../../../../../../node_modules/@ant-design/colors/es/index.js",
       "file": "@ant-design_colors.js",
-      "fileHash": "f590bad1",
+      "fileHash": "df6d7123",
       "needsInterop": false
     },
     "color": {
       "src": "../../../../../../node_modules/color/index.js",
       "file": "color.js",
-      "fileHash": "f69ccafa",
+      "fileHash": "aaf3a35b",
       "needsInterop": true
     },
     "@floating-ui/vue": {
       "src": "../../../../../../node_modules/@floating-ui/vue/dist/floating-ui.vue.esm.js",
       "file": "@floating-ui_vue.js",
-      "fileHash": "1de0e11d",
+      "fileHash": "875838b2",
       "needsInterop": false
     },
     "resize-observer": {
       "src": "../../../../../../node_modules/resize-observer/lib/ResizeObserver.js",
       "file": "resize-observer.js",
-      "fileHash": "a36b9916",
+      "fileHash": "abec1f39",
       "needsInterop": true
     },
     "@fortawesome/vue-fontawesome": {
       "src": "../../../../../../node_modules/@fortawesome/vue-fontawesome/index.es.js",
       "file": "@fortawesome_vue-fontawesome.js",
-      "fileHash": "80e998f0",
+      "fileHash": "4218a0e4",
       "needsInterop": false
     },
     "@fortawesome/fontawesome-svg-core": {
       "src": "../../../../../../node_modules/@fortawesome/fontawesome-svg-core/index.mjs",
       "file": "@fortawesome_fontawesome-svg-core.js",
-      "fileHash": "0cf60fff",
+      "fileHash": "8bad9237",
+      "needsInterop": false
+    },
+    "@floating-ui/core": {
+      "src": "../../../../../../node_modules/@floating-ui/core/dist/floating-ui.core.browser.mjs",
+      "file": "@floating-ui_core.js",
+      "fileHash": "28ead521",
       "needsInterop": false
     }
   },
@@ -91,11 +97,14 @@
     "chunk-4MUZNYRM": {
       "file": "chunk-4MUZNYRM.js"
     },
-    "chunk-GUYLWBIB": {
-      "file": "chunk-GUYLWBIB.js"
-    },
     "chunk-FBEJMNSL": {
       "file": "chunk-FBEJMNSL.js"
+    },
+    "chunk-FXQCVBUK": {
+      "file": "chunk-FXQCVBUK.js"
+    },
+    "chunk-GUYLWBIB": {
+      "file": "chunk-GUYLWBIB.js"
     },
     "chunk-4EOJPDL2": {
       "file": "chunk-4EOJPDL2.js"

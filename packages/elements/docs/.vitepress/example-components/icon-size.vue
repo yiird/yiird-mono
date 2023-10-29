@@ -2,55 +2,55 @@
     <span class="tip">1x - 10x</span>
     <br />
     <y-icon
-        name="camera"
+        icon="camera"
         size="1x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="2x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="3x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="4x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="5x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="6x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="7x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="8x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="9x"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="10x"></y-icon>
     <hr />
     <span class="tip">2xs - 2xl</span>
     <br />
     <y-icon
-        name="camera"
+        icon="camera"
         size="2xs"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="xs"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="sm"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="lg"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="xl"></y-icon>
     <y-icon
-        name="camera"
+        icon="camera"
         size="2xl"></y-icon>
 </template>
 

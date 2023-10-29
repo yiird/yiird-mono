@@ -4,11 +4,12 @@
         v-if="refresh__"
         :id="id__"
         ref="el"
+        :title="text"
         :class="[cType__, theme.bemModifiers]">
         <Icon
             v-if="icon"
-            :size="iconSize"
-            :name="icon"></Icon>
+            :size="size"
+            :icon="icon"></Icon>
         <img
             v-else-if="src"
             :src="src" />

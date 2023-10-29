@@ -34,41 +34,41 @@
         </div>
         <div>
             <y-button loading>
-                <y-icon name="heart"></y-icon>
+                <y-icon icon="heart"></y-icon>
                 &nbsp;loading
             </y-button>
             <y-button
                 loading
                 color="primary">
-                <y-icon name="heart"></y-icon>
+                <y-icon icon="heart"></y-icon>
                 &nbsp;loading
             </y-button>
             <y-button
                 loading
                 mode="half"
                 color="primary">
-                <y-icon name="heart"></y-icon>
+                <y-icon icon="heart"></y-icon>
                 &nbsp;loading
             </y-button>
             <y-button
                 loading
                 mode="empty"
                 color="primary">
-                <y-icon name="heart"></y-icon>
+                <y-icon icon="heart"></y-icon>
                 &nbsp;loading
             </y-button>
             <y-button
                 loading
                 mode="link"
                 color="primary">
-                <y-icon name="heart"></y-icon>
+                <y-icon icon="heart"></y-icon>
                 &nbsp;loading
             </y-button>
             <y-button
                 loading
                 mode="dashed"
                 color="primary">
-                <y-icon name="heart"></y-icon>
+                <y-icon icon="heart"></y-icon>
                 &nbsp;loading
             </y-button>
         </div>

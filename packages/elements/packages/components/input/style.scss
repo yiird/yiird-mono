@@ -7,7 +7,9 @@
     @include e('content') {
         :deep(.button) {
             border-color: transparent;
-            padding: 5px;
+            padding: 0px calc($gap / 2);
+            border: 0;
+            height: calc($height - $gap);
         }
 
         @include e('password-icon') {
@@ -22,29 +24,16 @@
             height: 100%;
             user-select: none;
             cursor: pointer;
+            color: $colorPlaceholder;
+            justify-content: stretch;
         }
+    }
 
-        @include e('prefix') {
-            border-radius: 5px 0 0 5px;
-            &::after {
-                content: '';
-                position: absolute;
-                right: 0;
-                top: 0;
-                bottom: 0;
-            }
+    :deep(.space) {
+        > * {
+            margin: 0px calc($gap / 4);
         }
-
-        @include e('suffix') {
-            border-radius: 0 5px 5px 0;
-            &::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-            }
-        }
+       
     }
 
     @include m('check-password') {
@@ -52,5 +41,4 @@
             color: $colorText;
         }
     }
-
 }

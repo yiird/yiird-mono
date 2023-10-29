@@ -8,9 +8,9 @@
 
         <y-text italic>图标组</y-text>
         <y-group :direction="direction">
-            <y-icon :name="faLocation"></y-icon>
-            <y-icon :name="faLocation"></y-icon>
-            <y-icon :name="faLocation"></y-icon>
+            <y-icon :icon="faLocation"></y-icon>
+            <y-icon :icon="faLocation"></y-icon>
+            <y-icon :icon="faLocation"></y-icon>
         </y-group>
 
         <y-text italic>图标文本组</y-text>

@@ -3,9 +3,7 @@ import Color from 'color';
 import { isString } from 'lodash-es';
 import { ref, type ComponentInternalInstance, type InjectionKey, type UnwrapNestedRefs } from 'vue';
 import { styleValueToNumber } from './common/dom-utils';
-import type { FrameworkConfig, StateColor } from './types/global';
-import type { PlatformOptions } from './types/options';
-import type { BoxShadowDirection, BoxShadowLevel, Size, StateColorGroup, ThemeConfig, UserThemeVars } from './types/theme';
+import type { BoxShadowDirection, BoxShadowLevel, FrameworkConfig, PlatformOptions, Size, StateColor, StateColorGroup, ThemeConfig, UserThemeVars } from './types/global';
 
 export const DEFAULT_PREFIX = 'y';
 export const OPTIONS_KEY = Symbol('options-key') as InjectionKey<UnwrapNestedRefs<PlatformOptions>>;

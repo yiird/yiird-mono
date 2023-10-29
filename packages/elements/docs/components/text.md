@@ -21,18 +21,19 @@ Text使用
 
 <div class="props">
 
-| 名称       | 描述                                     |   类型  | 可选值 |
-| :--------- | :--------------------------------------- | :-----: | :----- |
-| id         | 组件id，若不设置会自动生成               |  String |        |
-| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   | Boolean |        |
-| strong     | 加粗                                     | Boolean |        |
-| delete     | 删除线                                   | Boolean |        |
-| underline  | 下滑线                                   | Boolean |        |
-| italic     | 斜体                                     | Boolean |        |
-| mark       | 标记                                     |         |        |
-| secondary  | 是否是次要文本                           | Boolean |        |
-| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> | Boolean |        |
-| code       |                                          | Boolean |        |
+| 名称       | 描述                                     |                           类型                          | 可选值 |
+| :--------- | :--------------------------------------- | :-----------------------------------------------------: | :----- |
+| id         | 组件id，若不设置会自动生成               |                          String                         |        |
+| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   |                         Boolean                         |        |
+| rendered   | 组件渲染完后的回调                       | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |        |
+| strong     | 加粗                                     |                         Boolean                         |        |
+| delete     | 删除线                                   |                         Boolean                         |        |
+| underline  | 下滑线                                   |                         Boolean                         |        |
+| italic     | 斜体                                     |                         Boolean                         |        |
+| mark       | 标记                                     |                                                         |        |
+| secondary  | 是否是次要文本                           |                         Boolean                         |        |
+| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> |                         Boolean                         |        |
+| code       |                                          |                         Boolean                         |        |
 
 </div>
 
@@ -47,3 +48,11 @@ Text使用
 
 ### domRefresh()
 - 用法： 刷新组件
+
+## 关联类型
+
+
+
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：

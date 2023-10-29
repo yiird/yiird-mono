@@ -2,42 +2,33 @@ import { faCaretDown, faCaretLeft } from '@fortawesome/pro-light-svg-icons';
 import { computed, reactive, ref, unref, watch, type ExtractPropTypes, type PropType, type SetupContext, type UnwrapNestedRefs } from 'vue';
 import { isLabelValue, isTreeNode } from '../../common/check-type';
 import { FormItemSelectedProps, obtainFormItemTheme, type FormItemState, type FormItemTheme } from '../../common/common-form';
-import type { LabelValue, LabelValueMapping, TreeNode, TreeNodeMapping } from '../../common/common-source';
+import type { LabelValue, LabelValueMapping, TreeNodeMapping } from '../../common/common-source';
 import { baseExpose, usePrefab } from '../../common/prefab';
+import type { Affix, PopoverEventArgs } from '../../types/components';
 import type { FormItemEventArgs, ListEventArgs, SelectEventArgs, TreeEventArgs } from '../../types/event';
-import type { PopoverEventArgs } from '../../types/popover';
+import type { Dimensions, Size } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { Size } from '../../types/theme';
 import type { InputType } from '../input';
+import type { PopoverType } from '../popover';
 import type { TreePropsType, TreeType } from '../tree';
 
 export type SelectMode = 'list' | 'tree';
 
 export interface SelectPopOptions {
-    fixedWidth?: boolean;
-    maxWidth?: string | number;
-    minWidth?: string | number;
-    /**
-     * 下拉最大高度
-     * 对下拉树不起作用，下拉树的高度根据 `tree-options` 中的 `screenSize` 决定
-     */
-    maxHeight?: string | number;
-    /**
-     * 下拉最大高度
-     * 对下拉树不起作用，下拉树的高度根据 `tree-options` 中的 `screenSize` 决定
-     */
-    minHeight?: string | number;
-    /**
-     * 是否可以搜索
-     */
-    searchable?: boolean;
-    once?: boolean;
+    width?: Dimensions | 'fixed';
+    height?: Dimensions;
 }
 
-export type SelectTreeOptions = Partial<Omit<TreePropsType, 'id' | 'display' | 'source' | 'size' | 'draggable' | 'multi' | 'defaultSelectedKeys'>>;
+export type SelectTreeOptions = Partial<Omit<TreePropsType, 'id' | 'display' | 'size' | 'source' | 'draggable' | 'multi' | 'defaultSelectedKeys'>>;
 
 export const SelectProps = {
     ...FormItemSelectedProps,
+    /**
+     * 数据源
+     */
+    source: {
+        type: Array as PropType<any[]>
+    },
     loading: {
         type: Boolean as PropType<boolean>,
         default: false
@@ -50,13 +41,26 @@ export const SelectProps = {
         default: true
     },
     /**
-     * 数据源
+     * 是否可以搜索
      */
-    source: {
-        type: Array as PropType<LabelValue[] | TreeNode[]>
+    searchable: {
+        type: Boolean as PropType<boolean>,
+        default: false
+    },
+    /**
+     * 下拉模式
+     * `tree` 下拉树
+     * `list` 下拉列表
+     */
+    mode: {
+        type: String as PropType<'tree' | 'list'>,
+        required: true
     },
     mapping: {
-        type: Object as PropType<LabelValueMapping | TreeNodeMapping>
+        type: Object as PropType<LabelValueMapping | TreeNodeMapping>,
+        default(props: any) {
+            return props.mode === 'tree' ? {} : {};
+        }
     },
     size: {
         type: String as PropType<Size>,
@@ -116,6 +120,7 @@ export const setupSelect = (props: SelectPropsType, ctx: SetupContext<typeof Sel
         disabled: props.disabled
     });
 
+    const pop = ref<PopoverType>();
     const tree = ref<TreeType>();
     // 有效值
     const value = ref(props.modelValue);
@@ -124,16 +129,25 @@ export const setupSelect = (props: SelectPropsType, ctx: SetupContext<typeof Sel
 
     const input = ref<InputType>();
     const hidden = ref<HTMLInputElement>();
+    const toggleIcon = ref();
     const isOpen = ref(false);
 
     const internalCtx = { props, commonExposed, ...ctx };
     const theme = obtainTheme(internalCtx, state);
 
-    const obtainRightAction = computed(() => {
-        return {
-            icon: isOpen.value ? faCaretDown : faCaretLeft
-        };
+    const obtainInputSuffixes = computed<Array<Affix>>(() => {
+        return [
+            {
+                kind: 'icon',
+                el: toggleIcon,
+                icon: isOpen.value ? faCaretDown : faCaretLeft,
+                onClick() {
+                    pop.value?.toggle();
+                }
+            }
+        ];
     });
+
     const mode = isLabelValue(mapping) ? 'list' : isTreeNode(mapping) ? 'tree' : null;
     const obtainIsList = computed(() => {
         return mode === 'list';
@@ -153,14 +167,6 @@ export const setupSelect = (props: SelectPropsType, ctx: SetupContext<typeof Sel
         };
         emit('change', args);
     });
-
-    /**
-     * @private
-     */
-    const doRightAction_ = () => {
-        isOpen.value = !isOpen.value;
-    };
-
     /**
      * @private
      */
@@ -168,7 +174,7 @@ export const setupSelect = (props: SelectPropsType, ctx: SetupContext<typeof Sel
         value.value = realValue;
         displayValue.value = label;
         if (props.once) {
-            isOpen.value = false;
+            pop.value?.close();
         }
     };
 
@@ -213,63 +219,42 @@ export const setupSelect = (props: SelectPropsType, ctx: SetupContext<typeof Sel
         isOpen.value = args.flag;
     };
 
-    const obtainPopMaxWidth = computed(() => {
+    const obtainWidth = computed(() => {
         const {
-            popOptions: { fixedWidth, maxWidth }
+            popOptions: { width }
         } = props;
-
-        return fixedWidth ? el.value?.offsetWidth : maxWidth;
+        return width === 'fixed' ? el.value?.offsetWidth : width;
     });
 
-    const obtainPopMinWidth = computed(() => {
+    const obtainHeight = computed(() => {
         const {
-            popOptions: { fixedWidth, minWidth }
+            popOptions: { height }
         } = props;
-
-        return fixedWidth ? el.value?.offsetWidth : minWidth;
-    });
-
-    const obtainPopMaxHeight = computed(() => {
-        const {
-            popOptions: { maxHeight }
-        } = props;
-
-        return obtainIsTree.value ? undefined : maxHeight;
-    });
-
-    const obtainPopMinHeight = computed(() => {
-        const {
-            popOptions: { minHeight }
-        } = props;
-
-        return obtainIsTree.value ? undefined : minHeight;
+        return height;
     });
 
     const obtainSearchable = computed(() => {
-        const {
-            popOptions: { searchable }
-        } = props;
+        const { searchable } = props;
         return (mode === 'list' || mode === 'tree') && searchable;
     });
 
     return {
         ...commonExposed,
         theme,
+        pop,
         tree,
         displayValue,
         value,
         input,
         hidden,
         isOpen,
-        obtainRightAction,
+        toggleIcon,
+        obtainInputSuffixes,
         obtainSearchable,
         obtainIsList,
         obtainIsTree,
-        obtainPopMaxWidth,
-        obtainPopMinWidth,
-        obtainPopMaxHeight,
-        obtainPopMinHeight,
-        doRightAction_,
+        obtainWidth,
+        obtainHeight,
         doListSelect_,
         doTreeSelect_,
         doFilterData_,

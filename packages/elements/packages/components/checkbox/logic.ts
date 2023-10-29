@@ -3,11 +3,10 @@ import { computed, reactive, toRefs, type EmitsOptions, type ExtractPropTypes, t
 import { FormItemSelectedProps } from '../../common/common-form';
 import type { LabelValue } from '../../common/common-source';
 import { baseExpose, usePrefab, useTheme } from '../../common/prefab';
+import type { SelectIcons } from '../../types/components';
 import type { CheckboxEventArgs } from '../../types/event';
-import type { DataStatus } from '../../types/global';
-import type { SelectIcons } from '../../types/icon';
+import type { DataStatus, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ThemeConfig } from '../../types/theme';
 export const CheckboxProps = {
     ...FormItemSelectedProps,
     source: {
@@ -15,11 +14,16 @@ export const CheckboxProps = {
     },
     icons: {
         type: Object as PropType<SelectIcons>,
-        default() {
-            return {
-                checked: faSquareCheck,
-                notChecked: faSquare
-            };
+        default(props: any) {
+            return props.multi
+                ? {
+                      checked: faSquareCheck,
+                      notChecked: faSquare
+                  }
+                : {
+                      checked: faSquareCheck,
+                      notChecked: faSquare
+                  };
         }
     }
 } as const;
@@ -118,6 +122,15 @@ export const setupCheckbox = (props: CheckboxPropsType, ctx: SetupContext<typeof
         return props.icons.checked;
     });
 
+    const obtainSource = computed(() => {
+        return props.source?.map((item) => {
+            return {
+                ...item,
+                checked: false
+            };
+        });
+    });
+
     /**
      * @private
      */
@@ -135,6 +148,7 @@ export const setupCheckbox = (props: CheckboxPropsType, ctx: SetupContext<typeof
     return {
         ...commonExposed,
         theme,
+        obtainSource,
         obtainCheckIcon,
         doFocus_,
         doBlur_

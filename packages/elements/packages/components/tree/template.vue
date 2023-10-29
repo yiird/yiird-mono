@@ -52,7 +52,7 @@
                             @click.stop="doClickNode_($event, node)">
                             <Icon
                                 v-if="node.selectIcon"
-                                :name="node.selectIcon"
+                                :icon="node.selectIcon"
                                 :size="size"
                                 fixed-width></Icon>
                         </span>
@@ -61,7 +61,7 @@
                             :class="`${cType__}__node-icon`"
                             @click.stop="doClickExpandIcon_($event, node)">
                             <Icon
-                                :name="node.switchIcon"
+                                :icon="node.switchIcon"
                                 :size="size"
                                 fixed-width></Icon>
                         </span>
@@ -79,7 +79,7 @@
                                 :class="`${cType__}__node-icon`"
                                 @click.stop="doClickExpandIcon_($event, node)">
                                 <Icon
-                                    :name="node.icon"
+                                    :icon="node.icon"
                                     :size="size"
                                     fixed-width></Icon>
                             </span>

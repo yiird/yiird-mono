@@ -12,7 +12,6 @@
                 loading
                 placeholder="清除动作"
                 :suffixes="suffixes"></y-input>
-
         </y-space>
         <pre>数据：{{ data }}</pre>
     </y-space>
@@ -20,37 +19,57 @@
 
 <script setup lang="ts">
 import { faEllipsis, faRefresh } from '@fortawesome/pro-light-svg-icons';
+import type { Affix } from '@yiird/elements';
 import { ref } from 'vue';
 
 const inputValue = ref();
 const data = ref();
 
-const prefixes = [
+const prefixes: Affix[] = [
     {
+        kind: 'button',
         icon: faEllipsis,
-        fn(){
-            console.log('ssss')
+        onClick() {
+            console.log('ssss');
+        },
+        props: {
+            color: 'primary'
         }
     },
     {
-        icon: faRefresh
+        kind: 'button',
+        icon: faEllipsis,
+        style: {
+            margin: '0px'
+        },
+        onClick() {
+            console.log('ssss');
+        },
+        props: {
+            color: 'primary'
+        }
+    },
+    {
+        kind: 'button',
+        icon: faEllipsis,
+        onClick() {
+            console.log('ssss');
+        },
+        props: {
+            color: 'primary'
+        }
     }
 ];
-const suffixes = ref([
+const suffixes = ref<Affix[]>([
     {
+        kind: 'icon',
         icon: faRefresh
     },
     {
+        kind: 'icon',
         icon: faRefresh
     }
 ]);
-const suffixes3 = [
-    {
-        icon: faRefresh
-    }
-];
-
-
 setTimeout(() => {
     // suffixes2.value[1].text = 'ddd'
 }, 2000);

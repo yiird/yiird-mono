@@ -2,14 +2,15 @@ import { faFolder, faLeaf, faSquareCheck, faSquareMinus } from '@fortawesome/pro
 import { faAngleDown, faAngleRight, faSquare } from '@fortawesome/pro-light-svg-icons';
 import { isObject } from 'lodash-es';
 import { computed, nextTick, onBeforeMount, onBeforeUpdate, unref, type CSSProperties, type ExtractPropTypes, type PropType, type Ref, type SetupContext } from 'vue';
+import type { TreeNodeMapping } from '../../common/common-source';
 import { findElementFromEventByClass, styleValueToNumber } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { FlatTreeSource } from '../../common/source';
 import { sizeToComponentHeight, sizeToFontSize } from '../../config';
+import type { InternalTreeNode, TreeNodeIcons, TreeNodeKey, TreeNodeSelectIcons, TreeNodeSwitchIcons } from '../../types/components';
 import type { TreeEventArgs } from '../../types/event';
+import type { Size, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { Size, ThemeConfig } from '../../types/theme';
-import type { InternalTreeNode, TreeKeyConfig, TreeNodeIcons, TreeNodeKey, TreeNodeSelectIcons, TreeNodeSwitchIcons } from '../../types/tree';
 import { isNumberStr } from './../../common/common-util';
 export const TreeProps = {
     ...BaseProps,
@@ -27,17 +28,16 @@ export const TreeProps = {
      *
      * 告知组件主键、父主键、显示文本、子节点分别对应数据中的字段
      *
-     * @default {key: 'key',pkey: 'parentKey',ckey: 'children',ikey:'icon',tkey: 'text'}
+     * @default {key: 'key',parentKey: 'parentKey',children: 'children',text: 'text'}
      */
-    keyConfig: {
-        type: Object as PropType<TreeKeyConfig>,
+    mapping: {
+        type: Object as PropType<TreeNodeMapping>,
         default() {
             return {
                 key: 'key',
-                pkey: 'parentKey',
-                ckey: 'children',
-                ikey: 'icon',
-                tkey: 'text'
+                parentKey: 'parentKey',
+                children: 'children',
+                text: 'text'
             };
         }
     },
@@ -242,9 +242,9 @@ export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmi
 
     let shiftSelectFirstKey: string | number | undefined;
 
-    const { icons, selectIcons, switchIcons, keyConfig } = props;
+    const { icons, selectIcons, switchIcons, mapping } = props;
 
-    const source = new FlatTreeSource(props.source, keyConfig, {
+    const source = new FlatTreeSource(props.source, mapping, {
         icons,
         selectIcons: {
             checked: selectIcons.checked || selectIcons.notChecked,

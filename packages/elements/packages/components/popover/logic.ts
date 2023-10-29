@@ -1,27 +1,14 @@
-import { arrow, autoPlacement, autoUpdate, hide, limitShift, offset, shift, useFloating, type Boundary, type MiddlewareState } from '@floating-ui/vue';
+import type { Boundary } from '@floating-ui/vue';
 import type Color from 'color';
-import {
-    computed,
-    onMounted,
-    onScopeDispose,
-    ref,
-    unref,
-    watch,
-    watchEffect,
-    watchPostEffect,
-    type ComputedRef,
-    type ExtractPropTypes,
-    type PropType,
-    type SetupContext
-} from 'vue';
-import { usePopoverDisplayEvent } from '../../common/composites-popover';
-import { extractEl, isElement, styleValueToNumber, toStyleValue } from '../../common/dom-utils';
+import { computed, onScopeDispose, type ComputedRef, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
+import { isLimitDimensions } from '../../common/check-type';
+import { usePopover } from '../../common/composites-popover';
+import { extractEl, toStyleValue } from '../../common/dom-utils';
 import { BaseProps, ShadowProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { stateColor } from '../../config';
-import type { Placement, StateColor } from '../../types/global';
-import type { PopoverEventArgs, PopoverReference, PoppoverMode } from '../../types/popover';
+import type { PopoverEventArgs, PopoverReference, PoppoverMode } from '../../types/components';
+import type { Dimensions, Offset, Placement, StateColor, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ThemeConfig } from '../../types/theme';
 
 export const PopoverProps = {
     ...BaseProps,
@@ -69,13 +56,19 @@ export const PopoverProps = {
         type: String as PropType<StateColor | string>,
         default: '#ffffff'
     },
+    placement: {
+        type: String as PropType<Placement>,
+        default() {
+            return 'bottom';
+        }
+    },
     /**
      * 允许出现的位置,相对于`reference`
      */
     allowPlacement: {
         type: Array as PropType<Placement[]>,
         default() {
-            return ['bottom'];
+            return [];
         }
     },
     /**
@@ -86,37 +79,25 @@ export const PopoverProps = {
         default: '8px'
     },
     /**
+     * 显示隐藏箭头
+     */
+    arrow: {
+        type: Boolean as PropType<boolean>,
+        default: true
+    },
+    /**
      * 距离挂载元素的偏移
      */
     offset: {
-        type: Number as PropType<number>,
+        type: [Number, Object] as PropType<Offset>,
         default: 5
     },
-    /**
-     * 最小宽度
-     */
-    minWidth: {
-        type: [String, Number] as PropType<string | number>
+    width: {
+        type: [String, Number, Object] as PropType<Dimensions>
     },
-    /**
-     * 最大宽度
-     */
-    maxWidth: {
-        type: [String, Number] as PropType<string | number>
+    height: {
+        type: [String, Number, Object] as PropType<Dimensions>
     },
-    /**
-     * 最小高度
-     */
-    minHeight: {
-        type: [String, Number] as PropType<string | number>
-    },
-    /**
-     * 最大高度
-     */
-    maxHeight: {
-        type: [String, Number] as PropType<string | number>
-    },
-
     /**
      * 显示隐藏模式
      * `click` 点击挂载元素显示，点击其他非其他区域隐藏
@@ -168,174 +149,87 @@ export const PopoverEmits = {
 
 const obtainTheme = (ctx: InternalSetupContext<PopoverPropsType, typeof PopoverEmits>, arrowSide: ComputedRef) => {
     const themeConfig = useTheme();
-    const { props } = ctx;
+    const {
+        props,
+        commonExposed: { cType__ }
+    } = ctx;
     return computed<PopoverTheme>(() => {
+        const { width, height, arrowSize, shadowLevel, shadowDirection, padding, color, textColor, arrow } = props;
+
         const _themeConfig = themeConfig.value;
+
         const theme: PopoverTheme = {
             ..._themeConfig,
-            color: stateColor(_themeConfig, props.color).primary,
-            textColor: props.textColor,
-            arrowSize: toStyleValue(props.arrowSize, '8px'),
-            minWidth: toStyleValue(props.minWidth, 'unset'),
-            maxWidth: toStyleValue(props.maxWidth, 'unset'),
-            minHeight: toStyleValue(props.minHeight, 'unset'),
-            maxHeight: toStyleValue(props.maxHeight, 'unset'),
+            color: stateColor(_themeConfig, color).primary,
+            textColor: textColor,
+            arrowSize: toStyleValue(arrowSize, '8px'),
+            minWidth: isLimitDimensions(width) ? toStyleValue(width.min, 'unset') : toStyleValue(width, 'unset'),
+            maxWidth: isLimitDimensions(width) ? toStyleValue(width.max, 'unset') : toStyleValue(width, 'unset'),
+            minHeight: isLimitDimensions(height) ? toStyleValue(height.min, 'unset') : toStyleValue(height, 'unset'),
+            maxHeight: isLimitDimensions(height) ? toStyleValue(height.max, 'unset') : toStyleValue(height, 'unset'),
             radius: toStyleValue(_themeConfig.ye_radius_regular),
-            shadow: _themeConfig.ye_boxshadow(props.shadowLevel, props.shadowDirection),
-            padding: `${props.padding}px`
+            shadow: _themeConfig.ye_boxshadow(shadowLevel, shadowDirection),
+            padding: `${padding}px`
         };
 
         theme.bemModifiers = [];
 
-        theme.bemModifiers.push(`popover--arrow-${arrowSide.value}`);
+        theme.bemModifiers.push(`${cType__}--arrow-${arrowSide.value}`);
+        if (!arrow) {
+            theme.bemModifiers.push(`${cType__}--arrow-hide`);
+        }
 
         return theme;
     });
 };
 
-const computedOffset = (state: MiddlewareState, mainOffset: number) => {
-    const reference = state.elements.reference;
-    const placement = state.placement;
-    if (isElement(reference)) {
-        const styles = getComputedStyle(reference);
-        let crossAxis = 0;
-        if (styles.borderInlineWidth === '0px' || styles.borderLeftWidth === '0px' || styles.borderRightWidth === '0px') {
-            if (placement.endsWith('start')) {
-                crossAxis = styleValueToNumber(styles.paddingLeft);
-            } else if (placement.endsWith('end')) {
-                crossAxis = -styleValueToNumber(styles.paddingRight);
-            }
-        }
-
-        return {
-            mainAxis: mainOffset,
-            crossAxis: crossAxis
-        };
-    }
-
-    return {
-        mainAxis: mainOffset
-    };
-};
-
 export const setupPopover = (props: PopoverPropsType, ctx: SetupContext<typeof PopoverEmits>) => {
     const commonExposed = usePrefab(props);
-    const arrowRef = ref();
+
     const { el } = commonExposed;
-    const { emit } = ctx;
 
-    const reference = ref();
+    const obtainReference = computed(() => extractEl(props.reference));
 
-    let removeListener: Function;
-    const _display = ref(props.display);
-
-    watchEffect(() => {
-        if (props.reference) {
-            reference.value = extractEl(props.reference);
-            if (props.mode !== 'manual' && reference.value) {
-                const { display: __display, removeListener: _removeListener } = usePopoverDisplayEvent(reference.value, el.value, props.mode, props.hideThinkOverPop);
-                removeListener = _removeListener;
-                watch(__display, (flag) => {
-                    _display.value = flag;
-                    emit('open', {
-                        el: unref(el),
-                        flag: flag
-                    });
-                });
-            } else {
-                watch(
-                    () => props.display,
-                    (flag) => {
-                        _display.value = flag;
-                        emit('open', {
-                            el: unref(el),
-                            flag: flag
-                        });
-                    }
-                );
-            }
-        }
-    });
-    onMounted(() => {
-        if (props.reference && !reference.value) {
-            reference.value = extractEl(props.reference);
-        }
+    const { arrow, floatingStyles, visibility, arrowSide, clear } = usePopover(obtainReference, el, {
+        placement: computed(() => props.placement),
+        display: props.display,
+        allowPlacement: props.allowPlacement,
+        offset: props.offset,
+        mode: props.mode,
+        hideThinkOverPop: props.hideThinkOverPop,
+        arrowSize: props.arrowSize
     });
 
-    const { floatingStyles, middlewareData, placement, x, y } = useFloating(reference, el, {
-        placement: props.allowPlacement[0],
-        middleware: [
-            hide(),
-            offset((state) => computedOffset(state, props.offset)),
-            autoPlacement({
-                allowedPlacements: props.allowPlacement,
-                boundary: el.value?.getBoundingClientRect(),
-                rootBoundary: 'viewport'
-            }),
-            shift({
-                limiter: limitShift()
-            }),
-            arrow({ element: arrowRef, padding: 3 })
-        ],
-        whileElementsMounted(...args) {
-            return autoUpdate(...args, {
-                animationFrame: true
-            });
-        }
-    });
+    const theme = obtainTheme({ props, commonExposed, ...ctx }, arrowSide);
 
-    const obtainArrowSide = computed(() => {
-        return {
-            top: 'bottom',
-            right: 'left',
-            bottom: 'top',
-            left: 'right'
-        }[placement.value.split('-')[0]];
-    });
+    const open = () => {
+        visibility.value = true;
+    };
 
-    watchPostEffect(() => {
-        const _x = x.value;
-        const _y = y.value;
-        const _middlewareData = middlewareData.value;
-        const _arrowRef = arrowRef.value;
-        const _side = obtainArrowSide.value;
-        const _floatingRef = el.value;
-        const { referenceHidden } = _middlewareData.hide || {};
-        const { x: arrowX, y: arrowY } = _middlewareData.arrow || {};
+    const close = () => {
+        visibility.value = false;
+    };
 
-        const position = {
-            top: arrowY != null ? `${arrowY}px` : '',
-            left: '',
-            bottom: '',
-            right: arrowX != null ? `${arrowX}px` : '',
-            [_side + '']: '-4px'
-        };
-        Object.assign(_arrowRef.style, position);
-        Object.assign(_floatingRef.style, {
-            x: _x,
-            y: _y,
-            visibility: !_display.value || referenceHidden ? 'hidden' : 'visible'
-        });
-    });
-
-    const theme = obtainTheme({ props, commonExposed, ...ctx }, obtainArrowSide);
+    const toggle = () => {
+        visibility.value = !visibility.value;
+    };
 
     onScopeDispose(() => {
-        if (removeListener) {
-            removeListener();
-        }
+        clear();
     });
 
     return {
         ...commonExposed,
         theme,
-        arrowRef,
-        floatingRef: el,
+        arrow,
         floatingStyles,
-        obtainSide: obtainArrowSide,
-        isOpen: _display
+        obtainSide: '',
+        visibility,
+        toggle,
+        open,
+        close
     };
 };
 
-export const PopoverExpose = [...baseExpose, ...([] as const)];
+export const PopoverExpose = [...baseExpose, ...(['toggle', 'open', 'close'] as const)];
 export type PopoverExposeType = (typeof PopoverExpose)[number];

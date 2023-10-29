@@ -3,37 +3,37 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         animation="beat"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         animation="beat-fade"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         animation="fade"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="basketball"
+        icon="basketball"
         animation="bounce"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="home"
+        icon="home"
         animation="flip"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="bell"
+        icon="bell"
         animation="shake"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="sync"
+        icon="sync"
         animation="spin"
         size="2x"></y-icon>
     <hr />
@@ -41,7 +41,7 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         animation="beat"
         :animation-options="animationOptions"
         size="2x"></y-icon>

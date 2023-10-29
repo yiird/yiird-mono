@@ -21,23 +21,24 @@ Drop使用
 
 <div class="props">
 
-| 名称            | 描述                                                                           |                    类型                    | 可选值                                                                                                                  |
-| :-------------- | :----------------------------------------------------------------------------- | :----------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id              | 组件id，若不设置会自动生成                                                     |                   String                   |                                                                                                                         |
-| display         | 显示隐藏<hr>默认值:<br><pre>false</pre>                                        |                   boolean                  |                                                                                                                         |
-| reference       |                                                                                |  [PopoverReference](#linkpopoverreference) |                                                                                                                         |
-| source          |                                                                                | Array&lt;[LabelValue](#linklabelvalue)&gt; |                                                                                                                         |
-| searchable      | <hr>默认值:<br><pre>true</pre>                                                 |                   Boolean                  |                                                                                                                         |
-| size            | <hr>默认值:<br><pre>md</pre>                                                   |              [Size](#linksize)             | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| type            | 下拉类型<br/>`list` 列表结构<br/>`tree` 树形结构<hr>默认值:<br><pre>list</pre> |                list \| tree                | `list` , `tree`                                                                                                         |
-| list-options    |                                                                                |              ListPropsOptions              |                                                                                                                         |
-| tree-options    |                                                                                |              TreePropsOptions              |                                                                                                                         |
-| allow-placement | <hr>默认值:<br><pre>default () {<br>  return ['bottom'];<br>}</pre>            |  Array&lt;[Placement](#linkplacement)&gt;  |                                                                                                                         |
-| offset          | <hr>默认值:<br><pre>5</pre>                                                    |                   Number                   |                                                                                                                         |
-| mode            | <hr>默认值:<br><pre>click - leave</pre>                                        |      [PoppoverMode](#linkpoppovermode)     | `manual` , `click` , `hover` , `click-out` , `click-leave`                                                              |
-| min-width       |                                                                                |              number \| string              |                                                                                                                         |
-| max-width       |                                                                                |              number \| string              |                                                                                                                         |
-| max-height      |                                                                                |              number \| string              |                                                                                                                         |
+| 名称            | 描述                                                                           |                           类型                          | 可选值                                                                                                                  |
+| :-------------- | :----------------------------------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id              | 组件id，若不设置会自动生成                                                     |                          String                         |                                                                                                                         |
+| rendered        | 组件渲染完后的回调                                                             | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| display         | 显示隐藏<hr>默认值:<br><pre>false</pre>                                        |                         boolean                         |                                                                                                                         |
+| reference       |                                                                                |        [PopoverReference](#linkpopoverreference)        |                                                                                                                         |
+| source          |                                                                                |        Array&lt;[LabelValue](#linklabelvalue)&gt;       |                                                                                                                         |
+| searchable      | <hr>默认值:<br><pre>true</pre>                                                 |                         Boolean                         |                                                                                                                         |
+| size            | <hr>默认值:<br><pre>md</pre>                                                   |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| type            | 下拉类型<br/>`list` 列表结构<br/>`tree` 树形结构<hr>默认值:<br><pre>list</pre> |                       list \| tree                      | `list` , `tree`                                                                                                         |
+| list-options    |                                                                                |                     ListPropsOptions                    |                                                                                                                         |
+| tree-options    |                                                                                |                     TreePropsOptions                    |                                                                                                                         |
+| allow-placement | <hr>默认值:<br><pre>default () {<br>  return ['bottom'];<br>}</pre>            |         Array&lt;[Placement](#linkplacement)&gt;        |                                                                                                                         |
+| offset          | <hr>默认值:<br><pre>5</pre>                                                    |                          Number                         |                                                                                                                         |
+| mode            | <hr>默认值:<br><pre>click - leave</pre>                                        |            [PoppoverMode](#linkpoppovermode)            | `manual` , `click` , `hover` , `click-out` , `click-leave`                                                              |
+| min-width       |                                                                                |                     number \| string                    |                                                                                                                         |
+| max-width       |                                                                                |                     number \| string                    |                                                                                                                         |
+| max-height      |                                                                                |                     number \| string                    |                                                                                                                         |
 
 </div>
 
@@ -76,9 +77,14 @@ Drop使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
 ### PopoverReference {#linkpopoverreference}
 
-- PopoverReference = 	 Element \| ComponentPublicInstance \| [CommonExposed](#linkcommonexposed) \| string
+- 描述： Popover
+- PopoverReference = 	 Element \| [CommonExposed](#linkcommonexposed)
 
 ### LabelValue {#linklabelvalue}
 
@@ -91,11 +97,11 @@ Drop使用
 
 ### Placement {#linkplacement}
 
-- Placement = 	 `left` \| `right` \| `top` \| `bottom` \| `top-start` \| `top-end` \| `bottom-start` \| `bottom-end` \| `left-start` \| `left-end` \| `right-start` \| `right-end`
+- Placement = 	 `left` \| `right` \| `top` \| `bottom` \| `top-start` \| `top-end` \| `bottom-start` \| `bottom-end` \| `left-start` \| `left-end` \| `right-start` \| `right-end` \| [StringOther](#linkstringother)
 
 ### PoppoverMode {#linkpoppovermode}
 
-- PoppoverMode = 	 `manual` \| `click` \| `hover` \| `click-out` \| `click-leave`
+- PoppoverMode = 	 `manual` \| `click` \| `hover` \| `click-out` \| `click-leave` \| [StringOther](#linkstringother)
 
 ### CommonExposed {#linkcommonexposed}
 
@@ -118,6 +124,10 @@ Drop使用
 ### NumberSize {#linknumbersize}
 
 - NumberSize = 	 `1x` \| `2x` \| `3x` \| `4x` \| `5x` \| `6x` \| `7x` \| `8x` \| `9x` \| `10x`
+
+### StringOther {#linkstringother}
+
+- StringOther = 	 string \& 
 
 ### PlatformOptions {#linkplatformoptions}
 

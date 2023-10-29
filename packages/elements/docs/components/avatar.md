@@ -21,15 +21,16 @@ Avatar使用
 
 <div class="props">
 
-| 名称      | 描述                                   |                        类型                       | 可选值                                                                                                                  |
-| :-------- | :------------------------------------- | :-----------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id        | 组件id，若不设置会自动生成             |                       String                      |                                                                                                                         |
-| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |                      Boolean                      |                                                                                                                         |
-| shape     | 形状<hr>默认值:<br><pre>circle</pre>   |                  circle \| square                 | `circle` , `square`                                                                                                     |
-| size      | 尺寸<hr>默认值:<br><pre>md</pre>       |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| icon-size | 图标尺寸<hr>默认值:<br><pre>md</pre>   |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| icon      | 图标                                   | [IconNameOrDefinition](#linkiconnameordefinition) |                                                                                                                         |
-| src       | url                                    |                       string                      |                                                                                                                         |
+| 名称     | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                         |                           类型                          | 可选值                                                                                                                  |
+| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id       | 组件id，若不设置会自动生成                                                                                                                                                                                                                                                                                                                                                                                                                   |                          String                         |                                                                                                                         |
+| display  | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                                                                                                                                                                                                                                                                                                       |                         Boolean                         |                                                                                                                         |
+| rendered | 组件渲染完后的回调                                                                                                                                                                                                                                                                                                                                                                                                                           | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| icon     | 图标名称<br/><br/>例如：<br/>&lt;i class=&quot;fa-solid fa-address-book&quot;&gt;&lt;/i&gt;<br/>描述的是 `fas` 风格的 `address-book`。<br/><br/>组件配置如下：<br/>`prefix`=&quot;fas&quot;<br/>`icon`=&quot;address-book&quot;<br/>或<br/>不设置 `prefix`<br/>设置`icon` 为 `IconDefinition`类型<br/><br/>`import { faCamera } from &#39;@fortawesome/pro-solid-svg-icons&#39;;`<br/><br/>[查询图标](https://fontawesome.com/search?m=free) |    [IconNameOrDefinition](#linkiconnameordefinition)    |                                                                                                                         |
+| text     |                                                                                                                                                                                                                                                                                                                                                                                                                                              |                          string                         |                                                                                                                         |
+| size     | 图标尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                                                                                                                                                                                                                                                                                                         |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| shape    | 形状<hr>默认值:<br><pre>circle</pre>                                                                                                                                                                                                                                                                                                                                                                                                         |                     circle \| square                    | `circle` , `square`                                                                                                     |
+| src      | url                                                                                                                                                                                                                                                                                                                                                                                                                                          |                          string                         |                                                                                                                         |
 
 </div>
 
@@ -49,13 +50,21 @@ Avatar使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
+### IconNameOrDefinition {#linkiconnameordefinition}
+
+- IconNameOrDefinition = 	 IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother)
+
 ### Size {#linksize}
 
 - Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) \| number \| (string &amp; { fromT?: any })
 
-### IconNameOrDefinition {#linkiconnameordefinition}
+### StringOther {#linkstringother}
 
-- IconNameOrDefinition = 	 IconDefinition \| IconPack \| IconName
+- StringOther = 	 string \& 
 
 ### TshirtSize {#linktshirtsize}
 

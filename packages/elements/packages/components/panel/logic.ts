@@ -2,10 +2,9 @@ import type { OverscrollOptions } from 'smooth-scrollbar/plugins/overscroll';
 import { computed, ref, type ComputedRef, type ExtractPropTypes, type PropType, type SetupContext, type Slots } from 'vue';
 import { toStyleValue } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import type { IconNameOrDefinition } from '../../types/icon';
+import type { IconNameOrDefinition, ScrollDisableTrackPluginOptions, ScrollLifecirclePluginOptions } from '../../types/components';
+import type { ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ScrollDisableTrackPluginOptions, ScrollLifecirclePluginOptions } from '../../types/scroll';
-import type { ThemeConfig } from '../../types/theme';
 import type { ScrollType } from '../scroll';
 
 export interface PlacementOptions {

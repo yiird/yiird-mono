@@ -62,8 +62,8 @@ export const injectInDirective = <T>(instance: ComponentPublicInstance, name: st
     return instance.$.appContext.provides[name] as T;
 };
 
-export const vnodeRef = (getter: () => VNode | (() => VNode[])) => {
-    const vnode = ref<VNode | (() => VNode[])>();
+export const vnodeRef = (getter: () => VNode | (() => VNode | VNode[])) => {
+    const vnode = ref<VNode | (() => VNode | VNode[])>();
 
     watchPostEffect(() => {
         vnode.value = getter();

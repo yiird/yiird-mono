@@ -8,17 +8,18 @@ ListMeta使用
 
 <div class="props">
 
-| 名称        | 描述                                                               |                        类型                       | 可选值                                                                                                                  |
-| :---------- | :----------------------------------------------------------------- | :-----------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id          | 组件id，若不设置会自动生成                                         |                       String                      |                                                                                                                         |
-| display     | 显示隐藏<hr>默认值:<br><pre>true</pre>                             |                      Boolean                      |                                                                                                                         |
-| title       | 标题                                                               |       string \| [ListTitle](#linklisttitle)       |                                                                                                                         |
-| avatar-icon | 图标头像                                                           | [IconNameOrDefinition](#linkiconnameordefinition) |                                                                                                                         |
-| avatar-src  | 头像访问链接                                                       |                       String                      |                                                                                                                         |
-| avatar-size | 头像尺寸<hr>默认值:<br><pre>md</pre>                               |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| summary     | 摘要配置                                                           |        string \| [ListText](#linklisttext)        |                                                                                                                         |
-| description | 描述配置                                                           |        string \| [ListText](#linklisttext)        |                                                                                                                         |
-| size        | 主要内容文本尺寸（除了标题外其他文本）<hr>默认值:<br><pre>md</pre> |                 [Size](#linksize)                 | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| 名称        | 描述                                                               |                           类型                          | 可选值                                                                                                                  |
+| :---------- | :----------------------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id          | 组件id，若不设置会自动生成                                         |                          String                         |                                                                                                                         |
+| display     | 显示隐藏<hr>默认值:<br><pre>true</pre>                             |                         Boolean                         |                                                                                                                         |
+| rendered    | 组件渲染完后的回调                                                 | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| title       | 标题                                                               |          string \| [ListTitle](#linklisttitle)          |                                                                                                                         |
+| avatar-icon | 图标头像                                                           |    [IconNameOrDefinition](#linkiconnameordefinition)    |                                                                                                                         |
+| avatar-src  | 头像访问链接                                                       |                          String                         |                                                                                                                         |
+| avatar-size | 头像尺寸<hr>默认值:<br><pre>md</pre>                               |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| summary     | 摘要配置                                                           |           string \| [ListText](#linklisttext)           |                                                                                                                         |
+| description | 描述配置                                                           |           string \| [ListText](#linklisttext)           |                                                                                                                         |
+| size        | 主要内容文本尺寸（除了标题外其他文本）<hr>默认值:<br><pre>md</pre> |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 
 </div>
 
@@ -38,6 +39,10 @@ ListMeta使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
 ### ListTitle {#linklisttitle}
 
 - 描述： 标题配置
@@ -48,7 +53,7 @@ ListMeta使用
 
 ### IconNameOrDefinition {#linkiconnameordefinition}
 
-- IconNameOrDefinition = 	 IconDefinition \| IconPack \| IconName
+- IconNameOrDefinition = 	 IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother)
 
 ### Size {#linksize}
 
@@ -66,6 +71,10 @@ ListMeta使用
 
 - 描述： 单行文本溢出配置
 - 选项：
+
+### StringOther {#linkstringother}
+
+- StringOther = 	 string \& 
 
 ### TshirtSize {#linktshirtsize}
 

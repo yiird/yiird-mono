@@ -62,4 +62,10 @@
             border-left-color: transparent;
         }
     }
+
+    @include m('arrow-hide'){
+        @include e('arrow') {
+            visibility: hidden;
+        }
+    }
 }

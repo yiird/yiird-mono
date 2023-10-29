@@ -15,13 +15,13 @@
             <Icon
                 v-if="icon"
                 :size="size"
-                :name="icon"></Icon>
+                :icon="icon"></Icon>
         </template>
         <template v-else>
             <Icon
                 v-if="icon"
                 :size="size"
-                :name="icon"></Icon>
+                :icon="icon"></Icon>
             <span
                 v-if="text"
                 :class="`${cType__}__text`">

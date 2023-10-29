@@ -1,9 +1,7 @@
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
-import type { MenuMode } from '../../types/menu';
+import type { ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ThemeConfig } from '../../types/theme';
-import type { TreeKeyConfig } from '../../types/tree';
 
 export const MenuProps = {
     ...BaseProps,
@@ -16,27 +14,9 @@ export const MenuProps = {
             return [];
         }
     },
-    /**
-     * 标识(字段)配置
-     *
-     * 告知组件主键、父主键、显示文本、子节点分别对应数据中的字段
-     *
-     * @default {key: 'id',pkey: 'pid',ckey: 'children',ikey:'icon',tkey: 'name'}
-     */
-    keyConfig: {
-        type: Object as PropType<TreeKeyConfig>,
-        default() {
-            return {
-                key: 'id',
-                pkey: 'pid',
-                ckey: 'children',
-                ikey: 'icon',
-                tkey: 'name'
-            };
-        }
-    },
+
     mode: {
-        type: String as PropType<MenuMode>
+        type: String as PropType<''>
     }
 } as const;
 export type MenuPropsType = Readonly<ExtractPropTypes<typeof MenuProps>>;

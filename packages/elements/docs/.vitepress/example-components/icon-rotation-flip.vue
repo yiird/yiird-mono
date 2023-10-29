@@ -3,32 +3,32 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         size="2x"></y-icon>
     <hr />
     <span class="tip">旋转</span>
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         rotation="90"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         rotation="90"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         rotation="90"
         size="2x"></y-icon>
     <hr />
@@ -36,17 +36,17 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         flip="horizontal"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         flip="horizontal"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         flip="horizontal"
         size="2x"></y-icon>
     <hr />
@@ -54,17 +54,17 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         flip="vertical"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         flip="vertical"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         flip="vertical"
         size="2x"></y-icon>
     <hr />
@@ -72,17 +72,17 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         flip="both"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         flip="both"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         flip="both"
         size="2x"></y-icon>
 </template>

@@ -1,5 +1,5 @@
 import { isArray, union } from 'lodash-es';
-import type { CheckOptions, CheckState, ExpandOptions, ExpandState, InternalTreeNode, TreeNodeStateIcons, TreeNodeTypeIcons } from '../types/tree';
+import type { CheckOptions, CheckState, ExpandOptions, ExpandState, InternalTreeNode, TreeNodeStateIcons, TreeNodeTypeIcons } from '../types/components';
 import { appendToSet } from './common-util';
 
 export const operatorCheck = (options: CheckOptions) => {

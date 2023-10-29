@@ -4,7 +4,7 @@ import { readyCallback } from './common/init';
 import * as components from './components';
 import { DEFAULT_ELEMENT_OPTIONS, IS_DARK, OPTIONS_KEY, USER_THEME_VARS, generThemeConfig } from './config';
 import * as directives from './directives';
-import type { PlatformOptions } from './types/options';
+import type { PlatformOptions } from './types/global';
 
 const YE: Plugin = {
     install(app: App, options?: PlatformOptions) {
@@ -58,6 +58,9 @@ const YE: Plugin = {
 export * from './common';
 export * from './components';
 export * from './directives';
-export type * from './types';
+export type * from './types/components';
+export type * from './types/event';
+export type * from './types/global';
+export type * from './types/prefab';
 export { YE };
 export type { PlatformOptions as ElementOptions };

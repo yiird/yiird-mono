@@ -91,7 +91,9 @@ export class Scanner extends EventEmitter {
             if (!this.isExcuded(_referFilename, this._options.externals)) {
                 const realReferPath = Utils.getReferPath(filename, _referFilename, this._options.extensions);
                 if (realReferPath) {
-                    this._load(realReferPath, forceUpdate, filename);
+                    if (!this._context.getScriptFile(realReferPath)) {
+                        this._load(realReferPath, forceUpdate, filename);
+                    }
                 }
             }
         });

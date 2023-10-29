@@ -2,9 +2,8 @@ import { computed, getCurrentInstance, provide, reactive, type EmitsOptions, typ
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { checkChidrenIsRightTypes } from '../../common/vnode-utils';
 import { FRAMEWORK_CONFIG_KEY } from '../../config';
-import type { FrameworkConfig } from '../../types/global';
+import type { FrameworkConfig, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ThemeConfig } from '../../types/theme';
 export const FrameworkProps = {
     ...BaseProps,
     /**

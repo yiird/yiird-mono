@@ -8,25 +8,25 @@ Input使用
 
 <div class="props">
 
-| 名称         | 描述                                                        |                    类型                    | 可选值                                                                                                                  |
-| :----------- | :---------------------------------------------------------- | :----------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id           | 组件id，若不设置会自动生成                                  |                   String                   |                                                                                                                         |
-| display      | 显示隐藏<hr>默认值:<br><pre>true</pre>                      |                   Boolean                  |                                                                                                                         |
-| name         | 表单项 `name`                                               |                   string                   |                                                                                                                         |
-| placeholder  | 占位提示内容                                                |                   string                   |                                                                                                                         |
-| disabled     | 禁用<hr>默认值:<br><pre>false</pre>                         |                   boolean                  |                                                                                                                         |
-| readonly     | 只读<hr>默认值:<br><pre>false</pre>                         |                   boolean                  |                                                                                                                         |
-| size         | 尺寸<hr>默认值:<br><pre>md</pre>                            |              [Size](#linksize)             | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| status       | 数据状态<hr>默认值:<br><pre>default</pre>                   |        [DataStatus](#linkdatastatus)       | `default` , `success` , `error` , `warn`                                                                                |
-| v-model      | 数据双向绑定                                                |              string \| number              |                                                                                                                         |
-| loading      | 加载标志<hr>默认值:<br><pre>false</pre>                     |                   boolean                  |                                                                                                                         |
-| max-length   | 最大长度                                                    |                   number                   |                                                                                                                         |
-| show-counter | 是否显示计数<hr>默认值:<br><pre>false</pre>                 |                   Boolean                  |                                                                                                                         |
-| shadow       | 是否使用阴影<hr>默认值:<br><pre>true</pre>                  |                   boolean                  |                                                                                                                         |
-| mode         | 类型<hr>默认值:<br><pre>text</pre>                          |         [InputMode](#linkinputmode)        | `text` , `password` , `number`                                                                                          |
-| prefixes     | <hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> | Array&lt;[InputExtra](#linkinputextra)&gt; |                                                                                                                         |
-| suffixes     | <hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> | Array&lt;[InputExtra](#linkinputextra)&gt; |                                                                                                                         |
-| whole        | <hr>默认值:<br><pre>false</pre>                             |                   boolean                  |                                                                                                                         |
+| 名称         | 描述                                                        |                           类型                          | 可选值                                                                                                                  |
+| :----------- | :---------------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id           | 组件id，若不设置会自动生成                                  |                          String                         |                                                                                                                         |
+| display      | 显示隐藏<hr>默认值:<br><pre>true</pre>                      |                         Boolean                         |                                                                                                                         |
+| rendered     | 组件渲染完后的回调                                          | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| name         | 表单项 `name`                                               |                          string                         |                                                                                                                         |
+| placeholder  | 占位提示内容                                                |                          string                         |                                                                                                                         |
+| disabled     | 禁用<hr>默认值:<br><pre>false</pre>                         |                         boolean                         |                                                                                                                         |
+| readonly     | 只读<hr>默认值:<br><pre>false</pre>                         |                         boolean                         |                                                                                                                         |
+| size         | 尺寸<hr>默认值:<br><pre>md</pre>                            |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| status       | 数据状态<hr>默认值:<br><pre>default</pre>                   |              [DataStatus](#linkdatastatus)              | `default` , `success` , `error` , `warn`                                                                                |
+| v-model      | 数据双向绑定                                                |                     string \| number                    |                                                                                                                         |
+| loading      | 加载标志<hr>默认值:<br><pre>false</pre>                     |                         boolean                         |                                                                                                                         |
+| max-length   | 最大长度                                                    |                          number                         |                                                                                                                         |
+| show-counter | 是否显示计数<hr>默认值:<br><pre>false</pre>                 |                         Boolean                         |                                                                                                                         |
+| shadow       | 是否使用阴影<hr>默认值:<br><pre>true</pre>                  |                         boolean                         |                                                                                                                         |
+| mode         | 类型<hr>默认值:<br><pre>text</pre>                          |               [InputMode](#linkinputmode)               | `text` , `password` , `number`                                                                                          |
+| prefixes     | <hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> |             Array&lt;[Affix](#linkaffix)&gt;            |                                                                                                                         |
+| suffixes     | <hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> |             Array&lt;[Affix](#linkaffix)&gt;            |                                                                                                                         |
 
 </div>
 
@@ -84,6 +84,10 @@ Input使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
 ### Size {#linksize}
 
 - Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) \| number \| (string &amp; { fromT?: any })
@@ -96,10 +100,16 @@ Input使用
 
 - InputMode = 	 `text` \| `password` \| `number`
 
-### InputExtra {#linkinputextra}
+### Affix {#linkaffix}
 
-- 描述： 附加物
-- InputExtra = 	 [Action](#linkaction) \| [Affix](#linkaffix)
+- 描述： Affix
+- 选项：
+	 - `kind` { `icon` \| `icon-text` \| `button` } : 指定Affix渲染的目标组件
+	 - [`text`] { string } : 提示语或者显示文本
+	 - [`icon`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 图标
+	 - [`onClick`] { (args:any) =&gt; void } : 操作回调
+	 - [`el`] { Ref } : 可将dom节点挂在到此项上
+	 - [`style`] { CSSProperties \| [StringOther](#linkstringother) } : 样式
 
 ### FormItemEventArgs {#linkformitemeventargs}
 
@@ -113,10 +123,10 @@ Input使用
 
 - NumberSize = 	 `1x` \| `2x` \| `3x` \| `4x` \| `5x` \| `6x` \| `7x` \| `8x` \| `9x` \| `10x`
 
-### Action {#linkaction}
+### StringOther {#linkstringother}
 
-- 选项：
+- StringOther = 	 string \& 
 
-### Affix {#linkaffix}
+### ActionCallback {#linkactioncallback}
 
-- 选项：
+- 方法型：	 (args:any) =&gt; void

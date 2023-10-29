@@ -27,6 +27,7 @@ Panel使用
 | :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------: | :-------------------------- |
 | id                   | 组件id，若不设置会自动生成                                                                                                                                                                                                                                                                                                                                                                                                    |                                  String                                 |                             |
 | display              | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                                                                                                                                                                                                                                                                                        |                                 Boolean                                 |                             |
+| rendered             | 组件渲染完后的回调                                                                                                                                                                                                                                                                                                                                                                                                            |         (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void         |                             |
 | height               | 总高度，不设置则为unset<hr>默认值:<br><pre>unset</pre>                                                                                                                                                                                                                                                                                                                                                                        |                             number \| string                            |                             |
 | max-height           | 最大高度，内容高度小于此高度，则高度自适应                                                                                                                                                                                                                                                                                                                                                                                    |                             number \| string                            |                             |
 | width                | 总宽度，不设置则为100%<hr>默认值:<br><pre>100 %</pre>                                                                                                                                                                                                                                                                                                                                                                         |                             number \| string                            |                             |
@@ -68,12 +69,16 @@ Panel使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
 ### PanelOperator {#linkpaneloperator}
 
 - 描述： 操作对象
 - 选项：
 	 - [`text`] { string } : 操作表述，如果没有图标，默认使用文本表现，如果有图标则为操作的提示信息
-	 - [`icon`] { IconDefinition \| IconPack \| IconName } : 图标
+	 - [`icon`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 图标
 	 - `action` { () =&gt; void } : 操作动作
 
 ### ScrollDisableTrackPluginOptions {#linkscrolldisabletrackpluginoptions}
@@ -99,3 +104,7 @@ Panel使用
 	 - [`placeY`] { `top` \| `bottom` \| `center` } : 纵向位置
 	 - [`offsetX`] { number } : 横向偏移，优先于`placeX`
 	 - [`offsetY`] { number } : 纵向偏移，优先于`placeY`
+
+### StringOther {#linkstringother}
+
+- StringOther = 	 string \& 

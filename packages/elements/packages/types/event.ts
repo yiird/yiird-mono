@@ -1,4 +1,4 @@
-import type { InternalTreeNode, TreeNodeKey } from './tree';
+import type { InternalTreeNode, TreeNodeKey } from './components';
 
 export interface EventArgs {
     el: HTMLElement;

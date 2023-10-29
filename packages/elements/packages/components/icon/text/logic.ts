@@ -1,27 +1,18 @@
-import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
-import { baseExpose, BaseProps, usePrefab, useTheme } from '../../../common/prefab';
+import type { ExtractPropTypes } from 'vue';
+import { computed, type EmitsOptions, type SetupContext } from 'vue';
+import { AffixProps, baseExpose, BaseProps, usePrefab, useTheme } from '../../../common/prefab';
 import { sizeToFontSize } from '../../../config';
-import type { IconNameOrDefinition } from '../../../types/icon';
+import type { ThemeConfig } from '../../../types/global';
 import type { InternalSetupContext } from '../../../types/prefab';
-import type { Size, ThemeConfig } from '../../../types/theme';
+
 export const IconTextProps = {
     ...BaseProps,
-    icon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        required: false,
-        default: ''
-    },
+    ...AffixProps,
     revert: {
         type: Boolean
-    },
-    text: {
-        type: String
-    },
-    size: {
-        type: String as PropType<Size>,
-        default: 'md'
     }
 } as const;
+
 export type IconTextPropsType = Readonly<ExtractPropTypes<typeof IconTextProps>>;
 
 export interface IconTextTheme extends ThemeConfig {

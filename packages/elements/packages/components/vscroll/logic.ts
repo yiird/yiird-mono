@@ -2,9 +2,9 @@ import { isNumber } from 'lodash-es';
 import Scrollbar from 'smooth-scrollbar';
 import { computed, nextTick, onMounted, onScopeDispose, ref, watch, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
+import type { ScrollOptions, ScrollState, VScrollBoundary, VScrollPluginOptions } from '../../types/components';
+import type { ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ScrollOptions, ScrollState, VScrollBoundary, VScrollPluginOptions } from '../../types/scroll';
-import type { ThemeConfig } from '../../types/theme';
 
 export const VscrollProps = {
     ...BaseProps,

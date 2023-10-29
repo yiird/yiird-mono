@@ -1,7 +1,7 @@
 import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
+import type { ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ThemeConfig } from '../../types/theme';
 export const GridProps = {
     ...BaseProps,
     /**

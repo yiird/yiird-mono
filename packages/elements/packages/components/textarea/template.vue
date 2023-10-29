@@ -33,7 +33,7 @@
                     <Icon
                         v-if="loading"
                         :class="`${cType__}__loading-icon`"
-                        :name="faLoader"
+                        :icon="faLoader"
                         :size="size"
                         animation="spin"></Icon>
                     <span

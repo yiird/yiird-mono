@@ -33,11 +33,11 @@
                         @click="active(index)">
                         <Icon
                             v-if="tab.icon"
-                            :name="tab.icon"></Icon>
+                            :icon="tab.icon"></Icon>
                         <span>{{ tab.name }}</span>
                         <Icon
                             v-if="!tab.disabled && tab.closeable"
-                            :name="faClose"
+                            :icon="faClose"
                             @click.stop="close(index)"></Icon>
                     </div>
                 </div>

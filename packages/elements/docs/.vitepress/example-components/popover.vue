@@ -1,9 +1,5 @@
 <template>
     <y-space direction="v">
-        <y-icon-text
-            :icon="faCircleCamera"
-            text="图标文本"
-            id="popover-reference-1"></y-icon-text>
         <y-button
             :icon="faCircleCamera"
             color="primary"
@@ -26,13 +22,6 @@
             </y-paragraph>
         </y-typography>
     </y-space>
-
-    <y-popover
-        mode="click-leave"
-        color="black"
-        max-width="100px"
-        reference="#popover-reference-1"
-        text="通过设置参考元素的ID来绑定"></y-popover>
 
     <y-popover
         mode="click-leave"

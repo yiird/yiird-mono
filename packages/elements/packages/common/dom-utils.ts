@@ -1,14 +1,18 @@
-import type { ClientRectObject, VirtualElement } from '@floating-ui/vue';
-import { isElement as _isElement, isNumber, isString } from 'lodash-es';
-import type { YComponentInstance } from 'packages/types';
-import type { PopoverReference } from 'packages/types/popover';
-import type { ComponentPublicInstance } from 'vue';
-import type { ThemeConfig } from '../types/theme';
+import type { ClientRectObject } from '@floating-ui/vue';
+import { isElement as _isElement, isNumber } from 'lodash-es';
+import { isVNode, unref, type ComponentPublicInstance } from 'vue';
+import type { PopoverReference } from '../types/components';
+import type { ThemeConfig } from '../types/global';
+import type { CommonExposed } from '../types/prefab';
 
 export const getElementById = (id: string) => document.getElementById(id);
 
 export const styleValueToNumber = (value: string | number) => {
     return isNumber(value) ? value : parseFloat(value);
+};
+
+export const toStyleValue = (value: any, defaultValue: any = 'unset', unit: string = 'px') => {
+    return value ? (isNumber(value) ? `${value}${unit}` : value) : defaultValue;
 };
 
 export const getTargetHeight = (target: Element) => {
@@ -29,36 +33,26 @@ export const findElementFromEventByClass = <E extends Element | undefined>(ev: E
     return <E>ev.composedPath().find((it) => (it as Element).classList.contains(clazz));
 };
 
-export const isVirtualElement = (ve: any): ve is VirtualElement => {
-    return !!ve.getBoundingClientRect;
+export const isExposedComponent = (it: any): it is CommonExposed => {
+    return it && it.$ && it.cType__;
 };
-
-export const isComponentInstance = (it: any): it is ComponentPublicInstance => {
-    return it.$ && it.$props && it.$data && it.$root;
-};
-
-export const isYComponentInstance = (it: any): it is YComponentInstance => {
-    return it.cType__;
+export const isComponent = (it: any): it is ComponentPublicInstance => {
+    return it && it.$ && isVNode(it.$.vnode);
 };
 
 export const extractEl = (reference?: PopoverReference) => {
-    let el: Element | null | undefined;
-
-    if (isString(reference)) {
-        el = document.querySelector(reference);
-    } else if (isElement(reference)) {
+    let el;
+    if (isElement(reference)) {
         el = reference as Element;
-    } else if (isComponentInstance(reference)) {
-        el = reference.$el;
+    } else if (isExposedComponent(reference)) {
+        el = unref(reference.el);
+        if (isComponent(el)) {
+            el = el.$el;
+        }
     } else {
-        el = reference?.el.value;
+        el = null;
     }
-
     return el;
-};
-
-export const toStyleValue = (value: any, defaultValue: any = 'unset', unit: string = 'px') => {
-    return value ? (isNumber(value) ? `${value}${unit}` : value) : defaultValue;
 };
 
 export const coverRects = (...rects: (DOMRect | ClientRectObject)[]) => {

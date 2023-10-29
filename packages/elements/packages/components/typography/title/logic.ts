@@ -2,8 +2,7 @@ import type { ExtractPropTypes, PropType, SetupContext } from 'vue';
 import { baseExpose, usePrefab } from '../../../common/prefab';
 import { BaseTextProps, obtainBaseTextTheme, type BaseTextTheme } from '../../../common/prefab-typography';
 import { sizeToFontSize, sizeToTextLineHeight } from '../../../config';
-import type { Align, SingleLineEllipsis } from '../../../types/global';
-import type { NumberSize } from '../../../types/theme';
+import type { Align, NumberSize, SingleLineEllipsis } from '../../../types/global';
 
 export type TitleLevel = 1 | 2 | 3 | 4;
 

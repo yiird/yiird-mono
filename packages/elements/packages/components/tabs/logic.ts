@@ -20,10 +20,9 @@ import {
 } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToComponentHeight, sizeToFontSize } from '../../config';
-import type { IconNameOrDefinition } from '../../types/icon';
+import type { IconNameOrDefinition, ScrollOverflowState } from '../../types/components';
+import type { Size, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ScrollOverflowState } from '../../types/scroll';
-import type { Size, ThemeConfig } from '../../types/theme';
 import type { ScrollType } from '../scroll';
 
 /**

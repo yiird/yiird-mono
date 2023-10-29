@@ -8,7 +8,6 @@
         <div :class="`${cType__}__top`">
             <Avatar
                 :size="avatarSize"
-                :icon-size="size"
                 :icon="avatarIcon"
                 :src="avatarSrc"></Avatar>
             <div :class="`${cType__}__summary`">

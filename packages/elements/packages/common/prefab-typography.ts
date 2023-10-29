@@ -1,8 +1,8 @@
 import { gold } from '@ant-design/colors';
 import { isString } from 'lodash-es';
 import { computed, type EmitsOptions, type ExtractPropTypes } from 'vue';
+import type { ThemeConfig } from '../types/global';
 import type { InternalSetupContext } from '../types/prefab';
-import type { ThemeConfig } from '../types/theme';
 import { BaseProps, useTheme } from './prefab';
 
 export const BaseTextProps = {

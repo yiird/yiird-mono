@@ -41,7 +41,7 @@
         "body": [
            "import type { App, Plugin } from 'vue';",
 		   "import { _register } from '../../common/prefab';",
-           "import type { PlatformOptions } from '../../types/options';",
+           "import type { PlatformOptions } from '../../types/global';",
            "import type { ComponentType } from '../../types/prefab';",
            "import type { ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}ExposeType } from './logic';",
            "import ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}} from './template.vue';",
@@ -75,7 +75,7 @@
             "import { computed, type EmitsOptions, type ExtractPropTypes, type SetupContext } from 'vue';",
             "import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';",
             "import type { InternalSetupContext } from '../../types/prefab';",
-            "import type { ThemeConfig } from '../../types/theme';",
+            "import type { ThemeConfig } from '../../types/global';",
 
             "export const ${1:${TM_DIRECTORY/.*\\/(.+)/${1:/capitalize}/}}Props = {",
             "    ...BaseProps,",

@@ -1,24 +1,19 @@
 import { faEye, faEyeSlash, faLoader } from '@fortawesome/pro-light-svg-icons';
-import { computed, h, reactive, ref, toRef, unref, type ExtractPropTypes, type PropType, type SetupContext, type VNode } from 'vue';
-import { isAffix } from '../../common/check-type';
+import { camelCase, omit, upperFirst } from 'lodash-es';
+import { computed, h, reactive, ref, toRef, unref, type Component, type ExtractPropTypes, type PropType, type SetupContext, type VNode } from 'vue';
 import { FormItemTextProps, obtainFormItemTheme, useFormItemText, type FormItemState } from '../../common/common-form';
-import type { Action, Affix } from '../../common/common-source';
 import { useInputVModel } from '../../common/composites-vmodel';
 import { baseExpose, usePrefab } from '../../common/prefab';
 import { vnodeRef } from '../../common/vnode-utils';
-import { sizeToGap } from '../../config';
+import type { Affix } from '../../types/components';
 import type { FormItemEventArgs } from '../../types/event';
-import type { Size, ThemeConfig } from '../../types/theme';
+import type { RenderedReturn, Size, ThemeConfig } from '../../types/global';
 import { Button } from '../button';
 import { Group } from '../group';
+import { Icon } from '../icon';
 import { IconText } from '../icon/text';
 
 export type InputMode = 'text' | 'password' | 'number';
-
-/**
- * 附加物
- */
-export type InputExtra = Action | Affix;
 
 export const InputProps = {
     ...FormItemTextProps,
@@ -30,20 +25,16 @@ export const InputProps = {
         default: 'text'
     },
     prefixes: {
-        type: Array as PropType<Array<InputExtra>>,
+        type: Array as PropType<Affix[]>,
         default() {
             return [];
         }
     },
     suffixes: {
-        type: Array as PropType<Array<InputExtra>>,
+        type: Array as PropType<Affix[]>,
         default() {
             return [];
         }
-    },
-    whole: {
-        type: Boolean as PropType<boolean>,
-        default: false
     }
 } as const;
 export type InputPropsType = Readonly<ExtractPropTypes<typeof InputProps>>;
@@ -96,70 +87,39 @@ export interface InputState extends FormItemState {
     checkPassword: boolean;
 }
 
-const __renderAffixies = (cType: string, themeConfig: ThemeConfig, size: Size, preOrSuffixies: Array<Action | Affix>, reverse: boolean = false) => {
-    const actions: Action[] = [];
-    const affixies: Affix[] = [];
+const __renderAffixies = (themeConfig: ThemeConfig, size: Size, affixes: Array<Affix>) => {
+    const COMPONENS: Record<string, Component> = {
+        Icon,
+        Button,
+        IconText
+    };
 
-    const gap = sizeToGap(themeConfig, size);
+    const slots: VNode = h(Group, () =>
+        affixes
+            .filter(({ kind }) => !!kind)
+            .map((affix) => {
+                const { kind, props, el } = affix;
+                const Comp = COMPONENS[upperFirst(camelCase(kind))];
 
-    preOrSuffixies.forEach((it) => {
-        if (isAffix(it)) {
-            affixies.push(it);
-        } else {
-            actions.push(it);
-        }
-    });
-
-    const slots: VNode[] = [];
-
-    if (affixies.length > 0) {
-        slots.push(
-            h(
-                Group,
-                {
-                    style: {
-                        padding: `0px ${gap}px`,
-                        backgroundColor: themeConfig.ye_colorBorder
+                const comp = h(Comp, {
+                    ...omit(affix, 'kind', 'props'),
+                    ...(props || {}),
+                    rendered({ el: element }: RenderedReturn) {
+                        if (el) {
+                            el.value = element;
+                        }
                     },
-                    gap
-                },
-                () =>
-                    affixies.map((affix) => {
-                        const { text, icon } = affix;
-                        return h(IconText, {
-                            style: {
-                                color: themeConfig.ye_colorSecondaryText
-                            },
-                            size,
-                            icon,
-                            text
-                        });
-                    })
-            )
-        );
-    }
+                    size
+                });
+                return comp;
+            })
+    );
 
-    if (actions.length > 0) {
-        slots.push(
-            h(Group, { after: !reverse, before: reverse, divider: true }, () =>
-                actions.map((action) => {
-                    const { text, icon, fn } = action;
-                    return h(
-                        Button,
-                        {
-                            size,
-                            color: 'primary',
-                            icon,
-                            onClick: fn
-                        },
-                        () => text
-                    );
-                })
-            )
-        );
-    }
+    return () => slots;
+};
 
-    return () => (reverse ? slots.reverse() : slots);
+export const createAffixis = (themeConfig: ThemeConfig, size: Size, affixes: Array<Affix>) => {
+    return __renderAffixies(themeConfig, size, affixes);
 };
 
 export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof InputEmits>) => {
@@ -179,7 +139,6 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
     const content = ref<Element>();
 
     const commonExposed = usePrefab(props);
-    const { cType__ } = commonExposed;
 
     /**
      * @private
@@ -211,12 +170,12 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
 
     const obtainPrefixies = vnodeRef(() => {
         const { size, prefixes } = props;
-        return __renderAffixies(cType__, theme.value, size, prefixes, true);
+        return __renderAffixies(theme.value, size, prefixes);
     });
 
     const obtainSuffixies = vnodeRef(() => {
         const { size, suffixes } = props;
-        return __renderAffixies(cType__, theme.value, size, suffixes);
+        return __renderAffixies(theme.value, size, suffixes);
     });
 
     const obtainPrefabAffixies = computed(() => {

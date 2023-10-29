@@ -9,18 +9,22 @@
         <!-- 默认插槽 -->
         <Icon
             v-if="loading"
-            :name="faLoader"
+            :icon="faLoader"
             :class="`${cType__}__loading`"
             animation="spin"
             fixed-width />
         <Icon
             v-if="icon && iconPosition === 'left'"
-            :name="icon"></Icon>
-        <span :class="`${cType__}__text`"><slot></slot></span>
+            :icon="icon"
+            fixed-width></Icon>
+        <span :class="`${cType__}__text`">
+            <template v-if="text">{{ text }}</template>
+            <slot v-else></slot>
+        </span>
 
         <Icon
             v-if="icon && iconPosition === 'right'"
-            :name="icon"
+            :icon="icon"
             fixed-width></Icon>
     </button>
 </template>

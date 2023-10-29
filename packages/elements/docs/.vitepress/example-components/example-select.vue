@@ -1,15 +1,35 @@
 <template>
     <y-space>
+      
+        <y-space direction="v">
+            <y-text italic>树结构模式</y-text>
+            <y-select
+                placeholder="下拉树"
+                v-model="treeSelectValue"
+                :once="true"
+                :pop-options="{
+                    width: 'fixed'
+                }"
+                :mapping="{
+                    key: 'id',
+                    parentKey: 'pid',
+                    text: 'name',
+                    children: 'children'
+                }"
+                searchable
+                mode="tree"
+                size="md"
+                :source="treeSource"
+                @change="doChange"></y-select>
+        </y-space>
+
         <y-space direction="v">
             <y-text italic>列表模式</y-text>
             <y-select
                 placeholder="下拉列表"
                 v-model="listSelectValue"
-                :pop-options="{
-                    fixedWidth: true
-                }"
                 :mapping="{
-                    label: '',
+                    label: 's',
                     value: '22'
                 }"
                 mode="list"
@@ -18,25 +38,6 @@
                 @change="doChange"></y-select>
         </y-space>
 
-        <y-space direction="v">
-            <y-text italic>树结构模式</y-text>
-            <y-select
-                placeholder="下拉树"
-                v-model="treeSelectValue"
-                :pop-options="{
-                    fixedWidth: true
-                }"
-                :mapping="{
-                    key: 'id',
-                    parentKey: 'pid',
-                    text: 'name',
-                }"
-                searchable
-                mode="tree"
-                size="md"
-                :source="treeSource"
-                @change="doChange"></y-select>
-        </y-space>
     </y-space>
 </template>
 

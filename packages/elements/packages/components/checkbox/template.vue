@@ -1,23 +1,30 @@
 <template>
-    <label
+    <div
         v-show="display__"
         v-if="refresh__"
         :id="id__"
-        ref="el"
-        :for="`${id__}-input`"
-        :class="[cType__, theme.bemModifiers]"
-        @click="false">
-        <input
-            :id="`${id__}-input`"
-            ref="modelValueRef"
-            :name="name"
-            :class="`${cType__}__input`"
-            type="checkbox" />
-        <Icon
-            v-if="obtainCheckIcon"
-            :name="obtainCheckIcon"></Icon>
-        <span :class="`${cType__}__text`"></span>
-    </label>
+        ref="el">
+        <template
+            v-for="(item, index) in obtainSource"
+            :key="index">
+            <label
+                :for="`${id__}-input`"
+                :class="[cType__, theme.bemModifiers]"
+                @click="false">
+                <input
+                    :id="`${id__}-input`"
+                    ref="modelValueRef"
+                    :name="name"
+                    :checked="item.checked"
+                    :class="`${cType__}__input`"
+                    type="checkbox" />
+                <Icon
+                    v-if="obtainCheckIcon"
+                    :icon="obtainCheckIcon"></Icon>
+                <span :class="`${cType__}__text`">{{ item.label }}</span>
+            </label>
+        </template>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';

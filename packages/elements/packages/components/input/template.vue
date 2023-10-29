@@ -35,16 +35,14 @@
             <div :class="`${cType__}__suffix`">
                 <Space
                     v-if="obtainPrefabAffixies"
-                    :style="{
-                        margin: '0px 5px'
-                    }"
                     cross-axis="center">
                     <Icon
                         v-if="loading"
                         :class="`${cType__}__loading-icon`"
-                        :name="faLoader"
+                        :icon="faLoader"
                         :size="size"
-                        animation="spin"></Icon>
+                        animation="spin"
+                        fixed-width></Icon>
                     <span
                         v-if="obtainCounter"
                         :class="`${cType__}__counter`">
@@ -52,8 +50,9 @@
                     </span>
                     <Icon
                         v-if="obtainIsPassword"
-                        :name="obtainPasswordIcon"
+                        :icon="obtainPasswordIcon"
                         :size="size"
+                        fixed-width
                         @click="toggleCheckPassword_"></Icon>
                 </Space>
                 <component

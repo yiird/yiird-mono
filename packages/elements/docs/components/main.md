@@ -21,10 +21,11 @@ Main使用
 
 <div class="props">
 
-| 名称    | 描述                                   |   类型  | 可选值 |
-| :------ | :------------------------------------- | :-----: | :----- |
-| id      | 组件id，若不设置会自动生成             |  String |        |
-| display | 显示隐藏<hr>默认值:<br><pre>true</pre> | Boolean |        |
+| 名称     | 描述                                   |                           类型                          | 可选值 |
+| :------- | :------------------------------------- | :-----------------------------------------------------: | :----- |
+| id       | 组件id，若不设置会自动生成             |                          String                         |        |
+| display  | 显示隐藏<hr>默认值:<br><pre>true</pre> |                         Boolean                         |        |
+| rendered | 组件渲染完后的回调                     | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |        |
 
 </div>
 
@@ -39,3 +40,11 @@ Main使用
 
 ### domRefresh()
 - 用法： 刷新组件
+
+## 关联类型
+
+
+
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：

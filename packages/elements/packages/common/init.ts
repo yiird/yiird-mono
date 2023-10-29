@@ -1,4 +1,4 @@
-import type { PlatformOptions } from '../types/options';
+import type { PlatformOptions } from '../types/global';
 import { rootStyleVariables, updateRootStyle } from './dom-utils';
 
 export const readyCallback = (ops?: PlatformOptions) => {

@@ -1,6 +1,6 @@
 import type { App, Plugin } from 'vue';
 import { _register } from '../../common/prefab';
-import type { PlatformOptions } from '../../types/options';
+import type { PlatformOptions } from '../../types/global';
 import type { ComponentType } from '../../types/prefab';
 import type { GroupExposeType } from './logic';
 import Group from './template.vue';

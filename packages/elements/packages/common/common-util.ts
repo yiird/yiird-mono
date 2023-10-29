@@ -1,6 +1,6 @@
 import { isArray, isNaN, isSet } from 'lodash-es';
 import { IS_DARK, USER_THEME_VARS } from '../config';
-import type { UserThemeVars } from '../types/theme';
+import type { UserThemeVars } from '../types/global';
 
 export const isNumberStr = (v: any) => {
     try {

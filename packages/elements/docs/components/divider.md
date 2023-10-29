@@ -21,13 +21,14 @@ Divider使用
 
 <div class="props">
 
-| 名称      | 描述                                   |               类型              | 可选值                         |
-| :-------- | :------------------------------------- | :-----------------------------: | :----------------------------- |
-| id        | 组件id，若不设置会自动生成             |              String             |                                |
-| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |             Boolean             |                                |
-| mode      | <hr>默认值:<br><pre>single</pre>       | [DividerMode](#linkdividermode) | `dashed` , `double` , `single` |
-| direction | <hr>默认值:<br><pre>h</pre>            |   [Direction](#linkdirection)   | `h` , `v`                      |
-| margin    | <hr>默认值:<br><pre>5</pre>            |              Number             |                                |
+| 名称      | 描述                                   |                           类型                          | 可选值                         |
+| :-------- | :------------------------------------- | :-----------------------------------------------------: | :----------------------------- |
+| id        | 组件id，若不设置会自动生成             |                          String                         |                                |
+| display   | 显示隐藏<hr>默认值:<br><pre>true</pre> |                         Boolean                         |                                |
+| rendered  | 组件渲染完后的回调                     | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                |
+| mode      | <hr>默认值:<br><pre>single</pre>       |             [DividerMode](#linkdividermode)             | `dashed` , `double` , `single` |
+| direction | <hr>默认值:<br><pre>h</pre>            |               [Direction](#linkdirection)               | `h` , `v`                      |
+| margin    | <hr>默认值:<br><pre>5</pre>            |                          Number                         |                                |
 
 </div>
 
@@ -47,6 +48,10 @@ Divider使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
 ### DividerMode {#linkdividermode}
 
 - DividerMode = 	 `dashed` \| `double` \| `single`
@@ -54,4 +59,8 @@ Divider使用
 ### Direction {#linkdirection}
 
 - 描述： 方向<br/>`v` : 垂直方向<br/>`h` : 水平方向
-- Direction = 	 `h` \| `v` \| (string &amp; { fromT?: any })
+- Direction = 	 `h` \| `v` \| [StringOther](#linkstringother)
+
+### StringOther {#linkstringother}
+
+- StringOther = 	 string \& 

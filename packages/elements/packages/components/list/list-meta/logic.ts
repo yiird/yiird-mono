@@ -2,10 +2,9 @@ import { isObject } from 'lodash-es';
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../../common/prefab';
 import { sizeToFontSize } from '../../../config';
-import type { MultiLineEllipsis, SingleLineEllipsis } from '../../../types/global';
-import type { IconNameOrDefinition } from '../../../types/icon';
+import type { IconNameOrDefinition } from '../../../types/components';
+import type { MultiLineEllipsis, SingleLineEllipsis, Size, ThemeConfig } from '../../../types/global';
 import type { InternalSetupContext } from '../../../types/prefab';
-import type { Size, ThemeConfig } from '../../../types/theme';
 import type { TitleLevel } from '../../typography/title';
 
 /**

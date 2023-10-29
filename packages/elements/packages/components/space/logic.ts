@@ -1,9 +1,8 @@
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToGap } from '../../config';
-import type { Direction, FlexAlgin } from '../../types/global';
+import type { Direction, FlexAlgin, Size, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { Size, ThemeConfig } from '../../types/theme';
 
 /* const getSize = (themeConfig: ThemeConfig, size: SpaceGap | number) => {
     let _size: number;

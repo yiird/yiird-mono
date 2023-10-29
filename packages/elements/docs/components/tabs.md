@@ -22,17 +22,18 @@ Tabs使用
 
 <div class="props">
 
-| 名称          | 描述                                                                                                                                                      |                 类型                 | 可选值                                                                                                                  |
-| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id            | 组件id，若不设置会自动生成                                                                                                                                |                String                |                                                                                                                         |
-| display       | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                    |                Boolean               |                                                                                                                         |
-| items         | 选项<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                           | Array&lt;[TabItem](#linktabitem)&gt; |                                                                                                                         |
-| active-key    | 当前激活的选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>0</pre>                                                                    |           number \| string           |                                                                                                                         |
-| disabled-keys | 禁用选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                          |     Array&lt;string \| number&gt;    |                                                                                                                         |
-| closeable     | 是否可关闭<hr>默认值:<br><pre>false</pre>                                                                                                                 |                boolean               |                                                                                                                         |
-| size          | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                          |           [Size](#linksize)          | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| mode          | 文本模式<hr>默认值:<br><pre>text</pre>                                                                                                                    |             text \| card             | `text` , `card`                                                                                                         |
-| gutter        | 间距<hr>默认值:<br><pre>default (rawProps: any) {<br>  if ('card' === rawProps.mode) {<br>    return 5;<br>  } else {<br>    return 15;<br>  }<br>}</pre> |                number                |                                                                                                                         |
+| 名称          | 描述                                                                                                                                                      |                           类型                          | 可选值                                                                                                                  |
+| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id            | 组件id，若不设置会自动生成                                                                                                                                |                          String                         |                                                                                                                         |
+| display       | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                    |                         Boolean                         |                                                                                                                         |
+| rendered      | 组件渲染完后的回调                                                                                                                                        | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| items         | 选项<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                           |           Array&lt;[TabItem](#linktabitem)&gt;          |                                                                                                                         |
+| active-key    | 当前激活的选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>0</pre>                                                                    |                     number \| string                    |                                                                                                                         |
+| disabled-keys | 禁用选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                          |              Array&lt;string \| number&gt;              |                                                                                                                         |
+| closeable     | 是否可关闭<hr>默认值:<br><pre>false</pre>                                                                                                                 |                         boolean                         |                                                                                                                         |
+| size          | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                          |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| mode          | 文本模式<hr>默认值:<br><pre>text</pre>                                                                                                                    |                       text \| card                      | `text` , `card`                                                                                                         |
+| gutter        | 间距<hr>默认值:<br><pre>default (rawProps: any) {<br>  if ('card' === rawProps.mode) {<br>    return 5;<br>  } else {<br>    return 15;<br>  }<br>}</pre> |                          number                         |                                                                                                                         |
 
 </div>
 
@@ -66,6 +67,10 @@ Tabs使用
 ## 关联类型
 
 
+
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
 
 ### TabItem {#linktabitem}
 

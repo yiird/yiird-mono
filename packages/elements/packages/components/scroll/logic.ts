@@ -3,9 +3,9 @@ import Scrollbar from 'smooth-scrollbar';
 import type { ScrollIntoViewOptions, ScrollListener, ScrollbarSize, SetPositionOptions } from 'smooth-scrollbar/interfaces';
 import { computed, onMounted, onScopeDispose, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
+import type { ScrollDisableTrackPluginOptions, ScrollHideTrackPluginOptions, ScrollOptions, ScrollOverflowState, ScrollTrackAuxPluginOptions } from '../../types/components';
+import type { ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ScrollDisableTrackPluginOptions, ScrollHideTrackPluginOptions, ScrollOptions, ScrollOverflowState, ScrollTrackAuxPluginOptions } from '../../types/scroll';
-import type { ThemeConfig } from '../../types/theme';
 
 export const ScrollProps = {
     ...BaseProps,

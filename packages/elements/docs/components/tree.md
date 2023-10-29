@@ -21,29 +21,30 @@ Tree使用
 
 <div class="props">
 
-| 名称                  | 描述                                                                                                                                                                                                                    |                       类型                      | 可选值                                                                                                                  |
-| :-------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id                    | 组件id，若不设置会自动生成                                                                                                                                                                                              |                      String                     |                                                                                                                         |
-| display               | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                                                                                  |                     Boolean                     |                                                                                                                         |
-| source                | 数据，此数据为标准树形结构数据或者能构成标准树形结构的扁平数据<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                               |               Array&lt;object&gt;               |                                                                                                                         |
-| key-config            | 标识(字段)配置<br/><br/>告知组件主键、父主键、显示文本、子节点分别对应数据中的字段<hr>默认值:<br><pre>{<br>  key: 'key',<br>  pkey: 'parentKey',<br>  ckey: 'children',<br>  ikey: 'icon',<br>  tkey: 'text'<br>}</pre> |       [TreeKeyConfig](#linktreekeyconfig)       |                                                                                                                         |
-| size                  | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                                                                                        |                [Size](#linksize)                | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| item-style            |                                                                                                                                                                                                                         |             string \| CSSProperties             |                                                                                                                         |
-| cascade               | 是否级联选中父级、子集<hr>默认值:<br><pre>true</pre>                                                                                                                                                                    |                     boolean                     |                                                                                                                         |
-| draggable             | 是否可以被拖拽<hr>默认值:<br><pre>false</pre>                                                                                                                                                                           |                     boolean                     |                                                                                                                         |
-| hide-icon             | 是否显示图标<hr>默认值:<br><pre>false</pre>                                                                                                                                                                             |                     Boolean                     |                                                                                                                         |
-| hide-select-icon      | <hr>默认值:<br><pre>false</pre>                                                                                                                                                                                         |                     Boolean                     |                                                                                                                         |
-| hide-switch-icon      | <hr>默认值:<br><pre>false</pre>                                                                                                                                                                                         |                     Boolean                     |                                                                                                                         |
-| hide-line             | 是否显示辅助线<hr>默认值:<br><pre>false</pre>                                                                                                                                                                           |                     Boolean                     |                                                                                                                         |
-| icons                 | <hr>默认值:<br><pre>default () {<br>  return {<br>    folder: faFolder,<br>    leaf: faLeaf<br>  };<br>}</pre>                                                                                                          |       [TreeNodeIcons](#linktreenodeicons)       |                                                                                                                         |
-| select-icons          | <hr>默认值:<br><pre>default () {<br>  return {<br>    checked: faSquareCheck,<br>    halfChecked: faSquareMinus,<br>    notChecked: faSquare<br>  };<br>}</pre>                                                         | [TreeNodeSelectIcons](#linktreenodeselecticons) |                                                                                                                         |
-| switch-icons          | <hr>默认值:<br><pre>default () {<br>  return {<br>    open: faAngleDown,<br>    close: faAngleRight<br>  };<br>}</pre>                                                                                                  | [TreeNodeSwitchIcons](#linktreenodeswitchicons) |                                                                                                                         |
-| multi                 | <hr>默认值:<br><pre>false</pre>                                                                                                                                                                                         |                     Boolean                     |                                                                                                                         |
-| default-selected-keys | 默认选中<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                                                                                     |          Array&lt;string \| number&gt;          |                                                                                                                         |
-| default-expand-keys   | 默认展开<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                                                                                     |          Array&lt;string \| number&gt;          |                                                                                                                         |
-| default-expand-level  | 展开配置,默认展开到第几级                                                                                                                                                                                               |                      number                     |                                                                                                                         |
-| trigger-count         | 触发虚拟渲染的数量，当需要渲染的总节点数超过此值时，进行虚拟化渲染。<hr>默认值:<br><pre>500</pre>                                                                                                                       |                      number                     |                                                                                                                         |
-| screen-size           | 每屏显示数量<hr>默认值:<br><pre>30</pre>                                                                                                                                                                                |                      number                     |                                                                                                                         |
+| 名称                  | 描述                                                                                                                                                                                                          |                           类型                          | 可选值                                                                                                                  |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id                    | 组件id，若不设置会自动生成                                                                                                                                                                                    |                          String                         |                                                                                                                         |
+| display               | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                                                                        |                         Boolean                         |                                                                                                                         |
+| rendered              | 组件渲染完后的回调                                                                                                                                                                                            | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| source                | 数据，此数据为标准树形结构数据或者能构成标准树形结构的扁平数据<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                     |                   Array&lt;object&gt;                   |                                                                                                                         |
+| mapping               | 标识(字段)配置<br/><br/>告知组件主键、父主键、显示文本、子节点分别对应数据中的字段<hr>默认值:<br><pre>{<br>  key: 'key',<br>  parentKey: 'parentKey',<br>  children: 'children',<br>  text: 'text'<br>}</pre> |                                                         |                                                                                                                         |
+| size                  | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                                                                              |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| item-style            |                                                                                                                                                                                                               |                 string \| CSSProperties                 |                                                                                                                         |
+| cascade               | 是否级联选中父级、子集<hr>默认值:<br><pre>true</pre>                                                                                                                                                          |                         boolean                         |                                                                                                                         |
+| draggable             | 是否可以被拖拽<hr>默认值:<br><pre>false</pre>                                                                                                                                                                 |                         boolean                         |                                                                                                                         |
+| hide-icon             | 是否显示图标<hr>默认值:<br><pre>false</pre>                                                                                                                                                                   |                         Boolean                         |                                                                                                                         |
+| hide-select-icon      | <hr>默认值:<br><pre>false</pre>                                                                                                                                                                               |                         Boolean                         |                                                                                                                         |
+| hide-switch-icon      | <hr>默认值:<br><pre>false</pre>                                                                                                                                                                               |                         Boolean                         |                                                                                                                         |
+| hide-line             | 是否显示辅助线<hr>默认值:<br><pre>false</pre>                                                                                                                                                                 |                         Boolean                         |                                                                                                                         |
+| icons                 | <hr>默认值:<br><pre>default () {<br>  return {<br>    folder: faFolder,<br>    leaf: faLeaf<br>  };<br>}</pre>                                                                                                |           [TreeNodeIcons](#linktreenodeicons)           |                                                                                                                         |
+| select-icons          | <hr>默认值:<br><pre>default () {<br>  return {<br>    checked: faSquareCheck,<br>    halfChecked: faSquareMinus,<br>    notChecked: faSquare<br>  };<br>}</pre>                                               |     [TreeNodeSelectIcons](#linktreenodeselecticons)     |                                                                                                                         |
+| switch-icons          | <hr>默认值:<br><pre>default () {<br>  return {<br>    open: faAngleDown,<br>    close: faAngleRight<br>  };<br>}</pre>                                                                                        |     [TreeNodeSwitchIcons](#linktreenodeswitchicons)     |                                                                                                                         |
+| multi                 | <hr>默认值:<br><pre>false</pre>                                                                                                                                                                               |                         Boolean                         |                                                                                                                         |
+| default-selected-keys | 默认选中<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                                                                           |              Array&lt;string \| number&gt;              |                                                                                                                         |
+| default-expand-keys   | 默认展开<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                                                                           |              Array&lt;string \| number&gt;              |                                                                                                                         |
+| default-expand-level  | 展开配置,默认展开到第几级                                                                                                                                                                                     |                          number                         |                                                                                                                         |
+| trigger-count         | 触发虚拟渲染的数量，当需要渲染的总节点数超过此值时，进行虚拟化渲染。<hr>默认值:<br><pre>500</pre>                                                                                                             |                          number                         |                                                                                                                         |
+| screen-size           | 每屏显示数量<hr>默认值:<br><pre>30</pre>                                                                                                                                                                      |                          number                         |                                                                                                                         |
 
 </div>
 
@@ -138,14 +139,9 @@ Tree使用
 
 
 
-### TreeKeyConfig {#linktreekeyconfig}
+### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
-	 - `key` { string } : 主键标识
-	 - `pkey` { string } : 父级标识
-	 - `ckey` { string } : 子节点标识(如果是扁平数据，则不需要配置ckey)
-	 - `ikey` { string } : 图标标识，如果数据中没有图标属性，则使用props中配置的图标
-	 - `tkey` { string } : 文本内容标识
 
 ### Size {#linksize}
 
@@ -158,15 +154,15 @@ Tree使用
 ### TreeNodeSelectIcons {#linktreenodeselecticons}
 
 - 选项：
-	 - [`checked`] { IconDefinition \| IconPack \| IconName } : 选中状态图标
-	 - [`notChecked`] { IconDefinition \| IconPack \| IconName } : 为选中状态图标
-	 - [`halfChecked`] { IconDefinition \| IconPack \| IconName } : 半选中状态图标
+	 - [`checked`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 选中状态图标
+	 - [`notChecked`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 为选中状态图标
+	 - [`halfChecked`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 半选中状态图标
 
 ### TreeNodeSwitchIcons {#linktreenodeswitchicons}
 
 - 选项：
-	 - [`open`] { IconDefinition \| IconPack \| IconName } : 展开状态的图标
-	 - [`close`] { IconDefinition \| IconPack \| IconName } : 关闭状态的图标
+	 - [`open`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 展开状态的图标
+	 - [`close`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 关闭状态的图标
 
 ### TreeEventArgs {#linktreeeventargs}
 
@@ -178,14 +174,15 @@ Tree使用
 
 ### InternalTreeNode {#linkinternaltreenode}
 
+- 描述： Tree
 - 选项：
 	 - `key` { number \| string } : 标识
 	 - `parentKey` { number \| string } : 父级标识
 	 - `text` { string } : 显示文本
 	 - [`parent`] { [InternalTreeNode](#linkinternaltreenode) } : 父级节点
-	 - [`selectIcon`] { IconDefinition \| IconPack \| IconName } : 选择状态图标
-	 - [`switchIcon`] { IconDefinition \| IconPack \| IconName } : 选择状态图标
-	 - [`icon`] { IconDefinition \| IconPack \| IconName } : 图标
+	 - [`selectIcon`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 选择状态图标
+	 - [`switchIcon`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 选择状态图标
+	 - [`icon`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 图标
 	 - `isFolder` { boolean } : 是否是folder节点
 	 - `path` { Array&lt;[TreeNodeKey](#linktreenodekey)&gt; } : 路径标识
 	 - `pathNodes` { Array&lt;[InternalTreeNode](#linkinternaltreenode)&gt; } : 路径节点
@@ -224,12 +221,16 @@ Tree使用
 - 描述： 根据不同的节点数据返回不同的图标配置
 - 方法型：	 (node:[InternalTreeNode](#linkinternaltreenode)) =&gt; [TreeNodeFinalIcons](#linktreenodefinalicons)
 
+### StringOther {#linkstringother}
+
+- StringOther = 	 string \& 
+
 ### TreeNodeStateIcons {#linktreenodestateicons}
 
 - 描述： 根据状态确认图标类型
 - 选项：
-	 - [`default`] { IconDefinition \| IconPack \| IconName } : 正常状态
-	 - [`selected`] { IconDefinition \| IconPack \| IconName } : 选中状态
+	 - [`default`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 正常状态
+	 - [`selected`] { IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother) } : 选中状态
 
 ### TreeNodeTypeIcons {#linktreenodetypeicons}
 
@@ -240,4 +241,4 @@ Tree使用
 
 ### IconNameOrDefinition {#linkiconnameordefinition}
 
-- IconNameOrDefinition = 	 IconDefinition \| IconPack \| IconName
+- IconNameOrDefinition = 	 IconDefinition \| IconPack \| IconName \| [StringOther](#linkstringother)

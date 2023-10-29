@@ -1,5 +1,5 @@
 import type { EmitsOptions, Ref, SetupContext } from 'vue';
-import type { PlatformOptions } from './options';
+import type { PlatformOptions } from './global';
 
 export interface CommonExposed {
     /**

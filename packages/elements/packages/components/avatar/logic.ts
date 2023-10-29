@@ -1,13 +1,13 @@
 import Color from 'color';
 import { computed, getCurrentInstance, onMounted, ref, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { toStyleValue } from '../../common/dom-utils';
-import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
+import { AffixProps, BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { sizeToComponentHeight, sizeToFontSize } from '../../config';
-import type { IconNameOrDefinition } from '../../types/icon';
+import type { ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { Size, ThemeConfig } from '../../types/theme';
 export const AvatarProps = {
     ...BaseProps,
+    ...AffixProps,
     /**
      * 形状
      */
@@ -15,27 +15,7 @@ export const AvatarProps = {
         type: String as PropType<`circle` | `square`>,
         default: 'circle'
     },
-    /**
-     * 尺寸
-     */
-    size: {
-        type: String as PropType<Size>,
-        default: 'md'
-    },
-    /**
-     * 图标尺寸
-     */
-    iconSize: {
-        type: String as PropType<Size>,
-        default: 'md'
-    },
-    /**
-     * 图标
-     */
-    icon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: ''
-    },
+
     /**
      * url
      */

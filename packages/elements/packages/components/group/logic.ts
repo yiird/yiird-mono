@@ -3,9 +3,8 @@ import { computed, h, type EmitsOptions, type ExtractPropTypes, type PropType, t
 import { insertArray } from '../../common/common-util';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { checkChidrenIsRightTypes, vnodeRef } from '../../common/vnode-utils';
-import type { Direction } from '../../types/global';
+import type { Direction, Size, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { Size, ThemeConfig } from '../../types/theme';
 import { Divider } from '../divider';
 import { Space } from '../space';
 export const GroupProps = {

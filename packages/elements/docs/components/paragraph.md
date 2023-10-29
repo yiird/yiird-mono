@@ -21,20 +21,21 @@ Paragraph使用
 
 <div class="props">
 
-| 名称       | 描述                                     |                     类型                    | 可选值                                                                                                                  |
-| :--------- | :--------------------------------------- | :-----------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id         | 组件id，若不设置会自动生成               |                    String                   |                                                                                                                         |
-| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   |                   Boolean                   |                                                                                                                         |
-| strong     | 加粗                                     |                   Boolean                   |                                                                                                                         |
-| delete     | 删除线                                   |                   Boolean                   |                                                                                                                         |
-| underline  | 下滑线                                   |                   Boolean                   |                                                                                                                         |
-| italic     | 斜体                                     |                   Boolean                   |                                                                                                                         |
-| mark       | 标记                                     |                                             |                                                                                                                         |
-| secondary  | 是否是次要文本                           |                   Boolean                   |                                                                                                                         |
-| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> |                   Boolean                   |                                                                                                                         |
-| indent     | <hr>默认值:<br><pre>2</pre>              |                    Number                   |                                                                                                                         |
-| ellipsis   | 文本溢出配置                             | [MultiLineEllipsis](#linkmultilineellipsis) |                                                                                                                         |
-| size       | <hr>默认值:<br><pre>md</pre>             |              [Size](#linksize)              | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| 名称       | 描述                                     |                           类型                          | 可选值                                                                                                                  |
+| :--------- | :--------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id         | 组件id，若不设置会自动生成               |                          String                         |                                                                                                                         |
+| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>   |                         Boolean                         |                                                                                                                         |
+| rendered   | 组件渲染完后的回调                       | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| strong     | 加粗                                     |                         Boolean                         |                                                                                                                         |
+| delete     | 删除线                                   |                         Boolean                         |                                                                                                                         |
+| underline  | 下滑线                                   |                         Boolean                         |                                                                                                                         |
+| italic     | 斜体                                     |                         Boolean                         |                                                                                                                         |
+| mark       | 标记                                     |                                                         |                                                                                                                         |
+| secondary  | 是否是次要文本                           |                         Boolean                         |                                                                                                                         |
+| selectable | 是否可选择<hr>默认值:<br><pre>true</pre> |                         Boolean                         |                                                                                                                         |
+| indent     | <hr>默认值:<br><pre>2</pre>              |                          Number                         |                                                                                                                         |
+| ellipsis   | 文本溢出配置                             |       [MultiLineEllipsis](#linkmultilineellipsis)       |                                                                                                                         |
+| size       | <hr>默认值:<br><pre>md</pre>             |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 
 </div>
 
@@ -53,6 +54,10 @@ Paragraph使用
 ## 关联类型
 
 
+
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
 
 ### MultiLineEllipsis {#linkmultilineellipsis}
 

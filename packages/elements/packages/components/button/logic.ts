@@ -1,21 +1,17 @@
 import { faLoader } from '@fortawesome/pro-light-svg-icons';
-import { computed, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
-import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
+import type { ExtractPropTypes, PropType } from 'vue';
+import { computed, type SetupContext } from 'vue';
+import { AffixProps, BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import { createColorGroup, sizeToComponentHeight, sizeToFontSize } from '../../config';
-import type { StateColor } from '../../types/global';
-import type { IconNameOrDefinition } from '../../types/icon';
+import type { StateColor, StateColorGroup, StringOther, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { Size, StateColorGroup, ThemeConfig } from '../../types/theme';
 
-export type ButtonShape = `rectangle` | `circle` | `square` | `ellipse`;
-export type ButtonMode = 'default' | 'half' | 'empty' | 'link' | 'dashed';
+export type ButtonShape = `rectangle` | `circle` | `square` | `ellipse` | StringOther;
+export type ButtonMode = 'default' | 'half' | 'empty' | 'link' | 'dashed' | StringOther;
 
 export const ButtonProps = {
     ...BaseProps,
-    icon: {
-        type: [String, Object] as PropType<IconNameOrDefinition>,
-        default: ''
-    },
+    ...AffixProps,
     /**
      * 图标位置
      */
@@ -23,13 +19,7 @@ export const ButtonProps = {
         type: String as PropType<'right' | 'left'>,
         default: 'left'
     },
-    /**
-     * 尺寸
-     */
-    size: {
-        type: String as PropType<Size>,
-        default: 'md'
-    },
+
     /**
      * 颜色
      */

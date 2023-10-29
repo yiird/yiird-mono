@@ -1,4 +1,4 @@
-import type { IconNameOrDefinition } from '../types/icon';
+import type { IconNameOrDefinition } from '../types/components';
 
 export interface SourceType {}
 
@@ -34,25 +34,10 @@ export interface TreeNode<C extends TreeNode<C> = TreeNode<any>> extends SourceT
     children?: C[];
 }
 
-export type ActionCallback = (args: any) => void;
-
-export interface Affix extends SourceType {
-    text?: string;
-    icon?: IconNameOrDefinition;
-}
-
-export interface Action extends Affix {
-    fn: ActionCallback;
-}
-
 export type LabelValueMapping = {
     [K in keyof LabelValue]: string;
 };
 
 export type TreeNodeMapping = {
     [K in keyof TreeNode]: string;
-};
-
-export type ActionMapping = {
-    [K in keyof LabelValue]: string;
 };

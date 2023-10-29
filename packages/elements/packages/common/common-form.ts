@@ -2,9 +2,8 @@ import type Color from 'color';
 import { computed, toRefs, type ExtractPropTypes, type PropType, type UnwrapNestedRefs } from 'vue';
 import { sizeToComponentHeight, sizeToFontSize, sizeToGap, sizeToTextLineHeight, stateColor } from '../config';
 import type { FormItemEventArgs } from '../types/event';
-import type { DataStatus } from '../types/global';
+import type { DataStatus, Size, ThemeConfig } from '../types/global';
 import type { CommonExposed, InternalSetupContext } from '../types/prefab';
-import type { Size, ThemeConfig } from '../types/theme';
 import { BaseProps, useTheme } from './prefab';
 export interface FormItemState {
     disabled: boolean;

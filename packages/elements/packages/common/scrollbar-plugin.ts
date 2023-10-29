@@ -9,7 +9,7 @@ import type {
     ScrollTrackAuxPluginOptions,
     ScrollVirtualPage,
     VScrollPluginOptions
-} from '../types/scroll';
+} from '../types/components';
 import { styleValueToNumber } from './dom-utils';
 const { ScrollbarPlugin } = pkg;
 

@@ -2,16 +2,16 @@
     <span class="tip">未对齐</span>
     <br />
     <y-icon
-        name="camera"
+        icon="camera"
         size="2x"></y-icon>
     <y-icon
-        name="coffee"
+        icon="coffee"
         size="2x"></y-icon>
     <y-icon
-        name="6"
+        icon="6"
         size="2x"></y-icon>
     <y-icon
-        name="home"
+        icon="home"
         size="2x"></y-icon>
     <br />
     <hr />
@@ -19,19 +19,19 @@
     <br />
     <y-icon
         fixed-width
-        name="camera"
+        icon="camera"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="coffee"
+        icon="coffee"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="6"
+        icon="6"
         size="2x"></y-icon>
     <y-icon
         fixed-width
-        name="home"
+        icon="home"
         size="2x"></y-icon>
     <br />
 </template>

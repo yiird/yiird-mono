@@ -1,8 +1,7 @@
 import { computed, type EmitsOptions, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
 import { baseExpose, BaseProps, usePrefab, useTheme } from '../../common/prefab';
-import type { Direction } from '../../types/global';
+import type { Direction, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
-import type { ThemeConfig } from '../../types/theme';
 
 export type DividerMode = 'dashed' | 'double' | 'single';
 export const DividerProps = {

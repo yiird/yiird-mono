@@ -8,13 +8,12 @@
         <Input
             ref="input"
             v-model="displayValue"
-            :right-action="obtainRightAction"
+            :suffixes="obtainInputSuffixes"
             :status="status"
             :disabled="disabled"
             :loading="loading"
             :placeholder="placeholder"
-            readonly
-            @right-action="doRightAction_"></Input>
+            readonly></Input>
         <input
             ref="hidden"
             v-model="value"
@@ -22,14 +21,13 @@
             type="hidden" />
         <Popover
             v-if="refresh__"
+            ref="pop"
             :display="isOpen"
-            :offset="5"
-            :allow-placement="['bottom-end']"
             :reference="input?.content"
-            :max-height="obtainPopMaxHeight"
-            :min-height="obtainPopMinHeight"
-            :max-width="obtainPopMaxWidth"
-            :min-width="obtainPopMinWidth"
+            :width="obtainWidth"
+            :height="obtainHeight"
+            :arrow="false"
+            placement="bottom-end"
             mode="click-out"
             color="white"
             hide-think-over-pop

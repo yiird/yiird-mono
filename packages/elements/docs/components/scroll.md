@@ -25,6 +25,7 @@ Scroll使用
 | :------------ | :------------------------------------- | :---------------------------------------------------------------------: | :----- |
 | id            | 组件id，若不设置会自动生成             |                                  String                                 |        |
 | display       | 显示隐藏<hr>默认值:<br><pre>true</pre> |                                 Boolean                                 |        |
+| rendered      | 组件渲染完后的回调                     |         (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void         |        |
 | width         | <hr>默认值:<br><pre>100 %</pre>        |                             number \| string                            |        |
 | height        | <hr>默认值:<br><pre>100 %</pre>        |                             number \| string                            |        |
 | hide-track    |                                        |    [ScrollHideTrackPluginOptions](#linkscrollhidetrackpluginoptions)    |        |
@@ -81,6 +82,10 @@ Scroll使用
 ## 关联类型
 
 
+
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
 
 ### ScrollHideTrackPluginOptions {#linkscrollhidetrackpluginoptions}
 

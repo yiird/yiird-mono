@@ -5,13 +5,13 @@ import type {
     FlatTreeSourceOptions,
     FlatTreeSourceState,
     InternalTreeNode,
-    TreeKeyConfig,
     TreeNodeFinalIcons,
     TreeNodeIconFunction,
     TreeNodeKey,
     TreeNodeSelectIcons,
     TreeNodeSwitchIcons
-} from '../types/tree';
+} from '../types/components';
+import type { LabelValue, LabelValueMapping, TreeNodeMapping } from './common-source';
 import { appendToSet } from './common-util';
 import { isStateIcons, isTypeIcons, operatorCheck, operatorExpand } from './tree-utils2';
 
@@ -105,9 +105,17 @@ export abstract class ListSource<D> {
     }
 }
 
+export class LabelValueSource extends ListSource<LabelValue> {
+    constructor(originalData: Array<any>, mapping: LabelValueMapping) {
+        super(originalData, {
+            mapping
+        });
+    }
+}
+
 export class FlatTreeSource {
     private _originalData: Array<any>;
-    private _keyConfig: TreeKeyConfig;
+    private _mapping: TreeNodeMapping;
     private _initSourceState: FlatTreeSourceState;
     private _sourceState: Ref<FlatTreeSourceState>;
     private _operatorState: UnwrapNestedRefs<FlatTreeOperatorState>;
@@ -128,9 +136,9 @@ export class FlatTreeSource {
 
     private _data;
 
-    constructor(originalData: Array<any>, keyConfig: TreeKeyConfig, options: FlatTreeSourceOptions) {
+    constructor(originalData: Array<any>, mapping: TreeNodeMapping, options: FlatTreeSourceOptions) {
         this._originalData = originalData;
-        this._keyConfig = keyConfig;
+        this._mapping = mapping;
         this._selectIcons = options.selectIcons;
         this._switchIcons = options.switchIcons;
         this._defaultCheckedKeys = options.defaultCheckedKeys;
@@ -404,14 +412,14 @@ export class FlatTreeSource {
         return treeNodes;
     }
     private generateMapStructure(originalData: Array<any>) {
-        const { key, pkey, tkey, ckey } = this._keyConfig;
+        const { key, parentKey, text, children } = this._mapping;
         const map = new Map();
 
         const handleChildren = (data: any) => {
             const node: InternalTreeNode = {
                 key: data[key],
-                parentKey: data[pkey],
-                text: data[tkey],
+                parentKey: data[parentKey],
+                text: data[text],
                 hasOnlyChild: false,
                 level: 0,
                 path: [],
@@ -429,14 +437,14 @@ export class FlatTreeSource {
                 original: data
             };
             map.set(data[key], node);
-            if (data[ckey] && data[ckey].length > 0) {
-                data[ckey].forEach((cdata: any) => {
+            if (children && data[children] && data[children].length > 0) {
+                data[children].forEach((cdata: any) => {
                     handleChildren(cdata);
                 });
             }
         };
 
-        if (key && pkey && tkey) {
+        if (key && parentKey && text) {
             for (const data of originalData) {
                 handleChildren(data);
             }
@@ -512,7 +520,7 @@ export class FlatTreeSource {
             flat.forEach((node) => {
                 if (node.key !== moveKey) {
                     if (node.key === targetKey) {
-                        moveNode.original[this._keyConfig.pkey] = node.parent?.key;
+                        moveNode.original[this._mapping.parentKey] = node.parent?.key;
                         all.push(node.original);
                         all.push(moveNode.original);
                     } else {
@@ -534,7 +542,7 @@ export class FlatTreeSource {
         const all: any[] = [];
         flat.forEach((node) => {
             if (node.key === moveKey) {
-                node.original[this._keyConfig.pkey] = targetKey;
+                node.original[this._mapping.parentKey] = targetKey;
             }
             all.push(node.original);
         });

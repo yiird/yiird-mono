@@ -4,8 +4,8 @@ import { FormItemTextProps, obtainFormItemTheme, useFormItemText, type FormItemS
 import { useInputVModel } from '../../common/composites-vmodel';
 import { baseExpose, usePrefab } from '../../common/prefab';
 import { sizeToComponentHeight, sizeToGap } from '../../config';
-import type { Size } from '../../types';
 import type { FormItemEventArgs } from '../../types/event';
+import type { Size } from '../../types/global';
 
 export const TextareaProps = {
     ...FormItemTextProps,

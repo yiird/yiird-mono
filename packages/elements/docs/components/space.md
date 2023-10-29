@@ -21,14 +21,15 @@ Space使用
 
 <div class="props">
 
-| 名称       | 描述                                                  |             类型            | 可选值                                                                                                                  |
-| :--------- | :---------------------------------------------------- | :-------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
-| id         | 组件id，若不设置会自动生成                            |            String           |                                                                                                                         |
-| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>                |           Boolean           |                                                                                                                         |
-| gap        | <hr>默认值:<br><pre>md</pre>                          |      [Size](#linksize)      | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
-| direction  | 排列方向<hr>默认值:<br><pre>h</pre>                   | [Direction](#linkdirection) | `h` , `v`                                                                                                               |
-| main-axis  | 主轴方向上的排列方式<hr>默认值:<br><pre>start</pre>   | [FlexAlgin](#linkflexalgin) | `start` , `center` , `end` , `space-between` , `space-around`                                                           |
-| cross-axis | 交叉轴方向上的排列方式<hr>默认值:<br><pre>start</pre> | [FlexAlgin](#linkflexalgin) | `start` , `center` , `end` , `space-between` , `space-around`                                                           |
+| 名称       | 描述                                                  |                           类型                          | 可选值                                                                                                                  |
+| :--------- | :---------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
+| id         | 组件id，若不设置会自动生成                            |                          String                         |                                                                                                                         |
+| display    | 显示隐藏<hr>默认值:<br><pre>true</pre>                |                         Boolean                         |                                                                                                                         |
+| rendered   | 组件渲染完后的回调                                    | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| gap        | <hr>默认值:<br><pre>md</pre>                          |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
+| direction  | 排列方向<hr>默认值:<br><pre>h</pre>                   |               [Direction](#linkdirection)               | `h` , `v`                                                                                                               |
+| main-axis  | 主轴方向上的排列方式<hr>默认值:<br><pre>start</pre>   |               [FlexAlgin](#linkflexalgin)               | `start` , `center` , `end` , `space-between` , `space-around`                                                           |
+| cross-axis | 交叉轴方向上的排列方式<hr>默认值:<br><pre>start</pre> |               [FlexAlgin](#linkflexalgin)               | `start` , `center` , `end` , `space-between` , `space-around`                                                           |
 
 </div>
 
@@ -48,6 +49,10 @@ Space使用
 
 
 
+### RenderedReturn {#linkrenderedreturn}
+
+- 选项：
+
 ### Size {#linksize}
 
 - Size = 	 [TshirtSize](#linktshirtsize) \| [NumberSize](#linknumbersize) \| number \| (string &amp; { fromT?: any })
@@ -55,7 +60,7 @@ Space使用
 ### Direction {#linkdirection}
 
 - 描述： 方向<br/>`v` : 垂直方向<br/>`h` : 水平方向
-- Direction = 	 `h` \| `v` \| (string &amp; { fromT?: any })
+- Direction = 	 `h` \| `v` \| [StringOther](#linkstringother)
 
 ### FlexAlgin {#linkflexalgin}
 
@@ -69,6 +74,10 @@ Space使用
 ### NumberSize {#linknumbersize}
 
 - NumberSize = 	 `1x` \| `2x` \| `3x` \| `4x` \| `5x` \| `6x` \| `7x` \| `8x` \| `9x` \| `10x`
+
+### StringOther {#linkstringother}
+
+- StringOther = 	 string \& 
 
 ### Align {#linkalign}
 

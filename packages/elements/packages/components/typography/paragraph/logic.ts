@@ -2,8 +2,7 @@ import type { ExtractPropTypes, PropType, SetupContext } from 'vue';
 import { baseExpose, usePrefab } from '../../../common/prefab';
 import { BaseTextProps, obtainBaseTextTheme, type BaseTextTheme } from '../../../common/prefab-typography';
 import { sizeToFontSize, sizeToTextLineHeight } from '../../../config';
-import type { MultiLineEllipsis } from '../../../types/global';
-import type { Size } from '../../../types/theme';
+import type { MultiLineEllipsis, Size } from '../../../types/global';
 export const ParagraphProps = {
     ...BaseTextProps,
     indent: {
