@@ -26,6 +26,12 @@ export class Transform {
                     }
                 });
             }
+            console.log('execute', filename);
+            console.log(
+                'execute',
+                sfcs.map((sfc) => sfc.filename)
+            );
+            console.log('execute end');
         } else {
             sfcs.push(...this._context.getAllSfc());
         }

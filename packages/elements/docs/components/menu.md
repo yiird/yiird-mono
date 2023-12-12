@@ -13,6 +13,7 @@ Menu使用
 | id       | 组件id，若不设置会自动生成                                                                                                |                          String                         |        |
 | display  | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                    |                         Boolean                         |        |
 | rendered | 组件渲染完后的回调                                                                                                        | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |        |
+| theme    |                                                                                                                           |         OpperatorTheme&lt;unknown&gt; \| unknown        |        |
 | source   | 数据，此数据为标准树形结构数据或者能构成标准树形结构的扁平数据<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre> |                   Array&lt;object&gt;                   |        |
 | mode     |                                                                                                                           |                                                         |        |
 
@@ -37,3 +38,5 @@ Menu使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}

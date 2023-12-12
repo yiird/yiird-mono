@@ -4,7 +4,7 @@ import type { LabelValue } from '../../common/common-source';
 import { toStyleValue } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
 import type { PopoverReference, PoppoverMode } from '../../types/components';
-import type { DropEventArgs, FormItemEventArgs, ListEventArgs } from '../../types/event';
+import type { DropEventArgs, InputEventArg, ListEventArgs } from '../../types/event';
 import type { Placement, Size, ThemeConfig } from '../../types/global';
 import type { InternalSetupContext } from '../../types/prefab';
 import type { TreeType } from '../tree';
@@ -141,9 +141,9 @@ export const setupDrop = (props: DropPropsType, ctx: SetupContext<typeof DropEmi
         return props.type === 'tree';
     });
 
-    const doFilterData_ = (args: FormItemEventArgs) => {
+    const doFilterData_ = (args: InputEventArg) => {
         if (tree.value) {
-            tree.value.filter(args.value);
+            //tree.value.filter(args.ev.target.value);
         }
     };
 

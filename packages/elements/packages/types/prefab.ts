@@ -15,10 +15,6 @@ export interface CommonExposed {
      */
     cType__: string;
     /**
-     * 平台配置
-     */
-    PLATFORM_OPTIONS__: PlatformOptions;
-    /**
      * 显示控制
      *
      * @private
@@ -49,6 +45,12 @@ export interface CommonExposed {
      * 重新渲染
      */
     domRefresh: () => void;
+    global__: {
+        /**
+         * 平台配置
+         */
+        PLATFORM_OPTIONS__: PlatformOptions;
+    };
 }
 
 export type ComponentType<I extends abstract new (...args: any) => any, E extends keyof InstanceType<I>> = Pick<InstanceType<I>, E>;

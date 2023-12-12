@@ -1,17 +1,17 @@
 import { faEye, faEyeSlash, faLoader } from '@fortawesome/pro-light-svg-icons';
 import { camelCase, omit, upperFirst } from 'lodash-es';
-import { computed, h, reactive, ref, toRef, unref, type Component, type ExtractPropTypes, type PropType, type SetupContext, type VNode } from 'vue';
-import { FormItemTextProps, obtainFormItemTheme, useFormItemText, type FormItemState } from '../../common/common-form';
-import { useInputVModel } from '../../common/composites-vmodel';
-import { baseExpose, usePrefab } from '../../common/prefab';
+import { computed, h, reactive, toRef, type Component, type ExtractPropTypes, type PropType, type SetupContext, type VNode } from 'vue';
+import { FormItemTextProps, bindEvent, obtainFormItemTheme, useTextCounter, useVModel, type FormItemState } from '../../common/common-form';
+import { BaseEmits, OpperatorTheme, StatusTheme, baseExpose, usePrefab, useStatusTheme } from '../../common/prefab';
 import { vnodeRef } from '../../common/vnode-utils';
 import type { Affix } from '../../types/components';
-import type { FormItemEventArgs } from '../../types/event';
+import type { BlurEventArg, ChangeEventArg, FocusEventArg, InputEventArg } from '../../types/event';
 import type { RenderedReturn, Size, ThemeConfig } from '../../types/global';
 import { Button } from '../button';
 import { Group } from '../group';
 import { Icon } from '../icon';
 import { IconText } from '../icon/text';
+import type { InputTheme } from './theme';
 
 export type InputMode = 'text' | 'password' | 'number';
 
@@ -35,11 +35,15 @@ export const InputProps = {
         default() {
             return [];
         }
+    },
+    theme: {
+        type: Object as PropType<InputTheme | OpperatorTheme<InputTheme>>
     }
 } as const;
 export type InputPropsType = Readonly<ExtractPropTypes<typeof InputProps>>;
 
 export const InputEmits = {
+    ...BaseEmits,
     /**
      * @private
      */
@@ -49,7 +53,7 @@ export const InputEmits = {
      * @param args
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    change(args: FormItemEventArgs) {
+    change(args: ChangeEventArg) {
         return true;
     },
     /**
@@ -57,14 +61,14 @@ export const InputEmits = {
      * @param args
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    focus(args: FormItemEventArgs) {
+    focus(args: FocusEventArg) {
         return true;
     },
     /**
      * 失去事件
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    blur(args: FormItemEventArgs) {
+    blur(args: BlurEventArg) {
         return true;
     },
     /**
@@ -72,14 +76,9 @@ export const InputEmits = {
      * @param args 参数
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    input(args: FormItemEventArgs) {
+    input(args: InputEventArg) {
         return true;
-    },
-    rightAction: null,
-    leftAction: null,
-    prefixAction: null,
-    suffixAction: null,
-    tabKeyDown: null
+    }
 };
 
 export interface InputState extends FormItemState {
@@ -124,6 +123,32 @@ export const createAffixis = (themeConfig: ThemeConfig, size: Size, affixes: Arr
 
 export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof InputEmits>) => {
     const { emit } = ctx;
+    const commonExposed = usePrefab(props);
+    const internalCtx = { props, commonExposed, ...ctx };
+
+    const {
+        theme: themex,
+        themeKey,
+        toggleTheme
+    } = useStatusTheme(props, (globalTheme) => {
+        const statusTheme = new StatusTheme({
+            color_border: globalTheme.ye_colorBg,
+            color_text: globalTheme.ye_colorError.primary,
+            color_placement: globalTheme.ye_colorBg,
+            color_primary: globalTheme.ye_colorBg,
+            color_shadow: globalTheme.ye_colorBg,
+            size_gap: '',
+            size_border_width: '0px',
+            size_font_size: '',
+            size_height: '',
+            size_line_height: ''
+        });
+
+        statusTheme.addTheme('hover', {
+            size_border_width: '2px'
+        });
+        return statusTheme;
+    });
 
     const state = reactive<FormItemState>({
         status: props.status,
@@ -136,29 +161,19 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
         checkPassword: false
     });
 
-    const content = ref<Element>();
+    const { value } = useVModel(emit, props);
 
-    const commonExposed = usePrefab(props);
-
-    /**
-     * @private
-     */
-    const _eventArgs = (inputValue: any) => {
-        return { el: unref(commonExposed.el), value: inputValue };
-    };
-
-    const { modelValueRef } = useInputVModel(emit, {
-        model: 'modelValue',
-        modifiers: props.modelModifiers
+    const doEvent_ = bindEvent(emit, (e) => {
+        if (e.type === 'mouseover' || e.type === 'mouseout') {
+            toggleTheme('hover');
+        }
     });
-
-    const internalCtx = { props, commonExposed, ...ctx };
-
-    const inputPrefab = useFormItemText(internalCtx, state);
 
     const theme = obtainFormItemTheme(internalCtx, state, (_theme) => {
         return _theme;
     });
+
+    const obtainTextCounter = useTextCounter<typeof InputEmits>(internalCtx);
 
     const obtainIsPassword = computed(() => {
         return selfState.mode === 'password' || selfState.checkPassword;
@@ -210,98 +225,23 @@ export const setupInput = (props: InputPropsType, ctx: SetupContext<typeof Input
         doCheckPassword(selfState.checkPassword);
     };
 
-    /**
-     * @private
-     */
-    const doFoucs_ = (ev: Event) => {
-        const target = ev.target;
-        if (target instanceof HTMLInputElement) {
-            /**
-             * focus 事件
-             *
-             * @param {InputEventArgs} arg0 事件参数
-             *
-             */
-            emit('focus', _eventArgs(target.value));
-        }
-    };
-
-    /**
-     * @private
-     */
-    const doBlur_ = (ev: Event) => {
-        const target = ev.target;
-        if (target instanceof HTMLInputElement) {
-            /**
-             * blur 事件
-             *
-             * @param {InputEventArgs} arg0 事件参数
-             *
-             */
-            emit('blur', _eventArgs(target.value));
-        }
-    };
-
-    /**
-     * @private
-     */
-    const doChange_ = (ev: Event) => {
-        const target = ev.target;
-        if (target instanceof HTMLInputElement) {
-            /**
-             * change 事件
-             *
-             * @param {InputEventArgs} arg0 事件参数
-             *
-             */
-            emit('change', _eventArgs(target.value));
-        }
-    };
-
-    /**
-     * @private
-     */
-    const doInput_ = (ev: Event) => {
-        const target = ev.target;
-        if (target instanceof HTMLInputElement) {
-            /**
-             * input 事件
-             *
-             * @param {InputEventArgs} arg0 事件参数
-             *
-             */
-            emit('input', _eventArgs(target.value));
-        }
-    };
-
-    /**
-     * @private
-     */
-    const doTabKeyDown_ = () => {
-        emit('tabKeyDown');
-    };
-
     return {
         ...commonExposed,
-        ...inputPrefab,
         theme,
-        modelValueRef,
+        themex,
         obtainPasswordIcon,
         faLoader,
-        doFoucs_,
-        doBlur_,
-        doChange_,
-        doInput_,
+        value,
+        doEvent_,
         toggleCheckPassword_,
         doCheckPassword,
-        doTabKeyDown_,
         type_: toRef(selfState, 'mode'),
-        content,
+        obtainTextCounter,
         obtainPrefabAffixies,
         obtainPrefixies,
         obtainSuffixies,
         obtainIsPassword
     };
 };
-export const InputExpose = [...baseExpose, ...(['content'] as const)];
+export const InputExpose = [...baseExpose, ...([] as const)];
 export type InputExposeType = (typeof InputExpose)[number];

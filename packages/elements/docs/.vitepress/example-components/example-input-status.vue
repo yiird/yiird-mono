@@ -2,6 +2,7 @@
     <div class="wrap">
         <y-input
             v-model="inputData"
+            @input="doInput"
             placeholder="正常状态"></y-input>
         <y-input
             v-model="inputData"
@@ -38,12 +39,17 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import type { InputEventArg } from '../../../packages';
 
-const inputData = ref('');
+const inputData = ref('aaa3');
 
 watch(inputData, (a) => {
     console.log('数据：', a);
 });
+
+const doInput = (arg: InputEventArg) => {
+    console.log(arg.ev);
+};
 </script>
 
 <style scoped>

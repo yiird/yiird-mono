@@ -27,6 +27,7 @@ Tabs使用
 | id            | 组件id，若不设置会自动生成                                                                                                                                |                          String                         |                                                                                                                         |
 | display       | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                    |                         Boolean                         |                                                                                                                         |
 | rendered      | 组件渲染完后的回调                                                                                                                                        | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| theme         |                                                                                                                                                           |         OpperatorTheme&lt;unknown&gt; \| unknown        |                                                                                                                         |
 | items         | 选项<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                           |           Array&lt;[TabItem](#linktabitem)&gt;          |                                                                                                                         |
 | active-key    | 当前激活的选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>0</pre>                                                                    |                     number \| string                    |                                                                                                                         |
 | disabled-keys | 禁用选项卡标识，可以是序号（从0开始），也可以是Tab ID<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                          |              Array&lt;string \| number&gt;              |                                                                                                                         |
@@ -71,6 +72,9 @@ Tabs使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}
+
 
 ### TabItem {#linktabitem}
 

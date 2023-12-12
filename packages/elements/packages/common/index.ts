@@ -1,5 +1,5 @@
 import { setDark, setThemeVars } from './common-util';
-import * as Tree from './tree-utils2';
+import * as Tree from './tree/util';
 export { useTheme } from './prefab';
 
 export const Util = {

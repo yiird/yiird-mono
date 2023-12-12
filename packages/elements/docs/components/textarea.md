@@ -13,6 +13,7 @@ Textarea 使用
 | id           | 组件id，若不设置会自动生成                  |                          String                         |                                                                                                                         |
 | display      | 显示隐藏<hr>默认值:<br><pre>true</pre>      |                         Boolean                         |                                                                                                                         |
 | rendered     | 组件渲染完后的回调                          | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| theme        |                                             |         OpperatorTheme&lt;unknown&gt; \| unknown        |                                                                                                                         |
 | name         | 表单项 `name`                               |                          string                         |                                                                                                                         |
 | placeholder  | 占位提示内容                                |                          string                         |                                                                                                                         |
 | disabled     | 禁用<hr>默认值:<br><pre>false</pre>         |                         boolean                         |                                                                                                                         |
@@ -75,6 +76,9 @@ Textarea 使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}
+
 
 ### Size {#linksize}
 

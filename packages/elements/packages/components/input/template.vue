@@ -4,11 +4,8 @@
         v-if="refresh__"
         :id="id__"
         ref="el"
-        :class="[cType__, theme.bemModifiers]"
-        @keydown.tab="doTabKeyDown_">
-        <div
-            ref="content"
-            :class="`${cType__}__content`">
+        :class="[cType__, theme.bemModifiers]">
+        <div :class="`${cType__}__content`">
             <div
                 v-if="obtainPrefixies"
                 :class="`${cType__}__prefix`">
@@ -17,19 +14,20 @@
             <div :class="`${cType__}__input`">
                 <input
                     :id="`input-${id__}`"
-                    ref="modelValueRef"
+                    v-model="value"
                     :disabled="disabled"
                     :maxlength="maxLength"
                     :class="`${cType__}__input-el`"
                     :readonly="readonly"
-                    :value="modelValue"
                     :type="type_"
                     :placeholder="placeholder"
                     autocomplete="off"
-                    @input="doInput_($event)"
-                    @change="doChange_($event)"
-                    @blur="doBlur_($event)"
-                    @focus="doFoucs_($event)" />
+                    @input="doEvent_($event)"
+                    @change="doEvent_($event)"
+                    @blur="doEvent_($event)"
+                    @focus="doEvent_($event)"
+                    @mouseout="doEvent_($event)"
+                    @mouseover="doEvent_($event)" />
             </div>
 
             <div :class="`${cType__}__suffix`">
@@ -44,9 +42,9 @@
                         animation="spin"
                         fixed-width></Icon>
                     <span
-                        v-if="obtainCounter"
+                        v-if="obtainTextCounter"
                         :class="`${cType__}__counter`">
-                        {{ obtainCounter }}
+                        {{ obtainTextCounter }}
                     </span>
                     <Icon
                         v-if="obtainIsPassword"
@@ -85,7 +83,7 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-$colorText: v-bind('theme.colors.text');
+$colorText: v-bind('themex.color_text');
 $colorBorder: v-bind('theme.colors.border');
 $colorPlaceholder: v-bind('theme.colors.placeholder');
 $colorShadow: v-bind('theme.colors.shadow');
@@ -94,7 +92,7 @@ $colorFocus: v-bind('theme.colors.primary');
 
 $height: v-bind('theme.size.height');
 $lineHeight: v-bind('theme.size.lineHeight');
-$borderWidth: v-bind('theme.size.borderWidth');
+$borderWidth: v-bind('themex.size_border_width');
 $fontSize: v-bind('theme.size.fontSize');
 $gap: v-bind('theme.size.gap');
 @import './style.scss';

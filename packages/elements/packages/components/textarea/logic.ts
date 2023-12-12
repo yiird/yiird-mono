@@ -1,7 +1,6 @@
 import { faLoader } from '@fortawesome/pro-light-svg-icons';
 import { computed, reactive, unref, type ExtractPropTypes, type PropType, type SetupContext } from 'vue';
-import { FormItemTextProps, obtainFormItemTheme, useFormItemText, type FormItemState } from '../../common/common-form';
-import { useInputVModel } from '../../common/composites-vmodel';
+import { FormItemTextProps, obtainFormItemTheme, useTextCounter, useVModel, type FormItemState } from '../../common/common-form';
 import { baseExpose, usePrefab } from '../../common/prefab';
 import { sizeToComponentHeight, sizeToGap } from '../../config';
 import type { FormItemEventArgs } from '../../types/event';
@@ -76,14 +75,11 @@ export const setupTextarea = (props: TextareaPropsType, ctx: SetupContext<typeof
 
     const { el } = commonExposed;
 
-    const { modelValueRef } = useInputVModel(emit, {
-        model: 'modelValue',
-        modifiers: props.modelModifiers
-    });
+    const { value } = useVModel(emit, props);
 
     const internalCtx = { props, commonExposed, ...ctx };
 
-    const inputPrefab = useFormItemText(internalCtx, state);
+    const obtainTextCounter = useTextCounter<typeof TextareaEmits>(internalCtx);
 
     const theme = obtainFormItemTheme(internalCtx, state, (_theme) => {
         const height = sizeToComponentHeight(_theme, props.size);
@@ -111,7 +107,7 @@ export const setupTextarea = (props: TextareaPropsType, ctx: SetupContext<typeof
      * 滚动到底部
      */
     const scrollToBottom = () => {
-        const textarea = modelValueRef.value;
+        const textarea = el.value.querySelector('textarea');
         if (textarea) {
             textarea.scrollTop = textarea.scrollHeight;
         }
@@ -183,11 +179,11 @@ export const setupTextarea = (props: TextareaPropsType, ctx: SetupContext<typeof
 
     return {
         ...commonExposed,
-        ...inputPrefab,
         theme,
-        modelValueRef,
+        value,
         faLoader,
         obtainPrefabAffixies,
+        obtainTextCounter,
         scrollToBottom,
         doFoucs_,
         doBlur_,

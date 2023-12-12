@@ -12,6 +12,7 @@
         align-items: center;
         flex-grow: 1;
         border: 1px solid $colorBorder;
+        box-shadow: 0 0 0 $borderWidth $colorBorder;
         border-radius: 5px;
         height: $height;
         position: relative;
@@ -52,11 +53,10 @@
         }
     }
 
-
-    &:focus-within{
+    &:focus-within {
         @include e('content') {
             border: 1px solid $colorFocus;
-            box-shadow: 0 0 0 2px $colorShadow;
+            box-shadow: 0 0 0 $borderWidth $colorShadow;
         }
     }
 

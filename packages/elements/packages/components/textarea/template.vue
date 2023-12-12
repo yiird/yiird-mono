@@ -9,11 +9,10 @@
             <div :class="`${cType__}__input`">
                 <textarea
                     :id="`input-${id__}`"
-                    ref="modelValueRef"
                     :class="`${cType__}__input-el`"
                     :disabled="disabled"
                     :readonly="readonly"
-                    :value="modelValue"
+                    :v-model="value"
                     :placeholder="placeholder"
                     :maxlength="maxLength"
                     autocomplete="off"
@@ -37,9 +36,9 @@
                         :size="size"
                         animation="spin"></Icon>
                     <span
-                        v-if="obtainCounter"
+                        v-if="obtainTextCounter"
                         :class="`${cType__}__counter`">
-                        {{ obtainCounter }}
+                        {{ obtainTextCounter }}
                     </span>
                 </Space>
             </div>

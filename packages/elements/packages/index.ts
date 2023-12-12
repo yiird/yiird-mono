@@ -19,6 +19,7 @@ const YE: Plugin = {
 
         app.runWithContext(() => {
             const ops = inject(OPTIONS_KEY);
+
             watchEffect(() => {
                 if (ops) {
                     const themeConfig = generThemeConfig(IS_DARK.value, USER_THEME_VARS.value);

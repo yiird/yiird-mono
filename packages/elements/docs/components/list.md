@@ -27,6 +27,7 @@ List使用
 | id              | 组件id，若不设置会自动生成                                                                                                                                                 |                          String                         |                                                                                                                         |
 | display         | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                                     |                         Boolean                         |                                                                                                                         |
 | rendered        | 组件渲染完后的回调                                                                                                                                                         | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| theme           |                                                                                                                                                                            |         OpperatorTheme&lt;unknown&gt; \| unknown        |                                                                                                                         |
 | source          | 数据源<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                                          |        Array&lt;object&gt; \| Array&lt;string&gt;       |                                                                                                                         |
 | size            | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                                           |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
 | item-style      | 列表项样式                                                                                                                                                                 |                 string \| CSSProperties                 |                                                                                                                         |
@@ -76,6 +77,9 @@ List使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}
+
 
 ### Size {#linksize}
 

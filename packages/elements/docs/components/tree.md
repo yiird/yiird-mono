@@ -26,6 +26,7 @@ Tree使用
 | id                    | 组件id，若不设置会自动生成                                                                                                                                                                                    |                          String                         |                                                                                                                         |
 | display               | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                                                                                                                                        |                         Boolean                         |                                                                                                                         |
 | rendered              | 组件渲染完后的回调                                                                                                                                                                                            | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| theme                 |                                                                                                                                                                                                               |         OpperatorTheme&lt;unknown&gt; \| unknown        |                                                                                                                         |
 | source                | 数据，此数据为标准树形结构数据或者能构成标准树形结构的扁平数据<hr>默认值:<br><pre>default () {<br>  return [];<br>}</pre>                                                                                     |                   Array&lt;object&gt;                   |                                                                                                                         |
 | mapping               | 标识(字段)配置<br/><br/>告知组件主键、父主键、显示文本、子节点分别对应数据中的字段<hr>默认值:<br><pre>{<br>  key: 'key',<br>  parentKey: 'parentKey',<br>  children: 'children',<br>  text: 'text'<br>}</pre> |                                                         |                                                                                                                         |
 | size                  | 尺寸<hr>默认值:<br><pre>md</pre>                                                                                                                                                                              |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
@@ -142,6 +143,9 @@ Tree使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}
+
 
 ### Size {#linksize}
 

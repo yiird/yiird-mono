@@ -1,7 +1,7 @@
 import type Color from 'color';
-import { computed, toRefs, type ExtractPropTypes, type PropType, type UnwrapNestedRefs } from 'vue';
+import { computed, toRefs, type EmitsOptions, type ExtractPropTypes, type PropType, type UnwrapNestedRefs } from 'vue';
 import { sizeToComponentHeight, sizeToFontSize, sizeToGap, sizeToTextLineHeight, stateColor } from '../config';
-import type { FormItemEventArgs } from '../types/event';
+import type { EventArg } from '../types/event';
 import type { DataStatus, Size, ThemeConfig } from '../types/global';
 import type { CommonExposed, InternalSetupContext } from '../types/prefab';
 import { BaseProps, useTheme } from './prefab';
@@ -158,44 +158,6 @@ export interface FormItemTheme extends ThemeConfig {
     };
 }
 
-export const FormItemTextEmits = {
-    /**
-     * @private
-     */
-    'update:modelValue': null,
-    /**
-     * Change事件
-     * @param args
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    change(args: FormItemEventArgs) {
-        return true;
-    },
-    /**
-     * 焦点事件
-     * @param args
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    focus(args: FormItemEventArgs) {
-        return true;
-    },
-    /**
-     * 失去事件
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    blur(args: FormItemEventArgs) {
-        return true;
-    },
-    /**
-     * Input事件
-     * @param args 参数
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    input(args: FormItemEventArgs) {
-        return true;
-    }
-};
-
 export const obtainFormItemTheme = <T extends FormItemTheme = FormItemTheme>(
     ctx: { props: FormItemCommonPropsType; commonExposed: CommonExposed },
     state: UnwrapNestedRefs<FormItemState>,
@@ -282,14 +244,43 @@ export const obtainFormItemTheme = <T extends FormItemTheme = FormItemTheme>(
     });
 };
 
-export const useFormItemText = <E extends typeof FormItemTextEmits>(ctx: InternalSetupContext<FormItemTextPropsType, E>, state: UnwrapNestedRefs<FormItemState>) => {
+export const useTextCounter = <E extends EmitsOptions = EmitsOptions>(ctx: InternalSetupContext<FormItemTextPropsType, E>) => {
     const { props } = ctx;
 
-    const obtainCounter = computed(() => {
+    return computed(() => {
         return props.maxLength && props.showCounter ? `${props.modelValue?.toString().length}/${props.maxLength}` : '';
     });
+};
 
+export const useVModel = (emit: Function, props: FormItemTextPropsType | FormItemSelectedPropsType) => {
+    const value = computed({
+        get() {
+            return props.modelValue;
+        },
+        set(v) {
+            emit('update:modelValue', v);
+        }
+    });
     return {
-        obtainCounter
+        value
+    };
+};
+
+export const bindEvent = (emit: Function, postprocessor?: <E extends Event>(e: E) => EventArg<E> | void) => {
+    return (ev: Event) => {
+        if (postprocessor) {
+            const res = postprocessor(ev);
+            if (res) {
+                emit(ev.type, res);
+            } else {
+                emit(ev.type, {
+                    ev
+                });
+            }
+        } else {
+            emit(ev.type, {
+                ev
+            });
+        }
     };
 };

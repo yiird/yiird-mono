@@ -5,7 +5,7 @@ import { computed, nextTick, onBeforeMount, onBeforeUpdate, unref, type CSSPrope
 import type { TreeNodeMapping } from '../../common/common-source';
 import { findElementFromEventByClass, styleValueToNumber } from '../../common/dom-utils';
 import { BaseProps, baseExpose, usePrefab, useTheme } from '../../common/prefab';
-import { FlatTreeSource } from '../../common/source';
+import { FlatTree } from '../../common/tree/FlatTree';
 import { sizeToComponentHeight, sizeToFontSize } from '../../config';
 import type { InternalTreeNode, TreeNodeIcons, TreeNodeKey, TreeNodeSelectIcons, TreeNodeSwitchIcons } from '../../types/components';
 import type { TreeEventArgs } from '../../types/event';
@@ -244,7 +244,7 @@ export const setupTree = (props: TreePropsType, ctx: SetupContext<typeof TreeEmi
 
     const { icons, selectIcons, switchIcons, mapping } = props;
 
-    const source = new FlatTreeSource(props.source, mapping, {
+    const source = new FlatTree(props.source, mapping, {
         icons,
         selectIcons: {
             checked: selectIcons.checked || selectIcons.notChecked,

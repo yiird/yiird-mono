@@ -59,3 +59,17 @@ export interface TreeEventArgs extends EventArgs {
      */
     shouldRenderCount: number;
 }
+
+//======================>
+
+export interface EventArg<E extends Event> {
+    ev: E;
+}
+
+export interface InputEventArg extends EventArg<InputEvent> {}
+/**
+ * Change事件回调参数类型
+ */
+export interface ChangeEventArg extends EventArg<Event> {}
+export interface FocusEventArg extends EventArg<FocusEvent> {}
+export interface BlurEventArg extends EventArg<FocusEvent> {}

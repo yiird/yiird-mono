@@ -41,16 +41,17 @@ export class Context {
         return Array.from(this._getAffectedFiles(filename));
     }
 
-    private _getAffectedFiles(filename: string): Set<string> {
+    private _getAffectedFiles(filename: string, alreadyAffected: Set<string> = new Set()): Set<string> {
         const source = this._scriptFiles.get(filename);
-        const affected = new Set<string>();
-        source?.froms.forEach((from) => {
-            affected.add(from);
-            this._getAffectedFiles(from).forEach((_from) => {
-                affected.add(_from);
+        source?.froms
+            .filter((from) => !alreadyAffected.has(from))
+            .forEach((from) => {
+                alreadyAffected.add(from);
+                this._getAffectedFiles(from, alreadyAffected).forEach((_from) => {
+                    alreadyAffected.add(_from);
+                });
             });
-        });
-        return affected;
+        return alreadyAffected;
     }
 
     updateFrom(filename: string, frompath: string) {

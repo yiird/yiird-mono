@@ -93,6 +93,8 @@ export class Scanner extends EventEmitter {
                 if (realReferPath) {
                     if (!this._context.getScriptFile(realReferPath)) {
                         this._load(realReferPath, forceUpdate, filename);
+                    } else {
+                        this._context.updateFrom(realReferPath, filename);
                     }
                 }
             }

@@ -13,6 +13,7 @@ Group使用
 | id        | 组件id，若不设置会自动生成                                         |                          String                         |                                                                                                                         |
 | display   | 显示隐藏<hr>默认值:<br><pre>true</pre>                             |                         Boolean                         |                                                                                                                         |
 | rendered  | 组件渲染完后的回调                                                 | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| theme     |                                                                    |         OpperatorTheme&lt;unknown&gt; \| unknown        |                                                                                                                         |
 | direction | <hr>默认值:<br><pre>h</pre>                                        |               [Direction](#linkdirection)               | `h` , `v`                                                                                                               |
 | divider   | 是否有分割线<hr>默认值:<br><pre>false</pre>                        |                         boolean                         |                                                                                                                         |
 | gap       | <hr>默认值:<br><pre>0</pre>                                        |                    [Size](#linksize)                    | `2xs` , `xs` , `sm` , `md` , `lg` , `xl` , `2xl` , `1x` , `2x` , `3x` , `4x` , `5x` , `6x` , `7x` , `8x` , `9x` , `10x` |
@@ -41,6 +42,9 @@ Group使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}
+
 
 ### Direction {#linkdirection}
 

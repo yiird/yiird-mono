@@ -444,7 +444,7 @@ export type FlatTreeOperatorState = {
     checkState?: CheckState;
 };
 
-export type FlatTreeSourceOptions = {
+export type FlatTreeOptions = {
     icons?: TreeNodeIcons;
     selectIcons?: TreeNodeSelectIcons;
     switchIcons?: TreeNodeSwitchIcons;

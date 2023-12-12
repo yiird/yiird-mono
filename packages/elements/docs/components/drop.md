@@ -25,6 +25,7 @@ Drop使用
 | :-------------- | :----------------------------------------------------------------------------- | :-----------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------- |
 | id              | 组件id，若不设置会自动生成                                                     |                          String                         |                                                                                                                         |
 | rendered        | 组件渲染完后的回调                                                             | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |                                                                                                                         |
+| theme           |                                                                                |         OpperatorTheme&lt;unknown&gt; \| unknown        |                                                                                                                         |
 | display         | 显示隐藏<hr>默认值:<br><pre>false</pre>                                        |                         boolean                         |                                                                                                                         |
 | reference       |                                                                                |        [PopoverReference](#linkpopoverreference)        |                                                                                                                         |
 | source          |                                                                                |        Array&lt;[LabelValue](#linklabelvalue)&gt;       |                                                                                                                         |
@@ -81,6 +82,9 @@ Drop使用
 
 - 选项：
 
+### OpperatorTheme {#linkopperatortheme}
+
+
 ### PopoverReference {#linkpopoverreference}
 
 - 描述： Popover
@@ -109,7 +113,6 @@ Drop使用
 	 - `uid__` { number } : Vue生成的组件ID
 	 - `id__` { string } : 组件ID，也是渲染到页面上的元素ID
 	 - `cType__` { string } : 平台特有的类型属性，也是组件名称
-	 - `PLATFORM_OPTIONS__` { [PlatformOptions](#linkplatformoptions) } : 平台配置
 	 - `refresh__` { Ref&lt;boolean&gt; } : 重新渲染控制
 	 - `scopeId__` { Ref&lt;string&gt; } : 当前控件scopeId;
 	 - `el` { Ref&lt;HTMLElement&gt; } : 当前控件根元素
@@ -128,10 +131,5 @@ Drop使用
 ### StringOther {#linkstringother}
 
 - StringOther = 	 string \& 
-
-### PlatformOptions {#linkplatformoptions}
-
-- 选项：
-	 - [`documentReady`] { () =&gt; void } : 
 
 ### Ref {#linkref}

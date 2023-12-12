@@ -10,9 +10,6 @@ export type Size = TshirtSize | NumberSize | number | (string & { fromT?: any })
 // @yiird/elements 插件配置
 export type PlatformOptions = {
     prefix: string;
-    /**
-     *
-     */
     documentReady?: () => void;
     themeConfig: ThemeConfig;
     ssr: boolean;

@@ -26,6 +26,7 @@ Vscroll使用
 | id                                  | 组件id，若不设置会自动生成                                                                 |                          String                         |        |
 | display                             | 显示隐藏<hr>默认值:<br><pre>true</pre>                                                     |                         Boolean                         |        |
 | rendered                            | 组件渲染完后的回调                                                                         | (args:[RenderedReturn](#linkrenderedreturn)) =&gt; void |        |
+| theme                               |                                                                                            |         OpperatorTheme&lt;unknown&gt; \| unknown        |        |
 | source<br /><span>(*)</span>        | 数据                                                                                       |                     Array&lt;any&gt;                    |        |
 | row-height<br /><span>(*)</span>    | 行高                                                                                       |                          Number                         |        |
 | prepare-screen-count                | 预先渲染的屏数<hr>默认值:<br><pre>3</pre>                                                  |                          Number                         |        |
@@ -70,3 +71,5 @@ Vscroll使用
 ### RenderedReturn {#linkrenderedreturn}
 
 - 选项：
+
+### OpperatorTheme {#linkopperatortheme}

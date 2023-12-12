@@ -26,18 +26,6 @@ type InputModelDataBinder = {
     opperator?: <V>(v: V, b?: InputModelDataBinder) => any;
 };
 
-type CheckModelDataBinder = {
-    model: string;
-    /**
-     * 数据自定义处理
-     *
-     * @param v 数据值
-     * @param b 当前Binder
-     * @returns 处理后的数据
-     */
-    opperator?: <V>(v: V, b?: CheckModelDataBinder) => any;
-};
-
 const isSelectElement = (dom: any): dom is HTMLInputElement => {
     return 'checkbox' === dom.type || 'radio' === dom.type;
 };

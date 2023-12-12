@@ -1,8 +1,25 @@
-import { kebabCase } from 'lodash-es';
-import { getCurrentInstance, inject, nextTick, onBeforeMount, onMounted, ref, toRef, type App, type Component, type PropType } from 'vue';
+import { isArray, kebabCase, merge } from 'lodash-es';
+import {
+    computed,
+    getCurrentInstance,
+    inject,
+    nextTick,
+    onBeforeMount,
+    onMounted,
+    ref,
+    toRef,
+    watchEffect,
+    type App,
+    type Component,
+    type EmitsOptions,
+    type ExtractPropTypes,
+    type PropType,
+    type Ref,
+    type SetupContext
+} from 'vue';
 import { CACHE_INSTANCES, DEFAULT_ELEMENT_OPTIONS, OPTIONS_KEY } from '../config';
 import type { IconNameOrDefinition } from '../types/components';
-import type { BoxShadowDirection, BoxShadowLevel, PlatformOptions, RenderedReturn, Size } from '../types/global';
+import type { BoxShadowDirection, BoxShadowLevel, PlatformOptions, RenderedReturn, Size, StringOther, ThemeConfig } from '../types/global';
 import type { CommonExposed } from '../types/prefab';
 
 export const _register = (app: App, component: Component, optinos?: PlatformOptions) => {
@@ -10,7 +27,7 @@ export const _register = (app: App, component: Component, optinos?: PlatformOpti
     app.component(kebabCase(`${prefix}${component.name}`), component);
 };
 
-export const baseExpose = ['$', 'id__', 'cType__', 'PLATFORM_OPTIONS__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted', 'el', 'scopeId__'] as const;
+export const baseExpose = ['$', 'id__', 'cType__', 'global__', 'uid__', 'domRefresh', 'setDisplay', 'isMounted', 'el', 'scopeId__'] as const;
 
 export const BaseProps = {
     /**
@@ -31,8 +48,13 @@ export const BaseProps = {
      */
     rendered: {
         type: Function as PropType<(args: RenderedReturn) => void>
+    },
+    theme: {
+        type: Object as PropType<OpperatorTheme<unknown> | unknown>
     }
 };
+
+export type BasePropsType = Readonly<ExtractPropTypes<typeof BaseProps>>;
 
 export const ShadowProps = {
     /**
@@ -86,10 +108,17 @@ export const AffixProps = {
     }
 };
 
+export const BaseEmits = {
+    mouseover: null,
+    mouseout: null
+};
+
 export const useTheme = () => {
     const options = inject(OPTIONS_KEY, DEFAULT_ELEMENT_OPTIONS);
     return toRef(options!, 'themeConfig');
 };
+
+export type InternalCtx<E = EmitsOptions> = { props: any; commonExposed: CommonExposed } & SetupContext<E>;
 
 export const usePrefab = (props: any): CommonExposed => {
     //获取组件对象实例
@@ -155,7 +184,6 @@ export const usePrefab = (props: any): CommonExposed => {
     });
 
     return {
-        PLATFORM_OPTIONS__: inject<PlatformOptions>(OPTIONS_KEY, {} as PlatformOptions),
         uid__: internalInstance.uid,
         id__,
         cType__,
@@ -165,7 +193,123 @@ export const usePrefab = (props: any): CommonExposed => {
         el,
         isMounted,
         setDisplay,
-        domRefresh
+        domRefresh,
+        global__: {
+            PLATFORM_OPTIONS__: inject<PlatformOptions>(OPTIONS_KEY, {} as PlatformOptions)
+        }
+    };
+};
+type OpperatorThemeKey = 'normal' | 'click' | 'hover' | 'focus' | StringOther;
+export class OpperatorTheme<T> {
+    protected _customers: Map<OpperatorThemeKey, Partial<T>> = new Map();
+    private _normal: T;
+    constructor(theme: T) {
+        this._normal = theme;
+        this.addTheme('normal', theme);
+    }
+
+    getNormal() {
+        return this._normal;
+    }
+
+    has(name: string) {
+        return this._customers.has(name);
+    }
+
+    only() {
+        return this._customers.size === 1 && this._customers.has('normal');
+    }
+
+    addTheme(name: OpperatorThemeKey, theme: Partial<T>) {
+        this._customers.set(name, theme);
+    }
+
+    getTheme(name: OpperatorThemeKey) {
+        return this._customers.get(name) || this._normal;
+    }
+}
+type StatusThemeKey = 'success' | 'warn' | 'error' | OpperatorThemeKey;
+
+type CombineThemeKey = StatusThemeKey | `${OpperatorThemeKey}-${StatusThemeKey}`;
+
+export class StatusTheme<T> extends OpperatorTheme<T> {
+    constructor(theme: T) {
+        super(theme);
+    }
+
+    addTheme(name: StatusThemeKey, theme: Partial<T>): void {
+        super.addTheme(name, theme);
+    }
+
+    getTheme(name: CombineThemeKey) {
+        return super.getTheme(name);
+        /* if (name.includes('-') || name.includes(' ')) {
+            const name_arr = name.includes('-') ? name.split('-') : name.split(' ');
+            return merge(
+                super.getNormal(),
+                name_arr.map((n) => (super.has(n) ? super.getTheme(n) : null)).filter((t) => !!t)
+            );
+        } else {
+            return super.getTheme(name);
+        } */
+    }
+}
+
+export const useOpperatorTheme = <T extends object, P extends BasePropsType = BasePropsType>(props: P, processor: (globalTheme: ThemeConfig) => OpperatorTheme<T>) => {
+    const globalTheme = useTheme();
+    const themeKey = ref<OpperatorThemeKey | OpperatorThemeKey[]>('normal');
+    const advTheme = computed<OpperatorTheme<T>>(() => {
+        if (props.theme) {
+            return props.theme instanceof OpperatorTheme ? props.theme : new OpperatorTheme<T>(props.theme as T);
+        } else {
+            return processor(globalTheme.value);
+        }
+    });
+
+    const theme = ref<Partial<T>>();
+
+    watchEffect(() => {
+        const _themeKey = themeKey.value;
+        const _advTheme = advTheme.value;
+        let _themes;
+        if (isArray(_themeKey)) {
+            const aviliableKeys = _themeKey.filter((key) => _advTheme.has(key));
+            if (aviliableKeys.length === 0) {
+                _themes = [advTheme.value.getNormal()];
+            } else {
+                _themes = [advTheme.value.getNormal(), ...aviliableKeys.map((key) => _advTheme.getTheme(key))];
+            }
+        } else {
+            if (!_advTheme.has(_themeKey)) return;
+            _themes = [advTheme.value.getNormal(), _advTheme.getTheme(_themeKey)];
+        }
+        theme.value = merge({} as T, ..._themes);
+    });
+
+    const toggleTheme = (key: OpperatorThemeKey) => {
+        const _themeKey = themeKey.value;
+        if (isArray(_themeKey)) {
+            if (!_themeKey.includes(key)) {
+                _themeKey.push(key);
+            } else {
+                _themeKey.splice(_themeKey.indexOf(key), 1);
+            }
+        } else {
+            themeKey.value = [_themeKey, key];
+        }
+    };
+
+    return {
+        toggleTheme,
+        themeKey,
+        theme
+    };
+};
+export const useStatusTheme = <T extends object, P extends BasePropsType = BasePropsType>(props: P, processor: (globalTheme: ThemeConfig) => StatusTheme<T>) => {
+    return useOpperatorTheme(props, processor) as {
+        themeKey: Ref<CombineThemeKey | CombineThemeKey[]>;
+        toggleTheme: (key: CombineThemeKey) => void;
+        theme: Ref<T>;
     };
 };
 
